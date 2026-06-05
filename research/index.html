@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Куток — Research</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #f7f6f3;
+      --surface:   #ffffff;
+      --border:    #e8e5e0;
+      --text:      #1a1816;
+      --muted:     #8a847b;
+      --accent:    #c96a3a;
+      --accent-bg: #fdf3ee;
+      --green:     #3a7d5c;
+      --green-bg:  #eef6f1;
+      --yellow:    #b38a1a;
+      --yellow-bg: #fdf8e8;
+      --red:       #c0392b;
+      --red-bg:    #fdf0ee;
+      --blue:      #2563a8;
+      --blue-bg:   #eef3fc;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--text);
+      background: var(--bg);
+      padding: 40px 24px 80px;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Layout ── */
+    .page { max-width: 900px; margin: 0 auto; }
+
+    /* ── Header ── */
+    .header {
+      margin-bottom: 48px;
+    }
+    .header-eyebrow {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .header h1 {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -.02em;
+      margin-bottom: 6px;
+    }
+    .header-meta {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* ── Section ── */
+    .section { margin-bottom: 48px; }
+    .section-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ── Card ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+    }
+    .card + .card { margin-top: 10px; }
+
+    /* ── Progress ── */
+    .progress-list { display: flex; flex-direction: column; gap: 10px; }
+    .progress-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 18px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    .progress-item.done    { border-color: var(--green);  background: var(--green-bg);  }
+    .progress-item.active  { border-color: var(--accent); background: var(--accent-bg); }
+    .progress-item.pending { opacity: .65; }
+
+    .progress-dot {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px;
+    }
+    .done   .progress-dot { background: var(--green);  color: #fff; }
+    .active .progress-dot { background: var(--accent); color: #fff; }
+    .pending .progress-dot { background: var(--border); color: var(--muted); }
+
+    .progress-label { font-size: 14px; font-weight: 500; flex: 1; }
+    .progress-tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    .done   .progress-tag { background: var(--green);  color: #fff; }
+    .active .progress-tag { background: var(--accent); color: #fff; }
+    .pending .progress-tag { background: var(--border); color: var(--muted); }
+
+    /* ── Questions ── */
+    .questions { display: flex; flex-direction: column; gap: 8px; }
+    .question {
+      display: flex;
+      gap: 14px;
+      padding: 14px 18px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    .q-num {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+      min-width: 20px;
+    }
+    .q-text { font-size: 14px; }
+
+    /* ── Hypotheses ── */
+    .hypotheses { display: flex; flex-direction: column; gap: 8px; }
+    .hypothesis {
+      display: grid;
+      grid-template-columns: 36px 1fr auto;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 18px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    .h-id {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+    }
+    .h-text { font-size: 14px; }
+    .badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 5px;
+      white-space: nowrap;
+    }
+    .badge-pending  { background: var(--yellow-bg); color: var(--yellow); }
+    .badge-confirm  { background: var(--green-bg);  color: var(--green);  }
+    .badge-refuted  { background: var(--red-bg);    color: var(--red);    }
+    .badge-partial  { background: var(--blue-bg);   color: var(--blue);   }
+
+    /* ── Interviews ── */
+    .interviews-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 10px;
+    }
+    .interview-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px;
+      min-height: 160px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .interview-card.empty {
+      border-style: dashed;
+      background: transparent;
+      opacity: .55;
+      align-items: center;
+      justify-content: center;
+      min-height: 120px;
+    }
+    .interview-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .interviewee-name { font-size: 14px; font-weight: 600; }
+    .interviewee-role {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+    .role-seeker { background: var(--blue-bg);  color: var(--blue);  }
+    .role-host   { background: var(--green-bg); color: var(--green); }
+    .role-both   { background: var(--accent-bg); color: var(--accent); }
+
+    .interviewee-meta { font-size: 12px; color: var(--muted); }
+    .interviewee-notes { font-size: 13px; line-height: 1.55; }
+    .interviewee-pain {
+      font-size: 12px;
+      background: var(--accent-bg);
+      color: var(--accent);
+      border-radius: 5px;
+      padding: 6px 10px;
+    }
+    .empty-slot { font-size: 13px; color: var(--muted); text-align: center; }
+
+    /* ── Insights ── */
+    .insights-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 10px;
+    }
+    .insight-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px;
+    }
+    .insight-card.empty {
+      border-style: dashed;
+      background: transparent;
+      opacity: .5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100px;
+    }
+    .insight-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+    .tag-trust   { background: var(--accent-bg); color: var(--accent); }
+    .tag-pain    { background: var(--red-bg);    color: var(--red);    }
+    .tag-flow    { background: var(--blue-bg);   color: var(--blue);   }
+    .tag-feature { background: var(--green-bg);  color: var(--green);  }
+    .insight-text { font-size: 14px; line-height: 1.55; }
+
+    /* ── Summary bar ── */
+    .summary-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+    .summary-stat {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 20px;
+      flex: 1;
+      min-width: 120px;
+    }
+    .stat-value {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -.02em;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .stat-label { font-size: 12px; color: var(--muted); }
+
+    /* ── Footer ── */
+    .footer {
+      margin-top: 60px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-eyebrow">Куток · User Research</div>
+    <h1>Дослідження</h1>
+    <div class="header-meta">
+      Мета: визначити механізми довіри та больові точки при пошуку співмешканців у Києві
+    </div>
+  </header>
+
+  <!-- Summary stats -->
+  <div class="summary-bar">
+    <div class="summary-stat">
+      <div class="stat-value" id="stat-interviews">0</div>
+      <div class="stat-label">інтерв'ю проведено</div>
+    </div>
+    <div class="summary-stat">
+      <div class="stat-value">5</div>
+      <div class="stat-label">ключових питань</div>
+    </div>
+    <div class="summary-stat">
+      <div class="stat-value">4</div>
+      <div class="stat-label">гіпотези для тесту</div>
+    </div>
+    <div class="summary-stat">
+      <div class="stat-value" id="stat-insights">0</div>
+      <div class="stat-label">інсайтів синтезовано</div>
+    </div>
+  </div>
+
+  <!-- Progress -->
+  <section class="section">
+    <div class="section-title">Прогрес</div>
+    <div class="progress-list">
+      <div class="progress-item pending">
+        <div class="progress-dot">1</div>
+        <div class="progress-label">Підготовка гайду для інтерв'ю</div>
+        <span class="progress-tag">Не розпочато</span>
+      </div>
+      <div class="progress-item pending">
+        <div class="progress-dot">2</div>
+        <div class="progress-label">Рекрутинг учасників (5–8 осіб: шукачі + господарі)</div>
+        <span class="progress-tag">Не розпочато</span>
+      </div>
+      <div class="progress-item pending">
+        <div class="progress-dot">3</div>
+        <div class="progress-label">Проведення інтерв'ю</div>
+        <span class="progress-tag">Не розпочато</span>
+      </div>
+      <div class="progress-item pending">
+        <div class="progress-dot">4</div>
+        <div class="progress-label">Синтез інсайтів</div>
+        <span class="progress-tag">Не розпочато</span>
+      </div>
+      <div class="progress-item pending">
+        <div class="progress-dot">5</div>
+        <div class="progress-label">Визначення механізмів довіри</div>
+        <span class="progress-tag">Не розпочато</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Questions -->
+  <section class="section">
+    <div class="section-title">Питання, на які шукаємо відповіді</div>
+    <div class="questions">
+      <div class="question">
+        <span class="q-num">1</span>
+        <span class="q-text">Яким є поточний шлях пошуку кімнати / підселяємого? Де болить?</span>
+      </div>
+      <div class="question">
+        <span class="q-num">2</span>
+        <span class="q-text">Що саме викликає тривогу при знайомстві з незнайомцем?</span>
+      </div>
+      <div class="question">
+        <span class="q-num">3</span>
+        <span class="q-text">Які сигнали довіри вже спрацьовують (або не спрацьовують) зараз?</span>
+      </div>
+      <div class="question">
+        <span class="q-num">4</span>
+        <span class="q-text">Скільки кімнат / людей переглядають до рішення? Чому відмовляють?</span>
+      </div>
+      <div class="question">
+        <span class="q-num">5</span>
+        <span class="q-text">Чим Куток має відрізнятися від Facebook-груп та OLX?</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Hypotheses -->
+  <section class="section">
+    <div class="section-title">Гіпотези</div>
+    <div class="hypotheses">
+      <div class="hypothesis">
+        <span class="h-id">H1</span>
+        <span class="h-text">Верифікація телефону достатня для MVP-довіри</span>
+        <span class="badge badge-pending">Не перевірено</span>
+      </div>
+      <div class="hypothesis">
+        <span class="h-id">H2</span>
+        <span class="h-text">Відгуки після проживання підвищують конверсію</span>
+        <span class="badge badge-pending">Не перевірено</span>
+      </div>
+      <div class="hypothesis">
+        <span class="h-id">H3</span>
+        <span class="h-text">Completeness score профілю знижує тривогу</span>
+        <span class="badge badge-pending">Не перевірено</span>
+      </div>
+      <div class="hypothesis">
+        <span class="h-id">H4</span>
+        <span class="h-text">Соціальні зв'язки / спільні знайомі — бажана фіча</span>
+        <span class="badge badge-pending">Не перевірено</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interviews -->
+  <section class="section">
+    <div class="section-title">Інтерв'ю <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:12px;color:var(--muted)">— 0 з 8</span></div>
+    <div class="interviews-grid" id="interviews-grid">
+      <!-- Приклад заповненої картки (прихований поки немає даних) -->
+      <!--
+      <div class="interview-card">
+        <div class="interview-header">
+          <div>
+            <div class="interviewee-name">Марія, 26</div>
+            <div class="interviewee-meta">Київ, Шевченківський р-н · 14 трав 2025</div>
+          </div>
+          <span class="interviewee-role role-seeker">Шукач</span>
+        </div>
+        <div class="interviewee-notes">
+          Шукала 3 місяці через Facebook-групи. Відмовила 2 разам — не вистачало фото кімнати і «відчуття людини».
+        </div>
+        <div class="interviewee-pain">
+          Головний біль: не розуміє, кому можна довіряти до першої зустрічі.
+        </div>
+      </div>
+      -->
+      <div class="interview-card empty"><span class="empty-slot">Учасник 1</span></div>
+      <div class="interview-card empty"><span class="empty-slot">Учасник 2</span></div>
+      <div class="interview-card empty"><span class="empty-slot">Учасник 3</span></div>
+      <div class="interview-card empty"><span class="empty-slot">Учасник 4</span></div>
+      <div class="interview-card empty"><span class="empty-slot">Учасник 5</span></div>
+      <div class="interview-card empty"><span class="empty-slot">Учасник 6</span></div>
+      <div class="interview-card empty"><span class="empty-slot">Учасник 7</span></div>
+      <div class="interview-card empty"><span class="empty-slot">Учасник 8</span></div>
+    </div>
+  </section>
+
+  <!-- Insights -->
+  <section class="section">
+    <div class="section-title">Інсайти <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:12px;color:var(--muted)">— заповнюється після синтезу</span></div>
+    <div class="insights-grid" id="insights-grid">
+      <!-- Приклад інсайту (прихований поки немає даних)
+      <div class="insight-card">
+        <span class="insight-tag tag-trust">Довіра</span>
+        <div class="insight-text">
+          Перший сигнал довіри — повне ім'я + фото. Псевдоніми і аватари без обличчя викликають підозру.
+        </div>
+      </div>
+      -->
+      <div class="insight-card empty"><span class="empty-slot" style="font-size:13px;color:var(--muted)">Інсайти з'являться після синтезу</span></div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <span>Куток · Research Dashboard</span>
+    <span>research/index.html</span>
+  </footer>
+
+</div>
+</body>
+</html>
