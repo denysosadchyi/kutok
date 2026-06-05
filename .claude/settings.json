@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd /home/den/kutok && git rev-parse --git-dir > /dev/null 2>&1 && git status --porcelain | grep -q . && git add -A && git commit -m \"auto: claude session changes\" 2>/dev/null || true",
+            "statusMessage": "Зберігаю зміни в git..."
+          }
+        ]
+      }
+    ]
+  }
+}
