@@ -295,6 +295,99 @@
       flex-wrap: wrap;
       gap: 6px;
     }
+
+    /* ── Competitors ── */
+    .subsection-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 28px 0 12px;
+    }
+    .competitors-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 10px;
+    }
+    .competitor-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .competitor-head {
+      padding: 14px 18px 12px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .competitor-name { font-size: 15px; font-weight: 700; }
+    .competitor-region {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 4px;
+      background: var(--bg);
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+    .competitor-rows { padding: 4px 0; }
+    .c-row {
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      gap: 6px;
+      padding: 8px 18px;
+      border-bottom: 1px solid var(--bg);
+      align-items: baseline;
+    }
+    .c-row:last-child { border-bottom: none; }
+    .c-key {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+    .c-val { font-size: 13px; line-height: 1.5; }
+    .c-val.trust-highlight {
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    /* patterns / differences / pm-questions */
+    .insight-cards { display: flex; flex-direction: column; gap: 10px; }
+    .insight-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 20px;
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 14px;
+    }
+    .insight-item.pm { border-color: var(--accent); background: var(--accent-bg); }
+    .insight-num {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--border);
+      line-height: 1.4;
+    }
+    .insight-item.pm .insight-num { color: var(--accent); opacity: .5; }
+    .insight-body {}
+    .insight-item-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+    .insight-item-text { font-size: 13px; line-height: 1.6; color: #3a3530; }
+    .comp-note {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 16px;
+    }
   </style>
 </head>
 <body>
@@ -413,6 +506,165 @@
         <span class="badge badge-pending">Не перевірено</span>
       </div>
     </div>
+  </section>
+
+  <!-- Competitors -->
+  <section class="section">
+    <div class="section-title">Аналіз конкурентів</div>
+
+    <div class="competitors-grid">
+
+      <div class="competitor-card">
+        <div class="competitor-head">
+          <span class="competitor-name">SpareRoom</span>
+          <span class="competitor-region">UK / US</span>
+        </div>
+        <div class="competitor-rows">
+          <div class="c-row"><span class="c-key">Аудиторія</span><span class="c-val">25–34, 74% шукачі; активний ринок оренди</span></div>
+          <div class="c-row"><span class="c-key">Продукт</span><span class="c-val">Дошка оголошень + профілі; 20+ років на ринку</span></div>
+          <div class="c-row"><span class="c-key">Механізм</span><span class="c-val">Buddy Up (двоє шукають разом); 7-денне ексклюзивне вікно для нових оголошень</span></div>
+          <div class="c-row"><span class="c-key">Довіра</span><span class="c-val trust-highlight">Опційна верифікація особи через Onfido ($15): ID + селфі + кримінальні реєстри</span></div>
+          <div class="c-row"><span class="c-key">Монетизація</span><span class="c-val">Freemium + часовий paywall: 7 днів = £14, 28 днів = £28</span></div>
+        </div>
+      </div>
+
+      <div class="competitor-card">
+        <div class="competitor-head">
+          <span class="competitor-name">Roomi</span>
+          <span class="competitor-region">US</span>
+        </div>
+        <div class="competitor-rows">
+          <div class="c-row"><span class="c-key">Аудиторія</span><span class="c-val">Молоді міські професіонали та студенти (NYC, Chicago)</span></div>
+          <div class="c-row"><span class="c-key">Продукт</span><span class="c-val">Mobile-first з алгоритмом сумісності; безпека як core value</span></div>
+          <div class="c-row"><span class="c-key">Механізм</span><span class="c-val">Анкета сумісності → алгоритм → фільтри (стать, куріння, тварини, розклад, район)</span></div>
+          <div class="c-row"><span class="c-key">Довіра</span><span class="c-val trust-highlight">Обов'язкове фото + верифікація GlobaliD (телефон + email + ID); кримінальний чек Garbo™; 24/7 модерація</span></div>
+          <div class="c-row"><span class="c-key">Монетизація</span><span class="c-val">Freemium: 5 повідомлень/день; Premium $29.99/міс або $14.99/тиж</span></div>
+        </div>
+      </div>
+
+      <div class="competitor-card">
+        <div class="competitor-head">
+          <span class="competitor-name">Badi</span>
+          <span class="competitor-region">EU</span>
+        </div>
+        <div class="competitor-rows">
+          <div class="c-row"><span class="c-key">Аудиторія</span><span class="c-val">22–35, "покоління орендарів" у дорогих містах (Barcelona, Madrid, London, Paris)</span></div>
+          <div class="c-row"><span class="c-key">Продукт</span><span class="c-val">Mobile-first marketplace з ML-матчингом; 2024 — перехід на свайп</span></div>
+          <div class="c-row"><span class="c-key">Механізм</span><span class="c-val">Свайп по кімнатах і профілях + AI-рекомендації; орендодавець виходить на підходящих шукачів</span></div>
+          <div class="c-row"><span class="c-key">Довіра</span><span class="c-val trust-highlight">Підтвердження банківського рахунку → бейдж "Trusted User"; без верифікації особи</span></div>
+          <div class="c-row"><span class="c-key">Монетизація</span><span class="c-val">Per-listing: Badi Gold €19.99/30 днів; бусти окремо</span></div>
+        </div>
+      </div>
+
+      <div class="competitor-card">
+        <div class="competitor-head">
+          <span class="competitor-name">Flatfy</span>
+          <span class="competitor-region">UA</span>
+        </div>
+        <div class="competitor-rows">
+          <div class="c-row"><span class="c-key">Аудиторія</span><span class="c-val">Широка аудиторія, весь ринок нерухомості UA; ВПО з 2022</span></div>
+          <div class="c-row"><span class="c-key">Продукт</span><span class="c-val">Мета-пошук: агрегує 50+ сайтів нерухомості, не власні оголошення</span></div>
+          <div class="c-row"><span class="c-key">Механізм</span><span class="c-val">Пошук по агрегованих оголошеннях + map view; дедуплікація; без профільного матчингу</span></div>
+          <div class="c-row"><span class="c-key">Довіра</span><span class="c-val trust-highlight">Алгоритм виявлення фейків (ціна нижче ринку, підозрілі фото); немає власного рівня довіри</span></div>
+          <div class="c-row"><span class="c-key">Монетизація</span><span class="c-val">Ймовірно B2B з джерельних сайтів; продукт "Сусіди" — закритий</span></div>
+        </div>
+      </div>
+
+      <div class="competitor-card">
+        <div class="competitor-head">
+          <span class="competitor-name">OLX UA</span>
+          <span class="competitor-region">UA</span>
+        </div>
+        <div class="competitor-rows">
+          <div class="c-row"><span class="c-key">Аудиторія</span><span class="c-val">Всі вікові групи, вся Україна; кімнати — бюджетний сегмент</span></div>
+          <div class="c-row"><span class="c-key">Продукт</span><span class="c-val">Загальний класифайд; кімнати — одна категорія серед усієї нерухомості</span></div>
+          <div class="c-row"><span class="c-key">Механізм</span><span class="c-val">Класичний пошук за ціною/районом; без матчингу і сумісності</span></div>
+          <div class="c-row"><span class="c-key">Довіра</span><span class="c-val trust-highlight">Рейтинг продавця (2024); партнерство з Кіберполіцією; без верифікації особи</span></div>
+          <div class="c-row"><span class="c-key">Монетизація</span><span class="c-val">Безкоштовне розміщення + платні бусти; B2B пакети для агентств</span></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Patterns -->
+    <div class="subsection-label">3 спільні патерни</div>
+    <div class="insight-cards">
+      <div class="insight-item">
+        <span class="insight-num">1</span>
+        <div class="insight-body">
+          <div class="insight-item-title">Довіра виражена через видимий бейдж, а не через процес</div>
+          <div class="insight-item-text">Всі, хто намагався вирішити питання довіри (SpareRoom, Roomi, Badi), зводять її до значка на профілі. Але значок не пояснює <em>що саме</em> перевірено. Користувачі часто не розуміють різниці між "підтверджений телефон" і "перевірено по кримінальних реєстрах". Дизайн платформ не розрізняє рівні довіри — усе виглядає однаково.</div>
+        </div>
+      </div>
+      <div class="insight-item">
+        <span class="insight-num">2</span>
+        <div class="insight-body">
+          <div class="insight-item-title">Монетизація тисне на шукача, а не на орендодавця</div>
+          <div class="insight-item-text">SpareRoom і Roomi монетизують саме шукача: часовий paywall або ліміт повідомлень. При цьому орендодавець розміщує безкоштовно. Орендодавець дає продукту supply, тому бар'єр мінімальний. Але це створює асиметрію: орендодавці погано мотивовані заповнювати профіль повністю.</div>
+        </div>
+      </div>
+      <div class="insight-item">
+        <span class="insight-num">3</span>
+        <div class="insight-body">
+          <div class="insight-item-title">Комунікація виходить з платформи — і всі з цим миряться</div>
+          <div class="insight-item-text">Жоден конкурент не утримує розмову всередині після першого контакту. OLX і Flatfy навіть не намагаються. Badi намагається утримати гроші всередині, але не комунікацію. Платформа втрачає сигнали про якість матчу і не може захистити від шахрайства на пізніх етапах.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Differences -->
+    <div class="subsection-label">3 відмінності</div>
+    <div class="insight-cards">
+      <div class="insight-item">
+        <span class="insight-num">1</span>
+        <div class="insight-body">
+          <div class="insight-item-title">Глибина профілю людини vs. кімнати</div>
+          <div class="insight-item-text">SpareRoom і Roomi вкладають у профіль <em>людини</em> (інтереси, спосіб життя, анкета сумісності). Badi і OLX вкладають у профіль <em>кімнати</em> (фото, ціна, адреса). Для нашої аудиторії, де довіра — core value, ставка на людину, ймовірно, правильна.</div>
+        </div>
+      </div>
+      <div class="insight-item">
+        <span class="insight-num">2</span>
+        <div class="insight-body">
+          <div class="insight-item-title">Одноразова покупка vs. підписка</div>
+          <div class="insight-item-text">Badi обирає per-listing модель без автоподовження — знижує тривогу щодо прихованих витрат і відповідає поведінці орендодавця (активний тільки поки шукає мешканця). SpareRoom і Roomi тягнуть до підписки — стабільніший revenue, але вищий бар'єр входу.</div>
+        </div>
+      </div>
+      <div class="insight-item">
+        <span class="insight-num">3</span>
+        <div class="insight-body">
+          <div class="insight-item-title">Провал LUN "Сусіди" — прямий сигнал для ринку</div>
+          <div class="insight-item-text">LUN (найсильніший гравець нерухомості в Україні) запустив і закрив "Sosedi". Це або означає, що ринок ще не дозрів, або що продукт побудований неправильно — як агрегатор нерухомості, а не як продукт довіри між людьми. Різниця критична для позиціонування Куток.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PM Questions -->
+    <div class="subsection-label">Питання до PM</div>
+    <div class="insight-cards">
+      <div class="insight-item pm">
+        <span class="insight-num">1</span>
+        <div class="insight-body">
+          <div class="insight-item-title">Ми будуємо продукт "кімната → людина" чи "людина → людина"?</div>
+          <div class="insight-item-text">Badi і OLX стартують від кімнати. SpareRoom і Roomi — від профілю людини. Це фундаментальне архітектурне рішення: перший екран після реєстрації, структура картки, що показуємо без авторизації. Для Куток, де довіра — головна цінність, логічний напрямок — "людина → людина". Але це ускладнює залучення орендодавців.</div>
+        </div>
+      </div>
+      <div class="insight-item pm">
+        <span class="insight-num">2</span>
+        <div class="insight-body">
+          <div class="insight-item-title">Верифікація — обов'язкова чи опційна, і хто платить?</div>
+          <div class="insight-item-text">SpareRoom зробила платною і опційною ($15) → лише ~20% верифіковані. Roomi — безкоштовна, частково обов'язкова. Якщо довіра — наша диференціація, але верифікація опційна, ми ризикуємо отримати OLX з кращим UI. Яка мінімальна планка верифікації на MVP, нижче якої ми не підемо?</div>
+        </div>
+      </div>
+      <div class="insight-item pm">
+        <span class="insight-num">3</span>
+        <div class="insight-body">
+          <div class="insight-item-title">Що сталось із LUN "Сусіди" — і чи знаємо ми?</div>
+          <div class="insight-item-text">"Сусіди" від LUN — єдиний відомий спеціалізований продукт для кімнат і підселення на українському ринку. Він закритий. Причина невідома з відкритих джерел. Якщо є можливість поговорити з кимось із команди LUN або знайти публічні пости — це може заощадити місяці роботи.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="comp-note">Дата дослідження: червень 2026 · Джерела: сайти продуктів, UX-кейс стаді, AIM Group, TechCrunch, BBB complaints.</div>
   </section>
 
   <!-- Interviews -->
