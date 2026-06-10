@@ -14,8 +14,8 @@
 
 | Папка | Що тут |
 |-------|--------|
-| [`research/`](./research/) | Дослідження: гайд, нотатки інтерв'ю, синтез інсайтів |
-| [`research/screens/`](./research/screens/) | Скрін-шоти та артефакти з інтерв'ю |
+| [`research/`](./research/) | Ресерч: [research.md](./research/research.md) (конкуренти · бенчмарк · патерни · висновки), [competitors.md](./research/competitors.md), [interviews.md](./research/interviews.md), [дашборд](./research/index.html) |
+| [`research/screens/`](./research/screens/) | Скріни еталонів бенчмарку (Airbnb, Tinder); скріни конкурентів — TODO |
 | [`wireframes/`](./wireframes/) | Wireframes потоків (low-fi) |
 | [`concept/`](./concept/) | Концептуальні рішення, mood board, напрямки стилю |
 | [`tokens/`](./tokens/) | Design tokens: кольори, типографіка, відступи |
@@ -31,13 +31,15 @@
 Research → [ тут зараз ] → Wireframes → Concept → Design → Handoff
 ```
 
-Статус дослідження → [`research/research.md`](./research/research.md)
+Кабінетний ресерч **зібрано**: конкуренти, бенчмарк довіри, патерни, гіпотези R1–R5
+→ [`research/research.md`](./research/research.md)
+План інтерв'ю → [`research/interviews.md`](./research/interviews.md)
 
 ---
 
 ## Наступні кроки
 
-1. Провести інтерв'ю з шукачами та господарями (5–8 людей)
-2. Синтезувати інсайти → визначити механізми довіри
-3. Побудувати user flow для двох ролей
-4. Low-fi wireframes → концепт дизайну
+1. Зняти скріни конкурентів (SpareRoom, Roomi, Badi, OLX) через Playwright → `research/screens/`
+2. Провести інтерв'ю з шукачами та господарями (5–8 людей) → перевірити R1–R5 і H1–H4
+3. Синтезувати інсайти → зафіксувати механізми довіри
+4. Побудувати user flow для двох ролей → low-fi wireframes

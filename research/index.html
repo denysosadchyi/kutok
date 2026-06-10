@@ -388,6 +388,46 @@
       color: var(--muted);
       margin-top: 16px;
     }
+
+    /* ── Benchmark ── */
+    .bench-table-wrap {
+      overflow-x: auto;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+    .bench-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 560px; }
+    .bench-table th, .bench-table td {
+      padding: 10px 14px;
+      text-align: center;
+      border-bottom: 1px solid var(--bg);
+    }
+    .bench-table th {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: var(--muted);
+    }
+    .bench-table td:first-child, .bench-table th:first-child { text-align: left; }
+    .bench-table tr:last-child td { border-bottom: none; font-weight: 700; }
+    .bench-table .top { color: var(--accent); font-weight: 700; }
+
+    .screens-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 10px;
+    }
+    .screen-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .screen-card img { width: 100%; display: block; }
+    .screen-cap { font-size: 11px; color: var(--muted); padding: 8px 10px; line-height: 1.4; }
+
+    .insight-item.warn { border-color: var(--red); background: var(--red-bg); }
   </style>
 </head>
 <body>
@@ -398,6 +438,7 @@
     <div class="header-eyebrow">Куток · User Research</div>
     <h1>Дослідження</h1>
     <div class="header-meta">
+      Три рівні: конкуренти → бенчмарк → патерни → висновки · далі — інтерв'ю.
       Мета: визначити механізми довіри та больові точки при пошуку співмешканців у Києві
     </div>
   </header>
@@ -413,8 +454,8 @@
       <div class="stat-label">ключових питань</div>
     </div>
     <div class="summary-stat">
-      <div class="stat-value">4</div>
-      <div class="stat-label">гіпотези для тесту</div>
+      <div class="stat-value">9</div>
+      <div class="stat-label">гіпотез для тесту (5 ресерч + 4 інтерв'ю)</div>
     </div>
     <div class="summary-stat">
       <div class="stat-value" id="stat-insights">0</div>
@@ -483,7 +524,7 @@
 
   <!-- Hypotheses -->
   <section class="section">
-    <div class="section-title">Гіпотези</div>
+    <div class="section-title">Гіпотези для інтерв'ю</div>
     <div class="hypotheses">
       <div class="hypothesis">
         <span class="h-id">H1</span>
@@ -665,6 +706,236 @@
     </div>
 
     <div class="comp-note">Дата дослідження: червень 2026 · Джерела: сайти продуктів, UX-кейс стаді, AIM Group, TechCrunch, BBB complaints.</div>
+  </section>
+
+  <!-- Benchmark -->
+  <section class="section">
+    <div class="section-title">Бенчмарк — довіра до профілю до першого контакту</div>
+
+    <div class="card" style="margin-bottom:16px">
+      <strong>Вимір:</strong> довіра до профілю співмешканця <strong>до першого контакту</strong>.
+      Бенчмарк ≠ конкуренти: дивимось, хто робить цей один вимір найкраще — у будь-якій категорії.
+      Оцінки авторські (шкала 1–5), на основі джерел; повна версія з фактами і лінками — <a href="research.md">research.md</a>.
+    </div>
+
+    <div class="subsection-label">Оцінка еталонів</div>
+    <div class="bench-table-wrap">
+      <table class="bench-table">
+        <tr><th>Критерій</th><th>Airbnb</th><th>Bumble</th><th>Couchsurfing</th><th>BlaBlaCar</th><th>TaskRabbit</th></tr>
+        <tr><td>Глибина верифікації особи</td><td class="top">5</td><td>4</td><td>4</td><td>3</td><td class="top">5</td></tr>
+        <tr><td>Обов'язковість до контакту</td><td class="top">5</td><td>3</td><td>2</td><td>3</td><td class="top">5</td></tr>
+        <tr><td>Зрозумілість бейджа</td><td class="top">4</td><td>3</td><td>3</td><td class="top">4</td><td>2</td></tr>
+        <tr><td>Двосторонні відгуки</td><td class="top">5</td><td>1</td><td class="top">5</td><td class="top">5</td><td>4</td></tr>
+        <tr><td>Повнота профілю як сигнал</td><td>4</td><td>3</td><td>4</td><td class="top">5</td><td>3</td></tr>
+        <tr><td>Сигнали активності</td><td>4</td><td>2</td><td>4</td><td class="top">5</td><td>4</td></tr>
+        <tr><td>Безпека першого контакту</td><td class="top">5</td><td>4</td><td>3</td><td>4</td><td>4</td></tr>
+        <tr><td>Разом</td><td class="top">32</td><td>20</td><td>25</td><td class="top">29</td><td>27</td></tr>
+      </table>
+    </div>
+
+    <div class="subsection-label">Топ-3 механізми → у MVP</div>
+    <div class="insight-cards">
+      <div class="insight-item">
+        <span class="insight-num">1</span>
+        <div class="insight-body">
+          <div class="insight-item-title">Обов'язкова безкоштовна верифікація до першого контакту</div>
+          <div class="insight-item-text">Airbnb-модель (верифікуються обидві сторони) у реалізації рівня Bumble: телефон + селфі-перевірка фото. Платна опційна модель дає ~20% покриття (SpareRoom) — цього мало, якщо довіра = диференціація.</div>
+        </div>
+      </div>
+      <div class="insight-item">
+        <span class="insight-num">2</span>
+        <div class="insight-body">
+          <div class="insight-item-title">Бейдж з розшифровкою</div>
+          <div class="insight-item-text">На профілі видно, що саме перевірено: телефон ✓ / фото ✓ / документ —. Airbnb пояснює це окремим екраном; жоден конкурент так не робить — пряма можливість закрити спільну сліпу пляму ринку.</div>
+        </div>
+      </div>
+      <div class="insight-item">
+        <span class="insight-num">3</span>
+        <div class="insight-body">
+          <div class="insight-item-title">Повнота профілю як видимий сигнал</div>
+          <div class="insight-item-text">Completeness-індикатор на картці + підказки до 100%. Обґрунтування: 88% учасників BlaBlaCar високо довіряють повним профілям — майже рівень друзів (92%). Дослідження BlaBlaCar × NYU Stern, 18 000+ респондентів, 11 країн.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection-label">1 механізм, що не спрацює</div>
+    <div class="insight-cards">
+      <div class="insight-item warn">
+        <span class="insight-num">✕</span>
+        <div class="insight-body">
+          <div class="insight-item-title">Кримінальний background check через третю сторону</div>
+          <div class="insight-item-text">TaskRabbit/Checkr, Roomi/Garbo: в Україні немає API-доступу до реєстрів для приватних платформ [?]; чек — асиметричний механізм (перевіряє «виконавця», а підселення — симетричні стосунки); $25-внесок на холодному старті вбиває воронку. Post-MVP роль може зіграти Дія/BankID.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection-label">Скріни бенчмарку</div>
+    <div class="screens-grid">
+      <div class="screen-card">
+        <img src="screens/airbnb-host-profile-verified.jpg" alt="Airbnb: профіль хоста з бейджем верифікації та відгуками" loading="lazy">
+        <div class="screen-cap">Airbnb — профіль хоста: бейдж + статистика + відгуки</div>
+      </div>
+      <div class="screen-card">
+        <img src="screens/airbnb-verify-before-booking.jpg" alt="Airbnb: гейт верифікації перед бронюванням" loading="lazy">
+        <div class="screen-cap">Airbnb — верифікація як гейт перед бронюванням</div>
+      </div>
+      <div class="screen-card">
+        <img src="screens/airbnb-verification-details.jpg" alt="Airbnb: розшифровка верифікації" loading="lazy">
+        <div class="screen-cap">Airbnb — екран-розшифровка: що саме перевірено</div>
+      </div>
+      <div class="screen-card">
+        <img src="screens/tinder-photo-verification.jpg" alt="Tinder: запрошення до фото-верифікації" loading="lazy">
+        <div class="screen-cap">Tinder — промпт фото-верифікації (механізм як у Bumble)</div>
+      </div>
+    </div>
+
+    <div class="comp-note">Джерела: Airbnb Help / Newsroom · Bumble Support / Buzz · Couchsurfing FAQ · BlaBlaCar «Entering the Trust Age» · TaskRabbit Support · Checkr. Лінки — у research.md. Скріни: refero.design. Скріни конкурентів (SpareRoom, Roomi, Badi, OLX) — [?] TODO Playwright.</div>
+  </section>
+
+  <!-- Patterns -->
+  <section class="section">
+    <div class="section-title">Патерни — як знайти людину серед багатьох</div>
+
+    <div class="insight-cards">
+      <div class="insight-item">
+        <span class="insight-num">1</span>
+        <div class="insight-body">
+          <div class="insight-item-title">Каталог з фільтрами <span style="font-weight:400;color:var(--muted)">— OLX, SpareRoom, Flatfy</span></div>
+          <div class="insight-item-text">Стрічка оголошень + фасетні фільтри, контакт напряму. Підходить: велика база, користувач знає критерії. Ламається: paradox of choice, фейки, спам у відкритому контакті.</div>
+        </div>
+      </div>
+      <div class="insight-item">
+        <span class="insight-num">2</span>
+        <div class="insight-body">
+          <div class="insight-item-title">Свайп-черга <span style="font-weight:400;color:var(--muted)">— Tinder, Badi (з 2024)</span></div>
+          <div class="insight-item-text">Послідовний бінарний вибір так/ні. Підходить: швидкий старт, легкі рішення, mobile-first. Ламається: серйозні рішення — поверхневий вибір по фото; гейміфікація підриває довіру.</div>
+        </div>
+      </div>
+      <div class="insight-item">
+        <span class="insight-num">3</span>
+        <div class="insight-body">
+          <div class="insight-item-title">Анкета сумісності → скоринг <span style="font-weight:400;color:var(--muted)">— Roomi, OkCupid</span></div>
+          <div class="insight-item-text">Опитник → алгоритм рахує % сумісності й ранжує. Підходить: зріла база + готовність заповнювати анкети. Ламається: cold start — мало профілів → порожні результати; довгий онбординг → відвал.</div>
+        </div>
+      </div>
+      <div class="insight-item">
+        <span class="insight-num">4</span>
+        <div class="insight-body">
+          <div class="insight-item-title">Взаємний інтерес → розблокування чату <span style="font-weight:400;color:var(--muted)">— match-механіка Tinder/Bumble</span></div>
+          <div class="insight-item-text">Контакт можливий лише після згоди обох сторін. Підходить: захист від спаму критичний, асиметрія страху сторін. Ламається: мала база → мало матчів → відчуття «мертвого» продукту.</div>
+        </div>
+      </div>
+      <div class="insight-item">
+        <span class="insight-num">5</span>
+        <div class="insight-body">
+          <div class="insight-item-title">Модерована спільнота / консьєрж <span style="font-weight:400;color:var(--muted)">— FB-групи з адмінами, агенції</span></div>
+          <div class="insight-item-text">Людина-модератор курує і знайомить вручну. Підходить: преміум-сегмент, висока ціна помилки. Ламається: не масштабується, повільно, дорого.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection-label">Вибір під контекст Кутка</div>
+    <div class="insight-cards">
+      <div class="insight-item pm">
+        <span class="insight-num">★</span>
+        <div class="insight-body">
+          <div class="insight-item-title">Обраний: №4 взаємний інтерес, поверх каталогу №1 як шару навігації</div>
+          <div class="insight-item-text">Збігається з брифом MVP («Хочу познайомитись» → чат). Причини: (1) прямо відповідає головному страху аудиторії — незнайомець не може написати напряму, взаємна згода сама по собі сигнал довіри; (2) стійкий до cold start — не потребує даних, ML чи великої бази; (3) дешевий у реалізації — фільтри вже в скоупі, gate додає один стан картки і чату.</div>
+        </div>
+      </div>
+      <div class="insight-item">
+        <span class="insight-num">2-й</span>
+        <div class="insight-body">
+          <div class="insight-item-title">Другий вибір: №3 скоринг сумісності — за умови X</div>
+          <div class="insight-item-text">X = активна база в тисячі профілів + накопичені дані анкет. Тоді скоринг підсилює gate: «вам підходить 87%» поряд з кнопкою «Хочу познайомитись».</div>
+        </div>
+      </div>
+      <div class="insight-item warn">
+        <span class="insight-num">✕</span>
+        <div class="insight-body">
+          <div class="insight-item-title">Не підходить: №2 свайп</div>
+          <div class="insight-item-text">Рішення про спільне проживання ≠ швидкий бінарний вибір по фото: свайп оптимізує engagement, а не якість рішення; гейміфікація конфліктує з позиціонуванням «довіра і безпека». Badi свайпнув у 2024 — але його ставка на обсяг ринку оренди ЄС, не на довіру.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Conclusions -->
+  <section class="section">
+    <div class="section-title">Висновки — gaps і гіпотези ресерчу</div>
+
+    <div class="subsection-label">Gaps ринку</div>
+    <div class="insight-cards">
+      <div class="insight-item">
+        <span class="insight-num">1</span>
+        <div class="insight-body">
+          <div class="insight-item-title">UA-ринок порожній у вимірі довіри</div>
+          <div class="insight-item-text">Flatfy — агрегатор без профілів людей, OLX — класифайд без trust layer, LUN «Сусіди» закрився. Ніша «довіра через дизайн» — нічия.</div>
+        </div>
+      </div>
+      <div class="insight-item">
+        <span class="insight-num">2</span>
+        <div class="insight-body">
+          <div class="insight-item-title">Бейдж без розшифровки — спільна сліпа пляма</div>
+          <div class="insight-item-text">Жоден гравець не показує, що саме перевірено за бейджем.</div>
+        </div>
+      </div>
+      <div class="insight-item">
+        <span class="insight-num">3</span>
+        <div class="insight-body">
+          <div class="insight-item-title">Комунікація тікає з платформи</div>
+          <div class="insight-item-text">Платформи втрачають сигнали якості матчу і не можуть захистити від шахрайства після першого контакту.</div>
+        </div>
+      </div>
+      <div class="insight-item">
+        <span class="insight-num">4</span>
+        <div class="insight-body">
+          <div class="insight-item-title">Монетизація через шукача → асиметрія мотивації</div>
+          <div class="insight-item-text">Господарі не мотивовані заповнювати профіль — а довіра потрібна обом сторонам.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection-label">Гіпотези ресерчу — «якщо / то / бо»</div>
+    <div class="insight-cards">
+      <div class="insight-item">
+        <span class="insight-num">R1</span>
+        <div class="insight-body">
+          <div class="insight-item-title">Якщо верифікація безкоштовна й обов'язкова до першого контакту…</div>
+          <div class="insight-item-text"><strong>То:</strong> покриття верифікованих профілів >80% (проти ~20% у платній опційній моделі). <strong>Бо:</strong> бар'єр SpareRoom — ціна $15 і опційність; безкоштовний селфі-флоу Bumble займає хвилини.</div>
+        </div>
+      </div>
+      <div class="insight-item">
+        <span class="insight-num">R2</span>
+        <div class="insight-body">
+          <div class="insight-item-title">Якщо бейдж довіри розшифровано (телефон ✓ / фото ✓ / документ —)…</div>
+          <div class="insight-item-text"><strong>То:</strong> конверсія в «Хочу познайомитись» для верифікованих профілів зросте проти німого бейджа. <strong>Бо:</strong> користувачі не розрізняють рівні перевірки (патерн 1 конкурентного аналізу); Airbnb пояснює це окремим екраном.</div>
+        </div>
+      </div>
+      <div class="insight-item">
+        <span class="insight-num">R3</span>
+        <div class="insight-body">
+          <div class="insight-item-title">Якщо показувати повноту профілю (прогрес + підказки до 100%)…</div>
+          <div class="insight-item-text"><strong>То:</strong> довіра і конверсія в перший контакт зростуть. <strong>Бо:</strong> 88% учасників BlaBlaCar високо довіряють повним профілям — майже як друзям (92%) [Entering the Trust Age].</div>
+        </div>
+      </div>
+      <div class="insight-item">
+        <span class="insight-num">R4</span>
+        <div class="insight-body">
+          <div class="insight-item-title">Якщо чат відкривається лише після взаємної згоди…</div>
+          <div class="insight-item-text"><strong>То:</strong> частка скарг/спаму на першому контакті буде нижчою, ніж в open-contact каналах. <strong>Бо:</strong> в OLX/FB-групах відкритий контакт супроводжується шахрайством і виходом комунікації з платформи (патерн 3).</div>
+        </div>
+      </div>
+      <div class="insight-item">
+        <span class="insight-num">R5</span>
+        <div class="insight-body">
+          <div class="insight-item-title">Якщо після спільного проживання обидві сторони лишають відгук (вікно 14 днів)…</div>
+          <div class="insight-item-text"><strong>То:</strong> профілі з ≥1 відгуком конвертуватимуть у запити помітно краще. <strong>Бо:</strong> peer-references — головний механізм репутації Couchsurfing (20 років) і Airbnb (двосторонні одночасні відгуки).</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="comp-note">Гіпотези R1–R5 — з даних ресерчу; гіпотези H1–H4 нижче — для перевірки на інтерв'ю.</div>
   </section>
 
   <!-- Interviews -->
