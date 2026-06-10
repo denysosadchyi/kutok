@@ -22,7 +22,7 @@
     --mono: 'JetBrains Mono', ui-monospace, monospace;
   }
 
-  html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+  html { scroll-behavior: smooth; scroll-padding-top: 28px; }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     * { transition: none !important; }
@@ -50,34 +50,37 @@
   }
   .skip:focus { left: 0; }
 
-  /* ── Навігація ── */
-  .topnav {
-    position: sticky; top: 0; z-index: 50;
-    background: var(--paper);
-    border-bottom: 1px solid var(--line);
+  /* ── Каркас: навігація зліва ── */
+  .shell {
+    display: grid; grid-template-columns: 188px minmax(0, 1fr);
+    gap: 60px; max-width: 1100px; margin: 0 auto; padding: 0 24px;
   }
-  .nav-inner {
-    max-width: 840px; margin: 0 auto; padding: 0 20px;
-    display: flex; align-items: center; gap: 20px; height: 52px;
+  .sidenav {
+    position: sticky; top: 0; align-self: start;
+    height: 100dvh; padding: 56px 0 28px;
+    display: flex; flex-direction: column;
   }
-  .brand { font-weight: 800; font-size: 15px; color: var(--ink); flex-shrink: 0; }
+  .brand { font-weight: 800; font-size: 16px; color: var(--ink); }
   .brand:hover { text-decoration: none; }
-  .brand span { font-family: var(--mono); font-size: 10.5px; font-weight: 400; color: var(--muted); margin-left: 7px; letter-spacing: .08em; }
-  .nav-links {
-    display: flex; gap: 2px; margin-left: auto;
-    overflow-x: auto; scrollbar-width: none;
+  .brand span {
+    display: block; font-family: var(--mono); font-size: 10px; font-weight: 400;
+    color: var(--muted); letter-spacing: .14em; margin-top: 3px;
   }
-  .nav-links::-webkit-scrollbar { display: none; }
+  .nav-links { display: flex; flex-direction: column; gap: 2px; margin-top: 36px; }
   .nav-links a {
     font-size: 13.5px; font-weight: 500; color: var(--muted);
-    padding: 6px 11px; border-radius: 7px; white-space: nowrap;
+    padding: 7px 11px; margin-left: -11px; border-radius: 7px; white-space: nowrap;
     transition: color .15s ease, background .15s ease;
   }
   .nav-links a:hover { color: var(--ink); background: var(--line-soft); text-decoration: none; }
   .nav-links a.active { color: var(--clay); background: var(--clay-soft); }
+  .nav-links a .n { font-family: var(--mono); font-size: 10.5px; margin-right: 8px; opacity: .65; }
+  .nav-foot { margin-top: auto; font-family: var(--mono); font-size: 10.5px; color: var(--muted); line-height: 1.8; }
+  .nav-foot a { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+  .nav-foot a:hover { color: var(--clay); }
 
   /* ── Сторінка ── */
-  .page { max-width: 840px; margin: 0 auto; padding: 0 20px 96px; }
+  .page { max-width: 760px; padding: 0 0 96px; min-width: 0; }
 
   .hero { padding-top: 60px; }
   .kicker { font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
@@ -236,6 +239,27 @@
   footer a { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
   footer a:hover { color: var(--clay); }
 
+  @media (max-width: 900px) {
+    html { scroll-padding-top: 72px; }
+    .shell { display: block; padding: 0 20px; }
+    .sidenav {
+      flex-direction: row; align-items: center; gap: 18px;
+      height: 52px; padding: 0 20px; margin: 0 -20px;
+      background: var(--paper); border-bottom: 1px solid var(--line); z-index: 50;
+    }
+    .brand { font-size: 15px; }
+    .brand span { display: none; }
+    .nav-links {
+      flex-direction: row; margin-top: 0; margin-left: auto;
+      overflow-x: auto; scrollbar-width: none;
+    }
+    .nav-links::-webkit-scrollbar { display: none; }
+    .nav-links a { margin-left: 0; padding: 6px 10px; }
+    .nav-links a .n { display: none; }
+    .nav-foot { display: none; }
+    .page { max-width: none; padding-bottom: 80px; }
+  }
+
   @media (max-width: 720px) {
     h1 { font-size: 25px; }
     section { margin-top: 64px; }
@@ -250,16 +274,21 @@
 <body>
 <a class="skip" href="#overview">До змісту</a>
 
-<nav class="topnav" aria-label="Розділи дослідження">
-  <div class="nav-inner">
-    <a class="brand" href="#overview">Куток<span>RESEARCH</span></a>
-    <div class="nav-links">
-      <a href="#competitors">Конкуренти</a>
-      <a href="#benchmark">Бенчмарк</a>
-      <a href="#patterns">Патерни</a>
-      <a href="#conclusions">Висновки</a>
-      <a href="#interviews">Інтерв'ю</a>
-    </div>
+<div class="shell">
+
+<nav class="sidenav" aria-label="Розділи дослідження">
+  <a class="brand" href="#overview">Куток<span>RESEARCH</span></a>
+  <div class="nav-links">
+    <a href="#overview"><span class="n">00</span>Огляд</a>
+    <a href="#competitors"><span class="n">01</span>Конкуренти</a>
+    <a href="#benchmark"><span class="n">02</span>Бенчмарк</a>
+    <a href="#patterns"><span class="n">03</span>Патерни</a>
+    <a href="#conclusions"><span class="n">04</span>Висновки</a>
+  </div>
+  <div class="nav-foot">
+    <a href="research.md">research.md</a><br>
+    <a href="https://github.com/denysosadchyi/kutok">GitHub</a><br>
+    червень 2026
   </div>
 </nav>
 
@@ -270,7 +299,7 @@
     <p class="kicker">Куток · дослідження перед проектуванням</p>
     <h1>Ресерч: конкуренти, бенчмарк довіри, патерни</h1>
     <p class="lede">Пошук співмешканців і вільних кімнат у Києві. Кабінетний ресерч зібрано трьома рівнями, від конкретного до абстрактного. <b>Факт без джерела — це гіпотеза</b>, такі позначено [?].</p>
-    <p class="hero-meta mono">11 конкурентів у 3 групах · 5 еталонів довіри · 5 UX-патернів · 9 гіпотез · 0/8 інтерв'ю</p>
+    <p class="hero-meta mono">11 конкурентів у 3 групах · 5 еталонів довіри · 11 скрінів · 5 UX-патернів · 9 гіпотез</p>
 
     <ol class="steps">
       <li><span class="s-mark mono">✓</span> Конкуренти: три групи, матриця, патерни ринку <span class="s-tag mono">готово</span></li>
@@ -278,8 +307,6 @@
       <li><span class="s-mark mono">✓</span> Патерни: 5 механізмів, свідомий вибір <span class="s-tag mono">готово</span></li>
       <li><span class="s-mark mono">✓</span> Висновки: 4 gaps + гіпотези R1–R5 <span class="s-tag mono">готово</span></li>
       <li class="now"><span class="s-mark mono">05</span> Скріни конкурентів через Playwright <span class="s-tag mono">в роботі</span></li>
-      <li class="pend"><span class="s-mark mono">06</span> Інтерв'ю: гайд → рекрутинг → 5–8 розмов <span class="s-tag mono">далі</span></li>
-      <li class="pend"><span class="s-mark mono">07</span> Синтез інсайтів → механізми довіри <span class="s-tag mono">далі</span></li>
     </ol>
   </header>
 
@@ -454,12 +481,10 @@
       <p>TaskRabbit/Checkr, Roomi/Garbo: в Україні немає API-доступу до реєстрів для приватних платформ [?]; чек асиметричний — перевіряє «виконавця», а підселення — симетричні стосунки; внесок $25 на холодному старті вбиває воронку. Post-MVP цю роль може зіграти Дія/BankID.</p>
     </div>
 
-    <h3>Скріни еталонів</h3>
+    <h3>Скріни еталонів <span class="h-note">11 екранів механізмів довіри</span></h3>
+
+    <p class="group-label"><em>Верифікація</em> — до першого контакту</p>
     <div class="shots">
-      <figure>
-        <img src="screens/airbnb-host-profile-verified.jpg" alt="Airbnb: профіль хоста з бейджем верифікації, статистикою і відгуками" loading="lazy">
-        <figcaption>Airbnb · профіль: бейдж + статистика + відгуки</figcaption>
-      </figure>
       <figure>
         <img src="screens/airbnb-verify-before-booking.jpg" alt="Airbnb: екран верифікації особи перед бронюванням" loading="lazy">
         <figcaption>Airbnb · верифікація як гейт перед бронюванням</figcaption>
@@ -469,12 +494,48 @@
         <figcaption>Airbnb · розшифровка: що саме перевірено</figcaption>
       </figure>
       <figure>
+        <img src="screens/airbnb-id-alert-trips.jpg" alt="Airbnb: алерт про ID-верифікацію у списку поїздок" loading="lazy">
+        <figcaption>Airbnb · ID-алерт вшито у флоу поїздки</figcaption>
+      </figure>
+      <figure>
         <img src="screens/tinder-photo-verification.jpg" alt="Tinder: модальне вікно із запрошенням пройти фото-верифікацію" loading="lazy">
         <figcaption>Tinder · промпт фото-верифікації (механізм як у Bumble)</figcaption>
       </figure>
+      <figure>
+        <img src="screens/tinder-verification-explainer.jpg" alt="Tinder: пояснення, як працює верифікація обличчя" loading="lazy">
+        <figcaption>Tinder · пояснення біометричної верифікації</figcaption>
+      </figure>
+      <figure>
+        <img src="screens/tinder-phone-verification.jpg" alt="Tinder: екран верифікації номера телефону" loading="lazy">
+        <figcaption>Tinder · верифікація телефону — наш мінімум MVP</figcaption>
+      </figure>
     </div>
 
-    <p class="note">Скріни: <a href="https://refero.design">refero.design</a>. Повна версія з фактами: <a href="research.md">research.md</a>.</p>
+    <p class="group-label"><em>Сигнали на профілі</em> — бейдж, відгуки, репутаційний слід</p>
+    <div class="shots">
+      <figure>
+        <img src="screens/airbnb-host-profile-verified.jpg" alt="Airbnb: профіль хоста з бейджем верифікації, статистикою і відгуками" loading="lazy">
+        <figcaption>Airbnb · профіль: бейдж + статистика + відгуки</figcaption>
+      </figure>
+      <figure>
+        <img src="screens/airbnb-reviews-two-way.jpg" alt="Airbnb: відгуки з вкладками від гостей і від хоста" loading="lazy">
+        <figcaption>Airbnb · двосторонні відгуки: таби «гості / хост»</figcaption>
+      </figure>
+      <figure>
+        <img src="screens/airbnb-rating-breakdown.jpg" alt="Airbnb: рейтинг 4.95 з розбивкою за категоріями" loading="lazy">
+        <figcaption>Airbnb · рейтинг з розбивкою, не одна цифра</figcaption>
+      </figure>
+      <figure>
+        <img src="screens/airbnb-review-travel-history.jpg" alt="Airbnb: відгук про гостя та історія його подорожей" loading="lazy">
+        <figcaption>Airbnb · відгук + історія: репутаційний слід</figcaption>
+      </figure>
+      <figure>
+        <img src="screens/tinder-verified-badge-card.jpg" alt="Tinder: бейдж верифікації простоїть у картці профілю" loading="lazy">
+        <figcaption>Tinder · бейдж прямо в картці вибору</figcaption>
+      </figure>
+    </div>
+
+    <p class="note">Скріни: <a href="https://refero.design">refero.design</a> (Airbnb, Tinder). Bumble, BlaBlaCar, Couchsurfing у базі відсутні — [?] зняти Playwright. Повна версія з фактами: <a href="research.md">research.md</a>.</p>
   </section>
 
   <!-- 03 Патерни -->
@@ -550,36 +611,15 @@
     </div>
   </section>
 
-  <!-- 05 Інтерв'ю -->
-  <section id="interviews" aria-labelledby="interviews-h">
-    <div class="sec-head"><span class="sec-num mono">05</span><h2 id="interviews-h">Далі: інтерв'ю</h2></div>
-    <p class="sec-lede">Кабінетний ресерч дав гіпотези; перевіряємо їх на 5–8 розмовах з шукачами і господарями. Проведено: <b>0 з 8</b>. План: <a href="interviews.md">interviews.md</a>.</p>
-
-    <h3>Питання, на які шукаємо відповіді</h3>
-    <ol class="list">
-      <li><div><p style="color:var(--ink)">Яким є поточний шлях пошуку кімнати чи підселяємого? Де болить?</p></div></li>
-      <li><div><p style="color:var(--ink)">Що саме викликає тривогу при знайомстві з незнайомцем?</p></div></li>
-      <li><div><p style="color:var(--ink)">Які сигнали довіри вже спрацьовують або не спрацьовують зараз?</p></div></li>
-      <li><div><p style="color:var(--ink)">Скільки кімнат і людей переглядають до рішення? Чому відмовляють?</p></div></li>
-      <li><div><p style="color:var(--ink)">Чим Куток має відрізнятися від Facebook-груп та OLX?</p></div></li>
-    </ol>
-
-    <h3>Гіпотези для інтерв'ю</h3>
-    <div class="rows hyp">
-      <div class="row"><span class="h-id">H1</span><div><p>Верифікація телефону достатня для MVP-довіри <span class="h-note mono">не перевірено</span></p></div></div>
-      <div class="row"><span class="h-id">H2</span><div><p>Відгуки після проживання підвищують конверсію <span class="h-note mono">не перевірено</span></p></div></div>
-      <div class="row"><span class="h-id">H3</span><div><p>Completeness score профілю знижує тривогу <span class="h-note mono">не перевірено</span></p></div></div>
-      <div class="row"><span class="h-id">H4</span><div><p>Соціальні зв'язки (спільні знайомі) — бажана фіча <span class="h-note mono">не перевірено</span></p></div></div>
-    </div>
-  </section>
-
   <footer>
     <span>Куток · research</span>
-    <span><a href="research.md">research.md</a> · <a href="competitors.md">competitors.md</a> · <a href="https://github.com/denysosadchyi/kutok">GitHub</a></span>
+    <span><a href="research.md">research.md</a> · <a href="competitors.md">competitors.md</a> · <a href="interviews.md">interviews.md</a> · <a href="https://github.com/denysosadchyi/kutok">GitHub</a></span>
     <span>червень 2026</span>
   </footer>
 
 </main>
+
+</div>
 
 <script>
   const links = [...document.querySelectorAll('.nav-links a')];
@@ -593,7 +633,7 @@
       }
     });
   }, { rootMargin: '-15% 0px -75% 0px' });
-  ['overview','competitors','benchmark','patterns','conclusions','interviews']
+  ['overview','competitors','benchmark','patterns','conclusions']
     .forEach(id => { const el = document.getElementById(id); if (el) spy.observe(el); });
 </script>
 </body>

@@ -83,7 +83,9 @@
 
 **Кримінальний background check через третю сторону** (TaskRabbit/Checkr, Roomi/Garbo): в Україні немає API-доступу до реєстрів для приватних платформ `[?]`; чек — асиметричний механізм (перевіряє «виконавця», а підселення — симетричні стосунки); $25-внесок на холодному старті вбиває воронку. На етапі post-MVP роль може зіграти Дія/BankID — це вже в гіпотезах брифу.
 
-Скріни бенчмарку: [профіль хоста Airbnb з бейджем і відгуками](./screens/airbnb-host-profile-verified.jpg) · [гейт верифікації перед бронюванням](./screens/airbnb-verify-before-booking.jpg) · [розшифровка верифікації](./screens/airbnb-verification-details.jpg) · [фото-верифікація в дейтингу (Tinder)](./screens/tinder-photo-verification.jpg). Джерело скрінів: [refero.design](https://refero.design).
+Скріни бенчмарку (11, джерело: [refero.design](https://refero.design)):
+- Верифікація: [гейт перед бронюванням](./screens/airbnb-verify-before-booking.jpg) · [розшифровка, що перевірено](./screens/airbnb-verification-details.jpg) · [ID-алерт у флоу поїздки](./screens/airbnb-id-alert-trips.jpg) · [промпт фото-верифікації](./screens/tinder-photo-verification.jpg) · [пояснення біометрії](./screens/tinder-verification-explainer.jpg) · [верифікація телефону](./screens/tinder-phone-verification.jpg)
+- Сигнали на профілі: [профіль хоста з бейджем і відгуками](./screens/airbnb-host-profile-verified.jpg) · [двосторонні відгуки (таби гості/хост)](./screens/airbnb-reviews-two-way.jpg) · [рейтинг з розбивкою](./screens/airbnb-rating-breakdown.jpg) · [відгук + історія подорожей](./screens/airbnb-review-travel-history.jpg) · [бейдж у картці вибору](./screens/tinder-verified-badge-card.jpg)
 
 ---
 
