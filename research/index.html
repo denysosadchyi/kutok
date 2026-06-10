@@ -446,20 +446,24 @@
   <!-- Summary stats -->
   <div class="summary-bar">
     <div class="summary-stat">
-      <div class="stat-value" id="stat-interviews">0</div>
-      <div class="stat-label">інтерв'ю проведено</div>
+      <div class="stat-value">11</div>
+      <div class="stat-label">конкурентів у 3 групах</div>
     </div>
     <div class="summary-stat">
       <div class="stat-value">5</div>
-      <div class="stat-label">ключових питань</div>
+      <div class="stat-label">еталонів бенчмарку довіри</div>
+    </div>
+    <div class="summary-stat">
+      <div class="stat-value">5</div>
+      <div class="stat-label">UX-патернів розглянуто</div>
     </div>
     <div class="summary-stat">
       <div class="stat-value">9</div>
-      <div class="stat-label">гіпотез для тесту (5 ресерч + 4 інтерв'ю)</div>
+      <div class="stat-label">гіпотез (5 ресерч + 4 інтерв'ю)</div>
     </div>
     <div class="summary-stat">
-      <div class="stat-value" id="stat-insights">0</div>
-      <div class="stat-label">інсайтів синтезовано</div>
+      <div class="stat-value" id="stat-interviews">0/8</div>
+      <div class="stat-label">інтерв'ю проведено</div>
     </div>
   </div>
 
@@ -467,29 +471,39 @@
   <section class="section">
     <div class="section-title">Прогрес</div>
     <div class="progress-list">
-      <div class="progress-item pending">
-        <div class="progress-dot">1</div>
-        <div class="progress-label">Підготовка гайду для інтерв'ю</div>
-        <span class="progress-tag">Не розпочато</span>
+      <div class="progress-item done">
+        <div class="progress-dot">✓</div>
+        <div class="progress-label">Конкуренти: три групи + матриця + патерни ринку</div>
+        <span class="progress-tag">Готово</span>
       </div>
-      <div class="progress-item pending">
-        <div class="progress-dot">2</div>
-        <div class="progress-label">Рекрутинг учасників (5–8 осіб: шукачі + господарі)</div>
-        <span class="progress-tag">Не розпочато</span>
+      <div class="progress-item done">
+        <div class="progress-dot">✓</div>
+        <div class="progress-label">Бенчмарк довіри: 7 критеріїв × 5 еталонів, топ-3 механізми в MVP</div>
+        <span class="progress-tag">Готово</span>
       </div>
-      <div class="progress-item pending">
-        <div class="progress-dot">3</div>
-        <div class="progress-label">Проведення інтерв'ю</div>
-        <span class="progress-tag">Не розпочато</span>
+      <div class="progress-item done">
+        <div class="progress-dot">✓</div>
+        <div class="progress-label">Патерни: 5 механізмів, обраний — взаємний інтерес поверх каталогу</div>
+        <span class="progress-tag">Готово</span>
       </div>
-      <div class="progress-item pending">
-        <div class="progress-dot">4</div>
-        <div class="progress-label">Синтез інсайтів</div>
-        <span class="progress-tag">Не розпочато</span>
+      <div class="progress-item done">
+        <div class="progress-dot">✓</div>
+        <div class="progress-label">Висновки: 4 gaps + гіпотези R1–R5 «якщо / то / бо»</div>
+        <span class="progress-tag">Готово</span>
       </div>
-      <div class="progress-item pending">
+      <div class="progress-item active">
         <div class="progress-dot">5</div>
-        <div class="progress-label">Визначення механізмів довіри</div>
+        <div class="progress-label">Скріни конкурентів (SpareRoom, Roomi, Badi, OLX) — Playwright</div>
+        <span class="progress-tag">В роботі</span>
+      </div>
+      <div class="progress-item pending">
+        <div class="progress-dot">6</div>
+        <div class="progress-label">Інтерв'ю: гайд → рекрутинг (5–8 осіб) → проведення</div>
+        <span class="progress-tag">Не розпочато</span>
+      </div>
+      <div class="progress-item pending">
+        <div class="progress-dot">7</div>
+        <div class="progress-label">Синтез інсайтів → фіксація механізмів довіри</div>
         <span class="progress-tag">Не розпочато</span>
       </div>
     </div>
@@ -553,6 +567,48 @@
   <section class="section">
     <div class="section-title">Аналіз конкурентів</div>
 
+    <div class="subsection-label" style="margin-top:0">Три групи — хард / софт / аспіраційні</div>
+    <div class="competitors-grid">
+      <div class="competitor-card">
+        <div class="competitor-head">
+          <span class="competitor-name">Хард</span>
+          <span class="competitor-region">Київ · та сама задача</span>
+        </div>
+        <div class="competitor-rows">
+          <div class="c-row"><span class="c-key">FB-групи</span><span class="c-val">основний канал зараз; вивчити: які сигнали довіри люди імпровізують</span></div>
+          <div class="c-row"><span class="c-key">Telegram</span><span class="c-val"><a href="https://t.me/homemate1">HomeMate</a>, <a href="https://telegram.me/s/knu_susid">КНУсусіди</a>; вивчити: роль адмінів як «ручної верифікації»</span></div>
+          <div class="c-row"><span class="c-key">OLX</span><span class="c-val">кімнати — бюджетний сегмент; чому контакт тікає у Viber</span></div>
+          <div class="c-row"><span class="c-key">Flatfy</span><span class="c-val">агрегатор; кімнати без профілю людини</span></div>
+          <div class="c-row"><span class="c-key">LUN «Сусіди» †</span><span class="c-val trust-highlight">закритий; sosedi.lun.ua → редірект на lun.ua (10.06.2026); причина [?]</span></div>
+        </div>
+      </div>
+      <div class="competitor-card">
+        <div class="competitor-head">
+          <span class="competitor-name">Софт</span>
+          <span class="competitor-region">той самий JTBD</span>
+        </div>
+        <div class="competitor-rows">
+          <div class="c-row"><span class="c-key">Коливинги</span><span class="c-val">[?] перевірити живі; вивчити: як «пакетують» довіру і спільноту</span></div>
+          <div class="c-row"><span class="c-key">Агенції</span><span class="c-val">комісія = плата за зняття ризику; вивчити: за що саме платять</span></div>
+          <div class="c-row"><span class="c-key">Універ-чати</span><span class="c-val">спільнота як замінник верифікації</span></div>
+        </div>
+      </div>
+      <div class="competitor-card">
+        <div class="competitor-head">
+          <span class="competitor-name">Аспіраційні</span>
+          <span class="competitor-region">міжнародні еталони</span>
+        </div>
+        <div class="competitor-rows">
+          <div class="c-row"><span class="c-key">SpareRoom</span><span class="c-val">найглибший профіль людини; Buddy Up</span></div>
+          <div class="c-row"><span class="c-key">Roomi</span><span class="c-val">безпека як core value; анкета сумісності</span></div>
+          <div class="c-row"><span class="c-key">Badi</span><span class="c-val">ML-матчинг; що дав перехід на свайп 2024</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="comp-note" style="margin-bottom:24px">Головний конкурент за звичкою — не продукт, а неформальні канали (FB/Telegram): безкоштовні, швидкі, з нульовою довірою. Куток конкурує з відсутністю продукту.</div>
+
+    <div class="subsection-label">Матриця — детальний розбір п'ятьох</div>
     <div class="competitors-grid">
 
       <div class="competitor-card">
@@ -716,6 +772,77 @@
       <strong>Вимір:</strong> довіра до профілю співмешканця <strong>до першого контакту</strong>.
       Бенчмарк ≠ конкуренти: дивимось, хто робить цей один вимір найкраще — у будь-якій категорії.
       Оцінки авторські (шкала 1–5), на основі джерел; повна версія з фактами і лінками — <a href="research.md">research.md</a>.
+    </div>
+
+    <div class="subsection-label">7 критеріїв оцінки</div>
+    <div class="questions">
+      <div class="question"><span class="q-num">1</span><span class="q-text"><strong>Глибина верифікації особи</strong> — документ + біометрія, не лише email</span></div>
+      <div class="question"><span class="q-num">2</span><span class="q-text"><strong>Обов'язковість до контакту</strong> — чи можна взаємодіяти без верифікації</span></div>
+      <div class="question"><span class="q-num">3</span><span class="q-text"><strong>Зрозумілість бейджа</strong> — чи видно, <em>що саме</em> перевірено</span></div>
+      <div class="question"><span class="q-num">4</span><span class="q-text"><strong>Двосторонні відгуки</strong> після взаємодії</span></div>
+      <div class="question"><span class="q-num">5</span><span class="q-text"><strong>Повнота профілю як видимий сигнал</strong> — completeness, стимули заповнити</span></div>
+      <div class="question"><span class="q-num">6</span><span class="q-text"><strong>Сигнали активності</strong> — response rate, last seen</span></div>
+      <div class="question"><span class="q-num">7</span><span class="q-text"><strong>Безпека першого контакту</strong> — комунікація в платформі, модерація, репорт</span></div>
+    </div>
+
+    <div class="subsection-label">Еталони — що саме вони роблять</div>
+    <div class="competitors-grid">
+      <div class="competitor-card">
+        <div class="competitor-head">
+          <span class="competitor-name">Airbnb</span>
+          <span class="competitor-region">проживання · 32/35</span>
+        </div>
+        <div class="competitor-rows">
+          <div class="c-row"><span class="c-key">Механізм</span><span class="c-val trust-highlight">Верифікація обов'язкова для кожного хоста і гостя, що бронює: документ + селфі</span></div>
+          <div class="c-row"><span class="c-key">Деталь</span><span class="c-val">Бейдж «Identity verified» + окремий екран-розшифровка; хост не бачить документ — лише статус</span></div>
+          <div class="c-row"><span class="c-key">Відгуки</span><span class="c-val">Двосторонні, публікуються одночасно</span></div>
+          <div class="c-row"><span class="c-key">Джерело</span><span class="c-val"><a href="https://www.airbnb.com/help/article/1237">Airbnb Help</a> · <a href="https://news.airbnb.com/an-update-on-identity-verification-on-airbnb/">Newsroom</a></span></div>
+        </div>
+      </div>
+      <div class="competitor-card">
+        <div class="competitor-head">
+          <span class="competitor-name">BlaBlaCar</span>
+          <span class="competitor-region">райдшеринг · 29/35</span>
+        </div>
+        <div class="competitor-rows">
+          <div class="c-row"><span class="c-key">Механізм</span><span class="c-val trust-highlight">Фреймворк D.R.E.A.M.S.: Declared · Rated · Engaged · Activity · Moderated · Social</span></div>
+          <div class="c-row"><span class="c-key">Цифра</span><span class="c-val">88% високо довіряють учасникам з повним профілем (друзям — 92%, колегам — 58%); 18 000+ респондентів, 11 країн, NYU Stern</span></div>
+          <div class="c-row"><span class="c-key">Джерело</span><span class="c-val"><a href="https://blog.blablacar.com/trust">Entering the Trust Age</a> · <a href="https://blog.blablacar.com/blog/inside-story/in-trust-we-trust">In Trust We Trust</a></span></div>
+        </div>
+      </div>
+      <div class="competitor-card">
+        <div class="competitor-head">
+          <span class="competitor-name">TaskRabbit</span>
+          <span class="competitor-region">послуги · 27/35</span>
+        </div>
+        <div class="competitor-rows">
+          <div class="c-row"><span class="c-key">Механізм</span><span class="c-val trust-highlight">ID-верифікація (Persona) + кримінальний чек (Checkr) до допуску; внесок $25</span></div>
+          <div class="c-row"><span class="c-key">Урок</span><span class="c-val">Найглибша перевірка, але асиметрична: перевіряють лише виконавця</span></div>
+          <div class="c-row"><span class="c-key">Джерело</span><span class="c-val"><a href="https://support.taskrabbit.com/hc/en-us/articles/115005156463-Identity-Verification-Process">TR Support</a> · <a href="https://checkr.com/blog/6-questions-with-taskrabbit">Checkr</a></span></div>
+        </div>
+      </div>
+      <div class="competitor-card">
+        <div class="competitor-head">
+          <span class="competitor-name">Couchsurfing</span>
+          <span class="competitor-region">хостинг · 25/35</span>
+        </div>
+        <div class="competitor-rows">
+          <div class="c-row"><span class="c-key">Механізм</span><span class="c-val trust-highlight">References: публічні двосторонні відгуки після ночівлі, вікно 14 днів + «personal» від знайомих</span></div>
+          <div class="c-row"><span class="c-key">Деталь</span><span class="c-val">Верифікація — держдокумент через Entrust/Onfido; одне чітке значення</span></div>
+          <div class="c-row"><span class="c-key">Джерело</span><span class="c-val"><a href="https://support.couchsurfing.org/hc/en-us/articles/200639370-What-are-the-reference-guidelines">CS FAQ</a> · <a href="https://support.couchsurfing.org/hc/en-us/articles/50107222021275-Why-Couchsurfing-Now-Requires-Government-ID-For-Verification">Gov ID</a></span></div>
+        </div>
+      </div>
+      <div class="competitor-card">
+        <div class="competitor-head">
+          <span class="competitor-name">Bumble</span>
+          <span class="competitor-region">дейтинг · 20/35</span>
+        </div>
+        <div class="competitor-rows">
+          <div class="c-row"><span class="c-key">Механізм</span><span class="c-val trust-highlight">Фото-верифікація: селфі у випадковій позі (~100 поз), авто + людська перевірка, хвилини</span></div>
+          <div class="c-row"><span class="c-key">Деталь</span><span class="c-val">Синій бейдж біля імені; селфі не публікується; опційна ID-верифікація</span></div>
+          <div class="c-row"><span class="c-key">Джерело</span><span class="c-val"><a href="https://support.bumble.com/hc/en-us/articles/28949738572829-Verifying-your-photos">Bumble Support</a> · <a href="https://bumble.com/en/the-buzz/the-end-of-catfishing-introducing-photo-verification">Buzz</a></span></div>
+        </div>
+      </div>
     </div>
 
     <div class="subsection-label">Оцінка еталонів</div>
