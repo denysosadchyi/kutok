@@ -7,6 +7,7 @@
 **Платформа:** mobile-first web · **Мова:** українська.
 
 Детальний бриф → [CLAUDE.md](./CLAUDE.md)
+**Live:** дашборд ресерчу → [kutok.vercel.app](https://kutok.vercel.app)
 
 ---
 
