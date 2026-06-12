@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Куток — Jobs to Be Done</title>
+<meta name="description" content="JTBD Кутка: головний job довіри, related / emotional / social jobs, матриця важливості, ядро MVP.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --paper:     oklch(97.5% 0.006 75);
+    --ink:       oklch(25% 0.012 60);
+    --muted:     oklch(48% 0.015 65);
+    --line:      oklch(90% 0.008 75);
+    --line-soft: oklch(93.5% 0.006 75);
+    --clay:      oklch(52% 0.115 40);
+    --clay-soft: oklch(94.5% 0.02 50);
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  html { scroll-behavior: smooth; scroll-padding-top: 28px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition: none !important; }
+  }
+
+  body {
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: 15.5px;
+    line-height: 1.65;
+    color: var(--ink);
+    background: var(--paper);
+  }
+
+  a { color: var(--clay); text-decoration: none; }
+  a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  :focus-visible { outline: 2px solid var(--clay); outline-offset: 2px; border-radius: 2px; }
+  ::selection { background: var(--clay-soft); }
+
+  .mono { font-family: var(--mono); }
+
+  .skip {
+    position: absolute; left: -9999px; top: 0;
+    background: var(--ink); color: var(--paper);
+    padding: 10px 16px; z-index: 100; border-radius: 0 0 8px 0;
+  }
+  .skip:focus { left: 0; }
+
+  /* ── Каркас: навігаційна панель зліва (рівень застосунку) ── */
+  .shell {
+    display: grid; grid-template-columns: 240px minmax(0, 1fr);
+    gap: 56px; max-width: 1180px; margin: 0 auto; padding: 0 24px;
+  }
+  .sidenav {
+    position: sticky; top: 0; align-self: start;
+    width: 240px; height: 100dvh; padding: 56px 24px 28px;
+    margin-left: -24px; border-right: 1px solid var(--line);
+    display: flex; flex-direction: column;
+  }
+  .brand { font-weight: 800; font-size: 16px; color: var(--ink); }
+  .brand:hover { text-decoration: none; }
+  .brand span {
+    display: block; font-family: var(--mono); font-size: 10px; font-weight: 400;
+    color: var(--muted); letter-spacing: .14em; margin-top: 3px;
+  }
+
+  /* список сторінок */
+  .nav-cap {
+    font-family: var(--mono); font-size: 10px; font-weight: 600;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+    margin: 36px 0 8px;
+  }
+  .nav-page {
+    display: block; font-size: 14px; font-weight: 600; color: var(--ink);
+    padding: 8px 11px; margin-left: -11px; border-radius: 7px; white-space: nowrap;
+    transition: color .15s ease, background .15s ease;
+  }
+  .nav-page:hover { background: var(--line-soft); text-decoration: none; }
+  .nav-page.active { color: var(--clay); background: var(--clay-soft); }
+  .nav-page.soon { color: var(--muted); font-weight: 500; cursor: default; pointer-events: none; }
+  .nav-page.soon::after {
+    content: 'скоро'; float: right; font-family: var(--mono); font-size: 9.5px;
+    letter-spacing: .08em; text-transform: uppercase; opacity: .7; margin-top: 3px;
+  }
+
+  /* секції активної сторінки */
+  .nav-links { display: flex; flex-direction: column; gap: 1px; margin: 4px 0 0 9px; }
+  .nav-links a {
+    font-size: 13px; font-weight: 500; color: var(--muted);
+    padding: 5px 11px; margin-left: -11px; border-radius: 7px; white-space: nowrap;
+    transition: color .15s ease, background .15s ease;
+  }
+  .nav-links a:hover { color: var(--ink); background: var(--line-soft); text-decoration: none; }
+  .nav-links a.active { color: var(--clay); background: var(--clay-soft); }
+  .nav-links a .n { font-family: var(--mono); font-size: 10.5px; margin-right: 8px; opacity: .65; }
+
+  .nav-foot { margin-top: auto; font-family: var(--mono); font-size: 10.5px; color: var(--muted); line-height: 1.8; }
+  .nav-foot a { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+  .nav-foot a:hover { color: var(--clay); }
+
+  /* ── Сторінка ── */
+  .page { max-width: 760px; padding: 0 0 96px; min-width: 0; }
+
+  .hero { padding-top: 60px; }
+  .kicker { font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  h1 { font-size: 30px; font-weight: 800; letter-spacing: -.02em; line-height: 1.2; margin: 12px 0 14px; }
+  .lede { font-size: 16px; color: var(--muted); max-width: 62ch; }
+  .lede b { color: var(--ink); font-weight: 600; }
+  .hero-meta { font-size: 12px; color: var(--muted); margin-top: 16px; letter-spacing: .02em; }
+
+  .callout {
+    font-size: 13px; color: var(--muted); margin-top: 22px;
+    border-left: 2px solid var(--line); padding: 4px 0 4px 16px; max-width: 64ch;
+  }
+  .callout code { font-family: var(--mono); font-size: 12px; color: var(--clay); }
+
+  /* ── Секції ── */
+  section { margin-top: 88px; }
+  .sec-head {
+    display: flex; align-items: baseline; gap: 14px;
+    border-top: 2px solid var(--ink); padding-top: 16px;
+  }
+  .sec-num { font-size: 12px; font-weight: 600; color: var(--clay); }
+  h2 { font-size: 22px; font-weight: 800; letter-spacing: -.01em; }
+  .sec-lede { color: var(--muted); margin-top: 10px; max-width: 64ch; }
+  .sec-lede b, .sec-lede strong { color: var(--ink); }
+
+  h3 { font-size: 16px; font-weight: 700; margin: 36px 0 12px; }
+  h3 .h-note { font-weight: 400; font-size: 13px; color: var(--muted); margin-left: 8px; }
+
+  /* рядки-визначення */
+  .row {
+    display: grid; grid-template-columns: 96px 1fr; gap: 16px;
+    padding: 9px 0; border-bottom: 1px solid var(--line-soft);
+    font-size: 13.5px;
+  }
+  .row > b { font-weight: 600; }
+  .row > span { color: var(--muted); }
+  .row:last-child { border-bottom: none; }
+
+  /* картка job */
+  .job {
+    border: 1px solid var(--line); border-radius: 14px;
+    padding: 22px 24px; margin-top: 18px;
+    background: oklch(98.5% 0.004 75);
+  }
+  .job.main { background: var(--clay-soft); border-color: oklch(89% 0.03 50); }
+  .job-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .job-id {
+    font-family: var(--mono); font-size: 11px; font-weight: 600;
+    color: var(--clay); background: var(--paper);
+    padding: 3px 9px; border-radius: 20px;
+  }
+  .job.main .job-id { background: var(--paper); }
+  .job-head h3 { font-size: 16px; font-weight: 700; margin: 0; }
+  .job-stmt {
+    font-size: 16.5px; line-height: 1.5; margin: 14px 0 16px; max-width: 60ch;
+  }
+  .job-stmt em { font-style: normal; color: var(--clay); font-weight: 700; }
+  .job.main .job-stmt { font-size: 18px; }
+  .job .rows { border-top: 1px solid var(--line-soft); padding-top: 4px; }
+  .job .row > span a { font-size: inherit; }
+
+  /* списки */
+  .list { list-style: none; counter-reset: li; margin-top: 4px; }
+  .list > li {
+    counter-increment: li;
+    display: grid; grid-template-columns: 30px 1fr; gap: 12px;
+    padding: 13px 0; border-bottom: 1px solid var(--line-soft);
+  }
+  .list > li::before {
+    content: counter(li, decimal-leading-zero);
+    font-family: var(--mono); font-size: 12px; color: var(--clay);
+    padding-top: 3px;
+  }
+  .list b { font-weight: 700; }
+  .list p { font-size: 14px; color: var(--muted); margin-top: 3px; max-width: 66ch; }
+  .list p b, .list p a { font-size: inherit; }
+
+  /* таблиці */
+  .tbl-wrap {
+    overflow-x: auto; margin-top: 12px;
+    border: 1px solid var(--line); border-radius: 10px;
+    background: oklch(98.5% 0.004 75);
+  }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; line-height: 1.5; }
+  th {
+    font-family: var(--mono); font-size: 10.5px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: .07em; color: var(--muted);
+    text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  .tbl-map td:first-child { font-weight: 600; color: var(--ink); white-space: nowrap; }
+  .tbl-map td:last-child { color: var(--muted); }
+
+  /* матриця */
+  .tbl-matrix table { min-width: 1040px; }
+  .tbl-matrix td { font-size: 12.5px; color: var(--muted); min-width: 150px; }
+  .tbl-matrix td:first-child, .tbl-matrix th:first-child {
+    position: sticky; left: 0; background: oklch(98.5% 0.004 75);
+    color: var(--ink); font-weight: 600; min-width: 150px; z-index: 1;
+  }
+  .tbl-matrix .cell-just { display: block; margin-top: 3px; font-size: 11.5px; opacity: .85; }
+  .imp {
+    display: inline-block; font-family: var(--mono); font-size: 11px; font-weight: 600;
+    min-width: 20px; text-align: center; padding: 1px 6px; border-radius: 6px;
+  }
+  .imp-3 { color: var(--clay); background: var(--clay-soft); }
+  .imp-2 { color: var(--ink); background: var(--line-soft); }
+  .imp-1 { color: var(--muted); background: var(--line-soft); }
+
+  /* виділені блоки */
+  .panel {
+    background: var(--clay-soft); border-radius: 12px;
+    padding: 20px 24px; margin-top: 16px;
+  }
+  .panel .p-label {
+    font-family: var(--mono); font-size: 11px; font-weight: 600;
+    letter-spacing: .09em; text-transform: uppercase; color: var(--clay);
+  }
+  .panel.quiet { background: var(--line-soft); }
+  .panel.quiet .p-label { color: var(--muted); }
+  .panel h4 { font-size: 15.5px; font-weight: 700; margin-top: 6px; }
+  .panel p { font-size: 14px; margin-top: 8px; max-width: 66ch; }
+
+  .note { font-size: 12.5px; color: var(--muted); margin-top: 16px; max-width: 72ch; }
+  .src-line { font-size: 12.5px; color: var(--muted); margin-top: 14px; }
+
+  footer {
+    margin-top: 96px; border-top: 1px solid var(--line); padding-top: 18px;
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+    font-family: var(--mono); font-size: 11.5px; color: var(--muted);
+  }
+  footer a { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+  footer a:hover { color: var(--clay); }
+
+  @media (max-width: 900px) {
+    html { scroll-padding-top: 72px; }
+    .shell { display: block; padding: 0 20px; }
+    .sidenav {
+      position: sticky; flex-direction: row; align-items: center; gap: 12px;
+      width: auto; height: 52px; padding: 0 20px; margin: 0 -20px;
+      border-right: none; border-bottom: 1px solid var(--line);
+      background: var(--paper); z-index: 50;
+    }
+    .brand { font-size: 15px; }
+    .brand span { display: none; }
+    .nav-cap, .nav-page.soon { display: none; }
+    .nav-page { margin-left: 0; padding: 6px 10px; }
+    .nav-links {
+      flex-direction: row; margin: 0 0 0 auto;
+      overflow-x: auto; scrollbar-width: none;
+    }
+    .nav-links::-webkit-scrollbar { display: none; }
+    .nav-links a { margin-left: 0; padding: 6px 10px; }
+    .nav-links a .n { display: none; }
+    .nav-foot { display: none; }
+    .page { max-width: none; padding-bottom: 80px; }
+  }
+
+  @media (max-width: 720px) {
+    h1 { font-size: 25px; }
+    section { margin-top: 64px; }
+    .job { padding: 18px 18px; }
+    .job-stmt { font-size: 15.5px; }
+    .job.main .job-stmt { font-size: 16.5px; }
+    .row { grid-template-columns: 1fr; gap: 2px; padding: 10px 0; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#overview">До змісту</a>
+
+<div class="shell">
+
+<nav class="sidenav" aria-label="Навігація">
+  <a class="brand" href="index.html">Куток<span>WORKSPACE</span></a>
+
+  <p class="nav-cap">Сторінки</p>
+  <a class="nav-page" href="index.html">Ресерч</a>
+  <a class="nav-page" href="personas.html">Персони</a>
+  <a class="nav-page active" href="#overview" aria-current="page">JTBD</a>
+  <div class="nav-links" aria-label="Розділи JTBD">
+    <a href="#overview"><span class="n">00</span>Огляд</a>
+    <a href="#related"><span class="n">01</span>Related</a>
+    <a href="#emotional"><span class="n">02</span>Emotional</a>
+    <a href="#social"><span class="n">03</span>Social</a>
+    <a href="#matrix"><span class="n">04</span>Матриця</a>
+    <a href="#core"><span class="n">05</span>Ядро MVP</a>
+  </div>
+
+  <a class="nav-page soon" aria-disabled="true">User flow</a>
+  <a class="nav-page soon" aria-disabled="true">Wireframes</a>
+
+  <div class="nav-foot">
+    <a href="jtbd.md">jtbd.md</a><br>
+    <a href="https://github.com/denysosadchyi/kutok">GitHub</a><br>
+    червень 2026
+  </div>
+</nav>
+
+<main class="page">
+
+  <!-- Огляд + Main Job -->
+  <header class="hero" id="overview">
+    <p class="kicker">Куток · jobs to be done</p>
+    <h1>Який прогрес людина наймає Куток зробити</h1>
+    <p class="lede">Формат: <b>«Коли [ситуація], я хочу [мотивація], щоб [результат]».</b> У формулюваннях — лише прогрес людини, жодних назв функцій.</p>
+    <p class="hero-meta mono">1 main · 5 related · 2 emotional · 2 social · матриця 9×3 · ядро = 3 jobs</p>
+
+    <p class="callout">Правило: <code>[?]</code> — гіпотеза без підтвердження, винесена в окрему секцію, не в основний список. Джерело: <a href="jtbd.md">jtbd.md</a>.</p>
+
+    <div class="job main" style="margin-top:28px">
+      <div class="job-head"><span class="job-id mono">MAIN JOB</span><h3>Заради чого існує весь продукт</h3></div>
+      <p class="job-stmt"><em>Коли</em> я шукаю людину для спільного проживання серед незнайомих, <em>я хочу</em> бути впевнений(а) що ця людина реальна і та, за кого себе видає, <em>щоб</em> прийняти рішення про спільне проживання без страху пошкодувати.</p>
+      <div class="rows">
+        <div class="row"><b>Персони</b><span>Аня (primary), Олена, Артем</span></div>
+        <div class="row"><b>Дані</b><span>CLAUDE.md: «головний страх — незнайома людина поруч»; <a href="research.md">research.md</a>: UA-ринок порожній у вимірі довіри (Gap 1); бенчмарк Airbnb / BlaBlaCar — лідери по механізмах довіри</span></div>
+        <div class="row"><b>Примітка</b><span>Підтверджено командою: довіра — на першому місці, не ціна і не локація</span></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 01 Related -->
+  <section id="related" aria-labelledby="related-h">
+    <div class="sec-head"><span class="sec-num mono">01</span><h2 id="related-h">Related Jobs</h2></div>
+    <p class="sec-lede">Кроки на шляху до головного job. Кожен — окрема точка, де процес сьогодні зривається.</p>
+
+    <div class="job">
+      <div class="job-head"><span class="job-id mono">RJ1</span><h3>Знайти серед багатьох тих, хто базово підходить</h3></div>
+      <p class="job-stmt"><em>Коли</em> я починаю шукати серед десятків оголошень і профілів, <em>я хочу</em> швидко відсіяти тих, хто точно не підходить, <em>щоб</em> не витрачати увагу на очевидно нерелевантне.</p>
+      <div class="rows">
+        <div class="row"><b>Персони</b><span>Аня (тиск часу і бюджету), Олена (8 з 10 зустрічей — даремно)</span></div>
+        <div class="row"><b>Дані</b><span><a href="research.md">research.md</a> — Патерн №1 (каталог з фільтрами): «paradox of choice» як точка зриву; <a href="personas.html">personas</a> — Олена: фільтр до зустрічі як головна потреба</span></div>
+      </div>
+    </div>
+
+    <div class="job">
+      <div class="job-head"><span class="job-id mono">RJ2</span><h3>Зрозуміти що людина реальна — до будь-якого контакту</h3></div>
+      <p class="job-stmt"><em>Коли</em> я натрапив(ла) на профіль, що здається підходящим, <em>я хочу</em> переконатися що це реальна людина і не витрачати час на зустріч з кимось невідомим, <em>щоб</em> не ризикувати наодинці з незнайомцем.</p>
+      <div class="rows">
+        <div class="row"><b>Персони</b><span>Аня (найгостріше — немає локальної мережі), Олена (хто увійде в дім)</span></div>
+        <div class="row"><b>Дані</b><span><a href="personas.html">personas</a> — S3: сигнали довіри в чатах імпровізовані; <a href="research.md">research.md</a> — Gap 2: бейдж без розшифровки не знімає страх; TheOdysseyOnline: «Am I going to be killed in my sleep?»</span></div>
+      </div>
+    </div>
+
+    <div class="job">
+      <div class="job-head"><span class="job-id mono">RJ3</span><h3>Почати розмову тільки якщо інтерес взаємний</h3></div>
+      <p class="job-stmt"><em>Коли</em> я вирішив(ла) написати комусь першим, <em>я хочу</em> знати що людина навпроти теж відкрита до знайомства, <em>щоб</em> не відчувати що вторгаюся і не отримувати небажані звернення у відповідь.</p>
+      <div class="rows">
+        <div class="row"><b>Персони</b><span>Аня (боїться відмови і спаму), Олена (не хоче всіх підряд)</span></div>
+        <div class="row"><b>Дані</b><span><a href="research.md">research.md</a> — Патерн №4 (взаємний інтерес → розблокування чату): «захист від спаму критичний»; Гіпотеза R4: менше скарг при взаємній згоді vs відкритий контакт в OLX/FB</span></div>
+      </div>
+    </div>
+
+    <div class="job">
+      <div class="job-head"><span class="job-id mono">RJ4</span><h3>Прийти на зустріч підготовленим — не тривожним</h3></div>
+      <p class="job-stmt"><em>Коли</em> я погодився(лась) зустрітися, <em>я хочу</em> мати достатньо інформації про людину заздалегідь, <em>щоб</em> на зустрічі читати конкретні питання, а не базову тривогу «хто це взагалі».</p>
+      <div class="rows">
+        <div class="row"><b>Персони</b><span>Аня, Артем</span></div>
+        <div class="row"><b>Дані</b><span><a href="personas.html">personas</a> — S5: тригери тривоги (чистота, фінанси, стиль життя); BrickUnderground: «you don't know what a roommate is really like until you're living with them»; <a href="research.md">research.md</a> — Гіпотеза R3</span></div>
+      </div>
+    </div>
+
+    <div class="job">
+      <div class="job-head"><span class="job-id mono">RJ5</span><h3>Підтвердити свою надійність для наступного разу</h3></div>
+      <p class="job-stmt"><em>Коли</em> я прожив(ла) з людиною певний час, <em>я хочу</em> зафіксувати цей досвід як підтвердження що я — той, ким себе представляв(ла), <em>щоб</em> наступний господар або сусід не починав з нуля.</p>
+      <div class="rows">
+        <div class="row"><b>Персони</b><span>Аня (переїзниця без репутації), Артем (хоче «портфоліо» довіри)</span></div>
+        <div class="row"><b>Дані</b><span><a href="research.md">research.md</a> — Гіпотеза R5; Couchsurfing: peer-references 20 років; Airbnb: двосторонні відгуки одночасні</span></div>
+        <div class="row"><b>Примітка</b><span>Мотивацію залишати відгук підтверджено командою, але конкретний тригер (чому після, а не під час) — <span class="mono">[?]</span> перевірити на інтерв'ю</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 Emotional -->
+  <section id="emotional" aria-labelledby="emotional-h">
+    <div class="sec-head"><span class="sec-num mono">02</span><h2 id="emotional-h">Emotional Jobs</h2></div>
+    <p class="sec-lede">Як людина хоче <b>почуватися</b>. Часто сильніше функціональних.</p>
+
+    <div class="job">
+      <div class="job-head"><span class="job-id mono">EJ1</span><h3>Відчути впевненість, а не полегшення «обійшлося»</h3></div>
+      <p class="job-stmt"><em>Коли</em> я приймаю рішення про спільне проживання, <em>я хочу</em> відчути що зробив(ла) виважений вибір, <em>щоб</em> не жити перші тижні в тривозі «а раптом я помилилась».</p>
+      <div class="rows">
+        <div class="row"><b>Персони</b><span>Аня (primary)</span></div>
+        <div class="row"><b>Дані</b><span>CLAUDE.md: «головний страх — незнайома людина поруч»; <a href="personas.html">personas</a> — Аня: «переконатися що людина реальна до зустрічі»; TheOdysseyOnline — реальні страхи перед незнайомим сусідом</span></div>
+      </div>
+    </div>
+
+    <div class="job">
+      <div class="job-head"><span class="job-id mono">EJ2</span><h3>Відчути що зробила все від неї залежне</h3></div>
+      <p class="job-stmt"><em>Коли</em> я пускаю нову людину в свій дім, <em>я хочу</em> відчувати що не просто довірилась інтуїції, а перевірила все доступне, <em>щоб</em> не корити себе якщо щось піде не так.</p>
+      <div class="rows">
+        <div class="row"><b>Персони</b><span>Олена (господар)</span></div>
+        <div class="row"><b>Дані</b><span><a href="personas.html">personas</a> — Олена: «страшно пустити не ту людину — проблема вже вдома»; <a href="research.md">research.md</a> — Gap 3: після першого контакту платформа не захищає</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 Social -->
+  <section id="social" aria-labelledby="social-h">
+    <div class="sec-head"><span class="sec-num mono">03</span><h2 id="social-h">Social Jobs</h2></div>
+    <p class="sec-lede">Як людина хоче <b>виглядати</b> перед іншими.</p>
+
+    <div class="job">
+      <div class="job-head"><span class="job-id mono">SJ1</span><h3>Виглядати серйозним кандидатом, якому варто відповісти</h3></div>
+      <p class="job-stmt"><em>Коли</em> інша сторона дивиться на мене як на кандидата, <em>я хочу</em> виглядати надійною і реальною людиною, <em>щоб</em> мені відповідали і розглядали нарівні з тими, у кого є рекомендації від знайомих.</p>
+      <div class="rows">
+        <div class="row"><b>Персони</b><span>Аня (немає мережі — нема хто «поручитися»), Артем</span></div>
+        <div class="row"><b>Дані</b><span><a href="research.md">research.md</a> — S5: BlaBlaCar × NYU: 88% довіряють повним профілям, майже як друзям (92%); Гіпотеза R3: completeness score як видимий сигнал</span></div>
+      </div>
+    </div>
+
+    <div class="job">
+      <div class="job-head"><span class="job-id mono">SJ2</span><h3>Не залежати від «хто мене знає»</h3></div>
+      <p class="job-stmt"><em>Коли</em> я шукаю в місті де майже немає знайомих, <em>я хочу</em> мати рівні шанси з тими, хто вже тут і з зв'язками, <em>щоб</em> не починати пошук з позиції аутсайдера.</p>
+      <div class="rows">
+        <div class="row"><b>Персони</b><span>Аня (primary)</span></div>
+        <div class="row"><b>Дані</b><span><a href="personas.html">personas</a> — S3: спільні знайомі — найсильніший сигнал, але в Ані їх немає; 60% знайшли сусіда через існуючі зв'язки (ApartmentGuide) — Аня поза цими 60%</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 Матриця -->
+  <section id="matrix" aria-labelledby="matrix-h">
+    <div class="sec-head"><span class="sec-num mono">04</span><h2 id="matrix-h">JTBD-матриця</h2></div>
+    <p class="sec-lede">Важливість для кожної персони: <span class="imp imp-3">3</span> критична · <span class="imp imp-2">2</span> важлива · <span class="imp imp-1">1</span> nice-to-have. Перетин «3 для Ані × ринок не закриває» = ядро MVP.</p>
+
+    <div class="tbl-wrap tbl-matrix">
+      <table>
+        <tr>
+          <th scope="col">Job</th>
+          <th scope="col">Аня · primary</th>
+          <th scope="col">Олена · господар</th>
+          <th scope="col">Артем · місцевий</th>
+          <th scope="col">Функція в MVP</th>
+          <th scope="col">Конкуренти закривають?</th>
+        </tr>
+        <tr>
+          <td>Main Job — впевнитися що людина реальна → рішення без страху</td>
+          <td><span class="imp imp-3">3</span><span class="cell-just">головний страх; нуль локальної мережі</span></td>
+          <td><span class="imp imp-3">3</span><span class="cell-just">«хто увійде в МІЙ дім»</span></td>
+          <td><span class="imp imp-2">2</span><span class="cell-just">є мережа, менш гостро</span></td>
+          <td>Верифікація телефону + селфі; бейдж що підтверджено</td>
+          <td>Частково: SpareRoom (~20%, платно), Roomi, Badi. OLX/FB — <b>ні</b></td>
+        </tr>
+        <tr>
+          <td>RJ1 — відсіяти нерелевантне до витрати уваги</td>
+          <td><span class="imp imp-2">2</span><span class="cell-just">час/бюджет, але не головний біль</span></td>
+          <td><span class="imp imp-3">3</span><span class="cell-just">8 з 10 зустрічей даремно</span></td>
+          <td><span class="imp imp-2">2</span><span class="cell-just">хоче знайти швидко</span></td>
+          <td>Фільтри (район, ціна, стать); completeness як сигнал</td>
+          <td>Частково: фільтри є. Completeness — <b>ні</b></td>
+        </tr>
+        <tr>
+          <td>RJ2 — переконатися що людина реальна до контакту</td>
+          <td><span class="imp imp-3">3</span><span class="cell-just">повністю залежить від платформи</span></td>
+          <td><span class="imp imp-3">3</span><span class="cell-just">перевірити до зустрічі</span></td>
+          <td><span class="imp imp-2">2</span><span class="cell-just">часткова мережа, хоче підтвердження</span></td>
+          <td>Бейдж з розшифровкою (телефон ✓ / фото ✓ / документ —)</td>
+          <td>Бейдж є — але <b>без розшифровки ніде</b>. OLX/FB — ні</td>
+        </tr>
+        <tr>
+          <td>RJ3 — почати розмову лише при взаємному інтересі</td>
+          <td><span class="imp imp-3">3</span><span class="cell-just">захист від спаму критичний (R4)</span></td>
+          <td><span class="imp imp-3">3</span><span class="cell-just">не хоче всіх підряд</span></td>
+          <td><span class="imp imp-2">2</span><span class="cell-just">частково вирішує через мережу</span></td>
+          <td>«Хочу познайомитись» → чат при взаємній згоді</td>
+          <td>На UA <b>не закривають</b>: OLX/FB — відкритий контакт</td>
+        </tr>
+        <tr>
+          <td>RJ4 — прийти на зустріч підготовленим</td>
+          <td><span class="imp imp-3">3</span><span class="cell-just">вперше, без досвіду</span></td>
+          <td><span class="imp imp-2">2</span><span class="cell-just">контролює ситуацію більше</span></td>
+          <td><span class="imp imp-2">2</span><span class="cell-just">є досвід, менш тривожний</span></td>
+          <td>Повний профіль (фото, про себе, звички); completeness</td>
+          <td>Частково: профілі є. Completeness-індикатор — <b>ні</b></td>
+        </tr>
+        <tr>
+          <td>RJ5 — підтвердити надійність для наступного разу</td>
+          <td><span class="imp imp-3">3</span><span class="cell-just">без репутації в новому місті</span></td>
+          <td><span class="imp imp-2">2</span><span class="cell-just">перевіряє інших, не себе</span></td>
+          <td><span class="imp imp-2">2</span><span class="cell-just">хоче «портфоліо» довіри</span></td>
+          <td>Відгуки після проживання, вікно 14 днів</td>
+          <td>Airbnb/CS — так, але не конкуренти. OLX/FB — ні</td>
+        </tr>
+        <tr>
+          <td>EJ1 — впевненість вибору, а не «обійшлося»</td>
+          <td><span class="imp imp-3">3</span><span class="cell-just">страх — емоційний центр</span></td>
+          <td><span class="imp imp-2">2</span><span class="cell-just">важливо, менш гостро</span></td>
+          <td><span class="imp imp-2">2</span><span class="cell-just">є досвід — менше тривога</span></td>
+          <td>Весь trust layer у сукупності</td>
+          <td><b>Не закривають</b>: ніхто не будує відчуття впевненості</td>
+        </tr>
+        <tr>
+          <td>EJ2 — відчути що зробила все залежне</td>
+          <td><span class="imp imp-2">2</span><span class="cell-just">важливо, не перший рівень</span></td>
+          <td><span class="imp imp-3">3</span><span class="cell-just">«проблема вже вдома»</span></td>
+          <td><span class="imp imp-1">1</span><span class="cell-just">менш виражено</span></td>
+          <td>Прозорий процес верифікації; бейдж з розшифровкою</td>
+          <td><b>Не закривають</b>: не пояснюють що за бейджем</td>
+        </tr>
+        <tr>
+          <td>SJ1 — виглядати серйозним кандидатом</td>
+          <td><span class="imp imp-3">3</span><span class="cell-just">без мережі — виглядати надійною критично</span></td>
+          <td><span class="imp imp-1">1</span><span class="cell-just">вона господар, не «кандидат»</span></td>
+          <td><span class="imp imp-2">2</span><span class="cell-just">часткова мережа</span></td>
+          <td>Completeness score; верифікований бейдж на картці</td>
+          <td>Слабко: completeness як сигнал — <b>ні</b></td>
+        </tr>
+        <tr>
+          <td>SJ2 — не залежати від «хто мене знає»</td>
+          <td><span class="imp imp-3">3</span><span class="cell-just">Аня поза 60%, що знаходять через зв'язки</span></td>
+          <td><span class="imp imp-1">1</span><span class="cell-just">має мережу, господар</span></td>
+          <td><span class="imp imp-2">2</span><span class="cell-just">мережа є, але неповна</span></td>
+          <td>Верифікація як замінник соціального сигналу</td>
+          <td><b>Не закривають</b>: всі покладаються на відкритий контакт / граф</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3>Гіпотези — jobs без підтвердження</h3>
+    <p class="sec-lede" style="margin-top:0">Поки не підкріплені даними. Не в основний дизайн-скоуп без перевірки.</p>
+    <div class="tbl-wrap">
+      <table>
+        <tr><th scope="col">Job</th><th scope="col">Чому гіпотеза</th><th scope="col">Що перевірити</th></tr>
+        <tr><td>Бачити спільних знайомих → неформальне «поручительство»</td><td>Підтверджено командою як «дуже бажана фіча», але поведінкових даних нема</td><td>Інтерв'ю: чи шукають «хто вас знає» активно</td></tr>
+        <tr><td>Зрозуміти де я роблю не так, коли пошук затягується</td><td>Немає жодних даних про поведінку при довгому пошуку</td><td>Метрики продукту після запуску</td></tr>
+        <tr><td>Підказка наскільки ми сумісні</td><td>Compatibility scoring свідомо поза MVP; бажання не підтверджено на UA</td><td>Пост-MVP; перевірити на інтерв'ю</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- 05 Ядро MVP -->
+  <section id="core" aria-labelledby="core-h">
+    <div class="sec-head"><span class="sec-num mono">05</span><h2 id="core-h">Ядро MVP</h2></div>
+    <p class="sec-lede">Критерій відбору: важливість <b>3</b> для primary (Аня) <b>і</b> не закрито ринком.</p>
+
+    <ol class="list">
+      <li><div><b>RJ2 — переконатися що людина реальна до контакту</b><p>Аня:3, Олена:3. Бейдж є у конкурентів — але <b>без розшифровки ніде</b>. Пряма вільна ніша. → Верифікація (телефон + селфі) + бейдж з розшифровкою.</p></div></li>
+      <li><div><b>RJ3 — почати розмову лише при взаємному інтересі</b><p>Аня:3, Олена:3. На UA-ринку (OLX, FB) <b>не закритий взагалі</b> — відкритий контакт = спам і вихід з платформи. → «Хочу познайомитись» → чат при взаємній згоді.</p></div></li>
+      <li><div><b>SJ2 — не залежати від «хто мене знає»</b><p>Аня:3. Жоден конкурент <b>не замінює</b> соціальний сигнал системно. Для переїзниці без мережі — це блокер. → Верифікація + completeness як рівний старт для всіх.</p></div></li>
+    </ol>
+
+    <h3>Зв'язок Jobs → механізми</h3>
+    <div class="tbl-wrap tbl-map">
+      <table>
+        <tr><th scope="col">Job</th><th scope="col">Механізм в MVP</th></tr>
+        <tr><td>Main Job</td><td>Обов'язкова верифікація до першого контакту (R1)</td></tr>
+        <tr><td>RJ2</td><td>Бейдж з розшифровкою що перевірено (R2)</td></tr>
+        <tr><td>RJ1, RJ4</td><td>Completeness score профілю (R3)</td></tr>
+        <tr><td>RJ3</td><td>Взаємний інтерес → розблокування чату (R4)</td></tr>
+        <tr><td>RJ5</td><td>Відгуки після проживання, вікно 14 днів (R5)</td></tr>
+        <tr><td>SJ1, SJ2</td><td>Completeness + верифікація як рівний старт</td></tr>
+      </table>
+    </div>
+
+    <h3>Кандидати на виліт з MVP</h3>
+    <div class="panel quiet">
+      <p class="p-label">Перенести в post-MVP</p>
+      <h4>Відгуки після проживання <span class="mono" style="font-weight:400;color:var(--muted)">RJ5</span></h4>
+      <p>Cold start: на старті відгуків нема → порожній стан для всіх. Job реальний, але функція не дає цінності в перші місяці. Запустити після першої хвилі успішних матчів.</p>
+    </div>
+    <div class="panel quiet">
+      <p class="p-label">Кандидат на спрощення</p>
+      <h4>Completeness score як окремий UI-елемент <span class="mono" style="font-weight:400;color:var(--muted)">RJ1, RJ4, SJ1</span></h4>
+      <p>Сам по собі не закриває жодного критичного (3) job — лише посилює інші. Якщо різати — прибрати візуальний індикатор, залишити наповненість профілю як сигнал без окремого «score».</p>
+    </div>
+  </section>
+
+  <footer>
+    <span>Куток · jtbd</span>
+    <span><a href="jtbd.md">jtbd.md</a> · <a href="personas.html">персони</a> · <a href="index.html">ресерч</a> · <a href="https://github.com/denysosadchyi/kutok">GitHub</a></span>
+    <span>червень 2026</span>
+  </footer>
+
+</main>
+
+</div>
+
+<script>
+  const links = [...document.querySelectorAll('.nav-links a')];
+  const byId = new Map(links.map(a => [a.hash.slice(1), a]));
+  const spy = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const link = byId.get(e.target.id);
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-15% 0px -75% 0px' });
+  ['overview','related','emotional','social','matrix','core']
+    .forEach(id => { const el = document.getElementById(id); if (el) spy.observe(el); });
+</script>
+</body>
+</html>
