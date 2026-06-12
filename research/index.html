@@ -50,14 +50,15 @@
   }
   .skip:focus { left: 0; }
 
-  /* ── Каркас: навігація зліва ── */
+  /* ── Каркас: навігаційна панель зліва (рівень застосунку) ── */
   .shell {
-    display: grid; grid-template-columns: 188px minmax(0, 1fr);
-    gap: 60px; max-width: 1100px; margin: 0 auto; padding: 0 24px;
+    display: grid; grid-template-columns: 240px minmax(0, 1fr);
+    gap: 56px; max-width: 1180px; margin: 0 auto; padding: 0 24px;
   }
   .sidenav {
     position: sticky; top: 0; align-self: start;
-    height: 100dvh; padding: 56px 0 28px;
+    width: 240px; height: 100dvh; padding: 56px 24px 28px;
+    margin-left: -24px; border-right: 1px solid var(--line);
     display: flex; flex-direction: column;
   }
   .brand { font-weight: 800; font-size: 16px; color: var(--ink); }
@@ -66,15 +67,37 @@
     display: block; font-family: var(--mono); font-size: 10px; font-weight: 400;
     color: var(--muted); letter-spacing: .14em; margin-top: 3px;
   }
-  .nav-links { display: flex; flex-direction: column; gap: 2px; margin-top: 36px; }
+
+  /* список сторінок */
+  .nav-cap {
+    font-family: var(--mono); font-size: 10px; font-weight: 600;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+    margin: 36px 0 8px;
+  }
+  .nav-page {
+    display: block; font-size: 14px; font-weight: 600; color: var(--ink);
+    padding: 8px 11px; margin-left: -11px; border-radius: 7px; white-space: nowrap;
+    transition: color .15s ease, background .15s ease;
+  }
+  .nav-page:hover { background: var(--line-soft); text-decoration: none; }
+  .nav-page.active { color: var(--clay); background: var(--clay-soft); }
+  .nav-page.soon { color: var(--muted); font-weight: 500; cursor: default; pointer-events: none; }
+  .nav-page.soon::after {
+    content: 'скоро'; float: right; font-family: var(--mono); font-size: 9.5px;
+    letter-spacing: .08em; text-transform: uppercase; opacity: .7; margin-top: 3px;
+  }
+
+  /* секції активної сторінки */
+  .nav-links { display: flex; flex-direction: column; gap: 1px; margin: 4px 0 0 9px; }
   .nav-links a {
-    font-size: 13.5px; font-weight: 500; color: var(--muted);
-    padding: 7px 11px; margin-left: -11px; border-radius: 7px; white-space: nowrap;
+    font-size: 13px; font-weight: 500; color: var(--muted);
+    padding: 5px 11px; margin-left: -11px; border-radius: 7px; white-space: nowrap;
     transition: color .15s ease, background .15s ease;
   }
   .nav-links a:hover { color: var(--ink); background: var(--line-soft); text-decoration: none; }
   .nav-links a.active { color: var(--clay); background: var(--clay-soft); }
   .nav-links a .n { font-family: var(--mono); font-size: 10.5px; margin-right: 8px; opacity: .65; }
+
   .nav-foot { margin-top: auto; font-family: var(--mono); font-size: 10.5px; color: var(--muted); line-height: 1.8; }
   .nav-foot a { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
   .nav-foot a:hover { color: var(--clay); }
@@ -243,14 +266,17 @@
     html { scroll-padding-top: 72px; }
     .shell { display: block; padding: 0 20px; }
     .sidenav {
-      flex-direction: row; align-items: center; gap: 18px;
-      height: 52px; padding: 0 20px; margin: 0 -20px;
-      background: var(--paper); border-bottom: 1px solid var(--line); z-index: 50;
+      position: sticky; flex-direction: row; align-items: center; gap: 12px;
+      width: auto; height: 52px; padding: 0 20px; margin: 0 -20px;
+      border-right: none; border-bottom: 1px solid var(--line);
+      background: var(--paper); z-index: 50;
     }
     .brand { font-size: 15px; }
     .brand span { display: none; }
+    .nav-cap, .nav-page.soon { display: none; }
+    .nav-page { margin-left: 0; padding: 6px 10px; }
     .nav-links {
-      flex-direction: row; margin-top: 0; margin-left: auto;
+      flex-direction: row; margin: 0 0 0 auto;
       overflow-x: auto; scrollbar-width: none;
     }
     .nav-links::-webkit-scrollbar { display: none; }
@@ -276,15 +302,23 @@
 
 <div class="shell">
 
-<nav class="sidenav" aria-label="Розділи дослідження">
-  <a class="brand" href="#overview">Куток<span>RESEARCH</span></a>
-  <div class="nav-links">
+<nav class="sidenav" aria-label="Навігація">
+  <a class="brand" href="#overview">Куток<span>WORKSPACE</span></a>
+
+  <p class="nav-cap">Сторінки</p>
+  <a class="nav-page active" href="#overview" aria-current="page">Ресерч</a>
+  <div class="nav-links" aria-label="Розділи дослідження">
     <a href="#overview"><span class="n">00</span>Огляд</a>
     <a href="#competitors"><span class="n">01</span>Конкуренти</a>
     <a href="#benchmark"><span class="n">02</span>Бенчмарк</a>
     <a href="#patterns"><span class="n">03</span>Патерни</a>
     <a href="#conclusions"><span class="n">04</span>Висновки</a>
   </div>
+
+  <a class="nav-page soon" aria-disabled="true">Персони</a>
+  <a class="nav-page soon" aria-disabled="true">User flow</a>
+  <a class="nav-page soon" aria-disabled="true">Wireframes</a>
+
   <div class="nav-foot">
     <a href="research.md">research.md</a><br>
     <a href="https://github.com/denysosadchyi/kutok">GitHub</a><br>
