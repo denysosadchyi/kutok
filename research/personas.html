@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Куток — Персони</title>
+<meta name="description" content="Три персони Кутка: переїзниця, господар, місцевий шукач. Болі, тригери довіри, відлякувачі.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --paper:     oklch(97.5% 0.006 75);
+    --ink:       oklch(25% 0.012 60);
+    --muted:     oklch(48% 0.015 65);
+    --line:      oklch(90% 0.008 75);
+    --line-soft: oklch(93.5% 0.006 75);
+    --clay:      oklch(52% 0.115 40);
+    --clay-soft: oklch(94.5% 0.02 50);
+    --green:     oklch(52% 0.09 150);
+    --green-soft:oklch(95% 0.03 150);
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  html { scroll-behavior: smooth; scroll-padding-top: 28px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition: none !important; }
+  }
+
+  body {
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: 15.5px;
+    line-height: 1.65;
+    color: var(--ink);
+    background: var(--paper);
+  }
+
+  a { color: var(--clay); text-decoration: none; }
+  a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  :focus-visible { outline: 2px solid var(--clay); outline-offset: 2px; border-radius: 2px; }
+  ::selection { background: var(--clay-soft); }
+
+  .mono { font-family: var(--mono); }
+
+  .skip {
+    position: absolute; left: -9999px; top: 0;
+    background: var(--ink); color: var(--paper);
+    padding: 10px 16px; z-index: 100; border-radius: 0 0 8px 0;
+  }
+  .skip:focus { left: 0; }
+
+  /* ── Каркас: навігаційна панель зліва (рівень застосунку) ── */
+  .shell {
+    display: grid; grid-template-columns: 240px minmax(0, 1fr);
+    gap: 56px; max-width: 1180px; margin: 0 auto; padding: 0 24px;
+  }
+  .sidenav {
+    position: sticky; top: 0; align-self: start;
+    width: 240px; height: 100dvh; padding: 56px 24px 28px;
+    margin-left: -24px; border-right: 1px solid var(--line);
+    display: flex; flex-direction: column;
+  }
+  .brand { font-weight: 800; font-size: 16px; color: var(--ink); }
+  .brand:hover { text-decoration: none; }
+  .brand span {
+    display: block; font-family: var(--mono); font-size: 10px; font-weight: 400;
+    color: var(--muted); letter-spacing: .14em; margin-top: 3px;
+  }
+
+  /* список сторінок */
+  .nav-cap {
+    font-family: var(--mono); font-size: 10px; font-weight: 600;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+    margin: 36px 0 8px;
+  }
+  .nav-page {
+    display: block; font-size: 14px; font-weight: 600; color: var(--ink);
+    padding: 8px 11px; margin-left: -11px; border-radius: 7px; white-space: nowrap;
+    transition: color .15s ease, background .15s ease;
+  }
+  .nav-page:hover { background: var(--line-soft); text-decoration: none; }
+  .nav-page.active { color: var(--clay); background: var(--clay-soft); }
+  .nav-page.soon { color: var(--muted); font-weight: 500; cursor: default; pointer-events: none; }
+  .nav-page.soon::after {
+    content: 'скоро'; float: right; font-family: var(--mono); font-size: 9.5px;
+    letter-spacing: .08em; text-transform: uppercase; opacity: .7; margin-top: 3px;
+  }
+
+  /* секції активної сторінки */
+  .nav-links { display: flex; flex-direction: column; gap: 1px; margin: 4px 0 0 9px; }
+  .nav-links a {
+    font-size: 13px; font-weight: 500; color: var(--muted);
+    padding: 5px 11px; margin-left: -11px; border-radius: 7px; white-space: nowrap;
+    transition: color .15s ease, background .15s ease;
+  }
+  .nav-links a:hover { color: var(--ink); background: var(--line-soft); text-decoration: none; }
+  .nav-links a.active { color: var(--clay); background: var(--clay-soft); }
+  .nav-links a .n { font-family: var(--mono); font-size: 10.5px; margin-right: 8px; opacity: .65; }
+
+  .nav-foot { margin-top: auto; font-family: var(--mono); font-size: 10.5px; color: var(--muted); line-height: 1.8; }
+  .nav-foot a { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+  .nav-foot a:hover { color: var(--clay); }
+
+  /* ── Сторінка ── */
+  .page { max-width: 760px; padding: 0 0 96px; min-width: 0; }
+
+  .hero { padding-top: 60px; }
+  .kicker { font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  h1 { font-size: 30px; font-weight: 800; letter-spacing: -.02em; line-height: 1.2; margin: 12px 0 14px; }
+  .lede { font-size: 16px; color: var(--muted); max-width: 62ch; }
+  .lede b { color: var(--ink); font-weight: 600; }
+  .hero-meta { font-size: 12px; color: var(--muted); margin-top: 16px; letter-spacing: .02em; }
+
+  .callout {
+    font-size: 13px; color: var(--muted); margin-top: 22px;
+    border-left: 2px solid var(--line); padding: 4px 0 4px 16px; max-width: 64ch;
+  }
+  .callout code { font-family: var(--mono); font-size: 12px; color: var(--clay); }
+
+  /* ── Секції ── */
+  section { margin-top: 88px; }
+  .sec-head {
+    display: flex; align-items: baseline; gap: 14px;
+    border-top: 2px solid var(--ink); padding-top: 16px;
+  }
+  .sec-num { font-size: 12px; font-weight: 600; color: var(--clay); }
+  h2 { font-size: 22px; font-weight: 800; letter-spacing: -.01em; }
+  .sec-lede { color: var(--muted); margin-top: 10px; max-width: 64ch; }
+  .sec-lede b, .sec-lede strong { color: var(--ink); }
+
+  h3 { font-size: 16px; font-weight: 700; margin: 36px 0 12px; }
+  h3 .h-note { font-weight: 400; font-size: 13px; color: var(--muted); margin-left: 8px; }
+
+  .group-label {
+    font-family: var(--mono); font-size: 11px; font-weight: 600;
+    letter-spacing: .09em; text-transform: uppercase; color: var(--muted);
+    margin: 26px 0 2px;
+  }
+  .group-label em { font-style: normal; color: var(--clay); }
+
+  /* рядки-визначення */
+  .row {
+    display: grid; grid-template-columns: 170px 1fr; gap: 16px;
+    padding: 10px 0; border-bottom: 1px solid var(--line-soft);
+    font-size: 14px;
+  }
+  .row > b { font-weight: 600; }
+  .row > span { color: var(--muted); }
+  .row .src { font-size: 12.5px; }
+
+  /* нумеровані списки */
+  .list { list-style: none; counter-reset: li; margin-top: 4px; }
+  .list > li {
+    counter-increment: li;
+    display: grid; grid-template-columns: 30px 1fr; gap: 12px;
+    padding: 13px 0; border-bottom: 1px solid var(--line-soft);
+  }
+  .list > li::before {
+    content: counter(li, decimal-leading-zero);
+    font-family: var(--mono); font-size: 12px; color: var(--clay);
+    padding-top: 3px;
+  }
+  .list b { font-weight: 700; }
+  .list p { font-size: 14px; color: var(--muted); margin-top: 3px; max-width: 66ch; }
+  .list p b, .list p a { font-size: inherit; }
+
+  /* таблиці */
+  .tbl-wrap {
+    overflow-x: auto; margin-top: 10px;
+    border: 1px solid var(--line); border-radius: 10px;
+    background: oklch(98.5% 0.004 75);
+  }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; line-height: 1.5; }
+  th {
+    font-family: var(--mono); font-size: 10.5px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: .07em; color: var(--muted);
+    text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  .tbl-pains td:first-child { font-weight: 600; color: var(--ink); white-space: nowrap; min-width: 130px; }
+  .tbl-pains td:last-child { color: var(--muted); }
+
+  /* картка-ідентичність персони */
+  .persona-id {
+    display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+    margin-top: 12px;
+  }
+  .persona-id .pname { font-size: 18px; font-weight: 800; letter-spacing: -.01em; }
+  .role-tag {
+    font-family: var(--mono); font-size: 10px; font-weight: 600;
+    letter-spacing: .08em; text-transform: uppercase;
+    padding: 3px 9px; border-radius: 20px;
+  }
+  .role-tag.primary { color: var(--clay); background: var(--clay-soft); }
+  .role-tag.secondary { color: var(--muted); background: var(--line-soft); }
+  .persona-role { font-size: 13px; color: var(--muted); font-family: var(--mono); }
+
+  /* дві колонки: переконує / відлякує */
+  .trust-cols {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 12px;
+  }
+  .trust-col {
+    border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px;
+    background: oklch(98.5% 0.004 75);
+  }
+  .trust-col .tc-label {
+    font-family: var(--mono); font-size: 11px; font-weight: 600;
+    letter-spacing: .08em; text-transform: uppercase; margin-bottom: 8px;
+  }
+  .trust-col.good { background: var(--green-soft); border-color: oklch(88% 0.04 150); }
+  .trust-col.good .tc-label { color: var(--green); }
+  .trust-col.bad { background: var(--clay-soft); border-color: oklch(89% 0.03 50); }
+  .trust-col.bad .tc-label { color: var(--clay); }
+  .trust-col ul { list-style: none; }
+  .trust-col li {
+    font-size: 13.5px; padding: 5px 0 5px 18px; position: relative; line-height: 1.5;
+  }
+  .trust-col li::before {
+    position: absolute; left: 0; top: 4px; font-family: var(--mono); font-size: 12px;
+  }
+  .trust-col.good li::before { content: '+'; color: var(--green); }
+  .trust-col.bad li::before { content: '–'; color: var(--clay); }
+
+  /* цитата-настрій */
+  .quote {
+    margin-top: 18px; padding: 18px 22px;
+    background: var(--line-soft); border-radius: 12px;
+  }
+  .quote blockquote { font-size: 17px; font-weight: 600; line-height: 1.45; font-style: italic; }
+  .quote .q-note { font-size: 13px; color: var(--muted); margin-top: 8px; }
+  .quote .src { font-size: 12.5px; }
+
+  .note { font-size: 12.5px; color: var(--muted); margin-top: 16px; max-width: 72ch; }
+  .src-line { font-size: 12.5px; color: var(--muted); margin-top: 14px; }
+
+  footer {
+    margin-top: 96px; border-top: 1px solid var(--line); padding-top: 18px;
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+    font-family: var(--mono); font-size: 11.5px; color: var(--muted);
+  }
+  footer a { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+  footer a:hover { color: var(--clay); }
+
+  @media (max-width: 900px) {
+    html { scroll-padding-top: 72px; }
+    .shell { display: block; padding: 0 20px; }
+    .sidenav {
+      position: sticky; flex-direction: row; align-items: center; gap: 12px;
+      width: auto; height: 52px; padding: 0 20px; margin: 0 -20px;
+      border-right: none; border-bottom: 1px solid var(--line);
+      background: var(--paper); z-index: 50;
+    }
+    .brand { font-size: 15px; }
+    .brand span { display: none; }
+    .nav-cap, .nav-page.soon { display: none; }
+    .nav-page { margin-left: 0; padding: 6px 10px; }
+    .nav-links {
+      flex-direction: row; margin: 0 0 0 auto;
+      overflow-x: auto; scrollbar-width: none;
+    }
+    .nav-links::-webkit-scrollbar { display: none; }
+    .nav-links a { margin-left: 0; padding: 6px 10px; }
+    .nav-links a .n { display: none; }
+    .nav-foot { display: none; }
+    .page { max-width: none; padding-bottom: 80px; }
+  }
+
+  @media (max-width: 720px) {
+    h1 { font-size: 25px; }
+    section { margin-top: 64px; }
+    .row { grid-template-columns: 1fr; gap: 2px; padding: 12px 0; }
+    .trust-cols { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#overview">До змісту</a>
+
+<div class="shell">
+
+<nav class="sidenav" aria-label="Навігація">
+  <a class="brand" href="index.html">Куток<span>WORKSPACE</span></a>
+
+  <p class="nav-cap">Сторінки</p>
+  <a class="nav-page" href="index.html">Ресерч</a>
+  <a class="nav-page active" href="#overview" aria-current="page">Персони</a>
+  <div class="nav-links" aria-label="Розділи персон">
+    <a href="#overview"><span class="n">00</span>Огляд</a>
+    <a href="#anya"><span class="n">01</span>Аня</a>
+    <a href="#olena"><span class="n">02</span>Олена</a>
+    <a href="#artem"><span class="n">03</span>Артем</a>
+    <a href="#gaps"><span class="n">04</span>Білі плями</a>
+    <a href="#base"><span class="n">05</span>База</a>
+  </div>
+
+  <a class="nav-page soon" aria-disabled="true">User flow</a>
+  <a class="nav-page soon" aria-disabled="true">Wireframes</a>
+
+  <div class="nav-foot">
+    <a href="personas.md">personas.md</a><br>
+    <a href="https://github.com/denysosadchyi/kutok">GitHub</a><br>
+    червень 2026
+  </div>
+</nav>
+
+<main class="page">
+
+  <!-- Огляд -->
+  <header class="hero" id="overview">
+    <p class="kicker">Куток · персони</p>
+    <h1>Три персони: для кого будуємо довіру</h1>
+    <p class="lede">Хто стоїть по обидва боки підселення в Києві. Персони побудовано на <b>кабінетному ресерчі + відкритих дослідженнях</b> — первинних інтерв'ю ще немає.</p>
+    <p class="hero-meta mono">1 primary · 2 secondary · 7 спостережень-база · 6 білих плям</p>
+
+    <p class="callout">Правило файлу: <code>[?]</code> — гіпотеза без підтвердження. Де даних нема — написано «не знаємо». Джерело: <a href="personas.md">personas.md</a>.</p>
+  </header>
+
+  <!-- Чому ці три -->
+  <section id="why" aria-labelledby="why-h" style="margin-top:64px">
+    <div class="sec-head"><span class="sec-num mono">—</span><h2 id="why-h">Чому саме ці три</h2></div>
+    <p class="sec-lede">Дві сторони однієї угоди + контрольна персона, що перевіряє корисність продукту не лише для новачків.</p>
+
+    <ol class="list">
+      <li><div><b>Аня, 23 — Переїзниця</b> <span class="h-note">Шукач · PRIMARY</span><p>Найгостріший біль довіри: нуль місцевої мережі, нуль спільних знайомих. Повністю залежить від механізмів платформи. Саме для неї Куток відрізняється від FB-груп найбільше.</p></div></li>
+      <li><div><b>Олена, 28 — Господар</b> <span class="h-note">Господар · secondary</span><p>Дзеркальна сторона угоди. Без неї немає supply — пропозицій у стрічці. Її страх інший: «хто увійде в МІЙ дім».</p></div></li>
+      <li><div><b>Артем, 26 — Місцевий шукач</b> <span class="h-note">Шукач · secondary</span><p>Менш гострий біль, є місцева мережа — але процес той самий, і він теж зривається на тому самому. Перевіряє, чи продукт корисний не лише новачкам.</p></div></li>
+    </ol>
+  </section>
+
+  <!-- 01 Аня -->
+  <section id="anya" aria-labelledby="anya-h">
+    <div class="sec-head"><span class="sec-num mono">01</span><h2 id="anya-h">Аня, 23 — Переїзниця</h2></div>
+    <div class="persona-id">
+      <span class="role-tag primary">Primary</span>
+      <span class="persona-role">Шукач кімнати</span>
+    </div>
+    <p class="sec-lede" style="margin-top:14px">Переїхала до Києва з іншого міста (Харків / Суми / Одеса) — робота або навчання. У місті майже нема знайомих. <b>Перший пошук, перший раз — усе незнайоме.</b> Бюджет обмежений, часу мало: треба знайти кімнату до кінця місяця.</p>
+
+    <h3>Jobs</h3>
+    <ol class="list">
+      <li><div><p>Знайти безпечну кімнату з нормальною людиною, поки не осіла і не обросла зв'язками.</p></div></li>
+      <li><div><p>Переконатися, що людина навпроти — реальна і та, за кого себе видає.</p></div></li>
+      <li><div><p>Зустрітися тільки тоді, коли вже є якийсь мінімальний сигнал «можна довіряти».</p></div></li>
+    </ol>
+
+    <h3>Болі в сьогоднішніх інструментах</h3>
+    <div class="tbl-wrap tbl-pains">
+      <table>
+        <tr><th scope="col">Інструмент</th><th scope="col">Де болить</th></tr>
+        <tr><td>FB-групи</td><td>Сотні оголошень, не відрізниш реальне від фейку. Профіль людини — 3 фото і ніякої інформації.</td></tr>
+        <tr><td>Telegram-канали</td><td>Анонімні нікнейми. Адмін не верифікує нікого.</td></tr>
+        <tr><td>OLX</td><td>Контакт одразу виходить у Viber — і людина знову стає анонімом. Рейтинг продавця не валідний для житла.</td></tr>
+        <tr><td>Знайомі</td><td><b>Немає.</b> Це найголовніша проблема Ані — вона не може запитати «хто це?» у спільного друга.</td></tr>
+      </table>
+    </div>
+
+    <h3>Тригери довіри</h3>
+    <div class="trust-cols">
+      <div class="trust-col good">
+        <p class="tc-label">Що переконує</p>
+        <ul>
+          <li>Підтверджений номер телефону (верифіковано платформою)</li>
+          <li>Фото профілю, звірене із селфі — людина та, за кого себе видає</li>
+          <li>Відгуки від попередніх господарів / сусідів</li>
+          <li>Заповнений профіль: «про себе», вік, робота, звички</li>
+          <li>Спільні знайомі — але в Ані їх немає; тому особливо важливо, що платформа замінює цей сигнал</li>
+        </ul>
+      </div>
+      <div class="trust-col bad">
+        <p class="tc-label">Що відлякує</p>
+        <ul>
+          <li>Порожній або напівзаповнений профіль — «а раптом фейк?»</li>
+          <li>«Пишіть у Telegram» ще до будь-якого знайомства</li>
+          <li>Ціна суттєво нижча за ринок</li>
+          <li>Відмова від відеодзвінка / зустрічі в публічному місці спочатку</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="quote">
+      <blockquote>“Am I going to be killed in my sleep?”</blockquote>
+      <p class="q-note">Реальна цитата з опису страхів людей, які заселяються до незнайомця вперше. <span class="src"><a href="https://www.theodysseyonline.com/12-fears-about-moving-in-with-random-roommates">TheOdysseyOnline — 12 Fears</a></span></p>
+    </div>
+    <p class="note">UA-специфічна цитата: <span class="mono">[?]</span> — реального відгуку з українського форуму не знайдено. Потребує збору на інтерв'ю.</p>
+
+    <p class="src-line">Джерела: <a href="competitors.md">competitors.md</a> (канали), <a href="research.md">research.md</a> (Gap 3; гіпотези R1–R3), бенчмарк Bumble, Airbnb.</p>
+  </section>
+
+  <!-- 02 Олена -->
+  <section id="olena" aria-labelledby="olena-h">
+    <div class="sec-head"><span class="sec-num mono">02</span><h2 id="olena-h">Олена, 28 — Господар</h2></div>
+    <div class="persona-id">
+      <span class="role-tag secondary">Secondary</span>
+      <span class="persona-role">Господар · підселяє</span>
+    </div>
+    <p class="sec-lede" style="margin-top:14px">Живе в двокімнатній квартирі в Києві. Попередня сусідка з'їхала — або так і було заплановано: взяти квартиру вдвох. Підселяє не для заробітку, а щоб ділити оренду. Головна умова: <b>«хочу нормальну людину в свій дім, без клопоту».</b></p>
+
+    <h3>Jobs</h3>
+    <ol class="list">
+      <li><div><p>Знайти надійну людину, яка вчасно платить і не створює проблем у спільному просторі.</p></div></li>
+      <li><div><p>Відфільтрувати кандидатів до особистої зустрічі — не витрачати час на «не тих».</p></div></li>
+      <li><div><p>Контролювати, хто входить у її простір: це вже не просто «кімната», це її дім.</p></div></li>
+    </ol>
+
+    <h3>Болі в сьогоднішніх інструментах</h3>
+    <div class="tbl-wrap tbl-pains">
+      <table>
+        <tr><th scope="col">Інструмент</th><th scope="col">Де болить</th></tr>
+        <tr><td>FB-групи</td><td>Пишуть усі підряд. Фільтр — лише інтуїція за текстом і фото профілю.</td></tr>
+        <tr><td>Зустрічі без перевірки</td><td>7–8 зустрічей з 10 — даремно витрачений час.</td></tr>
+        <tr><td>OLX</td><td>Немає профілю «людини», лише оголошення. Не видно нічого про кандидата.</td></tr>
+        <tr><td>Після пуску «не тієї»</td><td>Проблема вже всередині квартири — виселити складно, незручно, іноді страшно.</td></tr>
+      </table>
+    </div>
+
+    <h3>Тригери довіри</h3>
+    <div class="trust-cols">
+      <div class="trust-col good">
+        <p class="tc-label">Що переконує</p>
+        <ul>
+          <li>Верифікований профіль: телефон + фото підтверджено</li>
+          <li>Відгуки від попередніх господарів — «ця людина вже жила в когось і все було добре»</li>
+          <li>Заповнений профіль: робота, спосіб життя, звички (курить / ні, тварини, режим)</li>
+          <li>Спільні знайомі — «о, ти знаєш Катю? Тоді все ясно»</li>
+        </ul>
+      </div>
+      <div class="trust-col bad">
+        <p class="tc-label">Що відлякує</p>
+        <ul>
+          <li>Порожній профіль — не зрозуміло хто</li>
+          <li>«Дам передоплату зараз, без зустрічі» — класична схема шахрайства</li>
+          <li>Відгуки відсутні і профіль новий</li>
+          <li>Розмита інформація про роботу / дохід</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="quote">
+      <blockquote>“Everyone interviews beautifully and everyone has the right answers. You don't know what a roommate is really like until you are living with him or her.”</blockquote>
+      <p class="q-note">Реальна цитата людини з досвідом кількох сусідів. <span class="src"><a href="https://www.brickunderground.com/blog/2013/12/roomate_report_living_with_a_stranger_vs_living_with_a_friend">BrickUnderground — Roommate Report</a></span></p>
+    </div>
+    <p class="note">UA-специфічна цитата: <span class="mono">[?]</span> — реального відгуку господаря з українського форуму не знайдено.</p>
+
+    <p class="src-line">Джерела: <a href="competitors.md">competitors.md</a> (OLX, FB), <a href="research.md">research.md</a> (Gap 4; гіпотеза R5), <a href="https://www.apartmentguide.com/blog/roommate-experiences-explored/">ApartmentGuide</a> (41% конфліктів — чистота).</p>
+  </section>
+
+  <!-- 03 Артем -->
+  <section id="artem" aria-labelledby="artem-h">
+    <div class="sec-head"><span class="sec-num mono">03</span><h2 id="artem-h">Артем, 26 — Місцевий шукач</h2></div>
+    <div class="persona-id">
+      <span class="role-tag secondary">Secondary</span>
+      <span class="persona-role">Шукач · є місцева мережа</span>
+    </div>
+    <p class="sec-lede" style="margin-top:14px">Живе в Києві 2+ роки. Знімав кімнату з сусідом — той з'їхав (переїзд, відносини, ВПО). Треба знайти нового на ту саму кімнату. Є місцева мережа знайомих — <b>але вона недостатня: «всі вже влаштовані».</b></p>
+
+    <h3>Jobs</h3>
+    <ol class="list">
+      <li><div><p>Знайти нового сусіда швидко — бо оренда не ділиться і місяць не почекає.</p></div></li>
+      <li><div><p>Бажано через знайомих або «знайомих знайомих», але їх не вистачає — доводиться йти в чати.</p></div></li>
+      <li><div><p>Перевірити людину до особистої зустрічі — витрачати час на незрозумілих не хочеться.</p></div></li>
+    </ol>
+
+    <h3>Болі в сьогоднішніх інструментах</h3>
+    <div class="tbl-wrap tbl-pains">
+      <table>
+        <tr><th scope="col">Інструмент</th><th scope="col">Де болить</th></tr>
+        <tr><td>Мережа знайомих</td><td>Вже вичерпана за 2 роки. Не достатньо велика для такого пошуку.</td></tr>
+        <tr><td>FB / Telegram</td><td>Той самий процес, що в Ані — але трохи менш страшно: є досвід.</td></tr>
+        <tr><td>Зустріч без перевірки</td><td>«Людина сподобалась» — але нічого підтвердженого. Ризик менший, але є.</td></tr>
+      </table>
+    </div>
+
+    <h3>Тригери довіри</h3>
+    <div class="trust-cols">
+      <div class="trust-col good">
+        <p class="tc-label">Що переконує</p>
+        <ul>
+          <li>Спільні знайомі — для Артема це реалістичний варіант, на відміну від Ані</li>
+          <li>Верифікований профіль як fallback, коли знайомих нема</li>
+          <li>Відгуки від попередніх господарів (він сам зараз у ролі «знайомого», що може підтвердити)</li>
+        </ul>
+      </div>
+      <div class="trust-col bad">
+        <p class="tc-label">Що відлякує</p>
+        <ul>
+          <li>Схожі на Аню, але поріг нижчий — він вже «знає систему»</li>
+          <li>Порожній профіль + відсутність зв'язків = не ризикує</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="note">UA-специфічна цитата: <span class="mono">[?]</span> — реального відгуку не знайдено. Потребує інтерв'ю.</p>
+    <p class="src-line">Джерела: <a href="competitors.md">competitors.md</a> (FB-групи), <a href="https://www.apartmentguide.com/blog/roommate-experiences-explored/">ApartmentGuide</a> (60% знайшли через зв'язки); підтверджено командою — «соціальні зв'язки дуже бажана фіча».</p>
+  </section>
+
+  <!-- 04 Білі плями -->
+  <section id="gaps" aria-labelledby="gaps-h">
+    <div class="sec-head"><span class="sec-num mono">04</span><h2 id="gaps-h">Чого не знаємо</h2></div>
+    <p class="sec-lede">Залишкові білі плями. Закриваються первинним дослідженням — 5–8 інтерв'ю.</p>
+
+    <div class="tbl-wrap tbl-pains">
+      <table>
+        <tr><th scope="col">Питання</th><th scope="col">Де шукати</th></tr>
+        <tr><td>Скільки кандидатів розглядають до рішення?</td><td>Метрики продукту або інтерв'ю</td></tr>
+        <tr><td>Скільки часу займає пошук?</td><td>Інтерв'ю</td></tr>
+        <tr><td>Готовність платити за безпечнішу альтернативу?</td><td>Інтерв'ю</td></tr>
+        <tr><td>Чи тригери тривоги (чистота, фінанси) відтворюються на UA-ринку?</td><td>Дані тільки USA/UK — перевірити інтерв'ю</td></tr>
+        <tr><td>Реальні цитати з UA-форумів по всіх трьох персонах</td><td>Збір на інтерв'ю або скрапінг FB-груп</td></tr>
+        <tr><td>Чому закрився LUN «Сусіди»?</td><td>Контакт у команді LUN</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- 05 База -->
+  <section id="base" aria-labelledby="base-h">
+    <div class="sec-head"><span class="sec-num mono">05</span><h2 id="base-h">Спостереження-база</h2></div>
+    <p class="sec-lede">Сім спостережень з ресерчу, на яких стоять персони.</p>
+
+    <ol class="list">
+      <li><div><b>S1 · Типовий шлях пошуку сьогодні</b><p>FB/Telegram → директ → Viber → зустріч → рішення на інтуїції. Платформа — лише точка першого контакту. <a href="competitors.md">competitors.md</a> (патерн 3).</p></div></li>
+      <li><div><b>S2 · Неформальні канали домінують</b><p>FB-групи і Telegram — де-факто єдині інструменти ринку. Безкоштовно, швидко, нульова системна довіра. <a href="competitors.md">competitors.md</a> (хард-група).</p></div></li>
+      <li><div><b>S3 · Сигнали довіри в чатах — імпровізовані</b><p>Спільні друзі (найсильніший), фото профілю, стиль тексту, адміни як «ручна модерація». 60% знайшли сусіда через існуючі зв'язки. <a href="https://www.apartmentguide.com/blog/roommate-experiences-explored/">ApartmentGuide</a>.</p></div></li>
+      <li><div><b>S4 · Топ тригери конфліктів</b> <span class="h-note">USA/UK — екстраполювати обережно</span><p>Чистота — 41%, фінансова нерівність — 1 з 4, несумісний стиль життя. <a href="https://www.apartmentguide.com/blog/roommate-experiences-explored/">ApartmentGuide</a>.</p></div></li>
+      <li><div><b>S5 · Повний профіль → 88% довіри</b><p>BlaBlaCar × NYU, 18 000+ респондентів. Майже рівень довіри друзям (92%). <a href="https://blog.blablacar.com/trust">BlaBlaCar Trust</a>.</p></div></li>
+      <li><div><b>S6 · Бейдж без розшифровки не знімає страх</b><p>Всі конкуренти — значок без пояснення що перевірено. Пряма можливість для Кутка. <a href="research.md">research.md</a> (Gap 2).</p></div></li>
+      <li><div><b>S7 · Обов'язкова верифікація → покриття &gt;80%</b> <span class="h-note">проти ~20% платної</span><p>SpareRoom: платна опційна = 20% верифіковані. Bumble: безкоштовна = масова. <a href="research.md">research.md</a> (гіпотеза R1).</p></div></li>
+    </ol>
+  </section>
+
+  <footer>
+    <span>Куток · персони</span>
+    <span><a href="personas.md">personas.md</a> · <a href="index.html">ресерч</a> · <a href="interviews.md">interviews.md</a> · <a href="https://github.com/denysosadchyi/kutok">GitHub</a></span>
+    <span>червень 2026</span>
+  </footer>
+
+</main>
+
+</div>
+
+<script>
+  const links = [...document.querySelectorAll('.nav-links a')];
+  const byId = new Map(links.map(a => [a.hash.slice(1), a]));
+  const spy = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const link = byId.get(e.target.id);
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-15% 0px -75% 0px' });
+  ['overview','anya','olena','artem','gaps','base']
+    .forEach(id => { const el = document.getElementById(id); if (el) spy.observe(el); });
+</script>
+</body>
+</html>
