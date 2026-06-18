@@ -273,12 +273,12 @@
   .v-hyp  { color: oklch(58% 0.12 75); background: oklch(95% 0.04 80); border-color: oklch(88% 0.05 80); }
   .v-fab  { color: var(--clay); background: var(--clay-soft); border-color: oklch(89% 0.03 50); }
 
-  /* кольорова смужка зліва на рядку залежно від вердикту */
+  /* вердикт читається з пігулки + тінту комірки вердикту (без side-stripe) */
   .tbl-audit td:first-child { font-weight: 600; color: var(--ink); }
   .tbl-audit td.vc { white-space: nowrap; }
-  tr.r-ok  td:first-child { box-shadow: inset 3px 0 0 var(--green); }
-  tr.r-hyp td:first-child { box-shadow: inset 3px 0 0 oklch(70% 0.12 80); }
-  tr.r-fab td:first-child { box-shadow: inset 3px 0 0 var(--clay); }
+  .tbl-audit tr.r-ok  td.vc { background: var(--green-soft); }
+  .tbl-audit tr.r-hyp td.vc { background: var(--amber-soft); }
+  .tbl-audit tr.r-fab td.vc { background: var(--clay-soft); }
   .tbl-audit td .tag { font-family: var(--mono); font-size: 11px; color: var(--muted); }
   .tbl-audit td .why { color: var(--muted); }
 
