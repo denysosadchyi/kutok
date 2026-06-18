@@ -15,7 +15,7 @@
 
 | Папка | Що тут |
 |-------|--------|
-| [`research/`](./research/) | Ресерч: [research.md](./research/research.md) (конкуренти · бенчмарк · патерни · висновки), [competitors.md](./research/competitors.md), [interviews.md](./research/interviews.md), [дашборд](./research/index.html) |
+| [`research/`](./research/) | Ресерч: [research.md](./research/research.md) (конкуренти · бенчмарк · патерни · висновки · доресерч), [competitors.md](./research/competitors.md), [personas.md](./research/personas.md), [jtbd.md](./research/jtbd.md), [critique.md](./research/critique.md), [interviews.md](./research/interviews.md), [дашборд](./research/index.html) |
 | [`research/screens/`](./research/screens/) | Скріни еталонів бенчмарку (Airbnb, Tinder); скріни конкурентів — TODO |
 | [`wireframes/`](./wireframes/) | Wireframes потоків (low-fi) |
 | [`concept/`](./concept/) | Концептуальні рішення, mood board, напрямки стилю |
@@ -23,6 +23,17 @@
 | [`components/`](./components/) | Бібліотека компонентів |
 | [`design-system/`](./design-system/) | Правила системи, гайдлайни, документація |
 | [`handoff/`](./handoff/) | Специфікації та матеріали для розробки |
+
+---
+
+## Люди
+
+Хто наші користувачі і що вони намагаються зробити — синтез із ресерчу, без вигадування (кожне твердження з джерелом або `[?]`).
+
+- **[personas.md](./research/personas.md)** — 2–4 персони, кожна з контекстом, jobs, болями і тригерами довіри. **Primary — Аня, 23, «Переїзниця»** (переїхала до Києва без місцевої мережі; головний біль — довіра до незнайомця). Secondary: Олена (господар), Артем (місцевий шукач).
+- **[jtbd.md](./research/jtbd.md)** — jobs у форматі «коли / хочу / щоб»: 1 main job + related/emotional/social + JTBD-матриця (jobs × персони × функції) з висновком «3 jobs у ядро MVP».
+- **[critique.md](./research/critique.md)** — аудит персон і JTBD (підтверджено / гіпотеза / вигадано) + найнебезпечніші для дизайну твердження.
+- Дірки з критики закрито **доресерчем** UA-джерел → [research.md](./research/research.md), розділ 5.
 
 ---
 
