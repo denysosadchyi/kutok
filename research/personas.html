@@ -182,6 +182,18 @@
   }
   td { padding: 10px 14px; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
   tr:last-child td { border-bottom: none; }
+
+  /* ── читабельність таблиць: sticky-заголовок, hover, підказка скролу ── */
+  th { position: sticky; top: 0; z-index: 3; background: var(--paper); }
+  table tr:hover td { background: oklch(96.5% 0.006 75); }
+  .tbl-wrap {
+    background:
+      linear-gradient(to right, var(--paper) 32%, transparent) left center / 48px 100% no-repeat,
+      linear-gradient(to left,  var(--paper) 32%, transparent) right center / 48px 100% no-repeat,
+      radial-gradient(farthest-side at left center,  oklch(40% 0.02 60 / .13), transparent) left center / 16px 100% no-repeat,
+      radial-gradient(farthest-side at right center, oklch(40% 0.02 60 / .13), transparent) right center / 16px 100% no-repeat;
+    background-attachment: local, local, scroll, scroll;
+  }
   .tbl-pains td:first-child { font-weight: 600; color: var(--ink); white-space: nowrap; min-width: 130px; }
   .tbl-pains td:last-child { color: var(--muted); }
 
