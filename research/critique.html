@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Куток — Критика</title>
+<meta name="description" content="Критика персон і JTBD Кутка: аудит тверджень (підтверджено / гіпотеза / вигадано), дизайн на хиткому ґрунті, питання для доресерчу.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --paper:     oklch(97.5% 0.006 75);
+    --ink:       oklch(25% 0.012 60);
+    --muted:     oklch(48% 0.015 65);
+    --line:      oklch(90% 0.008 75);
+    --line-soft: oklch(93.5% 0.006 75);
+    --clay:      oklch(52% 0.115 40);
+    --clay-soft: oklch(94.5% 0.02 50);
+    --green:     oklch(52% 0.09 150);
+    --green-soft:oklch(95% 0.03 150);
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  html { scroll-behavior: smooth; scroll-padding-top: 28px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition: none !important; }
+  }
+
+  body {
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: 15.5px;
+    line-height: 1.65;
+    color: var(--ink);
+    background: var(--paper);
+  }
+
+  a { color: var(--clay); text-decoration: none; }
+  a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  :focus-visible { outline: 2px solid var(--clay); outline-offset: 2px; border-radius: 2px; }
+  ::selection { background: var(--clay-soft); }
+
+  .mono { font-family: var(--mono); }
+
+  .skip {
+    position: absolute; left: -9999px; top: 0;
+    background: var(--ink); color: var(--paper);
+    padding: 10px 16px; z-index: 100; border-radius: 0 0 8px 0;
+  }
+  .skip:focus { left: 0; }
+
+  /* ── Каркас: навігаційна панель зліва (рівень застосунку) ── */
+  .shell {
+    display: grid; grid-template-columns: 240px minmax(0, 1fr);
+    gap: 56px; max-width: 1180px; margin: 0 auto; padding: 0 24px;
+  }
+  .sidenav {
+    position: sticky; top: 0; align-self: start;
+    width: 240px; height: 100dvh; padding: 56px 24px 28px;
+    margin-left: -24px; border-right: 1px solid var(--line);
+    display: flex; flex-direction: column;
+  }
+  .brand { font-weight: 800; font-size: 16px; color: var(--ink); }
+  .brand:hover { text-decoration: none; }
+  .brand span {
+    display: block; font-family: var(--mono); font-size: 10px; font-weight: 400;
+    color: var(--muted); letter-spacing: .14em; margin-top: 3px;
+  }
+
+  /* список сторінок */
+  .nav-cap {
+    font-family: var(--mono); font-size: 10px; font-weight: 600;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+    margin: 36px 0 8px;
+  }
+  .nav-page {
+    display: block; font-size: 14px; font-weight: 600; color: var(--ink);
+    padding: 8px 11px; margin-left: -11px; border-radius: 7px; white-space: nowrap;
+    transition: color .15s ease, background .15s ease;
+  }
+  .nav-page:hover { background: var(--line-soft); text-decoration: none; }
+  .nav-page.active { color: var(--clay); background: var(--clay-soft); }
+  .nav-page.soon { color: var(--muted); font-weight: 500; cursor: default; pointer-events: none; }
+  .nav-page.soon::after {
+    content: 'скоро'; float: right; font-family: var(--mono); font-size: 9.5px;
+    letter-spacing: .08em; text-transform: uppercase; opacity: .7; margin-top: 3px;
+  }
+
+  /* секції активної сторінки */
+  .nav-links { display: flex; flex-direction: column; gap: 1px; margin: 4px 0 0 9px; }
+  .nav-links a {
+    font-size: 13px; font-weight: 500; color: var(--muted);
+    padding: 5px 11px; margin-left: -11px; border-radius: 7px; white-space: nowrap;
+    transition: color .15s ease, background .15s ease;
+  }
+  .nav-links a:hover { color: var(--ink); background: var(--line-soft); text-decoration: none; }
+  .nav-links a.active { color: var(--clay); background: var(--clay-soft); }
+  .nav-links a .n { font-family: var(--mono); font-size: 10.5px; margin-right: 8px; opacity: .65; }
+
+  .nav-foot { margin-top: auto; font-family: var(--mono); font-size: 10.5px; color: var(--muted); line-height: 1.8; }
+  .nav-foot a { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+  .nav-foot a:hover { color: var(--clay); }
+
+  /* ── Сторінка ── */
+  .page { max-width: 760px; padding: 0 0 96px; min-width: 0; }
+
+  .hero { padding-top: 60px; }
+  .kicker { font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  h1 { font-size: 30px; font-weight: 800; letter-spacing: -.02em; line-height: 1.2; margin: 12px 0 14px; }
+  .lede { font-size: 16px; color: var(--muted); max-width: 62ch; }
+  .lede b { color: var(--ink); font-weight: 600; }
+  .hero-meta { font-size: 12px; color: var(--muted); margin-top: 16px; letter-spacing: .02em; }
+
+  .callout {
+    font-size: 13px; color: var(--muted); margin-top: 22px;
+    border-left: 2px solid var(--line); padding: 4px 0 4px 16px; max-width: 64ch;
+  }
+  .callout code { font-family: var(--mono); font-size: 12px; color: var(--clay); }
+
+  /* ── Секції ── */
+  section { margin-top: 88px; }
+  .sec-head {
+    display: flex; align-items: baseline; gap: 14px;
+    border-top: 2px solid var(--ink); padding-top: 16px;
+  }
+  .sec-num { font-size: 12px; font-weight: 600; color: var(--clay); }
+  h2 { font-size: 22px; font-weight: 800; letter-spacing: -.01em; }
+  .sec-lede { color: var(--muted); margin-top: 10px; max-width: 64ch; }
+  .sec-lede b, .sec-lede strong { color: var(--ink); }
+
+  h3 { font-size: 16px; font-weight: 700; margin: 36px 0 12px; }
+  h3 .h-note { font-weight: 400; font-size: 13px; color: var(--muted); margin-left: 8px; }
+
+  .group-label {
+    font-family: var(--mono); font-size: 11px; font-weight: 600;
+    letter-spacing: .09em; text-transform: uppercase; color: var(--muted);
+    margin: 26px 0 2px;
+  }
+  .group-label em { font-style: normal; color: var(--clay); }
+
+  /* рядки-визначення */
+  .row {
+    display: grid; grid-template-columns: 170px 1fr; gap: 16px;
+    padding: 10px 0; border-bottom: 1px solid var(--line-soft);
+    font-size: 14px;
+  }
+  .row > b { font-weight: 600; }
+  .row > span { color: var(--muted); }
+  .row .src { font-size: 12.5px; }
+
+  /* нумеровані списки */
+  .list { list-style: none; counter-reset: li; margin-top: 4px; }
+  .list > li {
+    counter-increment: li;
+    display: grid; grid-template-columns: 30px 1fr; gap: 12px;
+    padding: 13px 0; border-bottom: 1px solid var(--line-soft);
+  }
+  .list > li::before {
+    content: counter(li, decimal-leading-zero);
+    font-family: var(--mono); font-size: 12px; color: var(--clay);
+    padding-top: 3px;
+  }
+  .list b { font-weight: 700; }
+  .list p { font-size: 14px; color: var(--muted); margin-top: 3px; max-width: 66ch; }
+  .list p b, .list p a { font-size: inherit; }
+
+  /* таблиці */
+  .tbl-wrap {
+    overflow-x: auto; margin-top: 10px;
+    border: 1px solid var(--line); border-radius: 10px;
+    background: oklch(98.5% 0.004 75);
+  }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; line-height: 1.5; }
+  th {
+    font-family: var(--mono); font-size: 10.5px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: .07em; color: var(--muted);
+    text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  .tbl-pains td:first-child { font-weight: 600; color: var(--ink); white-space: nowrap; min-width: 130px; }
+  .tbl-pains td:last-child { color: var(--muted); }
+
+  /* картка-ідентичність персони */
+  .persona-id {
+    display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+    margin-top: 12px;
+  }
+  .persona-id .pname { font-size: 18px; font-weight: 800; letter-spacing: -.01em; }
+  .role-tag {
+    font-family: var(--mono); font-size: 10px; font-weight: 600;
+    letter-spacing: .08em; text-transform: uppercase;
+    padding: 3px 9px; border-radius: 20px;
+  }
+  .role-tag.primary { color: var(--clay); background: var(--clay-soft); }
+  .role-tag.secondary { color: var(--muted); background: var(--line-soft); }
+  .persona-role { font-size: 13px; color: var(--muted); font-family: var(--mono); }
+
+  /* дві колонки: переконує / відлякує */
+  .trust-cols {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 12px;
+  }
+  .trust-col {
+    border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px;
+    background: oklch(98.5% 0.004 75);
+  }
+  .trust-col .tc-label {
+    font-family: var(--mono); font-size: 11px; font-weight: 600;
+    letter-spacing: .08em; text-transform: uppercase; margin-bottom: 8px;
+  }
+  .trust-col.good { background: var(--green-soft); border-color: oklch(88% 0.04 150); }
+  .trust-col.good .tc-label { color: var(--green); }
+  .trust-col.bad { background: var(--clay-soft); border-color: oklch(89% 0.03 50); }
+  .trust-col.bad .tc-label { color: var(--clay); }
+  .trust-col ul { list-style: none; }
+  .trust-col li {
+    font-size: 13.5px; padding: 5px 0 5px 18px; position: relative; line-height: 1.5;
+  }
+  .trust-col li::before {
+    position: absolute; left: 0; top: 4px; font-family: var(--mono); font-size: 12px;
+  }
+  .trust-col.good li::before { content: '+'; color: var(--green); }
+  .trust-col.bad li::before { content: '–'; color: var(--clay); }
+
+  /* цитата-настрій */
+  .quote {
+    margin-top: 18px; padding: 18px 22px;
+    background: var(--line-soft); border-radius: 12px;
+  }
+  .quote blockquote { font-size: 17px; font-weight: 600; line-height: 1.45; font-style: italic; }
+  .quote .q-note { font-size: 13px; color: var(--muted); margin-top: 8px; }
+  .quote .src { font-size: 12.5px; }
+
+  .note { font-size: 12.5px; color: var(--muted); margin-top: 16px; max-width: 72ch; }
+  .src-line { font-size: 12.5px; color: var(--muted); margin-top: 14px; }
+
+  footer {
+    margin-top: 96px; border-top: 1px solid var(--line); padding-top: 18px;
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+    font-family: var(--mono); font-size: 11.5px; color: var(--muted);
+  }
+  footer a { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+  footer a:hover { color: var(--clay); }
+
+  /* ── Локальні акценти критики (у дусі сторінки, на наявних токенах) ── */
+  /* бейдж вердикту в таблицях */
+  .v {
+    display: inline-flex; align-items: center; gap: 5px; white-space: nowrap;
+    font-family: var(--mono); font-size: 11px; font-weight: 600;
+    letter-spacing: .03em; padding: 3px 9px; border-radius: 20px;
+    border: 1px solid transparent;
+  }
+  .v-ok   { color: var(--green); background: var(--green-soft); border-color: oklch(88% 0.04 150); }
+  .v-hyp  { color: oklch(58% 0.12 75); background: oklch(95% 0.04 80); border-color: oklch(88% 0.05 80); }
+  .v-fab  { color: var(--clay); background: var(--clay-soft); border-color: oklch(89% 0.03 50); }
+
+  /* кольорова смужка зліва на рядку залежно від вердикту */
+  .tbl-audit td:first-child { font-weight: 600; color: var(--ink); }
+  .tbl-audit td.vc { white-space: nowrap; }
+  tr.r-ok  td:first-child { box-shadow: inset 3px 0 0 var(--green); }
+  tr.r-hyp td:first-child { box-shadow: inset 3px 0 0 oklch(70% 0.12 80); }
+  tr.r-fab td:first-child { box-shadow: inset 3px 0 0 var(--clay); }
+  .tbl-audit td .tag { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .tbl-audit td .why { color: var(--muted); }
+
+  /* мітка [?] */
+  .qm {
+    font-family: var(--mono); font-size: 11px; font-weight: 600;
+    color: var(--clay); background: var(--clay-soft);
+    padding: 1px 6px; border-radius: 5px; border: 1px solid oklch(89% 0.03 50);
+  }
+
+  /* легенда вердиктів */
+  .legend { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+
+  /* підсумкові лічильники */
+  .tally { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 14px; }
+  .tally-card {
+    border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px;
+    background: oklch(98.5% 0.004 75);
+  }
+  .tally-card.ok  { background: var(--green-soft); border-color: oklch(88% 0.04 150); }
+  .tally-card.hyp { background: oklch(96% 0.03 80); border-color: oklch(88% 0.05 80); }
+  .tally-card.fab { background: var(--clay-soft); border-color: oklch(89% 0.03 50); }
+  .tally-num { font-size: 34px; font-weight: 800; letter-spacing: -.02em; line-height: 1; }
+  .tally-card.ok  .tally-num { color: var(--green); }
+  .tally-card.hyp .tally-num { color: oklch(56% 0.12 75); }
+  .tally-card.fab .tally-num { color: var(--clay); }
+  .tally-lbl {
+    font-family: var(--mono); font-size: 10.5px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-top: 10px;
+  }
+
+  /* акцент «найнебезпечніше» — другий стовпець */
+  .tbl-danger td:first-child { font-weight: 700; color: var(--ink); min-width: 200px; }
+
+  @media (max-width: 900px) {
+    html { scroll-padding-top: 72px; }
+    .shell { display: block; padding: 0 20px; }
+    .sidenav {
+      position: sticky; flex-direction: row; align-items: center; gap: 12px;
+      width: auto; height: 52px; padding: 0 20px; margin: 0 -20px;
+      border-right: none; border-bottom: 1px solid var(--line);
+      background: var(--paper); z-index: 50;
+    }
+    .brand { font-size: 15px; }
+    .brand span { display: none; }
+    .nav-cap, .nav-page.soon { display: none; }
+    .nav-page { margin-left: 0; padding: 6px 10px; }
+    .nav-links {
+      flex-direction: row; margin: 0 0 0 auto;
+      overflow-x: auto; scrollbar-width: none;
+    }
+    .nav-links::-webkit-scrollbar { display: none; }
+    .nav-links a { margin-left: 0; padding: 6px 10px; }
+    .nav-links a .n { display: none; }
+    .nav-foot { display: none; }
+    .page { max-width: none; padding-bottom: 80px; }
+  }
+
+  @media (max-width: 720px) {
+    h1 { font-size: 25px; }
+    section { margin-top: 64px; }
+    .row { grid-template-columns: 1fr; gap: 2px; padding: 12px 0; }
+    .trust-cols { grid-template-columns: 1fr; }
+    .tally { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#overview">До змісту</a>
+
+<div class="shell">
+
+<nav class="sidenav" aria-label="Навігація">
+  <a class="brand" href="index.html">Куток<span>WORKSPACE</span></a>
+
+  <p class="nav-cap">Сторінки</p>
+  <a class="nav-page" href="index.html">Ресерч</a>
+  <a class="nav-page" href="personas.html">Персони</a>
+  <a class="nav-page" href="jtbd.html">JTBD</a>
+  <a class="nav-page active" href="#overview" aria-current="page">Критика</a>
+  <div class="nav-links" aria-label="Розділи критики">
+    <a href="#overview"><span class="n">00</span>Огляд</a>
+    <a href="#audit"><span class="n">01</span>Аудит тверджень</a>
+    <a href="#danger"><span class="n">02</span>Найнебезпечніше</a>
+    <a href="#questions"><span class="n">03</span>Питання доресерчу</a>
+    <a href="#summary"><span class="n">04</span>Підсумок</a>
+  </div>
+
+  <a class="nav-page soon" aria-disabled="true">User flow</a>
+  <a class="nav-page soon" aria-disabled="true">Wireframes</a>
+
+  <div class="nav-foot">
+    <a href="critique.md">critique.md</a><br>
+    <a href="https://github.com/denysosadchyi/kutok">GitHub</a><br>
+    червень 2026
+  </div>
+</nav>
+
+<main class="page">
+
+  <!-- Огляд -->
+  <header class="hero" id="overview">
+    <p class="kicker">Куток · критика</p>
+    <h1>Аудит персон і JTBD: що тримається, що вигадано</h1>
+    <p class="lede">Той самий Claude, що писав персони, добре знаходить де схалтурив — якщо прямо попросити. Первинних даних (інтерв'ю) нема — тому <b>база крихка за визначенням</b>. Чотири незалежні аудити (персони · JTBD · цитати · вплив-на-дизайн) злито в один список.</p>
+    <p class="hero-meta mono">✅ 21 підтверджено · 🟡 17 гіпотез · 🔴 6 вигадано · 6 дизайн-ризиків · 3 питання доресерчу</p>
+
+    <p class="callout">Нотація: <code>[?]</code> — гіпотеза без підтвердження. Вердикт: <span class="v v-ok">✅ підтверджено</span> / <span class="v v-hyp">🟡 гіпотеза</span> / <span class="v v-fab">🔴 вигадано</span>. Джерело: <a href="critique.md">critique.md</a>.</p>
+
+    <div class="legend">
+      <span class="v v-ok">✅ підтверджено — є рядок у research.md / competitors.md</span>
+      <span class="v v-hyp">🟡 гіпотеза — правдоподібно, без польового підтвердження</span>
+      <span class="v v-fab">🔴 вигадано — числа без джерела, grep = 0</span>
+    </div>
+  </header>
+
+  <!-- 01 Аудит тверджень -->
+  <section id="audit" aria-labelledby="audit-h">
+    <div class="sec-head"><span class="sec-num mono">01</span><h2 id="audit-h">Аудит тверджень</h2></div>
+    <p class="sec-lede">Однакові твердження з різних аудитів — один рядок. Колір смужки зліва і бейдж у стовпці «Вердикт» кодують статус. Згруповано підзаголовками за <a href="critique.md">critique.md</a>.</p>
+
+    <h3>personas.md — Чому саме ці три / структура персон</h3>
+    <div class="tbl-wrap tbl-audit">
+      <table>
+        <tr><th scope="col">Твердження</th><th scope="col">Де</th><th scope="col">Вердикт</th><th scope="col">Чому</th></tr>
+        <tr class="r-hyp"><td>Аня (PRIMARY) — переїзниця без локальної мережі, найгостріший біль довіри, повністю залежить від платформи</td><td class="why">Чому саме ці три / Персона 1</td><td class="vc"><span class="v v-hyp">🟡 гіпотеза</span><br><span class="tag">marked_hypothesis</span></td><td class="why">CLAUDE.md дає аудиторію 22–30, контекст «переїзд», страх «незнайома людина» — правдоподібно. Але конкретна персона і вибір саме її як PRIMARY — інтерпретація, не дані. Шапка чесно дисклеймить. <b>Найфундаментальніший важіль:</b> на «важливість 3 для Ані» спирається весь відбір MVP-ядра.</td></tr>
+        <tr class="r-hyp"><td>Олена 28 — господар підселяє не для заробітку, а щоб ділити оренду; страх «хто увійде в МІЙ дім»</td><td class="why">Персона 2</td><td class="vc"><span class="v v-hyp">🟡 гіпотеза</span><br><span class="tag">source_missing</span></td><td class="why">CLAUDE.md дає роль «Господар» і «одна людина — обидві ролі». Мотив «ділити оренду, не заробіток» і емоція «мій дім» — домислені, в джерелах відсутні. Олена дає supply і обґрунтовує дві сторони матчу.</td></tr>
+        <tr class="r-hyp"><td>Артем 26 — місцевий шукач, мережа вичерпана за 2 роки</td><td class="why">Персона 3 / Контекст</td><td class="vc"><span class="v v-hyp">🟡 гіпотеза</span><br><span class="tag">source_missing</span></td><td class="why">Жодне джерело не містить локального шукача з вичерпаною мережею. CLAUDE.md дає лише роль «Шукач». «Мережа вичерпана за 2 роки» — наратив без даних.</td></tr>
+        <tr class="r-hyp"><td>Таблиця пріоритетів PRIMARY/secondary і вибір саме трьох персон</td><td class="why">Чому саме ці три</td><td class="vc"><span class="v v-hyp">🟡 гіпотеза</span><br><span class="tag">source_supports</span></td><td class="why">Розподіл ролей є в CLAUDE.md. Але вибір трьох персон і пріоритезація — аналітичне рішення без польового підтвердження (interviews.md порожній).</td></tr>
+        <tr class="r-ok"><td>Шапка: первинних даних нема, персони на кабінетному ресерчі, <span class="qm">[?]</span> = гіпотеза</td><td class="why">Шапка (рядки 2–4)</td><td class="vc"><span class="v v-ok">✅ підтверджено</span><br><span class="tag">source_supports</span></td><td class="why">interviews.md: усі чекбокси <span class="mono">[ ]</span>, H1–H4 «Не перевірено». Дисклеймер чесний. Проблема не в ньому, а в тому що частина US-цифр у тілі все одно без <span class="qm">[?]</span>.</td></tr>
+      </table>
+    </div>
+
+    <h3>personas.md — Аня (PRIMARY)</h3>
+    <div class="tbl-wrap tbl-audit">
+      <table>
+        <tr><th scope="col">Твердження</th><th scope="col">Де</th><th scope="col">Вердикт</th><th scope="col">Чому</th></tr>
+        <tr class="r-ok"><td>FB-групи: сотні оголошень, не відрізниш фейк; профіль — 3 фото і нічого</td><td class="why">Аня / Болі</td><td class="vc"><span class="v v-ok">✅ підтверджено</span><br><span class="tag">source_supports</span></td><td class="why">competitors.md: FB-групи де-факто основний канал, сигнали довіри імпровізують. research.md патерн 1: фейки, спам. «3 фото» — ілюстративне перебільшення, суть тримається.</td></tr>
+        <tr class="r-ok"><td>Telegram: анонімні нікнейми, адмін не верифікує</td><td class="why">Аня / Болі</td><td class="vc"><span class="v v-ok">✅ підтверджено</span><br><span class="tag">source_supports</span></td><td class="why">competitors.md: TG HomeMate/КНУсусіди — «повна анонімність = нульова довіра», адміни як ручна модерація.</td></tr>
+        <tr class="r-ok"><td>OLX: контакт тікає у Viber, людина — анонім; рейтинг продавця не валідний для житла</td><td class="why">Аня / Болі</td><td class="vc"><span class="v v-ok">✅ підтверджено</span><br><span class="tag">source_supports</span></td><td class="why">competitors.md: контакти тікають у Viber/телефон; рейтинг без верифікації особи. research.md Gap 3.</td></tr>
+        <tr class="r-hyp"><td>Тригери Ані: телефон ✓, фото звірено з селфі, відгуки, заповнений профіль переконують</td><td class="why">Аня / Тригери</td><td class="vc"><span class="v v-hyp">🟡 гіпотеза</span><br><span class="tag">marked_hypothesis</span></td><td class="why">Механізми з research.md топ-3 (R1–R3, бенчмарк Bumble/Airbnb) — але це гіпотези/екстраполяція, не дані про САМУ Аню. Файл коректно цитує R1–R3 як гіпотези. Механізми → прямо в MVP.</td></tr>
+        <tr class="r-hyp"><td>Відлякує Аню: ціна суттєво нижча за ринок (червоний прапор шахрайства)</td><td class="why">Аня / Тригери</td><td class="vc"><span class="v v-hyp">🟡 гіпотеза</span><br><span class="tag">source_overstated</span></td><td class="why">competitors.md: Flatfy має «алгоритм виявлення фейків (ціна нижче ринку)» — підтверджує механізм. Що це відлякує саме Аню — домисел.</td></tr>
+        <tr class="r-ok"><td>Цитата «Am I going to be killed in my sleep?» — реальна цитата про страх</td><td class="why">Аня / Цитата</td><td class="vc"><span class="v v-ok">✅ підтверджено</span><br><span class="tag">no_source_cited</span></td><td class="why">Атрибутовано зовнішньому TheOdysseyOnline з URL. Реальна за межами проєкту; не одне з 4 internal-джерел. UA-релевантність файл чесно маркує <span class="qm">[?]</span>. Добра практика.</td></tr>
+      </table>
+    </div>
+
+    <h3>personas.md — Олена (господар)</h3>
+    <div class="tbl-wrap tbl-audit">
+      <table>
+        <tr><th scope="col">Твердження</th><th scope="col">Де</th><th scope="col">Вердикт</th><th scope="col">Чому</th></tr>
+        <tr class="r-fab"><td>Олена: 7–8 зустрічей з 10 — даремно витрачений час</td><td class="why">Персона 2 / Болі (+ jtbd RJ1 «8 з 10»)</td><td class="vc"><span class="v v-fab">🔴 вигадано</span><br><span class="tag">source_missing</span></td><td class="why">Число «7–8/10» немає в жодному джерелі (grep по research/competitors/CLAUDE/interviews = 0). Подане як факт без <span class="qm">[?]</span>, походження не простежується. Керує оцінкою RJ1=3 для Олени в jtbd-матриці.</td></tr>
+        <tr class="r-fab"><td>Тригери Олени: «41% конфліктів через чистоту» (ApartmentGuide)</td><td class="why">Персона 2 / Тригери (виноска)</td><td class="vc"><span class="v v-fab">🔴 вигадано</span><br><span class="tag">source_overstated</span></td><td class="why">41% — US ApartmentGuide, відсутнє в internal-джерелах. У блоці Олени подане як плоский факт, хоча S4 чесно маркує «USA/UK, екстраполювати обережно». Суперечність усередині файлу.</td></tr>
+        <tr class="r-ok"><td>Цитата «Everyone interviews beautifully… You don't know what a roommate is really like…» — реальна</td><td class="why">Олена / Цитата</td><td class="vc"><span class="v v-ok">✅ підтверджено</span><br><span class="tag">no_source_cited</span></td><td class="why">Атрибутовано BrickUnderground з URL. Реальна за межами проєкту, US-контекст. UA-цитата <span class="qm">[?]</span> не знайдена — чесно.</td></tr>
+      </table>
+    </div>
+
+    <h3>personas.md — Артем (місцевий шукач)</h3>
+    <div class="tbl-wrap tbl-audit">
+      <table>
+        <tr><th scope="col">Твердження</th><th scope="col">Де</th><th scope="col">Вердикт</th><th scope="col">Чому</th></tr>
+        <tr class="r-fab"><td>Артем: «60% знайшли сусіда через існуючі зв'язки» (ApartmentGuide)</td><td class="why">Персона 3 / S3 (+ jtbd SJ2)</td><td class="vc"><span class="v v-fab">🔴 вигадано</span><br><span class="tag">source_missing / overstated</span></td><td class="why">60% і ApartmentGuide відсутні в усіх internal-джерелах (grep = 0). US-survey екстрапольоване на UA без <span class="qm">[?]</span>. Несе Висновок №3 jtbd (SJ2 у ядро MVP як «блокер для переїзниці»). Найвища залежність дизайну від неперевіреного US-числа.</td></tr>
+        <tr class="r-fab"><td>S3 додатково приписує 60% і competitors.md, і ApartmentGuide одночасно</td><td class="why">personas S3 / джерело</td><td class="vc"><span class="v v-fab">🔴 вигадано</span><br><span class="tag">source_missing</span></td><td class="why">competitors.md НЕ містить «60%» і взагалі не згадує ApartmentGuide (рядок 9 — лише якісно «взаємні друзі»). Класичний випадок: in-repo джерело процитовано як підтримку числа, якого воно не містить.</td></tr>
+        <tr class="r-hyp"><td>Соц.зв'язки — реалістичний варіант для Артема; «підтверджено командою як дуже бажана фіча»</td><td class="why">Артем / Тригери + виноска</td><td class="vc"><span class="v v-hyp">🟡 гіпотеза</span><br><span class="tag">source_overstated</span></td><td class="why">CLAUDE.md лишає «соц.зв'язки» серед ВІДКРИТИХ питань довіри; interviews.md H4 «Не перевірено». «Підтверджено командою» = усний інпут, не зафіксований у джерелах; «бажана фіча» = гіпотеза, не підтвердження. jtbd тримає це коректно в секції «Гіпотези».</td></tr>
+      </table>
+    </div>
+
+    <h3>personas.md — Спостереження-база (S1–S7)</h3>
+    <div class="tbl-wrap tbl-audit">
+      <table>
+        <tr><th scope="col">Твердження</th><th scope="col">Де</th><th scope="col">Вердикт</th><th scope="col">Чому</th></tr>
+        <tr class="r-ok"><td>S1 — типовий шлях: FB/TG → директ → Viber → зустріч → рішення на інтуїції</td><td class="why">S1</td><td class="vc"><span class="v v-ok">✅ підтверджено</span><br><span class="tag">source_supports</span></td><td class="why">competitors.md: TG швидкий канал + анонімність; OLX «контакти тікають у Viber». research.md Gap 3 / патерн 3.</td></tr>
+        <tr class="r-ok"><td>S2 — FB/TG де-факто єдині інструменти, безкоштовно, нульова системна довіра</td><td class="why">S2</td><td class="vc"><span class="v v-ok">✅ підтверджено</span><br><span class="tag">source_supports</span></td><td class="why">competitors.md: «головний конкурент за звичкою: безкоштовні, швидкі, з нульовою довірою». research.md те саме.</td></tr>
+        <tr class="r-fab"><td>S3 — сигнали довіри імпровізовані: спільні друзі (найсильніший), фото, текст, адміни; 60% через зв'язки</td><td class="why">S3</td><td class="vc"><span class="v v-fab">🔴 вигадано</span><br><span class="tag">source_overstated</span></td><td class="why">Перша частина (імпровізовані сигнали) — підтверджена competitors.md. Але «60% через зв'язки» — US ApartmentGuide без <span class="qm">[?]</span>, а «спільні друзі — найсильніший сигнал» — домисел. Підтверджене змішане з вигаданою цифрою як факт.</td></tr>
+        <tr class="r-fab"><td>S4 — топ тригери конфліктів: чистота 41%, фінансова нерівність 1 з 4, несумісний стиль (USA/UK)</td><td class="why">S4</td><td class="vc"><span class="v v-fab">🔴 вигадано</span><br><span class="tag">source_overstated</span></td><td class="why">Усі три числа — US ApartmentGuide, відсутні в internal-джерелах. Заголовок чесно додає «екстраполювати обережно», але числа всередині без <span class="qm">[?]</span> і живуть як факти в jtbd RJ4. «1 з 4» не простежується навіть до тексту виноски.</td></tr>
+        <tr class="r-ok"><td>S5 — повний профіль → 88% довіри; BlaBlaCar × NYU, 18 000+, майже рівень друзів (92%)</td><td class="why">S5</td><td class="vc"><span class="v v-ok">✅ підтверджено</span><br><span class="tag">source_supports</span></td><td class="why">research.md: «BlaBlaCar × NYU Stern (18 000+, 11 країн, 2016): 88% довіряють повним профілям проти 92% друзям, 58% колегам». Точний збіг. Глобал→UA екстраполює сам research.md; цифра відтворена точно.</td></tr>
+        <tr class="r-ok"><td>S6 — бейдж без розшифровки не знімає страх; усі конкуренти — значок без пояснення</td><td class="why">S6</td><td class="vc"><span class="v v-ok">✅ підтверджено</span><br><span class="tag">source_supports</span></td><td class="why">research.md Gap 2 + competitors.md патерн 1: «значок не пояснює що саме перевірено». Тримається повністю.</td></tr>
+        <tr class="r-hyp"><td>S7 — обов'язкова верифікація → покриття &gt;80% (проти ~20% платної); SpareRoom 20%, Bumble масова</td><td class="why">S7</td><td class="vc"><span class="v v-hyp">🟡 гіпотеза</span><br><span class="tag">source_overstated</span></td><td class="why">~20% SpareRoom — <b>підтверджено</b> (competitors.md, research.md). Але &gt;80% — це <b>прогноз гіпотези R1</b> («покриття БУДЕ &gt;80%»), а S7 подає його заголовком-фактом. Посилення модальності гіпотези до факту.</td></tr>
+      </table>
+    </div>
+
+    <h3>personas.md — Чого не знаємо</h3>
+    <div class="tbl-wrap tbl-audit">
+      <table>
+        <tr><th scope="col">Твердження</th><th scope="col">Де</th><th scope="col">Вердикт</th><th scope="col">Чому</th></tr>
+        <tr class="r-ok"><td>Білі плями: кількість кандидатів, час пошуку, готовність платити, UA-відтворюваність тригерів, UA-цитати, причина закриття LUN</td><td class="why">Чого не знаємо</td><td class="vc"><span class="v v-ok">✅ підтверджено</span><br><span class="tag">source_supports</span></td><td class="why">Найсильніша частина файлу методологічно. Узгоджено з interviews.md і research.md. Парадокс: ця секція сама спростовує тверді формулювання 41%/60% у блоках персон — автор знав про екстраполяцію, але не маркував її в усіх місцях.</td></tr>
+      </table>
+    </div>
+
+    <h3>jtbd.md — Main Job і Related Jobs</h3>
+    <div class="tbl-wrap tbl-audit">
+      <table>
+        <tr><th scope="col">Твердження</th><th scope="col">Де</th><th scope="col">Вердикт</th><th scope="col">Чому</th></tr>
+        <tr class="r-ok"><td>Main Job: «впевнитися що людина реальна → рішення без страху пошкодувати»</td><td class="why">Main Job (рядок 13)</td><td class="vc"><span class="v v-ok">✅ підтверджено</span><br><span class="tag">source_supports</span></td><td class="why">CLAUDE.md прямо: «головний страх — незнайома людина поруч». research.md Gap 1. Сам job коректний.</td></tr>
+        <tr class="r-hyp"><td>Main Job Примітка: «Підтверджено командою: довіра — на першому місці, не ціна і не локація»</td><td class="why">Main Job (рядок 19)</td><td class="vc"><span class="v v-hyp">🟡 гіпотеза</span><br><span class="tag">no_source_cited</span></td><td class="why">Жодне джерело не містить ранжування «довіра &gt; ціна &gt; локація». CLAUDE.md каже що довіра — головна цінність ПРОДУКТУ (позиціонування бренду), не виміряний пріоритет КОРИСТУВАЧА. «Підтверджено командою» маскує відсутність даних під підтвердження. Має бути <span class="qm">[?]</span>, особливо «не ціна».</td></tr>
+        <tr class="r-hyp"><td>RJ1: швидко відсіяти нерелевантне — Paradox of choice + Олена «8 з 10»</td><td class="why">RJ1 (рядки 27–32)</td><td class="vc"><span class="v v-hyp">🟡 гіпотеза</span><br><span class="tag">source_supports</span></td><td class="why">research.md Патерн №1 справді називає «Paradox of choice». Job тримається. Але «8 з 10» округлено з вигаданого «7–8» — успадковує fabricated-ризик (див. вище).</td></tr>
+        <tr class="r-ok"><td>RJ2: переконатися що людина реальна до контакту — TheOdysseyOnline цитата</td><td class="why">RJ2 (рядки 38–43)</td><td class="vc"><span class="v v-ok">✅ підтверджено</span><br><span class="tag">source_supports</span></td><td class="why">personas містить цитату з URL. research.md Gap 2. US-цитата вжита як emotional illustration, не екстрапольована в число — допустимо.</td></tr>
+        <tr class="r-ok"><td>RJ3: розмова лише при взаємному інтересі — «захист від спаму критичний», R4</td><td class="why">RJ3 (рядки 49–54)</td><td class="vc"><span class="v v-ok">✅ підтверджено</span><br><span class="tag">source_supports</span></td><td class="why">research.md Патерн №4 дослівно «Захист від спаму критичний»; R4 існує. jtbd коректно передає R4 як гіпотезу.</td></tr>
+        <tr class="r-ok"><td>RJ4: прийти підготовленим — BrickUnderground цитата</td><td class="why">RJ4 (рядки 60–65)</td><td class="vc"><span class="v v-ok">✅ підтверджено</span><br><span class="tag">source_supports</span></td><td class="why">personas містить цитату з URL. research.md R3. US-цитата ілюстративна.</td></tr>
+        <tr class="r-ok"><td>RJ5: підтвердити надійність — Couchsurfing 20 років, Airbnb двосторонні, вікно 14 днів</td><td class="why">RJ5 (рядки 71–77)</td><td class="vc"><span class="v v-ok">✅ підтверджено</span><br><span class="tag">source_supports</span></td><td class="why">research.md: CS references 20 років, Airbnb одночасні, «вікно 14 днів». R5 чесно названо гіпотезою. Зразковий запис: механізм-факт відділено від гіпотези конверсії, тригер <span class="qm">[?]</span>.</td></tr>
+        <tr class="r-hyp"><td>RJ5 Примітка: «Мотивацію залишати відгук — підтверджено командою»</td><td class="why">RJ5 / рядок 77</td><td class="vc"><span class="v v-hyp">🟡 гіпотеза</span><br><span class="tag">no_source_cited</span></td><td class="why">«Підтверджено командою» без джерела; interviews.md H2 «Не перевірено». Частина з <span class="qm">[?]</span> на тригер чесна, але «мотивацію підтверджено» переоцінює статус.</td></tr>
+      </table>
+    </div>
+
+    <h3>jtbd.md — Emotional / Social Jobs</h3>
+    <div class="tbl-wrap tbl-audit">
+      <table>
+        <tr><th scope="col">Твердження</th><th scope="col">Де</th><th scope="col">Вердикт</th><th scope="col">Чому</th></tr>
+        <tr class="r-ok"><td>EJ1: відчути впевненість, а не полегшення</td><td class="why">EJ1 (рядки 87–92)</td><td class="vc"><span class="v v-ok">✅ підтверджено</span><br><span class="tag">source_supports</span></td><td class="why">CLAUDE.md (страх) + personas Аня. Правдоподібна інтерпретація на наявних джерелах.</td></tr>
+        <tr class="r-ok"><td>EJ2: відчути що зробила все залежне</td><td class="why">EJ2 (рядки 98–103)</td><td class="vc"><span class="v v-ok">✅ підтверджено</span><br><span class="tag">source_supports</span></td><td class="why">personas Олена «проблема вже всередині квартири»; research.md Gap 3. Точне перефразування Gap 3.</td></tr>
+        <tr class="r-hyp"><td>SJ1: 88% довіряють повним профілям (BlaBlaCar×NYU), майже як друзям (92%)</td><td class="why">SJ1 (рядки 113–118)</td><td class="vc"><span class="v v-hyp">🟡 гіпотеза</span><br><span class="tag">source_overstated</span></td><td class="why">Число точне й простежуване. АЛЕ це BlaBlaCar (карпулінг, 11 країн, 2016) — НЕ підселення і НЕ UA. Вжито як обґрунтування «важливість 3 для Ані» без позначки екстраполяції. personas S4 ставить дисклеймер на ApartmentGuide — тут на BlaBlaCar його нема.</td></tr>
+        <tr class="r-fab"><td>SJ2: 60% через зв'язки (ApartmentGuide) — «Аня поза цими 60%»</td><td class="why">SJ2 (рядки 124–129)</td><td class="vc"><span class="v v-fab">🔴 вигадано</span><br><span class="tag">source_missing</span></td><td class="why">60% — US ApartmentGuide, відсутнє в усіх internal-джерелах. Логіка «Аня поза 60%» — інтерпретація на вигаданому числі. Несе SJ2 у ядро MVP (Висновок №3).</td></tr>
+        <tr class="r-ok"><td>Секція «Гіпотези»: спільні знайомі / де роблю не так / compatibility hint — позначені непідтвердженими</td><td class="why">Гіпотези (рядки 137–141)</td><td class="vc"><span class="v v-ok">✅ підтверджено</span><br><span class="tag">marked_hypothesis</span></td><td class="why">Кожен job винесено з основного списку з «Чому гіпотеза» і «Що перевірити». Compatibility scoring поза MVP (CLAUDE.md, research.md cold-start). Зразкова дисципліна <span class="qm">[?]</span>.</td></tr>
+      </table>
+    </div>
+
+    <h3>jtbd.md — Зв'язок Jobs→механізми, матриця, висновок</h3>
+    <div class="tbl-wrap tbl-audit">
+      <table>
+        <tr><th scope="col">Твердження</th><th scope="col">Де</th><th scope="col">Вердикт</th><th scope="col">Чому</th></tr>
+        <tr class="r-hyp"><td>RJ5 → «Відгуки, вікно 14 днів» як механізм Кутка</td><td class="why">Зв'язок (рядок 153)</td><td class="vc"><span class="v v-hyp">🟡 гіпотеза</span><br><span class="tag">source_supports</span></td><td class="why">«14 днів» — параметр Couchsurfing (research.md / R5), запозичений на Куток без обґрунтування чому саме 14. Подано як механізм-рішення, не факт про користувача — прийнятно. jtbd сам ставить тригер <span class="qm">[?]</span>.</td></tr>
+        <tr class="r-hyp"><td>Матриця Main Job: Аня 3 / Олена 3 / Артем 2</td><td class="why">Матриця (рядок 165)</td><td class="vc"><span class="v v-hyp">🟡 гіпотеза</span><br><span class="tag">source_overstated</span></td><td class="why">CLAUDE.md дає «головний страх», personas — «нуль мережі»/«мій дім». Але самі ОЦІНКИ 3/3/2 — авторське присвоєння. «(personas: …)» створює видимість підтвердження числа, тоді як personas — теж кабінетна гіпотеза. Гіпотеза на гіпотезі.</td></tr>
+        <tr class="r-fab"><td>Матриця RJ1: Олена 3 («8 з 10 даремно — головний біль»)</td><td class="why">Матриця (рядок 166)</td><td class="vc"><span class="v v-fab">🔴 вигадано</span><br><span class="tag">source_missing</span></td><td class="why">Число «8 з 10» вигадане (див. блок Олени) + округлене вгору з «7–8» → посилює видимість точності. Керує оцінкою важливості RJ1 для Олени.</td></tr>
+        <tr class="r-ok"><td>Матриця RJ2/RJ3: «OLX/FB не закривають», «бейдж без розшифровки ніде», «SpareRoom/Roomi запити слабкі»</td><td class="why">Матриця (рядки 167–168)</td><td class="vc"><span class="v v-ok">✅ підтверджено</span><br><span class="tag">source_supports</span></td><td class="why">competitors.md + research.md (патерн 1, патерн 3) тримають «не закривають» і «без розшифровки ніде». Конкурентна частина матриці спирається на competitors.md краще, ніж колонки важливості персон.</td></tr>
+        <tr class="r-hyp"><td>Матриця SJ1: Аня 3 («research.md S5: 88%»)</td><td class="why">Матриця (рядок 173)</td><td class="vc"><span class="v v-hyp">🟡 гіпотеза</span><br><span class="tag">source_overstated</span></td><td class="why">Двояко: (1) посилання «research.md S5» <b>хибне</b> — секція S5 належить personas.md, у research.md секцій S нема; (2) 88% — BlaBlaCar/глобал, екстрапольовано на UA-Аню без <span class="qm">[?]</span>. Мис-цитування секції + домен-перенос.</td></tr>
+        <tr class="r-hyp"><td>Матриця EJ2 та нижні оцінки (1, 2) для secondary-персон</td><td class="why">Матриця (рядок 172)</td><td class="vc"><span class="v v-hyp">🟡 гіпотеза</span><br><span class="tag">no_source_cited</span></td><td class="why">Олена 3 («страшно пустити не ту») — якісно ок. Але Артем 1, Аня 2 — чисті авторські присвоєння без сліду в джерелах. Нижні оцінки системно не підкріплені — заповнення матриці за відчуттям.</td></tr>
+        <tr class="r-ok"><td>Матриця конкурентів: SpareRoom ~20% (платно), Roomi (GlobaliD), Badi (банк), бейдж без розшифровки ніде</td><td class="why">Матриця</td><td class="vc"><span class="v v-ok">✅ підтверджено</span><br><span class="tag">source_supports</span></td><td class="why">competitors.md: Roomi→GlobaliD, Badi→банк «Trusted User», SpareRoom→Onfido $15 / ~20%. Деталі процитовані акуратно.</td></tr>
+        <tr class="r-hyp"><td>Висновок «3 jobs у ядро MVP»: RJ2, RJ3, SJ2 (критерій «Аня:3 І не закрито ринком»)</td><td class="why">Висновок (рядки 180–188)</td><td class="vc"><span class="v v-hyp">🟡 гіпотеза</span><br><span class="tag">source_overstated</span></td><td class="why">Критерій застосовано послідовно, «не закрито ринком» тримається на competitors.md. АЛЕ вхід критерію — «Аня:3» — з матриці непідтверджених трійок. SJ2 у ядро особливо крихке: стоїть на US-survey 60% без UA-валідації. Найвпливовіше рішення файлу успадковує всі екстраполяції матриці.</td></tr>
+        <tr class="r-ok"><td>Висновок «кандидати на виліт»: Відгуки (cold start) і Completeness як окремий UI</td><td class="why">Виліт (рядки 194–197)</td><td class="vc"><span class="v v-ok">✅ підтверджено</span><br><span class="tag">source_supports</span></td><td class="why">Cold-start проти відгуків прямо в research.md Патерн №3 («мало профілів → порожні результати»). Completeness «усі на рівні 2» слідує з власної матриці. Найміцніший висновок: cold-start — реальний research-факт, не екстраполяція.</td></tr>
+        <tr class="r-ok"><td>Бенчмарк-лідери: Airbnb 32/35, BlaBlaCar 29/35</td><td class="why">Main Job дані (рядок 18)</td><td class="vc"><span class="v v-ok">✅ підтверджено</span><br><span class="tag">source_supports</span></td><td class="why">research.md таблиця дає Airbnb=32, BlaBlaCar=29. Числа збігаються. Нюанс: research.md сам зазначає що скоринг <b>авторський</b>, не зовнішньо валідований — jtbd цього не повторює, але й не спотворює.</td></tr>
+        <tr class="r-ok"><td>Свайп відкинуто (гейміфікація конфліктує з довірою); скоринг — після бази</td><td class="why">Гіпотези (рядок 141)</td><td class="vc"><span class="v v-ok">✅ підтверджено</span><br><span class="tag">source_supports</span></td><td class="why">research.md + CLAUDE.md прямо: свайп не підходить, скоринг — другий вибір за умови бази в тисячі профілів. Узгоджено.</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- 02 Найнебезпечніше -->
+  <section id="danger" aria-labelledby="danger-h">
+    <div class="sec-head"><span class="sec-num mono">02</span><h2 id="danger-h">Найнебезпечніше — дизайн на хиткому ґрунті</h2></div>
+    <p class="sec-lede">Твердження, що <b>впливають на дизайн-рішення</b>, але стоять на <span class="qm">[?]</span> чи вигаданому.</p>
+
+    <div class="tbl-wrap tbl-danger">
+      <table>
+        <tr><th scope="col">Дизайн-рішення</th><th scope="col">На чому стоїть</th><th scope="col">Ризик</th></tr>
+        <tr class="r-fab"><td>SJ2 у ядро MVP — верифікація як замінник соціального сигналу для переїзниці</td><td class="why"><span class="v v-fab">🔴</span> «60% знаходять сусіда через зв'язки» (ApartmentGuide, US, <b>відсутнє в усіх internal-джерелах</b>, grep=0, без <span class="qm">[?]</span>)</td><td class="why">Ціле ядрове рішення MVP тримається на одному US-числі без простежуваного походження. Якщо на UA-ринку соцграф не такий вирішальний — SJ2 переоцінено, а верифікація-як-замінник-мережі — рішення в пошуках проблеми.</td></tr>
+        <tr class="r-hyp"><td>PRIMARY = Аня → весь критерій відбору ядра «важливість 3 для Ані»</td><td class="why"><span class="v v-hyp">🟡</span> Аня — кабінетна персона без жодного інтерв'ю (personas шапка це визнає; interviews.md порожній)</td><td class="why">Пріоритезація персон керує всім MVP-скоупом. Якщо primary насправді господар (supply-обмежений ринок) — три ядрові jobs обрані не під ту сторону. Гіпотеза на гіпотезі: оцінки 3/2/1 успадковують невизначеність персон.</td></tr>
+        <tr class="r-hyp"><td>Обов'язкова верифікація (телефон + селфі) до контакту, ціль покриття &gt;80%</td><td class="why"><span class="v v-hyp">🟡</span> &gt;80% — <b>прогноз гіпотези R1</b> («покриття БУДЕ &gt;80%»), у S7 поданий заголовком-фактом. ~20% SpareRoom — реальне</td><td class="why">Якщо обов'язковість дає фрикцію і реальне покриття нижче — кардинальна механіка (gating контакту верифікацією) стоїть на недосяжному поки таргеті.</td></tr>
+        <tr class="r-hyp"><td>RJ3 у ядро — взаємний інтерес розблоковує чат</td><td class="why"><span class="v v-hyp">🟡</span> Гіпотеза R4 («скарг/спаму БУДЕ менше») + патерн з механіки Tinder/Bumble (dating, не підселення). Оцінки «3/3» з гіпотетичних персон</td><td class="why">research.md прямо тримає R4 як неперевірену гіпотезу. Рішення вже в MVP-ядрі. Якщо для підселення mutual-gating радше гальмує supply (господар хоче бачити всіх) — механіка працює проти Олени.</td></tr>
+        <tr class="r-fab"><td>RJ1=3 для господаря (фільтр до зустрічі — головний біль)</td><td class="why"><span class="v v-fab">🔴</span> «8 з 10 (7–8) зустрічей даремно» — вигадане число, без джерела, без <span class="qm">[?]</span></td><td class="why">Пріоритет фільтрів для господаря завищено вигаданою статистикою. Може перетягнути ресурс MVP на supply-фільтри замість trust-механізмів.</td></tr>
+        <tr class="r-fab"><td>Тригери довіри Олени / зміст профілю (чистота як ключова вісь)</td><td class="why"><span class="v v-fab">🔴</span> «41% конфліктів через чистоту», «фінансова нерівність 1 з 4» (ApartmentGuide, US, без <span class="qm">[?]</span> у блоці персони)</td><td class="why">Поля профілю і фільтри можуть бути спроєктовані під US-патерни конфліктів, які на UA-ринку відтворюються інакше або з іншими вагами.</td></tr>
+        <tr class="r-hyp"><td>Completeness score як видимий сигнал (SJ1, R3)</td><td class="why"><span class="v v-hyp">🟡</span> 88% BlaBlaCar×NYU — число точне, але <b>карпулінг→підселення</b> і <b>глобал→UA</b> не марковано; сам R3 — гіпотеза (H3 «Не перевірено»)</td><td class="why">Менший ризик — jtbd сам ставить completeness у «кандидати на виліт». Але перенос домену без <span class="qm">[?]</span> може завищити очікуваний ефект окремого UI-індикатора.</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- 03 Питання для доресерчу -->
+  <section id="questions" aria-labelledby="questions-h">
+    <div class="sec-head"><span class="sec-num mono">03</span><h2 id="questions-h">3 точкові питання для доресерчу</h2></div>
+    <p class="sec-lede">Пріоритезовано за впливом на дизайн × шансом закрити веб-ресерчем. Питання №1 — першим: найсильніший вплив і реалістично закривається UA-джерелами.</p>
+
+    <div class="tbl-wrap tbl-audit">
+      <table>
+        <tr><th scope="col">#</th><th scope="col">Питання</th><th scope="col">Де шукати відповідь</th><th scope="col">Закривається веб-ресерчем?</th></tr>
+        <tr class="r-ok"><td><b>1</b></td><td class="why">Наскільки на київському ринку підселення пошук реально йде через соціальні зв'язки vs відкриті канали (FB/TG)? Чи справді переїзниця без мережі — у програшній позиції, яку має закрити верифікація (SJ2)?</td><td class="why">UA-джерела: дослідження ринку оренди (DIM.RIA/LUN/OLX звіти), статті про оренду в Києві, обговорення у профільних FB-групах і Reddit r/Kyiv/r/Ukraine; пошук UA-аналога цифри «через знайомих»</td><td class="vc"><span class="v v-ok">✅ Так, частково</span><br><span class="why">Можна знайти UA-контекст каналів пошуку і замінити US-60% на UA-сигнал або хоча б позначити коректним <span class="qm">[?]</span>. Точну UA-цифру — імовірно лише інтерв'ю, але напрям веб закриває.</span></td></tr>
+        <tr class="r-hyp"><td><b>2</b></td><td class="why">Чи відтворюються на UA-ринку тригери конфліктів сусідів (чистота, фінанси) і в яких пропорціях — щоб замінити US-числа 41% / 1-з-4?</td><td class="why">UA-форуми, FB-групи підселення, статті/опитування про конфлікти співмешканців українською; за відсутності UA-даних — чесно лишити <span class="qm">[?]</span></td><td class="vc"><span class="v v-hyp">🟡 Частково</span><br><span class="why">Якісні UA-сигнали (про що сваряться сусіди) веб дасть; точні відсотки під UA — навряд, лишиться <span class="qm">[?]</span> до інтерв'ю.</span></td></tr>
+        <tr class="r-fab"><td><b>3</b></td><td class="why">Хто має бути PRIMARY-персоною на supply-обмеженому ринку — шукач (Аня) чи господар (Олена)? Чи коректно будувати весь MVP-скоуп під попит?</td><td class="why">Бенчмарки маркетплейсів підселення (хто рідша сторона), дані про дефіцит/надлишок кімнат у Києві, причина закриття LUN «Сусіди»; остаточно — інтерв'ю з 5–8 з обох сторін</td><td class="vc"><span class="v v-fab">🔴 Слабко</span><br><span class="why">Веб дасть лише непрямі сигнали (chicken-and-egg маркетплейсів). Рішення про пріоритезацію персон по суті закривається тільки польовими інтерв'ю.</span></td></tr>
+      </table>
+    </div>
+
+    <p class="note"><b>Чому №1 першим:</b> воно (а) найсильніше впливає на дизайн — несе SJ2 у ядро MVP, і (б) реалістично закривається веб-ресерчем UA-джерел, на відміну від №2 (потрібні точні UA-відсотки) і №3 (потрібні інтерв'ю).</p>
+  </section>
+
+  <!-- 04 Підсумок -->
+  <section id="summary" aria-labelledby="summary-h">
+    <div class="sec-head"><span class="sec-num mono">04</span><h2 id="summary-h">Підсумок</h2></div>
+    <p class="sec-lede">Після злиття й дедуплікації findings 4 аудитів.</p>
+
+    <div class="tally">
+      <div class="tally-card ok">
+        <div class="tally-num">✅ 21</div>
+        <div class="tally-lbl">Підтверджено</div>
+      </div>
+      <div class="tally-card hyp">
+        <div class="tally-num">🟡 17</div>
+        <div class="tally-lbl">Гіпотез</div>
+      </div>
+      <div class="tally-card fab">
+        <div class="tally-num">🔴 6</div>
+        <div class="tally-lbl">Вигадано</div>
+      </div>
+    </div>
+
+    <p class="note" style="margin-top:22px">Каркас тримається — усі ключові механізми (бейдж з розшифровкою, обов'язкова верифікація, mutual-interest, 88% повноти профілю) спираються на реальні рядки research.md і competitors.md; провали зосереджені у US-цифрах (41% / 60% / 1-з-4 / «8 з 10»), яких нема в базі і які при цьому несуть найвпливовіше рішення MVP (SJ2 у ядро) — тобто база не стільки хибна, скільки <b>оптимістично видає кабінетну екстраполяцію за дані</b>, і це лікується лише доресерчем за питанням №1 і польовими інтерв'ю.</p>
+
+    <p class="src-line">Оновлено: червень 2026. Наступний крок: доресерч за питанням №1 → <a href="research.md">research.md</a> «Доресерч після персон». Джерело: <a href="critique.md">critique.md</a>.</p>
+  </section>
+
+  <footer>
+    <span>Куток · критика</span>
+    <span><a href="critique.md">critique.md</a> · <a href="index.html">ресерч</a> · <a href="personas.html">персони</a> · <a href="jtbd.html">JTBD</a> · <a href="https://github.com/denysosadchyi/kutok">GitHub</a></span>
+    <span>червень 2026</span>
+  </footer>
+
+</main>
+
+</div>
+
+<script>
+  const links = [...document.querySelectorAll('.nav-links a')];
+  const byId = new Map(links.map(a => [a.hash.slice(1), a]));
+  const spy = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const link = byId.get(e.target.id);
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-15% 0px -75% 0px' });
+  ['overview','audit','danger','questions','summary']
+    .forEach(id => { const el = document.getElementById(id); if (el) spy.observe(el); });
+</script>
+</body>
+</html>
