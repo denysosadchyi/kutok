@@ -203,6 +203,58 @@
   }
   .scope-note b { color: var(--ink); }
 
+  /* ── Екрани ── */
+  .persona {
+    display: inline-block; font-family: var(--mono); font-size: 9.5px; font-weight: 600;
+    letter-spacing: .06em; padding: 2px 6px; border-radius: 4px; margin-left: 4px;
+    vertical-align: middle;
+  }
+  .persona.p { color: var(--clay); background: var(--clay-soft); }
+  .persona.s { color: var(--muted); background: var(--line-soft); }
+
+  .legend-row {
+    display: flex; flex-wrap: wrap; gap: 18px; margin-top: 18px;
+    font-size: 12.5px; color: var(--muted);
+  }
+  .legend-row .persona { margin-left: 0; margin-right: 6px; }
+
+  .screens { display: flex; flex-direction: column; gap: 0; margin-top: 24px; }
+
+  .sgroup {
+    border-top: 1px solid var(--line);
+    padding: 26px 0;
+  }
+  .sgroup:first-child { border-top: 2px solid var(--ink); }
+  .sgroup-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .sgroup-letter {
+    font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--clay);
+    min-width: 18px;
+  }
+  .sgroup-title { font-size: 16px; font-weight: 800; letter-spacing: -.01em; }
+  .sgroup-soon {
+    font-family: var(--mono); font-size: 9.5px; font-weight: 600; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--muted); border: 1px solid var(--line);
+    padding: 2px 7px; border-radius: 100px;
+  }
+  .sgroup-note { font-size: 13px; color: var(--muted); margin-top: 6px; max-width: 66ch; }
+
+  .screen-list { list-style: none; margin: 16px 0 0; padding-left: 30px; }
+  .screen-list > li {
+    padding: 9px 0; border-bottom: 1px solid var(--line-soft);
+    display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+  }
+  .screen-list > li:last-child { border-bottom: none; }
+  .screen-name { font-size: 14px; font-weight: 600; }
+  .screen-sub {
+    font-size: 12.5px; color: var(--muted); flex-basis: 100%;
+    padding-left: 2px; margin-top: -2px;
+  }
+  .screen-jobs { display: inline-flex; gap: 2px; flex-wrap: wrap; }
+  .sirota {
+    font-family: var(--mono); font-size: 9.5px; font-weight: 600; letter-spacing: .08em;
+    color: oklch(52% 0.13 25); background: oklch(94% 0.03 25); padding: 2px 7px; border-radius: 4px;
+  }
+
   /* ── Під питанням ── */
   .tbl-wrap {
     overflow-x: auto; margin-top: 16px;
