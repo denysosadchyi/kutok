@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<title>Куток — Information Architecture</title>
+<meta name="description" content="Загальна навігація продукту: онбординг, таб-бар із 4 вкладок, єдине дерево екранів з jobs.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --paper:     oklch(97.5% 0.006 75);
+    --ink:       oklch(25% 0.012 60);
+    --muted:     oklch(48% 0.015 65);
+    --line:      oklch(90% 0.008 75);
+    --line-soft: oklch(93.5% 0.006 75);
+    --clay:      oklch(52% 0.115 40);
+    --clay-soft: oklch(94.5% 0.02 50);
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  html { scroll-behavior: smooth; scroll-padding-top: 28px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition: none !important; }
+  }
+
+  body {
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: 15.5px; line-height: 1.65;
+    color: var(--ink); background: var(--paper);
+  }
+
+  a { color: var(--clay); text-decoration: none; }
+  a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  :focus-visible { outline: 2px solid var(--clay); outline-offset: 2px; border-radius: 2px; }
+  ::selection { background: var(--clay-soft); }
+
+  .mono { font-family: var(--mono); }
+
+  .skip {
+    position: absolute; left: -9999px; top: 0;
+    background: var(--ink); color: var(--paper);
+    padding: 10px 16px; z-index: 100; border-radius: 0 0 8px 0;
+  }
+  .skip:focus { left: 0; }
+
+  .shell {
+    display: grid; grid-template-columns: 240px minmax(0, 1fr);
+    gap: 56px; max-width: 1180px; margin: 0 auto; padding: 0 24px;
+  }
+  .sidenav {
+    position: sticky; top: 0; align-self: start;
+    width: 240px; height: 100dvh; padding: 56px 24px 28px;
+    margin-left: -24px; border-right: 1px solid var(--line);
+    display: flex; flex-direction: column;
+  }
+  .brand { font-weight: 800; font-size: 16px; color: var(--ink); }
+  .brand:hover { text-decoration: none; }
+  .brand span {
+    display: block; font-family: var(--mono); font-size: 10px; font-weight: 400;
+    color: var(--muted); letter-spacing: .14em; margin-top: 3px;
+  }
+
+  .nav-cap {
+    font-family: var(--mono); font-size: 10px; font-weight: 600;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+    margin: 36px 0 8px;
+  }
+  .nav-page {
+    display: block; font-size: 14px; font-weight: 600; color: var(--ink);
+    padding: 8px 11px; margin-left: -11px; border-radius: 7px; white-space: nowrap;
+    transition: color .15s ease, background .15s ease;
+  }
+  .nav-page:hover { background: var(--line-soft); text-decoration: none; }
+  .nav-page.active { color: var(--clay); background: var(--clay-soft); }
+  .nav-page.soon { color: var(--muted); font-weight: 500; cursor: default; pointer-events: none; }
+  .nav-page.soon::after {
+    content: 'скоро'; float: right; font-family: var(--mono); font-size: 9.5px;
+    letter-spacing: .08em; text-transform: uppercase; opacity: .7; margin-top: 3px;
+  }
+
+  .nav-links { display: flex; flex-direction: column; gap: 1px; margin: 4px 0 0 9px; }
+  .nav-links a {
+    font-size: 13px; font-weight: 500; color: var(--muted);
+    padding: 5px 11px; margin-left: -11px; border-radius: 7px; white-space: nowrap;
+    transition: color .15s ease, background .15s ease;
+  }
+  .nav-links a:hover { color: var(--ink); background: var(--line-soft); text-decoration: none; }
+  .nav-links a.active { color: var(--clay); background: var(--clay-soft); }
+  .nav-links a .n { font-family: var(--mono); font-size: 10.5px; margin-right: 8px; opacity: .65; }
+
+  .nav-foot { margin-top: auto; font-family: var(--mono); font-size: 10.5px; color: var(--muted); line-height: 1.8; }
+  .nav-foot a { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+  .nav-foot a:hover { color: var(--clay); }
+
+  .page { max-width: 820px; padding: 0 0 96px; min-width: 0; }
+
+  .hero { padding-top: 60px; }
+  .kicker { font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  h1 { font-size: 30px; font-weight: 800; letter-spacing: -.02em; line-height: 1.2; margin: 12px 0 14px; }
+  .lede { font-size: 16px; color: var(--muted); max-width: 62ch; }
+  .lede b { color: var(--ink); font-weight: 600; }
+  .hero-meta { font-size: 12px; color: var(--muted); margin-top: 16px; letter-spacing: .02em; }
+
+  section { margin-top: 72px; }
+  .sec-head {
+    display: flex; align-items: baseline; gap: 14px;
+    border-top: 2px solid var(--ink); padding-top: 16px;
+  }
+  .sec-num { font-size: 12px; font-weight: 600; color: var(--clay); }
+  h2 { font-size: 22px; font-weight: 800; letter-spacing: -.01em; }
+  .sec-lede { color: var(--muted); margin-top: 10px; max-width: 64ch; }
+
+  /* ── модель: 3 рівні ── */
+  .levels { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 24px; }
+  .lvl { border: 1px solid var(--line); border-radius: 12px; padding: 18px; background: oklch(98.5% 0.004 75); }
+  .lvl .n { font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--clay); }
+  .lvl h3 { font-size: 15px; font-weight: 700; margin: 6px 0 8px; }
+  .lvl p { font-size: 13px; color: var(--muted); }
+
+  /* ── таб-бар мокап ── */
+  .tabbar-wrap { margin-top: 26px; }
+  .tabbar {
+    display: flex; gap: 8px; max-width: 460px; margin: 0 auto;
+    border: 1px solid var(--line); border-radius: 16px; padding: 10px;
+    background: oklch(98.5% 0.004 75);
+  }
+  .tab {
+    flex: 1; text-align: center; padding: 10px 6px; border-radius: 10px;
+    font-size: 13px; font-weight: 600; color: var(--muted);
+    border: 1px solid transparent;
+  }
+  .tab .ic { display: block; font-size: 18px; margin-bottom: 3px; }
+  .tab.on { color: var(--clay); background: var(--clay-soft); border-color: var(--clay); }
+  .tabbar-cap { text-align: center; font-size: 12px; color: var(--muted); margin-top: 10px; }
+
+  /* ── дерево ── */
+  .tree { margin-top: 28px; }
+  .tnode { }
+  .trunk {
+    display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
+    padding: 12px 0; border-bottom: 1px solid var(--line);
+  }
+  .trunk .badge {
+    font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--clay); min-width: 22px;
+  }
+  .trunk .tname { font-size: 16px; font-weight: 800; letter-spacing: -.01em; }
+  .trunk .ttag {
+    font-family: var(--mono); font-size: 9.5px; font-weight: 600; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--muted); border: 1px solid var(--line);
+    padding: 2px 7px; border-radius: 100px;
+  }
+
+  ul.branch { list-style: none; margin: 0 0 8px 11px; padding-left: 22px; border-left: 1px solid var(--line); }
+  ul.branch > li { padding: 10px 0 2px; }
+  ul.branch > li.screen { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .scr-name { font-size: 14px; font-weight: 600; }
+  .scr-sub { flex-basis: 100%; font-size: 12.5px; color: var(--muted); padding-left: 2px; margin-top: -2px; }
+  .scr-sub.action { color: var(--clay); }
+
+  .job-tag {
+    display: inline-block; font-family: var(--mono); font-size: 10.5px; font-weight: 600;
+    color: var(--clay); background: var(--clay-soft);
+    padding: 2px 7px; border-radius: 5px; margin: 1px 1px 1px 0; white-space: nowrap;
+  }
+  .persona {
+    display: inline-block; font-family: var(--mono); font-size: 9.5px; font-weight: 600;
+    letter-spacing: .06em; padding: 2px 6px; border-radius: 4px; vertical-align: middle;
+  }
+  .persona.p { color: var(--clay); background: var(--clay-soft); }
+  .persona.s { color: var(--muted); background: var(--line-soft); }
+  .soon-pill {
+    font-family: var(--mono); font-size: 9.5px; font-weight: 600; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--muted); border: 1px solid var(--line);
+    padding: 2px 7px; border-radius: 100px;
+  }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 10px 20px; margin-top: 20px; font-size: 12.5px; color: var(--muted); }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+
+  /* ── таблиця flows ── */
+  .tbl-wrap { overflow-x: auto; margin-top: 18px; border: 1px solid var(--line); border-radius: 10px; background: oklch(98.5% 0.004 75); }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; line-height: 1.5; }
+  th {
+    font-family: var(--mono); font-size: 10.5px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: .07em; color: var(--muted); text-align: left; padding: 10px 14px;
+    border-bottom: 1px solid var(--line); white-space: nowrap; background: var(--paper);
+  }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  table tr:hover td { background: oklch(96.5% 0.006 75); }
+  td:first-child { font-weight: 600; white-space: nowrap; }
+
+  /* ── нотатки ── */
+  .notes { list-style: none; margin-top: 18px; display: flex; flex-direction: column; gap: 12px; }
+  .notes li { padding-left: 18px; position: relative; font-size: 14px; color: var(--muted); max-width: 72ch; }
+  .notes li::before { content: '—'; position: absolute; left: 0; color: var(--clay); }
+  .notes b { color: var(--ink); }
+
+  footer {
+    margin-top: 96px; border-top: 1px solid var(--line); padding-top: 18px;
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+    font-family: var(--mono); font-size: 11.5px; color: var(--muted);
+  }
+  footer a { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+  footer a:hover { color: var(--clay); }
+
+  @media (max-width: 900px) {
+    html { scroll-padding-top: 72px; }
+    .shell { display: block; padding: 0 20px; }
+    .sidenav {
+      position: sticky; flex-direction: row; align-items: center; gap: 12px;
+      width: auto; height: 52px; padding: 0 20px; margin: 0 -20px;
+      border-right: none; border-bottom: 1px solid var(--line);
+      background: var(--paper); z-index: 50;
+    }
+    .brand { font-size: 15px; }
+    .brand span { display: none; }
+    .nav-cap, .nav-page.soon { display: none; }
+    .nav-page { margin-left: 0; padding: 6px 10px; }
+    .nav-links { flex-direction: row; margin: 0 0 0 auto; overflow-x: auto; scrollbar-width: none; }
+    .nav-links::-webkit-scrollbar { display: none; }
+    .nav-links a { margin-left: 0; padding: 6px 10px; }
+    .nav-links a .n { display: none; }
+    .nav-foot { display: none; }
+    .page { max-width: none; padding-bottom: 80px; }
+  }
+
+  @media (max-width: 720px) {
+    h1 { font-size: 25px; }
+    section { margin-top: 56px; }
+    .levels { grid-template-columns: 1fr; }
+    .tab { font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#overview">До змісту</a>
+
+<div class="shell">
+
+<nav class="sidenav" aria-label="Навігація">
+  <a class="brand" href="#overview">Куток<span>WORKSPACE</span></a>
+
+  <p class="nav-cap">Сторінки</p>
+  <a class="nav-page" href="index.html">Ресерч</a>
+  <a class="nav-page" href="personas.html">Персони</a>
+  <a class="nav-page" href="jtbd.html">JTBD</a>
+  <a class="nav-page" href="critique.html">Критика</a>
+  <a class="nav-page" href="sitemap.html">Sitemap</a>
+  <a class="nav-page active" href="#overview" aria-current="page">IA · навігація</a>
+  <div class="nav-links" aria-label="Розділи IA">
+    <a href="#model"><span class="n">01</span>Модель</a>
+    <a href="#tree"><span class="n">02</span>Дерево</a>
+    <a href="#onflows"><span class="n">03</span>Flows → нав</a>
+    <a href="#notes"><span class="n">04</span>Рішення</a>
+  </div>
+  <a class="nav-page" href="flows.html">User flows</a>
+  <a class="nav-page soon" aria-disabled="true">Wireframes</a>
+
+  <div class="nav-foot">
+    <a href="../ia.md">ia.md</a><br>
+    <a href="https://github.com/denysosadchyi/kutok">GitHub</a><br>
+    червень 2026
+  </div>
+</nav>
+
+<main class="page">
+
+  <header class="hero" id="overview">
+    <p class="kicker">Куток · information architecture</p>
+    <h1>Загальна навігація продукту</h1>
+    <p class="lede">Усі екрани зі <b>sitemap</b> і шляхи з <b>flows</b>, зібрані в єдину навігаційну модель: онбординг до входу, <b>таб-бар із 4 вкладок</b>, деталі всередині. Роль — накладка, не окрема навігація.</p>
+    <p class="hero-meta mono">онбординг · 4 вкладки · 12 екранів · нових екранів не введено</p>
+  </header>
+
+  <!-- 01 Модель -->
+  <section id="model" aria-labelledby="model-h">
+    <div class="sec-head">
+      <span class="sec-num mono">01</span>
+      <h2 id="model-h">Навігаційна модель</h2>
+    </div>
+    <p class="sec-lede">Mobile-first. Три рівні навігації; роль (шукач / господар) — накладка поверх тих самих вкладок, а не окремий режим.</p>
+
+    <div class="levels">
+      <div class="lvl">
+        <span class="n">Рівень 0</span>
+        <h3>Онбординг</h3>
+        <p>Лінійний потік до таб-бару: створення профілю → верифікація. Обов'язковий до першого контакту (research R1).</p>
+      </div>
+      <div class="lvl">
+        <span class="n">Рівень 1</span>
+        <h3>Таб-бар · 4 вкладки</h3>
+        <p>Постійна навігація: Пошук · Заявки · Чати · Профіль. За дієсловами людини, не за «розділами».</p>
+      </div>
+      <div class="lvl">
+        <span class="n">Рівень 2</span>
+        <h3>Деталі й дії</h3>
+        <p>Профілі, оголошення, чат, редагування. Сюди ж — дія «Хочу познайомитись».</p>
+      </div>
+    </div>
+
+    <div class="tabbar-wrap">
+      <div class="tabbar" role="img" aria-label="Мокап таб-бару з 4 вкладок">
+        <div class="tab on"><span class="ic">🔍</span>Пошук</div>
+        <div class="tab"><span class="ic">✋</span>Заявки</div>
+        <div class="tab"><span class="ic">💬</span>Чати</div>
+        <div class="tab"><span class="ic">👤</span>Профіль</div>
+      </div>
+      <p class="tabbar-cap">Постійний таб-бар застосунку. Активна — стартова вкладка для primary (шукач).</p>
+    </div>
+  </section>
+
+  <!-- 02 Дерево -->
+  <section id="tree" aria-labelledby="tree-h">
+    <div class="sec-head">
+      <span class="sec-num mono">02</span>
+      <h2 id="tree-h">Єдине дерево навігації</h2>
+    </div>
+    <p class="sec-lede">Усі екрани в одній ієрархії. <span class="mono" style="font-size:12px">(RJx)</span> — job зі <a href="jtbd.html">jtbd</a>. Вузли-екрани існують у <a href="sitemap.html">sitemap</a>.</p>
+
+    <div class="legend">
+      <span><span class="persona p">P</span>primary (Аня, шукач)</span>
+      <span><span class="persona s">S</span>secondary (Олена-господар / Артем)</span>
+      <span><span class="soon-pill">post-MVP</span>вмикається пізніше</span>
+    </div>
+
+    <div class="tree">
+
+      <!-- Онбординг -->
+      <div class="tnode">
+        <div class="trunk">
+          <span class="badge">⓿</span>
+          <span class="tname">Онбординг</span>
+          <span class="ttag">потік · до таб-бару</span>
+          <span class="persona p">P</span><span class="persona s">S</span>
+        </div>
+        <ul class="branch">
+          <li class="screen">
+            <span class="scr-name">Створення профілю</span>
+            <span class="job-tag">SJ1</span><span class="job-tag">SJ2</span>
+            <span class="scr-sub">точка входу (ім'я, фото, про себе, вік)</span>
+          </li>
+          <li class="screen">
+            <span class="scr-name">Верифікація: телефон + селфі</span>
+            <span class="job-tag">Main</span><span class="job-tag">RJ2</span>
+            <span class="scr-sub">обов'язкова до першого контакту</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Таб 1 -->
+      <div class="tnode">
+        <div class="trunk">
+          <span class="badge">①</span>
+          <span class="tname">Пошук</span>
+          <span class="ttag">вкладка</span>
+          <span class="persona p">P</span>
+        </div>
+        <ul class="branch">
+          <li class="screen">
+            <span class="scr-name">Стрічка / каталог: кімнати + люди, з фільтром</span>
+            <span class="job-tag">RJ1</span>
+            <span class="scr-sub">фільтр (район, ціна, стать) — панель, стан, не екран</span>
+          </li>
+          <li class="screen">
+            <span class="scr-name">Профіль іншої людини</span>
+            <span class="job-tag">RJ2</span><span class="job-tag">RJ4</span>
+            <span class="scr-sub action">↳ дія «Хочу познайомитись» → надсилає Інтерес (RJ3)</span>
+          </li>
+          <li class="screen">
+            <span class="scr-name">Оголошення кімнати</span>
+            <span class="job-tag">RJ2</span><span class="job-tag">RJ4</span>
+            <span class="scr-sub action">↳ дія «Хочу познайомитись» → надсилає Інтерес (RJ3)</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Таб 2 -->
+      <div class="tnode">
+        <div class="trunk">
+          <span class="badge">②</span>
+          <span class="tname">Заявки</span>
+          <span class="ttag">вкладка</span>
+          <span class="persona p">P</span><span class="persona s">S</span>
+        </div>
+        <ul class="branch">
+          <li class="screen">
+            <span class="scr-name">Вхідні заявки / кандидати</span>
+            <span class="job-tag">RJ3</span>
+            <span class="scr-sub">надіслані / отримані — стани вкладки; для Олени це «кандидати»</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Таб 3 -->
+      <div class="tnode">
+        <div class="trunk">
+          <span class="badge">③</span>
+          <span class="tname">Чати</span>
+          <span class="ttag">вкладка</span>
+          <span class="persona p">P</span><span class="persona s">S</span>
+        </div>
+        <ul class="branch">
+          <li class="screen">
+            <span class="scr-name">Список діалогів</span>
+            <span class="job-tag">RJ3</span>
+          </li>
+          <li class="screen">
+            <span class="scr-name">Чат (текст)</span>
+            <span class="job-tag">RJ3</span>
+            <span class="scr-sub">відкритий лише при взаємному інтересі</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Таб 4 -->
+      <div class="tnode">
+        <div class="trunk">
+          <span class="badge">④</span>
+          <span class="tname">Профіль / Кабінет</span>
+          <span class="ttag">вкладка</span>
+          <span class="persona p">P</span><span class="persona s">S</span>
+        </div>
+        <ul class="branch">
+          <li class="screen">
+            <span class="scr-name">Мій профіль — перегляд і редагування</span>
+            <span class="job-tag">SJ1</span><span class="job-tag">RJ4</span>
+            <span class="scr-sub">бейдж верифікації, повнота, відгуки про мене</span>
+          </li>
+          <li class="screen">
+            <span class="scr-name">Мої оголошення</span>
+            <span class="job-tag">RJ1</span>
+            <span class="persona s">S</span>
+            <span class="scr-sub action">↳ Створення / редагування оголошення (RJ1)</span>
+          </li>
+          <li class="screen">
+            <span class="scr-name">Лишити відгук про людину</span>
+            <span class="job-tag">RJ5</span>
+            <span class="soon-pill">post-MVP</span>
+            <span class="scr-sub">cold start — вмикається після першої хвилі матчів</span>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 03 Flows → навігація -->
+  <section id="onflows" aria-labelledby="onflows-h">
+    <div class="sec-head">
+      <span class="sec-num mono">03</span>
+      <h2 id="onflows-h">Як шляхи лягають на навігацію</h2>
+    </div>
+    <p class="sec-lede">Кожен <a href="flows.html">flow</a> — це маршрут крізь вкладки. Ключовий trust-gate <b>① → ② → ③</b> навмисно проходить через три вкладки: кожен крок — окрема видима дія.</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>Flow (job)</th><th>Стартова вкладка</th><th>Перетин вкладок</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Main Job</td><td>Онбординг → ① Пошук</td><td>① → дія → ② Заявки → ③ Чати</td></tr>
+          <tr><td>RJ1 — відсіяти</td><td>① Пошук</td><td>лишається в ①</td></tr>
+          <tr><td>RJ2 — довіра до контакту</td><td>① Пошук → Профіль / Оголошення</td><td>лишається в ①</td></tr>
+          <tr><td>RJ3 — взаємний інтерес</td><td>① Пошук (дія)</td><td>① → ② Заявки → ③ Чати</td></tr>
+          <tr><td>RJ5 — відгук</td><td>④ Профіль</td><td>лишається в ④</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 04 Рішення -->
+  <section id="notes" aria-labelledby="notes-h">
+    <div class="sec-head">
+      <span class="sec-num mono">04</span>
+      <h2 id="notes-h">Рішення і відкриті питання</h2>
+    </div>
+
+    <ul class="notes">
+      <li><b>Чому 4 вкладки, а не 3.</b> Заявки (② — намір, ще не розблоковано) і Чати (③ — відкрита розмова) можна злити в один «Inbox». Розділив свідомо: для trust-продукту різниця «заявка vs діалог» змістова. Об'єднання — кандидат на пост-валідацію.</li>
+      <li><b>Господар без окремого режиму.</b> Якщо інтерв'ю покаже primary = господар (ринок supply-обмежений), «Розмістити кімнату» підніметься з ④ у глобальний <span class="mono">+</span> або власну вкладку. Поки — під ④.</li>
+      <li><b>Чого немає в навігації навмисно</b> (sitemap «Під питанням»): збережені/обране, сповіщення, скоринг сумісності, соц-граф, окремий екран налаштувань (SIROTA — жоден job не вимагає).</li>
+      <li><b>Нових екранів не введено.</b> Усі 12 вузлів — зі sitemap. «Онбординг», «Таб-бар» і назви вкладок — навігаційні контейнери, не екрани.</li>
+    </ul>
+  </section>
+
+  <footer>
+    <span>Куток · IA · чернетка</span>
+    <span>Джерела: <a href="sitemap.html">sitemap</a> · <a href="flows.html">flows</a> · <a href="../ia.md">ia.md</a></span>
+  </footer>
+
+</main>
+</div>
+
+<script>
+  const links = [...document.querySelectorAll('.nav-links a')]
+  const sections = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean)
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(a => a.classList.remove('active'))
+        const idx = sections.indexOf(e.target)
+        if (idx >= 0) links[idx].classList.add('active')
+      }
+    })
+  }, { rootMargin: '-15% 0px -75% 0px' })
+  sections.forEach(s => obs.observe(s))
+</script>
+
+</body>
+</html>
