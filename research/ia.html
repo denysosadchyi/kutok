@@ -293,6 +293,126 @@
     <p class="hero-meta mono">онбординг · 4 вкладки · 12 екранів · нових екранів не введено</p>
   </header>
 
+  <!-- 00 Повна мапа -->
+  <section id="map" aria-labelledby="map-h">
+    <div class="sec-head">
+      <span class="sec-num mono">00</span>
+      <h2 id="map-h">Повна мапа — всі сторінки відразу</h2>
+    </div>
+    <p class="sec-lede">Уся ієрархія одним деревом: корінь → онбординг і 4 вкладки → 12 екранів. Повні назви й jobs — у дереві нижче.</p>
+
+    <div class="fullmap">
+      <svg viewBox="0 0 1120 384" role="img" aria-label="Дерево інформаційної архітектури: корінь, онбординг, 4 вкладки і всі екрани">
+        <defs>
+          <style>
+            .nlabel { font-family: 'Manrope', sans-serif; fill: oklch(25% 0.012 60); }
+            .njob   { font-family: 'JetBrains Mono', monospace; font-size: 8px; fill: oklch(52% 0.115 40); }
+            .ntag   { font-family: 'JetBrains Mono', monospace; font-size: 8.5px; fill: oklch(48% 0.015 65); }
+            .grp    { fill: oklch(94.5% 0.02 50); stroke: oklch(52% 0.115 40); stroke-width: 1.5; }
+            .scr    { fill: oklch(99% 0.003 75); stroke: oklch(78% 0.01 75); stroke-width: 1.2; }
+            .soon   { fill: oklch(99% 0.003 75); stroke: oklch(60% 0.015 65); stroke-width: 1.2; stroke-dasharray: 4 3; }
+            .edge   { stroke: oklch(66% 0.013 65); stroke-width: 1.2; fill: none; }
+            .edge-soft { stroke: oklch(78% 0.01 75); stroke-width: 1.1; fill: none; stroke-dasharray: 3 3; }
+          </style>
+        </defs>
+
+        <!-- root -->
+        <rect class="grp" x="470" y="16" width="180" height="44" rx="11"/>
+        <text class="nlabel" x="560" y="36" text-anchor="middle" font-size="14" font-weight="800">Куток</text>
+        <text class="ntag"   x="560" y="50" text-anchor="middle">мобільний застосунок</text>
+
+        <!-- root → groups -->
+        <path class="edge" d="M560 60 L144 98"/>
+        <path class="edge" d="M560 60 L352 98"/>
+        <path class="edge" d="M560 60 L560 98"/>
+        <path class="edge" d="M560 60 L768 98"/>
+        <path class="edge" d="M560 60 L976 98"/>
+
+        <!-- groups -->
+        <!-- Онбординг -->
+        <rect class="grp" x="52"  y="98" width="184" height="40" rx="9"/>
+        <text class="nlabel" x="144" y="116" text-anchor="middle" font-size="12" font-weight="700">⓿ Онбординг</text>
+        <text class="ntag"   x="144" y="130" text-anchor="middle">потік · до таб-бару</text>
+        <!-- Пошук -->
+        <rect class="grp" x="260" y="98" width="184" height="40" rx="9"/>
+        <text class="nlabel" x="352" y="116" text-anchor="middle" font-size="12" font-weight="700">① Пошук</text>
+        <text class="ntag"   x="352" y="130" text-anchor="middle">вкладка</text>
+        <!-- Заявки -->
+        <rect class="grp" x="468" y="98" width="184" height="40" rx="9"/>
+        <text class="nlabel" x="560" y="116" text-anchor="middle" font-size="12" font-weight="700">② Заявки</text>
+        <text class="ntag"   x="560" y="130" text-anchor="middle">вкладка</text>
+        <!-- Чати -->
+        <rect class="grp" x="676" y="98" width="184" height="40" rx="9"/>
+        <text class="nlabel" x="768" y="116" text-anchor="middle" font-size="12" font-weight="700">③ Чати</text>
+        <text class="ntag"   x="768" y="130" text-anchor="middle">вкладка</text>
+        <!-- Профіль -->
+        <rect class="grp" x="884" y="98" width="184" height="40" rx="9"/>
+        <text class="nlabel" x="976" y="116" text-anchor="middle" font-size="12" font-weight="700">④ Профіль</text>
+        <text class="ntag"   x="976" y="130" text-anchor="middle">вкладка / кабінет</text>
+
+        <!-- group → screen spines -->
+        <path class="edge" d="M144 138 L144 160 M144 202 L144 212"/>
+        <path class="edge" d="M352 138 L352 160 M352 202 L352 212 M352 254 L352 264"/>
+        <path class="edge" d="M560 138 L560 160"/>
+        <path class="edge" d="M768 138 L768 160 M768 202 L768 212"/>
+        <path class="edge" d="M976 138 L976 160 M976 202 L976 212"/>
+        <path class="edge-soft" d="M976 254 L976 264 M976 306 L976 316"/>
+
+        <!-- screens: Онбординг -->
+        <rect class="scr" x="52" y="160" width="184" height="42" rx="8"/>
+        <text class="nlabel" x="144" y="178" text-anchor="middle" font-size="10.5" font-weight="600">Створення профілю</text>
+        <text class="njob"   x="144" y="193" text-anchor="middle">SJ1 · SJ2</text>
+        <rect class="scr" x="52" y="212" width="184" height="42" rx="8"/>
+        <text class="nlabel" x="144" y="230" text-anchor="middle" font-size="10.5" font-weight="600">Верифікація: тел. + селфі</text>
+        <text class="njob"   x="144" y="245" text-anchor="middle">Main · RJ2</text>
+
+        <!-- screens: Пошук -->
+        <rect class="scr" x="260" y="160" width="184" height="42" rx="8"/>
+        <text class="nlabel" x="352" y="178" text-anchor="middle" font-size="10.5" font-weight="600">Стрічка (каталог + фільтр)</text>
+        <text class="njob"   x="352" y="193" text-anchor="middle">RJ1</text>
+        <rect class="scr" x="260" y="212" width="184" height="42" rx="8"/>
+        <text class="nlabel" x="352" y="230" text-anchor="middle" font-size="10.5" font-weight="600">Профіль іншої людини</text>
+        <text class="njob"   x="352" y="245" text-anchor="middle">RJ2 · RJ4 · ↳RJ3</text>
+        <rect class="scr" x="260" y="264" width="184" height="42" rx="8"/>
+        <text class="nlabel" x="352" y="282" text-anchor="middle" font-size="10.5" font-weight="600">Оголошення кімнати</text>
+        <text class="njob"   x="352" y="297" text-anchor="middle">RJ2 · RJ4 · ↳RJ3</text>
+
+        <!-- screens: Заявки -->
+        <rect class="scr" x="468" y="160" width="184" height="42" rx="8"/>
+        <text class="nlabel" x="560" y="178" text-anchor="middle" font-size="10.5" font-weight="600">Вхідні заявки / кандидати</text>
+        <text class="njob"   x="560" y="193" text-anchor="middle">RJ3</text>
+
+        <!-- screens: Чати -->
+        <rect class="scr" x="676" y="160" width="184" height="42" rx="8"/>
+        <text class="nlabel" x="768" y="178" text-anchor="middle" font-size="10.5" font-weight="600">Список діалогів</text>
+        <text class="njob"   x="768" y="193" text-anchor="middle">RJ3</text>
+        <rect class="scr" x="676" y="212" width="184" height="42" rx="8"/>
+        <text class="nlabel" x="768" y="230" text-anchor="middle" font-size="10.5" font-weight="600">Чат (текст)</text>
+        <text class="njob"   x="768" y="245" text-anchor="middle">RJ3 · взаємний інтерес</text>
+
+        <!-- screens: Профіль -->
+        <rect class="scr" x="884" y="160" width="184" height="42" rx="8"/>
+        <text class="nlabel" x="976" y="178" text-anchor="middle" font-size="10.5" font-weight="600">Мій профіль</text>
+        <text class="njob"   x="976" y="193" text-anchor="middle">SJ1 · RJ4</text>
+        <rect class="scr" x="884" y="212" width="184" height="42" rx="8"/>
+        <text class="nlabel" x="976" y="230" text-anchor="middle" font-size="10.5" font-weight="600">Мої оголошення</text>
+        <text class="njob"   x="976" y="245" text-anchor="middle">RJ1 · господар</text>
+        <rect class="soon" x="900" y="264" width="168" height="42" rx="8"/>
+        <text class="nlabel" x="984" y="282" text-anchor="middle" font-size="10.5" font-weight="600">↳ Ред. оголошення</text>
+        <text class="njob"   x="984" y="297" text-anchor="middle">RJ1 · вкладене</text>
+        <rect class="soon" x="884" y="316" width="184" height="42" rx="8"/>
+        <text class="nlabel" x="976" y="334" text-anchor="middle" font-size="10.5" font-weight="600" fill="oklch(48% 0.015 65)">Лишити відгук ⏳</text>
+        <text class="njob"   x="976" y="349" text-anchor="middle" fill="oklch(48% 0.015 65)">RJ5 · post-MVP</text>
+      </svg>
+    </div>
+
+    <div class="map-legend" aria-hidden="true">
+      <span><span class="ml-box ml-group"></span>контейнер навігації (онбординг / вкладка)</span>
+      <span><span class="ml-box ml-screen"></span>екран (зі sitemap)</span>
+      <span><span class="ml-box ml-soon"></span>вкладене / post-MVP</span>
+    </div>
+  </section>
+
   <!-- 01 Модель -->
   <section id="model" aria-labelledby="model-h">
     <div class="sec-head">
