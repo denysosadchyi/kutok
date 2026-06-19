@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<title>Куток — User Flows</title>
+<meta name="description" content="User flows: безпечний шлях знайти, з ким і де жити. Кожен flow під своїм job, зі станами empty/loading/error і тупиками.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --paper:     oklch(97.5% 0.006 75);
+    --ink:       oklch(25% 0.012 60);
+    --muted:     oklch(48% 0.015 65);
+    --line:      oklch(90% 0.008 75);
+    --line-soft: oklch(93.5% 0.006 75);
+    --clay:      oklch(52% 0.115 40);
+    --clay-soft: oklch(94.5% 0.02 50);
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  html { scroll-behavior: smooth; scroll-padding-top: 28px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition: none !important; }
+  }
+
+  body {
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: 15.5px;
+    line-height: 1.65;
+    color: var(--ink);
+    background: var(--paper);
+  }
+
+  a { color: var(--clay); text-decoration: none; }
+  a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  :focus-visible { outline: 2px solid var(--clay); outline-offset: 2px; border-radius: 2px; }
+  ::selection { background: var(--clay-soft); }
+
+  .mono { font-family: var(--mono); }
+
+  .skip {
+    position: absolute; left: -9999px; top: 0;
+    background: var(--ink); color: var(--paper);
+    padding: 10px 16px; z-index: 100; border-radius: 0 0 8px 0;
+  }
+  .skip:focus { left: 0; }
+
+  .shell {
+    display: grid; grid-template-columns: 240px minmax(0, 1fr);
+    gap: 56px; max-width: 1180px; margin: 0 auto; padding: 0 24px;
+  }
+  .sidenav {
+    position: sticky; top: 0; align-self: start;
+    width: 240px; height: 100dvh; padding: 56px 24px 28px;
+    margin-left: -24px; border-right: 1px solid var(--line);
+    display: flex; flex-direction: column;
+  }
+  .brand { font-weight: 800; font-size: 16px; color: var(--ink); }
+  .brand:hover { text-decoration: none; }
+  .brand span {
+    display: block; font-family: var(--mono); font-size: 10px; font-weight: 400;
+    color: var(--muted); letter-spacing: .14em; margin-top: 3px;
+  }
+
+  .nav-cap {
+    font-family: var(--mono); font-size: 10px; font-weight: 600;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+    margin: 36px 0 8px;
+  }
+  .nav-page {
+    display: block; font-size: 14px; font-weight: 600; color: var(--ink);
+    padding: 8px 11px; margin-left: -11px; border-radius: 7px; white-space: nowrap;
+    transition: color .15s ease, background .15s ease;
+  }
+  .nav-page:hover { background: var(--line-soft); text-decoration: none; }
+  .nav-page.active { color: var(--clay); background: var(--clay-soft); }
+  .nav-page.soon { color: var(--muted); font-weight: 500; cursor: default; pointer-events: none; }
+  .nav-page.soon::after {
+    content: 'скоро'; float: right; font-family: var(--mono); font-size: 9.5px;
+    letter-spacing: .08em; text-transform: uppercase; opacity: .7; margin-top: 3px;
+  }
+
+  .nav-links { display: flex; flex-direction: column; gap: 1px; margin: 4px 0 0 9px; }
+  .nav-links a {
+    font-size: 13px; font-weight: 500; color: var(--muted);
+    padding: 5px 11px; margin-left: -11px; border-radius: 7px; white-space: nowrap;
+    transition: color .15s ease, background .15s ease;
+  }
+  .nav-links a:hover { color: var(--ink); background: var(--line-soft); text-decoration: none; }
+  .nav-links a.active { color: var(--clay); background: var(--clay-soft); }
+  .nav-links a .n { font-family: var(--mono); font-size: 10.5px; margin-right: 8px; opacity: .65; }
+
+  .nav-foot { margin-top: auto; font-family: var(--mono); font-size: 10.5px; color: var(--muted); line-height: 1.8; }
+  .nav-foot a { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+  .nav-foot a:hover { color: var(--clay); }
+
+  .page { max-width: 820px; padding: 0 0 96px; min-width: 0; }
+
+  .hero { padding-top: 60px; }
+  .kicker { font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  h1 { font-size: 30px; font-weight: 800; letter-spacing: -.02em; line-height: 1.2; margin: 12px 0 14px; }
+  .lede { font-size: 16px; color: var(--muted); max-width: 62ch; }
+  .lede b { color: var(--ink); font-weight: 600; }
+  .hero-meta { font-size: 12px; color: var(--muted); margin-top: 16px; letter-spacing: .02em; }
+
+  /* legend */
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 26px;
+    padding: 16px 18px; border: 1px solid var(--line); border-radius: 12px;
+    background: oklch(98.5% 0.004 75);
+  }
+  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
+  .swatch { width: 14px; height: 14px; border-radius: 4px; flex-shrink: 0; }
+  .sw-state { background: #fff3e0; border: 1px solid #e8a33d; }
+  .sw-stuck { background: #fde4e1; border: 1px solid #d2553f; }
+  .sw-ok    { background: #e7f3ea; border: 1px solid #4a9d6a; }
+  .sw-screen{ background: var(--paper); border: 1px solid var(--ink); }
+  .sw-dec   { background: var(--clay-soft); border: 1px solid var(--clay); transform: rotate(45deg); }
+
+  section { margin-top: 72px; }
+  .sec-head {
+    display: flex; align-items: baseline; gap: 14px;
+    border-top: 2px solid var(--ink); padding-top: 16px;
+  }
+  .sec-num { font-size: 12px; font-weight: 600; color: var(--clay); }
+  h2 { font-size: 22px; font-weight: 800; letter-spacing: -.01em; }
+  .sec-tag {
+    font-family: var(--mono); font-size: 9.5px; font-weight: 600;
+    letter-spacing: .1em; text-transform: uppercase; color: var(--muted);
+    border: 1px solid var(--line); padding: 3px 8px; border-radius: 100px;
+    margin-left: auto; align-self: center;
+  }
+
+  .job-quote {
+    border-left: 3px solid var(--clay); padding: 4px 0 4px 16px; margin: 18px 0 6px;
+    font-style: italic; color: var(--ink); max-width: 66ch;
+  }
+  .job-quote .who { display: block; font-style: normal; font-size: 12.5px; color: var(--muted); margin-top: 6px; }
+
+  .diagram {
+    margin-top: 22px;
+    background: oklch(98.5% 0.004 75);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 28px 20px;
+    overflow-x: auto;
+  }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: 0; }
+  .diagram svg { max-width: 100%; height: auto; }
+
+  .takeaway {
+    margin-top: 18px; background: var(--line-soft); border-radius: 10px;
+    padding: 14px 16px; font-size: 13.5px; color: var(--muted); max-width: 70ch;
+  }
+  .takeaway b { color: var(--ink); }
+  .takeaway .lbl {
+    display: block; font-family: var(--mono); font-size: 10px; font-weight: 600;
+    letter-spacing: .1em; text-transform: uppercase; color: var(--clay); margin-bottom: 6px;
+  }
+
+  footer {
+    margin-top: 96px; border-top: 1px solid var(--line); padding-top: 18px;
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+    font-family: var(--mono); font-size: 11.5px; color: var(--muted);
+  }
+  footer a { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+  footer a:hover { color: var(--clay); }
+
+  @media (max-width: 900px) {
+    html { scroll-padding-top: 72px; }
+    .shell { display: block; padding: 0 20px; }
+    .sidenav {
+      position: sticky; flex-direction: row; align-items: center; gap: 12px;
+      width: auto; height: 52px; padding: 0 20px; margin: 0 -20px;
+      border-right: none; border-bottom: 1px solid var(--line);
+      background: var(--paper); z-index: 50;
+    }
+    .brand { font-size: 15px; }
+    .brand span { display: none; }
+    .nav-cap, .nav-page.soon { display: none; }
+    .nav-page { margin-left: 0; padding: 6px 10px; }
+    .nav-links {
+      flex-direction: row; margin: 0 0 0 auto;
+      overflow-x: auto; scrollbar-width: none;
+    }
+    .nav-links::-webkit-scrollbar { display: none; }
+    .nav-links a { margin-left: 0; padding: 6px 10px; }
+    .nav-links a .n { display: none; }
+    .nav-foot { display: none; }
+    .page { max-width: none; padding-bottom: 80px; }
+  }
+
+  @media (max-width: 720px) {
+    h1 { font-size: 25px; }
+    section { margin-top: 56px; }
+    .sec-tag { display: none; }
+    .diagram { padding: 18px 10px; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#overview">До змісту</a>
+
+<div class="shell">
+
+<nav class="sidenav" aria-label="Навігація">
+  <a class="brand" href="#overview">Куток<span>WORKSPACE</span></a>
+
+  <p class="nav-cap">Сторінки</p>
+  <a class="nav-page" href="index.html">Ресерч</a>
+  <a class="nav-page" href="personas.html">Персони</a>
+  <a class="nav-page" href="jtbd.html">JTBD</a>
+  <a class="nav-page" href="critique.html">Критика</a>
+  <a class="nav-page" href="sitemap.html">Sitemap</a>
+  <a class="nav-page active" href="#overview" aria-current="page">User flows</a>
+  <div class="nav-links" aria-label="Розділи flows">
+    <a href="#main"><span class="n">00</span>Main Job</a>
+    <a href="#rj1"><span class="n">01</span>RJ1 · відсіяти</a>
+    <a href="#rj2"><span class="n">02</span>RJ2 · довіра</a>
+    <a href="#rj3"><span class="n">03</span>RJ3 · взаємність</a>
+  </div>
+  <a class="nav-page soon" aria-disabled="true">Wireframes</a>
+
+  <div class="nav-foot">
+    <a href="../flows.md">flows.md</a><br>
+    <a href="https://github.com/denysosadchyi/kutok">GitHub</a><br>
+    червень 2026
+  </div>
+</nav>
+
+<main class="page">
+
+  <header class="hero" id="overview">
+    <p class="kicker">Куток · user flows</p>
+    <h1>Як людина проходить шлях</h1>
+    <p class="lede">Flows виведені з <b>jobs</b>, не зі структури конкурентів. Кожен показує не лише happy-path: <b>стани</b> empty / loading / error окремо, і обидва кінці — успіх <b>і</b> тупики, де людина застрягає.</p>
+    <p class="hero-meta mono">1 main job · 3 related jobs · вузли звірені зі sitemap</p>
+
+    <div class="legend" aria-label="Легенда">
+      <span class="legend-item"><span class="swatch sw-screen"></span>екран (зі sitemap)</span>
+      <span class="legend-item"><span class="swatch sw-dec"></span>точка рішення</span>
+      <span class="legend-item"><span class="swatch sw-state"></span>стан: empty / loading / error</span>
+      <span class="legend-item"><span class="swatch sw-stuck"></span>тупик</span>
+      <span class="legend-item"><span class="swatch sw-ok"></span>успіх</span>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <section id="main" aria-labelledby="main-h">
+    <div class="sec-head">
+      <span class="sec-num mono">00</span>
+      <h2 id="main-h">Main Job — безпечно знайти, з ким і де жити</h2>
+      <span class="sec-tag">primary · Аня</span>
+    </div>
+    <p class="job-quote">«Коли я шукаю людину для спільного проживання серед незнайомих, я хочу бути впевненою, що вона реальна, щоб прийняти рішення без страху пошкодувати.»
+      <span class="who">Повний наскрізний flow шукача.</span></p>
+
+    <div class="diagram">
+      <pre class="mermaid">
+flowchart TD
+    Start(["Аня заходить уперше"]) --> Create["Створення профілю"]
+    Create --> Feed["Стрічка: кімнати + люди, з фільтром"]
+
+    Feed --> Q1{"Є результати?"}
+    Q1 -->|ні| Empty["Стан: нічого не знайшлось"]
+    Empty --> Loosen["Дія: послабити фільтр"]
+    Loosen --> Feed
+    Q1 -->|так| View["Профіль іншої людини / Оголошення кімнати"]
+
+    View --> Q2{"Профіль вселяє довіру?"}
+    Q2 -->|ні| Feed
+    Q2 -->|так| Q3{"Я верифікована?"}
+
+    Q3 -->|ні| Verify["Верифікація: телефон + селфі"]
+    Verify --> Q4{"Верифікація успішна?"}
+    Q4 -->|ні| VerErr["Стан: збій верифікації"]
+    VerErr --> Verify
+    Q4 -->|так| Send
+    Q3 -->|так| Send["Дія: «Хочу познайомитись»"]
+
+    Send --> Qs{"Заявку надіслано?"}
+    Qs -->|збій| NetErr["Стан: помилка мережі"]
+    NetErr -->|повторити| Send
+    Qs -->|так| Wait["Стан: чекаємо відповідь"]
+
+    Wait --> Q5{"Відповіли на заявку?"}
+    Q5 -->|тиша| Stuck["Тупик: відповіді немає"]
+    Q5 -->|відхилили| Rej["Стан: заявку відхилено"]
+    Q5 -->|так, взаємно| Chat["Чат (текст)"]
+    Rej --> Feed
+    Stuck --> Feed
+
+    Chat --> Meet["Домовились про зустріч — поза застосунком"]
+    Meet --> Success(["Успіх: знайшла, з ким і де жити"])
+
+    classDef state fill:#fff3e0,stroke:#e8a33d,color:#5b4a2f;
+    classDef stuck fill:#fde4e1,stroke:#d2553f,color:#5b2a22;
+    classDef ok fill:#e7f3ea,stroke:#4a9d6a,color:#234a33;
+    class Empty,VerErr,NetErr,Wait,Rej state;
+    class Stuck stuck;
+    class Success ok;
+      </pre>
+    </div>
+
+    <div class="takeaway">
+      <span class="lbl">Точки зриву</span>
+      Порожня стрічка → послаблення фільтра або відвал; збій верифікації блокує перший контакт; <b>тиша й відмова</b> на заявку — найчастіший тупик. Успіх відбувається <b>поза застосунком</b> (зустріч) — продукт відповідає лише за безпечний шлях до неї.
+    </div>
+  </section>
+
+  <!-- RJ1 -->
+  <section id="rj1" aria-labelledby="rj1-h">
+    <div class="sec-head">
+      <span class="sec-num mono">01</span>
+      <h2 id="rj1-h">RJ1 — знайти серед багатьох тих, хто базово підходить</h2>
+      <span class="sec-tag">фільтр · empty</span>
+    </div>
+    <p class="job-quote">«Коли я починаю шукати серед десятків профілів, я хочу швидко відсіяти тих, хто точно не підходить.»
+      <span class="who">Фокус: фільтр і стан порожнього результату.</span></p>
+
+    <div class="diagram">
+      <pre class="mermaid">
+flowchart TD
+    A["Стрічка: кімнати + люди, з фільтром"] --> B["Дія: фільтр — район, ціна, стать"]
+    B --> L["Стан: оновлюємо результати"]
+    L --> C{"Є результати?"}
+
+    C -->|ні| E["Стан: нічого не знайшлось"]
+    E --> F{"Послабити фільтр?"}
+    F -->|так| B
+    F -->|ні| Stuck["Тупик: під ці критерії нічого немає"]
+
+    C -->|так| G["Переглядає картки"]
+    G --> H{"Є хоч одна підходяща?"}
+    H -->|ні| B
+    H -->|так| I["Профіль іншої людини / Оголошення кімнати"]
+    I --> Ok(["Далі → RJ2: оцінити довіру"])
+
+    classDef state fill:#fff3e0,stroke:#e8a33d,color:#5b4a2f;
+    classDef stuck fill:#fde4e1,stroke:#d2553f,color:#5b2a22;
+    classDef ok fill:#e7f3ea,stroke:#4a9d6a,color:#234a33;
+    class E,L state;
+    class Stuck stuck;
+    class Ok ok;
+      </pre>
+    </div>
+
+    <div class="takeaway">
+      <span class="lbl">Точка зриву</span>
+      Занадто вузький фільтр → порожньо → тупик або зациклення на послабленні. «Paradox of choice» навпаки.
+    </div>
+  </section>
+
+  <!-- RJ2 -->
+  <section id="rj2" aria-labelledby="rj2-h">
+    <div class="sec-head">
+      <span class="sec-num mono">02</span>
+      <h2 id="rj2-h">RJ2 — переконатися, що людина реальна, до контакту</h2>
+      <span class="sec-tag">ядро MVP · trust</span>
+    </div>
+    <p class="job-quote">«Коли я натрапила на профіль, що здається підходящим, я хочу переконатися, що це реальна людина, щоб не ризикувати наодинці з незнайомцем.»
+      <span class="who">Фокус: бейдж із розшифровкою, повнота, відгуки.</span></p>
+
+    <div class="diagram">
+      <pre class="mermaid">
+flowchart TD
+    A["Стрічка: кімнати + люди, з фільтром"] --> B["Профіль іншої людини"]
+    B --> C{"Є бейдж верифікації?"}
+    C -->|ні| Stuck1["Тупик: непідтверджений — не ризикує"]
+    C -->|так| D["Розшифровка: телефон ✓ / фото ✓ / документ —"]
+
+    D --> E{"Профіль заповнений?"}
+    E -->|ні, порожній| Stuck2["Сумнів: повертається у Стрічку"]
+    E -->|так| F{"Є відгуки?"}
+
+    F -->|ні| G["Стан: ще немає відгуків — cold start"]
+    F -->|так| H["Читає відгуки про людину"]
+
+    G --> I{"Довіри достатньо без відгуків?"}
+    H --> I
+    I -->|ні| Stuck2
+    I -->|так| Trust(["Готова до контакту → RJ3"])
+
+    Stuck1 --> A
+    Stuck2 --> A
+
+    classDef state fill:#fff3e0,stroke:#e8a33d,color:#5b4a2f;
+    classDef stuck fill:#fde4e1,stroke:#d2553f,color:#5b2a22;
+    classDef ok fill:#e7f3ea,stroke:#4a9d6a,color:#234a33;
+    class G state;
+    class Stuck1,Stuck2 stuck;
+    class Trust ok;
+      </pre>
+    </div>
+
+    <div class="takeaway">
+      <span class="lbl">Точки зриву</span>
+      Відсутній бейдж = миттєвий тупик (research R1/R2); порожній профіль = сумнів; <b>cold start відгуків</b> — empty-стан, що на старті стосуватиметься майже всіх профілів (тому відгуки = post-MVP).
+    </div>
+  </section>
+
+  <!-- RJ3 -->
+  <section id="rj3" aria-labelledby="rj3-h">
+    <div class="sec-head">
+      <span class="sec-num mono">03</span>
+      <h2 id="rj3-h">RJ3 — почати розмову тільки якщо інтерес взаємний</h2>
+      <span class="sec-tag">ядро MVP · gate</span>
+    </div>
+    <p class="job-quote">«Коли я вирішила написати першою, я хочу знати, що людина навпроти теж відкрита, щоб не відчувати, що вторгаюсь.»
+      <span class="who">Двосторонній gate: чат відкривається лише при взаємності.</span></p>
+
+    <div class="diagram">
+      <pre class="mermaid">
+flowchart TD
+    A["Профіль іншої людини / Оголошення кімнати"] --> B["Дія: «Хочу познайомитись»"]
+    B --> C{"Заявку надіслано?"}
+    C -->|збій| Err["Стан: помилка мережі"]
+    Err -->|повторити| B
+    C -->|так| D["Стан: чекаємо відповідь"]
+
+    D --> E["Вхідні заявки / кандидати — бік іншої сторони"]
+    E --> F{"Інша сторона теж цікавиться?"}
+
+    F -->|ні, відхилила| Rej["Стан: заявку відхилено"]
+    F -->|тиша| Stuck["Тупик: без відповіді"]
+    F -->|так, взаємно| G["Чат (текст) — розблоковано"]
+
+    Rej --> Back["Список діалогів"]
+    Stuck --> Back
+    G --> Ok(["Успіх: розмова почалась"])
+
+    classDef state fill:#fff3e0,stroke:#e8a33d,color:#5b4a2f;
+    classDef stuck fill:#fde4e1,stroke:#d2553f,color:#5b2a22;
+    classDef ok fill:#e7f3ea,stroke:#4a9d6a,color:#234a33;
+    class Err,D,Rej state;
+    class Stuck stuck;
+    class Ok ok;
+      </pre>
+    </div>
+
+    <div class="takeaway">
+      <span class="lbl">Точки зриву</span>
+      Відмова й тиша — два різні негативні кінці (відхилення видиме, тиша — ні); мала база на старті → мало взаємних інтересів → відчуття «мертвого» продукту (research, патерн №4 «коли ламається»).
+    </div>
+  </section>
+
+  <footer>
+    <span>Куток · User flows · чернетка</span>
+    <span>Джерела: <a href="jtbd.html">jtbd</a> · <a href="sitemap.html">sitemap</a> · <a href="../flows.md">flows.md</a></span>
+  </footer>
+
+</main>
+</div>
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    securityLevel: 'loose',
+    flowchart: { curve: 'basis', nodeSpacing: 40, rankSpacing: 48, useMaxWidth: true },
+    themeVariables: {
+      fontFamily: 'Manrope, system-ui, sans-serif',
+      fontSize: '14px',
+      primaryColor: '#f1e6dd',
+      primaryBorderColor: '#3a3330',
+      primaryTextColor: '#3a3330',
+      lineColor: '#7a6f66',
+      tertiaryColor: '#fbf7f2'
+    }
+  });
+</script>
+
+<script>
+  const links = [...document.querySelectorAll('.nav-links a')]
+  const sections = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean)
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(a => a.classList.remove('active'))
+        const idx = sections.indexOf(e.target)
+        if (idx >= 0) links[idx].classList.add('active')
+      }
+    })
+  }, { rootMargin: '-15% 0px -75% 0px' })
+  sections.forEach(s => obs.observe(s))
+</script>
+
+</body>
+</html>
