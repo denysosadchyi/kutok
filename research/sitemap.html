@@ -715,6 +715,169 @@
     </div>
   </section>
 
+  <!-- 04 Екрани -->
+  <section id="screens" aria-labelledby="screens-h">
+    <div class="sec-head">
+      <span class="sec-num mono">04</span>
+      <h2 id="screens-h">Екрани</h2>
+    </div>
+    <p class="sec-lede">Екрани виведені з jobs — що людина намагається зробити, — <b>не</b> зі структури конкурентів. Згруповані за логікою людини й об'єктами. Глибина свідомо мінімальна; рівні додамо на кроці 3.</p>
+
+    <div class="legend-row">
+      <span><span class="persona p">P</span>потрібен primary (Аня, шукач)</span>
+      <span><span class="persona s">S</span>потрібен secondary (Олена-господар / Артем)</span>
+      <span class="mono" style="font-size:12px"><b style="color:var(--ink)">Стани ≠ екрани:</b> empty / error / «не верифікований» — стани, не екрани</span>
+    </div>
+
+    <div class="screens">
+
+      <!-- A -->
+      <div class="sgroup">
+        <div class="sgroup-head">
+          <span class="sgroup-letter">A</span>
+          <span class="sgroup-title">Стати реальним і видимим — мій бік</span>
+          <span class="persona p">P</span><span class="persona s">S</span>
+        </div>
+        <p class="sgroup-note">Ворота в продукт для обох ролей: без верифікації не можна нічого робити (research R1). Не «розділ профілю».</p>
+        <ul class="screen-list">
+          <li>
+            <span class="screen-name">Створення профілю</span>
+            <span class="screen-jobs"><span class="job-tag">SJ1</span><span class="job-tag">SJ2</span></span>
+            <span class="persona p">P</span><span class="persona s">S</span>
+            <span class="screen-sub">ім'я, фото, про себе, вік</span>
+          </li>
+          <li>
+            <span class="screen-name">Верифікація: телефон + селфі</span>
+            <span class="screen-jobs"><span class="job-tag">Main</span><span class="job-tag">RJ2</span></span>
+            <span class="persona p">P</span><span class="persona s">S</span>
+            <span class="screen-sub">RJ2 з боку «мене перевіряють»</span>
+          </li>
+          <li>
+            <span class="screen-name">Мій профіль — перегляд і редагування</span>
+            <span class="screen-jobs"><span class="job-tag">SJ1</span><span class="job-tag">RJ4</span></span>
+            <span class="persona p">P</span><span class="persona s">S</span>
+            <span class="screen-sub">містить бейдж з розшифровкою, повноту, відгуки про мене</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- B -->
+      <div class="sgroup">
+        <div class="sgroup-head">
+          <span class="sgroup-letter">B</span>
+          <span class="sgroup-title">Знайти і відсіяти</span>
+          <span class="persona p">P</span>
+        </div>
+        <p class="sgroup-note">Переважно для шукача. Олена-господар майже не користується стрічкою — її «пошук» це перегляд кандидатів (D). Перевірити на інтерв'ю.</p>
+        <ul class="screen-list">
+          <li>
+            <span class="screen-name">Стрічка / каталог: кімнати + люди, з фільтром</span>
+            <span class="screen-jobs"><span class="job-tag">RJ1</span></span>
+            <span class="persona p">P</span>
+            <span class="screen-sub">фільтр (район, ціна, стать) — панель цього ж екрана, не окремий екран</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- C -->
+      <div class="sgroup">
+        <div class="sgroup-head">
+          <span class="sgroup-letter">C</span>
+          <span class="sgroup-title">Розглянути до контакту</span>
+          <span class="persona p">P</span><span class="persona s">S</span>
+        </div>
+        <p class="sgroup-note">Дія «Хочу познайомитись» — стан картки/кнопки, не окремий екран (надсилає Інтерес/заявку).</p>
+        <ul class="screen-list">
+          <li>
+            <span class="screen-name">Профіль іншої людини</span>
+            <span class="screen-jobs"><span class="job-tag">RJ2</span><span class="job-tag">RJ4</span></span>
+            <span class="persona p">P</span><span class="persona s">S</span>
+            <span class="screen-sub">бейдж, повнота, відгуки</span>
+          </li>
+          <li>
+            <span class="screen-name">Оголошення кімнати</span>
+            <span class="screen-jobs"><span class="job-tag">RJ2</span><span class="job-tag">RJ4</span></span>
+            <span class="persona p">P</span>
+            <span class="screen-sub">фото, опис, умови, профіль господаря</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- D -->
+      <div class="sgroup">
+        <div class="sgroup-head">
+          <span class="sgroup-letter">D</span>
+          <span class="sgroup-title">Зав'язати контакт</span>
+          <span class="persona p">P</span><span class="persona s">S</span>
+        </div>
+        <p class="sgroup-note">Чат відкривається лише при взаємному інтересі — це стан, не окремий екран «розблокування».</p>
+        <ul class="screen-list">
+          <li>
+            <span class="screen-name">Вхідні заявки / кандидати</span>
+            <span class="screen-jobs"><span class="job-tag">RJ3</span></span>
+            <span class="persona p">P</span><span class="persona s">S</span>
+            <span class="screen-sub">для Олени — це «переглянути кандидатів»</span>
+          </li>
+          <li>
+            <span class="screen-name">Список діалогів</span>
+            <span class="screen-jobs"><span class="job-tag">RJ3</span></span>
+            <span class="persona p">P</span><span class="persona s">S</span>
+          </li>
+          <li>
+            <span class="screen-name">Чат (текст)</span>
+            <span class="screen-jobs"><span class="job-tag">RJ3</span></span>
+            <span class="persona p">P</span><span class="persona s">S</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- E -->
+      <div class="sgroup">
+        <div class="sgroup-head">
+          <span class="sgroup-letter">E</span>
+          <span class="sgroup-title">Розмістити кімнату — бік господаря</span>
+          <span class="persona s">S</span>
+        </div>
+        <p class="sgroup-note">Сторона пропозиції (Олена). Обслуговує supply — щоб господаря знайшли у стрічці.</p>
+        <ul class="screen-list">
+          <li>
+            <span class="screen-name">Створення / редагування оголошення</span>
+            <span class="screen-jobs"><span class="job-tag">RJ1</span></span>
+            <span class="persona s">S</span>
+          </li>
+          <li>
+            <span class="screen-name">Мої оголошення</span>
+            <span class="screen-jobs"><span class="job-tag">RJ1</span></span>
+            <span class="persona s">S</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- F -->
+      <div class="sgroup">
+        <div class="sgroup-head">
+          <span class="sgroup-letter">F</span>
+          <span class="sgroup-title">Зафіксувати досвід</span>
+          <span class="sgroup-soon">post-MVP · cold start</span>
+          <span class="persona p">P</span><span class="persona s">S</span>
+        </div>
+        <p class="sgroup-note">Job RJ5 реальний, тому екран у дереві — але вмикається після першої хвилі матчів. Відгуки про мене не мають свого екрана — секція «Мого профілю» (A).</p>
+        <ul class="screen-list">
+          <li>
+            <span class="screen-name">Лишити відгук про людину</span>
+            <span class="screen-jobs"><span class="job-tag">RJ5</span></span>
+            <span class="persona p">P</span><span class="persona s">S</span>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="scope-note" style="margin-top:24px">
+      Екранів-сиріт <span class="sirota">SIROTA</span> поки немає — навмисно не вигадував welcome / налаштування / «про застосунок»: жоден job їх не вимагає. Що свідомо <b>не</b> стало екраном: збережені/обране, сповіщення, скоринг сумісності, соц-граф (розділ «Під питанням»).
+    </div>
+  </section>
+
   <footer>
     <span>Куток · Sitemap · чернетка</span>
     <span>Джерела: <a href="jtbd.html">jtbd</a> · <a href="personas.html">personas</a> · <a href="index.html">research</a> · <a href="../sitemap.md">sitemap.md</a></span>
