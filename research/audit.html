@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<title>Куток — Аудит мапи</title>
+<meta name="description" content="Прискіплива критика sitemap.md і flows.md за чотирма класами дефектів: тупики, відсутні стани, зайва глибина, сироти.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --paper:     oklch(97.5% 0.006 75);
+    --ink:       oklch(25% 0.012 60);
+    --muted:     oklch(48% 0.015 65);
+    --line:      oklch(90% 0.008 75);
+    --line-soft: oklch(93.5% 0.006 75);
+    --clay:      oklch(52% 0.115 40);
+    --clay-soft: oklch(94.5% 0.02 50);
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  html { scroll-behavior: smooth; scroll-padding-top: 28px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition: none !important; }
+  }
+
+  body {
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: 15.5px;
+    line-height: 1.65;
+    color: var(--ink);
+    background: var(--paper);
+  }
+
+  a { color: var(--clay); text-decoration: none; }
+  a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  :focus-visible { outline: 2px solid var(--clay); outline-offset: 2px; border-radius: 2px; }
+  ::selection { background: var(--clay-soft); }
+
+  .mono { font-family: var(--mono); }
+
+  .skip {
+    position: absolute; left: -9999px; top: 0;
+    background: var(--ink); color: var(--paper);
+    padding: 10px 16px; z-index: 100; border-radius: 0 0 8px 0;
+  }
+  .skip:focus { left: 0; }
+
+  .shell {
+    display: grid; grid-template-columns: 240px minmax(0, 1fr);
+    gap: 56px; max-width: 1180px; margin: 0 auto; padding: 0 24px;
+  }
+  .sidenav {
+    position: sticky; top: 0; align-self: start;
+    width: 240px; height: 100dvh; padding: 56px 24px 28px;
+    margin-left: -24px; border-right: 1px solid var(--line);
+    display: flex; flex-direction: column;
+  }
+  .brand { font-weight: 800; font-size: 16px; color: var(--ink); }
+  .brand:hover { text-decoration: none; }
+  .brand span {
+    display: block; font-family: var(--mono); font-size: 10px; font-weight: 400;
+    color: var(--muted); letter-spacing: .14em; margin-top: 3px;
+  }
+
+  .nav-cap {
+    font-family: var(--mono); font-size: 10px; font-weight: 600;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+    margin: 36px 0 8px;
+  }
+  .nav-page {
+    display: block; font-size: 14px; font-weight: 600; color: var(--ink);
+    padding: 8px 11px; margin-left: -11px; border-radius: 7px; white-space: nowrap;
+    transition: color .15s ease, background .15s ease;
+  }
+  .nav-page:hover { background: var(--line-soft); text-decoration: none; }
+  .nav-page.active { color: var(--clay); background: var(--clay-soft); }
+  .nav-page.soon { color: var(--muted); font-weight: 500; cursor: default; pointer-events: none; }
+  .nav-page.soon::after {
+    content: 'скоро'; float: right; font-family: var(--mono); font-size: 9.5px;
+    letter-spacing: .08em; text-transform: uppercase; opacity: .7; margin-top: 3px;
+  }
+
+  .nav-links { display: flex; flex-direction: column; gap: 1px; margin: 4px 0 0 9px; }
+  .nav-links a {
+    font-size: 13px; font-weight: 500; color: var(--muted);
+    padding: 5px 11px; margin-left: -11px; border-radius: 7px; white-space: nowrap;
+    transition: color .15s ease, background .15s ease;
+  }
+  .nav-links a:hover { color: var(--ink); background: var(--line-soft); text-decoration: none; }
+  .nav-links a.active { color: var(--clay); background: var(--clay-soft); }
+  .nav-links a .n { font-family: var(--mono); font-size: 10.5px; margin-right: 8px; opacity: .65; }
+
+  .nav-foot { margin-top: auto; font-family: var(--mono); font-size: 10.5px; color: var(--muted); line-height: 1.8; }
+  .nav-foot a { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+  .nav-foot a:hover { color: var(--clay); }
+
+  .page { max-width: 820px; padding: 0 0 96px; min-width: 0; }
+
+  .hero { padding-top: 60px; }
+  .kicker { font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  h1 { font-size: 30px; font-weight: 800; letter-spacing: -.02em; line-height: 1.2; margin: 12px 0 14px; }
+  .lede { font-size: 16px; color: var(--muted); max-width: 62ch; }
+  .lede b { color: var(--ink); font-weight: 600; }
+  .hero-meta { font-size: 12px; color: var(--muted); margin-top: 16px; letter-spacing: .02em; }
+
+  /* periметр-callout */
+  .callout {
+    margin-top: 26px; border: 1px solid var(--clay);
+    border-left-width: 3px; border-radius: 12px;
+    background: oklch(98.5% 0.004 75); padding: 16px 18px;
+    font-size: 14px; color: var(--ink); max-width: 70ch;
+  }
+  .callout .lbl {
+    display: block; font-family: var(--mono); font-size: 10px; font-weight: 600;
+    letter-spacing: .1em; text-transform: uppercase; color: var(--clay); margin-bottom: 6px;
+  }
+  .callout b { font-weight: 700; }
+
+  section { margin-top: 72px; }
+  .sec-head {
+    display: flex; align-items: baseline; gap: 14px;
+    border-top: 2px solid var(--ink); padding-top: 16px;
+  }
+  .sec-num { font-size: 12px; font-weight: 600; color: var(--clay); }
+  h2 { font-size: 22px; font-weight: 800; letter-spacing: -.01em; }
+  .sec-tag {
+    font-family: var(--mono); font-size: 9.5px; font-weight: 600;
+    letter-spacing: .1em; text-transform: uppercase; color: var(--muted);
+    border: 1px solid var(--line); padding: 3px 8px; border-radius: 100px;
+    margin-left: auto; align-self: center;
+  }
+  .sec-lede { color: var(--muted); margin-top: 12px; max-width: 66ch; }
+
+  /* tables */
+  .tbl-wrap {
+    overflow-x: auto; margin-top: 20px;
+    border: 1px solid var(--line); border-radius: 10px;
+    background: oklch(98.5% 0.004 75);
+  }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; line-height: 1.5; }
+  th {
+    font-family: var(--mono); font-size: 10.5px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: .07em; color: var(--muted);
+    text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--line);
+    white-space: nowrap; background: var(--paper);
+  }
+  td { padding: 12px 14px; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  table tr:hover td { background: oklch(96.5% 0.006 75); }
+  td.where { font-weight: 700; white-space: normal; min-width: 150px; }
+  td.where code, td.what code, td.fix code {
+    font-family: var(--mono); font-size: 12px;
+    background: var(--clay-soft); color: var(--clay);
+    padding: 1px 5px; border-radius: 4px;
+  }
+  td.what { color: var(--ink); min-width: 260px; }
+  td.fix { color: var(--muted); min-width: 200px; }
+  th:nth-child(1) { width: 20%; }
+  th:nth-child(2) { width: 48%; }
+  th:nth-child(3) { width: 32%; }
+
+  /* fix list */
+  .fixes { margin-top: 22px; display: flex; flex-direction: column; gap: 22px; }
+  .fix-group { }
+  .fix-tier {
+    display: inline-flex; align-items: baseline; gap: 10px;
+    font-family: var(--mono); font-size: 11px; font-weight: 600;
+    letter-spacing: .08em; text-transform: uppercase; color: var(--clay);
+    margin-bottom: 4px;
+  }
+  .fix-tier .tier-note { color: var(--muted); font-weight: 400; letter-spacing: .02em; text-transform: none; }
+  .fix-group ol { margin: 0; padding-left: 22px; }
+  .fix-group li { font-size: 14px; padding: 4px 0; color: var(--ink); }
+  .fix-group li code {
+    font-family: var(--mono); font-size: 12px;
+    background: var(--line-soft); color: var(--ink);
+    padding: 1px 5px; border-radius: 4px;
+  }
+
+  .scope-note {
+    background: var(--line-soft); border-radius: 10px;
+    padding: 14px 16px; margin-top: 28px;
+    font-size: 13.5px; color: var(--muted); max-width: 70ch;
+  }
+  .scope-note b { color: var(--ink); }
+
+  footer {
+    margin-top: 96px; border-top: 1px solid var(--line); padding-top: 18px;
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+    font-family: var(--mono); font-size: 11.5px; color: var(--muted);
+  }
+  footer a { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+  footer a:hover { color: var(--clay); }
+
+  @media (max-width: 900px) {
+    html { scroll-padding-top: 72px; }
+    .shell { display: block; padding: 0 20px; }
+    .sidenav {
+      position: sticky; flex-direction: row; align-items: center; gap: 12px;
+      width: auto; height: 52px; padding: 0 20px; margin: 0 -20px;
+      border-right: none; border-bottom: 1px solid var(--line);
+      background: var(--paper); z-index: 50;
+    }
+    .brand { font-size: 15px; }
+    .brand span { display: none; }
+    .nav-cap, .nav-page.soon { display: none; }
+    .nav-page { margin-left: 0; padding: 6px 10px; }
+    .nav-links {
+      flex-direction: row; margin: 0 0 0 auto;
+      overflow-x: auto; scrollbar-width: none;
+    }
+    .nav-links::-webkit-scrollbar { display: none; }
+    .nav-links a { margin-left: 0; padding: 6px 10px; }
+    .nav-links a .n { display: none; }
+    .nav-foot { display: none; }
+    .page { max-width: none; padding-bottom: 80px; }
+  }
+
+  @media (max-width: 720px) {
+    h1 { font-size: 25px; }
+    section { margin-top: 56px; }
+    .sec-tag { display: none; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#overview">До змісту</a>
+
+<div class="shell">
+
+<nav class="sidenav" aria-label="Навігація">
+  <a class="brand" href="#overview">Куток<span>WORKSPACE</span></a>
+
+  <p class="nav-cap">Сторінки</p>
+  <a class="nav-page" href="index.html">Ресерч</a>
+  <a class="nav-page" href="personas.html">Персони</a>
+  <a class="nav-page" href="jtbd.html">JTBD</a>
+  <a class="nav-page" href="critique.html">Критика</a>
+  <a class="nav-page" href="sitemap.html">Sitemap</a>
+  <a class="nav-page" href="flows.html">User flows</a>
+  <a class="nav-page active" href="#overview" aria-current="page">Аудит мапи</a>
+  <div class="nav-links" aria-label="Розділи аудиту">
+    <a href="#stuck"><span class="n">01</span>Тупики</a>
+    <a href="#states"><span class="n">02</span>Відсутні стани</a>
+    <a href="#depth"><span class="n">03</span>Зайва глибина</a>
+    <a href="#orphans"><span class="n">04</span>Сироти</a>
+    <a href="#fixes"><span class="n">05</span>Правки</a>
+  </div>
+  <a class="nav-page soon" aria-disabled="true">Wireframes</a>
+
+  <div class="nav-foot">
+    <a href="../audit.md">audit.md</a><br>
+    <a href="https://github.com/denysosadchyi/kutok">GitHub</a><br>
+    червень 2026
+  </div>
+</nav>
+
+<main class="page">
+
+  <header class="hero" id="overview">
+    <p class="kicker">Куток · аудит мапи</p>
+    <h1>Критика sitemap і flows</h1>
+    <p class="lede">Прискіплива звірка <b>sitemap.md</b> і <b>flows.md</b> за чотирма класами дефектів: тупики, відсутні стани, зайва глибина, сироти. Кожен — таблицею <b>де → що → як лагодити</b>. Звірено з матрицею покриття в <a href="jtbd.html">jtbd</a>.</p>
+    <p class="hero-meta mono">4 класи дефектів · 18 знахідок · 10 правок (P0–P2) · чернетка</p>
+
+    <div class="callout">
+      <span class="lbl">Периметр</span>
+      <b>flows.md</b> покриває лише 4 jobs (Main, RJ1, RJ2, RJ3) і лише бік Ані. RJ4, RJ5, SJ1/SJ2, EJ1/EJ2 і <b>весь бік господаря (Олена)</b> не мають жодного flow. Це фон, на якому читаються всі чотири класи.
+    </div>
+  </header>
+
+  <!-- 01 Тупики -->
+  <section id="stuck" aria-labelledby="stuck-h">
+    <div class="sec-head">
+      <span class="sec-num mono">01</span>
+      <h2 id="stuck-h">Тупики</h2>
+      <span class="sec-tag">застрягання без виходу</span>
+    </div>
+    <p class="sec-lede">Flow, де рішення «ні» нікуди не веде, а error/empty не має кнопки далі.</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Де</th><th>Що</th><th>Як лагодити</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="where"><b>RJ1</b>, вузол <code>Stuck</code></td>
+            <td class="what">Термінальний вузол «під ці критерії нічого немає» — <b>немає жодної вихідної стрілки</b>. У MAIN аналогічний <code>Stuck</code>→<code>Feed</code>, тут глухо. Людина, що відмовилась послаблювати фільтр, впирається в червоний квадрат без CTA.</td>
+            <td class="fix">Додати ребро <code>Stuck → A</code> (стрічка) або «скинути фільтр». Привести до патерну MAIN.</td>
+          </tr>
+          <tr>
+            <td class="where"><b>MAIN</b>, петля верифікації</td>
+            <td class="what"><code>Verify → Q4(ні) → VerErr → Verify</code>: єдиний вихід зі збою — «спробувати ще». Верифікація — <b>обов'язковий гейт до першого контакту</b> (R1). Хто не пройшов селфі-перевірку (камера, документ, лайвнес) — <b>назавжди замкнений з усього продукту</b>. Немає «пізніше / підтримка / дивитись стрічку поки що».</td>
+            <td class="fix">Гілка «N невдач → ескалація»: ручна перевірка / підтримка / «верифікувати пізніше, доступ обмежений». Розчепити термінальний failure від ретраю.</td>
+          </tr>
+          <tr>
+            <td class="where"><b>MAIN</b> <code>NetErr</code>, <b>RJ3</b> <code>Err</code></td>
+            <td class="what">Єдина дія — «повторити». Якщо мережа лежить — нескінченна петля без «зберегти і вийти».</td>
+            <td class="fix">Додати «скасувати / зберегти чернетку заявки».</td>
+          </tr>
+          <tr>
+            <td class="where"><b>RJ2</b>, підозра до <b>верифікованого</b> профілю</td>
+            <td class="what"><code>Stuck1/Stuck2 → A</code> — єдина реакція на дзвіночки «повернутись у стрічку». Якщо профіль верифікований, але людина бачить тривожні сигнали — <b>немає «поскаржитись / заблокувати»</b>. Для продукту про безпеку — діра.</td>
+            <td class="fix">Додати дію «поскаржитись/заблокувати» (стан картки). Див. §04 — для неї немає ні job, ні екрана.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 02 Відсутні стани -->
+  <section id="states" aria-labelledby="states-h">
+    <div class="sec-head">
+      <span class="sec-num mono">02</span>
+      <h2 id="states-h">Відсутні стани</h2>
+      <span class="sec-tag">happy-path без empty/error/loading</span>
+    </div>
+    <p class="sec-lede">Де є щасливий шлях, але нема порожнього, помилки чи завантаження.</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Де</th><th>Що</th><th>Як лагодити</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="where"><b>Верифікація</b> (екран A)</td>
+            <td class="what">Ядро довіри (RJ2), а flow — лише один узагальнений <code>VerErr</code>. Немає loading «перевіряємо селфі», «SMS не дійшла», «код невірний», «фото не збігається», «лайвнес не пройдено». Найважливіший екран MVP описаний найбідніше.</td>
+            <td class="fix">Винести окремий flow верифікації з розшифрованими помилками + loading.</td>
+          </tr>
+          <tr>
+            <td class="where"><b>Чат</b> (екран D)</td>
+            <td class="what">Лише термінальний вузол «Чат (текст)». Немає empty «ще немає повідомлень», error «не надіслано», «співрозмовник видалив акаунт / заблокував». Чат у MVP-скоупі.</td>
+            <td class="fix">Додати міні-flow або перелік станів чату.</td>
+          </tr>
+          <tr>
+            <td class="where"><b>Бік господаря (E)</b> — повністю</td>
+            <td class="what">Жодного flow. Немає empty «ще немає кандидатів» (на cold start це стан за замовчуванням!), error/loading публікації, фото-аплоуду. jtbd прямо каже: primary може виявитись Олена — а її шлях не намальовано взагалі.</td>
+            <td class="fix">Додати flow господаря: створення оголошення → отримання кандидатів (з empty) → перегляд.</td>
+          </tr>
+          <tr>
+            <td class="where"><b>«Вхідні заявки»</b>, <b>«Список діалогів»</b></td>
+            <td class="what">Вузли є, empty немає. На старті обидва <b>порожні за замовчуванням</b> — це перший екран новачка.</td>
+            <td class="fix">Додати empty-стани з підказкою «що далі».</td>
+          </tr>
+          <tr>
+            <td class="where"><b>«Створення профілю»</b> (екран A)</td>
+            <td class="what">У MAIN — один вузол <code>Create</code>. Немає error/loading аплоуду фото.</td>
+            <td class="fix">Додати стани аплоуду.</td>
+          </tr>
+          <tr>
+            <td class="where"><b>RJ4</b> (важливість 3 для Ані)</td>
+            <td class="what"><b>Немає flow взагалі</b> → немає жодного стану.</td>
+            <td class="fix">Намалювати flow «підготовка до зустрічі» або явно зафіксувати, що його покриває екран «Профіль іншої людини».</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 03 Зайва глибина -->
+  <section id="depth" aria-labelledby="depth-h">
+    <div class="sec-head">
+      <span class="sec-num mono">03</span>
+      <h2 id="depth-h">Зайва глибина</h2>
+      <span class="sec-tag">main job глибше 3 тапів</span>
+    </div>
+    <p class="sec-lede">Де main чи частий related job ховається глибше трьох тапів для primary-персони (Аня).</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Де</th><th>Що</th><th>Як лагодити</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="where"><b>Верифікація vs браузинг</b> — пряме протиріччя</td>
+            <td class="what">Зауваги до дерева (A): «без верифікації <b>не можна нічого робити</b>» (R1). Але MAIN-flow дає Ані дійти до <code>Feed</code> і дивитись профілі <b>без</b> верифікації (гейт <code>Q3</code> — лише при «Хочу познайомитись»). Якщо діє формулювання sitemap, побачити перший бейдж (ядро RJ2) — це відкрити → профіль (4 поля) → телефон (номер→SMS→код) → селфі → стрічка → картка → профіль = <b>глибоко за 3 тапи</b>. Документи суперечать одне одному.</td>
+            <td class="fix">Обрати одну модель: <b>lazy verification</b> (браузинг вільний, гейт лише на контакті — як у flow) і виправити зауваги в sitemap. Знімає і глибину, і протиріччя.</td>
+          </tr>
+          <tr>
+            <td class="where"><b>Повторно відкрити профіль співрозмовника</b> (RJ4)</td>
+            <td class="what">Зі «Список діалогів → Чат → ?» немає задокументованого посилання назад на «Профіль іншої людини». Щоб перечитати профіль перед зустріччю, Аня вертається у стрічку й шукає заново.</td>
+            <td class="fix">Додати лінк «профіль» із чату/діалогу.</td>
+          </tr>
+          <tr>
+            <td class="where"><b>Господар оцінює реальність кандидата</b> (Main/RJ2, бік Олени)</td>
+            <td class="what">E (створити оголошення) → чекати → D (Вхідні заявки) → кандидат → профіль → бейдж. Немає «стрічки»-шорткату. Якщо primary = Олена (jtbd це допускає), її головний job глибоко закопаний.</td>
+            <td class="fix">Тримати під питанням; вирішити після інтерв'ю — але зафіксувати ризик у flows.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 04 Сироти -->
+  <section id="orphans" aria-labelledby="orphans-h">
+    <div class="sec-head">
+      <span class="sec-num mono">04</span>
+      <h2 id="orphans-h">Сироти</h2>
+      <span class="sec-tag">звірка з матрицею</span>
+    </div>
+    <p class="sec-lede">Екрани без job і jobs без екрана. Матриця в sitemap декларує «0 сиріт + gap Онбординг» — прискіпливо це частково артефакт того, що матриця прирівняла <b>сутності</b> до <b>екранів</b>, а реальне дерево A–F має екранів більше.</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Де</th><th>Що</th><th>Як лагодити</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="where">Екран <b>«Верифікація: телефон + селфі»</b> (A)</td>
+            <td class="what">Сирота в моделі сутностей: є в дереві екранів, але <b>немає колонки в матриці</b> й немає сутності 1–6. Матриця ніколи не оцінила покриття ядрового екрана. «0 сиріт» тримається лише тому, що його не внесли стовпцем.</td>
+            <td class="fix">Той самий «Онбординг gap», який sitemap визнав — довести до кінця: додати сутність/колонку <b>Онбординг/Верифікація</b> і перерахувати матрицю.</td>
+          </tr>
+          <tr>
+            <td class="where"><b>Вихідні / надіслані заявки</b> — немає екрана</td>
+            <td class="what">Сутність «Заявка» = <b>вхідні</b> кандидати (бік господаря). Але MAIN має стан <code>Wait: чекаємо відповідь</code> — <b>де Аня живе, поки чекає?</b> Немає «Мої надіслані заявки / очікують». RJ3 з боку шукача не має домашнього екрана для свого ключового стану.</td>
+            <td class="fix">Додати екран/таб «Мої заявки (надіслані, очікують)» або явно повісити стан на «Список діалогів».</td>
+          </tr>
+          <tr>
+            <td class="where"><b>Матриця ↔ «породжуючі jobs»</b> розходяться</td>
+            <td class="what">Сутність «Пошук/фільтр» декларує <b>єдиний</b> job RJ1, а в матриці колонка Стрічка має ✓ для Main, RJ2, SJ2 (∑4). Профіль декларує 5 jobs, а колонка — ✓ для 10 (RJ3/EJ1/EJ2 з'явились лише в матриці). <b>Що джерело істини?</b> Traceability ламається.</td>
+            <td class="fix">Узгодити: або розширити «породжуючі jobs» у картках сутностей, або прибрати зайві ✓. Списки мають звірятися.</td>
+          </tr>
+          <tr>
+            <td class="where"><b>«Поскаржитись/заблокувати»</b></td>
+            <td class="what">Немає job, сутності, екрана — у продукті, чия цінність = безпека. Це не сирота в матриці (бо взагалі відсутнє), а <b>сліпа пляма</b>.</td>
+            <td class="fix">Завести job (примикає до EJ2/Main) або свідомо винести в «Під питанням» з обґрунтуванням.</td>
+          </tr>
+          <tr>
+            <td class="where"><b>Розрив flows ↔ sitemap</b></td>
+            <td class="what">flows.md стверджує «усі вузли звірені, нових екранів немає» — формально так. Але <b>зворотного покриття немає</b>: 6 із 10 jobs і весь бік Олени без flow. Sitemap обіцяє більше, ніж flows показує.</td>
+            <td class="fix">Домалювати flows для RJ4/RJ5/host або в flows.md явно зафіксувати свідоме обмеження скоупу.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 05 Правки -->
+  <section id="fixes" aria-labelledby="fixes-h">
+    <div class="sec-head">
+      <span class="sec-num mono">05</span>
+      <h2 id="fixes-h">Правки</h2>
+      <span class="sec-tag">за пріоритетом</span>
+    </div>
+    <p class="sec-lede">Усе — в <code class="mono">.md</code> (джерело істини), HTML регенерується. Ще не застосовано — список на узгодження.</p>
+
+    <div class="fixes">
+      <div class="fix-group">
+        <span class="fix-tier">P0 <span class="tier-note">справжні діри</span></span>
+        <ol>
+          <li><code>flows.md</code> RJ1: <code>Stuck → A</code> (прибрати термінальний глухий кут).</li>
+          <li><code>flows.md</code> MAIN: ескалація для повторного збою верифікації (не вічна петля).</li>
+          <li><code>sitemap.md</code>: екран «Мої надіслані заявки / очікують» (дім для стану <code>Wait</code>).</li>
+          <li><code>sitemap.md</code>: довести Онбординг/Верифікацію до повноцінної сутності+колонки, перерахувати матрицю.</li>
+        </ol>
+      </div>
+      <div class="fix-group">
+        <span class="fix-tier">P1 <span class="tier-note">узгодженість</span></span>
+        <ol start="5">
+          <li>Зняти протиріччя «верифікація до всього» vs «браузинг вільний» — обрати lazy verification, виправити зауваги A.</li>
+          <li>Узгодити «породжуючі jobs» у картках сутностей з ✓ у матриці.</li>
+          <li><code>flows.md</code>: empty-стани для «Вхідні заявки», «Список діалогів», верифікації, чату.</li>
+        </ol>
+      </div>
+      <div class="fix-group">
+        <span class="fix-tier">P2 <span class="tier-note">повнота</span></span>
+        <ol start="8">
+          <li>Flow господаря (E) + flow RJ4; або явна примітка про свідоме обмеження скоупу flows.</li>
+          <li>«Поскаржитись/заблокувати» — завести як job або свідомо в «Під питанням».</li>
+          <li>Лінк «профіль» із чату (RJ4).</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="scope-note">
+      <b>Наступний крок:</b> погодити обсяг P0 (4 правки в <code class="mono">sitemap.md</code> + <code class="mono">flows.md</code>). Пункти 4 і 5 міняють матрицю покриття — їх варто рішати першими, бо від них залежить решта.
+    </div>
+  </section>
+
+  <footer>
+    <span>Куток · Аудит мапи · чернетка</span>
+    <span>Джерела: <a href="sitemap.html">sitemap</a> · <a href="flows.html">flows</a> · <a href="jtbd.html">jtbd</a> · <a href="../audit.md">audit.md</a></span>
+  </footer>
+
+</main>
+</div>
+
+<script>
+  const links = [...document.querySelectorAll('.nav-links a')]
+  const sections = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean)
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(a => a.classList.remove('active'))
+        const idx = sections.indexOf(e.target)
+        if (idx >= 0) links[idx].classList.add('active')
+      }
+    })
+  }, { rootMargin: '-15% 0px -75% 0px' })
+  sections.forEach(s => obs.observe(s))
+</script>
+
+</body>
+</html>
