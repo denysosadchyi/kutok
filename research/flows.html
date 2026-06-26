@@ -522,6 +522,123 @@ flowchart TD
     </div>
   </section>
 
+  <!-- G1 entry -->
+  <section id="g1" aria-labelledby="g1-h">
+    <div class="sec-head">
+      <span class="sec-num mono">05</span>
+      <h2 id="g1-h">G1 — Вхід existing-user (повернення / новий пристрій)</h2>
+      <span class="sec-tag">інфраструктура · sitemap G</span>
+    </div>
+    <p class="job-quote">Не job, а інфраструктура (sitemap, група G, рішення #8). Онбординг = перший запуск; цей flow — як повернутись.
+      <span class="who">Той самий phone+SMS, але розпізнаємо наявний номер і ведемо у вхід, а не в новий профіль.</span></p>
+
+    <div class="diagram">
+      <pre class="mermaid">
+flowchart TD
+    Start(["Повертається / новий пристрій / після виходу"]) --> Phone["Вхід: ввід телефону"]
+    Phone --> SMS["Ввід SMS-коду"]
+    SMS --> Q{"Код вірний?"}
+    Q -->|ні / не дійшла| CodeErr["Стан: код невірний / SMS не дійшла"]
+    CodeErr -->|надіслати ще / повторити| SMS
+    CodeErr -->|немає доступу до номера| Rec["Відновлення доступу → Підтримка"]
+    Q -->|так| Has{"Профіль на цьому номері існує?"}
+    Has -->|так| Tab(["Таб-бар → Пошук"])
+    Has -->|ні, новий номер| Create["Створення профілю (онбординг)"]
+    Create --> Tab
+
+    classDef state fill:#fff3e0,stroke:#e8a33d,color:#5b4a2f;
+    classDef ok fill:#e7f3ea,stroke:#4a9d6a,color:#234a33;
+    class CodeErr,Rec state;
+    class Tab ok;
+      </pre>
+    </div>
+
+    <div class="takeaway">
+      <span class="lbl">Точки зриву</span>
+      SMS не дійшла / код невірний → надіслати ще; <b>втрата доступу до номера</b> → відновлення через підтримку (інакше акаунт втрачено). Розпізнавання «номер уже є» розводить вхід і реєстрацію — без нього existing-user впаде у створення дубля профілю.
+    </div>
+  </section>
+
+  <!-- G2 verification -->
+  <section id="g2" aria-labelledby="g2-h">
+    <div class="sec-head">
+      <span class="sec-num mono">06</span>
+      <h2 id="g2-h">G2 — Верифікація: телефон + селфі (деталізований під-flow)</h2>
+      <span class="sec-tag">ядро довіри · під-flow</span>
+    </div>
+    <p class="job-quote">Розгортає вузол <code>Verify</code> з MAIN у власний flow з розшифрованими помилками й loading — як вимагав audit.md (п.2.1).
+      <span class="who">Ядро довіри (RJ2) має бути описане найповніше, не найбідніше.</span></p>
+
+    <div class="diagram">
+      <pre class="mermaid">
+flowchart TD
+    Start(["Дія вимагає верифікації (напр. «Хочу познайомитись»)"]) --> Consent["Згода на обробку даних + біометрію (селфі/лайвнес)"]
+    Consent --> Phone["Ввід телефону"]
+    Phone --> SMSsend["Стан: надсилаємо SMS (loading)"]
+    SMSsend --> Code["Ввід SMS-коду"]
+    Code --> Qc{"Код вірний?"}
+    Qc -->|ні / не дійшла| CodeErr["Стан: код невірний / SMS не дійшла → надіслати ще"]
+    CodeErr --> Code
+    Qc -->|так| Selfie["Захоплення селфі (лайвнес)"]
+    Selfie --> Qcam{"Є дозвіл на камеру?"}
+    Qcam -->|ні| CamErr["Стан: немає дозволу на камеру → інструкція як увімкнути"]
+    CamErr --> Selfie
+    Qcam -->|так| Proc["Стан: перевіряємо селфі (loading)"]
+    Proc --> Qm{"Селфі збіглось із фото + лайвнес пройдено?"}
+    Qm -->|ні| MatchErr["Стан: фото не збіглось / лайвнес не пройдено"]
+    MatchErr --> Qn{"Кількість невдач?"}
+    Qn -->|менше N| Selfie
+    Qn -->|N і більше| Esc["Ескалація: ручна перевірка / Підтримка"]
+    Esc --> Pending["Стан: на ручній перевірці (обмежений доступ; стрічку видно)"]
+    Qm -->|так| Done(["Бейдж: телефон ✓ / фото ✓ — дію розблоковано"])
+
+    classDef state fill:#fff3e0,stroke:#e8a33d,color:#5b4a2f;
+    classDef ok fill:#e7f3ea,stroke:#4a9d6a,color:#234a33;
+    class SMSsend,CodeErr,CamErr,Proc,MatchErr,Esc,Pending state;
+    class Done ok;
+      </pre>
+    </div>
+
+    <div class="takeaway">
+      <span class="lbl">Точки зриву</span>
+      Кожна mobile-web помилка має свій стан (SMS, камера, збіг фото, лайвнес) — не один узагальнений <code>VerErr</code>; після N невдач — <b>ескалація в підтримку</b>, не вічна петля (sitemap, рішення #10); зміна фото пізніше скидає «фото ✓» і повертає сюди (рішення безпеки #5).
+    </div>
+  </section>
+
+  <!-- G3 report / block -->
+  <section id="g3" aria-labelledby="g3-h">
+    <div class="sec-head">
+      <span class="sec-num mono">07</span>
+      <h2 id="g3-h">G3 — Скарга / блокування</h2>
+      <span class="sec-tag">безпека · sitemap A</span>
+    </div>
+    <p class="job-quote">Дія «поскаржитись/заблокувати» (стан картки/чату) розгорнута до екранів: форма скарги + список заблокованих (sitemap, безпека #4 + група A).
+      <span class="who">У продукті про безпеку має бути доведено до кінця.</span></p>
+
+    <div class="diagram">
+      <pre class="mermaid">
+flowchart TD
+    A["Профіль іншої людини / Чат"] --> Act["Дія: поскаржитись / заблокувати"]
+    Act --> Q{"Що робить?"}
+    Q -->|заблокувати| Block["Стан: заблоковано — зник зі стрічки / чат закрито"]
+    Block --> Mng["Профіль → Заблоковані"]
+    Mng -->|розблокувати| A
+    Q -->|поскаржитись| Form["Форма скарги: вибір причини"]
+    Form --> Conf["Підтвердження: «що буде далі»"]
+    Conf --> Sent["Стан: скаргу надіслано (опційно — заблокувати теж)"]
+    Sent --> Mng
+
+    classDef state fill:#fff3e0,stroke:#e8a33d,color:#5b4a2f;
+    class Block,Sent state;
+      </pre>
+    </div>
+
+    <div class="takeaway">
+      <span class="lbl">Точки зриву</span>
+      Блок має бути <b>зворотним</b> (екран «Заблоковані» → розблокувати) — інакше випадковий тап незворотний; скарга веде через причину → підтвердження → «що далі», щоб людина знала, що дія не в порожнечу.
+    </div>
+  </section>
+
   <footer>
     <span>Куток · User flows · чернетка</span>
     <span>Джерела: <a href="jtbd.html">jtbd</a> · <a href="sitemap.html">sitemap</a> · <a href="../flows.md">flows.md</a></span>
