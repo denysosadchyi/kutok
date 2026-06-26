@@ -500,6 +500,78 @@
     </div>
   </section>
 
+  <!-- 06 Доповнення G–H -->
+  <section id="supplement" aria-labelledby="supplement-h">
+    <div class="sec-head">
+      <span class="sec-num mono">06</span>
+      <h2 id="supplement-h">Доповнення — інфраструктурні, правові та lifecycle екрани</h2>
+      <span class="sec-tag">10 додано</span>
+    </div>
+    <p class="sec-lede">Окремий прохід на <b>продуктову повноту shippable-MVP</b> (поза job-каталогом) виявив клас екранів, який jobs не породжують, а прод вимагає. Внесено синхронно у <a href="sitemap.html">sitemap.md</a> (групи <b>G–H</b> + таблиця «Інфраструктурні та правові рішення», #8–12), <a href="ia.html">ia.md</a> (онбординг + вкладка Профіль) і <a href="flows.html">flows.md</a> (G1–G3).</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Додано</th><th>Тип</th><th>Де</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="where"><b>Вхід existing-user</b> (телефон→SMS, окремо від реєстрації)</td>
+            <td class="what">інфраструктура — блокер</td>
+            <td class="fix"><code>sitemap G #8</code> · <code>flows G1</code></td>
+          </tr>
+          <tr>
+            <td class="where"><b>Правова згода на біометрію + Умови / Політика</b></td>
+            <td class="what">право — <b>блокер запуску</b></td>
+            <td class="fix"><code>sitemap G #9</code> · <code>flows G2</code></td>
+          </tr>
+          <tr>
+            <td class="where"><b>Підтримка / звернення</b></td>
+            <td class="what">інфраструктура (вихід із тупика верифікації)</td>
+            <td class="fix"><code>sitemap G #10</code> · <code>flows G2</code></td>
+          </tr>
+          <tr>
+            <td class="where"><b>Відновлення доступу</b> (втрата номера)</td>
+            <td class="what">інфраструктура</td>
+            <td class="fix"><code>sitemap G #11</code> · <code>flows G1</code></td>
+          </tr>
+          <tr>
+            <td class="where"><b>Життєвий цикл оголошення</b> (активне/призупинено/зайнято/архів)</td>
+            <td class="what">supply-гігієна</td>
+            <td class="fix"><code>sitemap G #12</code></td>
+          </tr>
+          <tr>
+            <td class="where"><b>Під-екрани верифікації</b> (телефон→SMS→селфі→обробка→ескалація)</td>
+            <td class="what">деталізація ядра (вимога п.2.1 цього аудиту)</td>
+            <td class="fix"><code>flows G2</code></td>
+          </tr>
+          <tr>
+            <td class="where"><b>Форма скарги + список заблокованих</b></td>
+            <td class="what">безпека (доведення дії до екранів)</td>
+            <td class="fix"><code>sitemap A/C</code> · <code>flows G3</code></td>
+          </tr>
+          <tr>
+            <td class="where"><b>Підтвердження заселення</b> (дія в чаті, якір RJ5)</td>
+            <td class="what">trust-flywheel</td>
+            <td class="fix"><code>sitemap D</code></td>
+          </tr>
+          <tr>
+            <td class="where"><b>Налаштування приватності person-card</b></td>
+            <td class="what">безпека #1</td>
+            <td class="fix"><code>sitemap A</code> · <code>ia ④</code></td>
+          </tr>
+          <tr>
+            <td class="where"><b>Welcome / Хаб безпеки / Центр сповіщень / Фото-в'юер</b></td>
+            <td class="what">відкладене (H) — свідомий вибір</td>
+            <td class="fix"><code>sitemap H</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="scope-note">
+      <b>Найбільший ризик запуску:</b> #9 (правова згода/політики) і #8 (вхід) — без них прод технічно/юридично неможливий. Решта — продуктова гігієна. Welcome лишається <code>[?]</code> на інтерв'ю.
+    </div>
+  </section>
+
   <footer>
     <span>Куток · Аудит мапи · правки P0–P2 застосовано</span>
     <span>Джерела: <a href="sitemap.html">sitemap</a> · <a href="flows.html">flows</a> · <a href="jtbd.html">jtbd</a> · <a href="../audit.md">audit.md</a></span>
