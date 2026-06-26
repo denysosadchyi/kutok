@@ -1,8 +1,4 @@
-# Product
-
-## Register
-
-product
+# Product — Куток
 
 ## Users
 
@@ -39,3 +35,7 @@ product
 ## Accessibility & Inclusion
 
 WCAG 2.1 AA: контраст тексту ≥4.5:1, видимий фокус, семантичний HTML (landmarks, заголовки за порядком), `prefers-reduced-motion`, таргети дотику ≥44px на мобільному.
+
+---
+
+*Оновлено: червень 2026. Джерело бренд-особистості й принципів дизайну. Узгоджено з [README.md](./README.md) і [CLAUDE.md](./CLAUDE.md).*
