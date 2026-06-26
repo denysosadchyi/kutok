@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <title>Куток — Information Architecture</title>
-<meta name="description" content="Загальна навігація продукту: онбординг, таб-бар із 4 вкладок, єдине дерево екранів з jobs.">
+<meta name="description" content="Загальна навігація продукту Куток: онбординг до входу, таб-бар із 4 вкладок (Пошук · Заявки · Чати · Профіль), єдине дерево екранів зі sitemap, прив'язане до jobs.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -31,8 +31,10 @@
 
   body {
     font-family: 'Manrope', system-ui, sans-serif;
-    font-size: 15.5px; line-height: 1.65;
-    color: var(--ink); background: var(--paper);
+    font-size: 15.5px;
+    line-height: 1.65;
+    color: var(--ink);
+    background: var(--paper);
   }
 
   a { color: var(--clay); text-decoration: none; }
@@ -107,6 +109,20 @@
   .lede b { color: var(--ink); font-weight: 600; }
   .hero-meta { font-size: 12px; color: var(--muted); margin-top: 16px; letter-spacing: .02em; }
 
+  /* legend */
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 26px;
+    padding: 16px 18px; border: 1px solid var(--line); border-radius: 12px;
+    background: oklch(98.5% 0.004 75);
+  }
+  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
+  .swatch { width: 14px; height: 14px; border-radius: 4px; flex-shrink: 0; }
+  .sw-state { background: #fff3e0; border: 1px solid #e8a33d; }
+  .sw-stuck { background: #fde4e1; border: 1px solid #d2553f; }
+  .sw-ok    { background: #e7f3ea; border: 1px solid #4a9d6a; }
+  .sw-screen{ background: var(--paper); border: 1px solid var(--ink); }
+  .sw-dec   { background: var(--clay-soft); border: 1px solid var(--clay); transform: rotate(45deg); }
+
   section { margin-top: 72px; }
   .sec-head {
     display: flex; align-items: baseline; gap: 14px;
@@ -114,16 +130,60 @@
   }
   .sec-num { font-size: 12px; font-weight: 600; color: var(--clay); }
   h2 { font-size: 22px; font-weight: 800; letter-spacing: -.01em; }
-  .sec-lede { color: var(--muted); margin-top: 10px; max-width: 64ch; }
+  .sec-tag {
+    font-family: var(--mono); font-size: 9.5px; font-weight: 600;
+    letter-spacing: .1em; text-transform: uppercase; color: var(--muted);
+    border: 1px solid var(--line); padding: 3px 8px; border-radius: 100px;
+    margin-left: auto; align-self: center;
+  }
 
-  /* ── модель: 3 рівні ── */
+  .job-quote {
+    border-left: 3px solid var(--clay); padding: 4px 0 4px 16px; margin: 18px 0 6px;
+    font-style: italic; color: var(--ink); max-width: 66ch;
+  }
+  .job-quote .who { display: block; font-style: normal; font-size: 12.5px; color: var(--muted); margin-top: 6px; }
+
+  .diagram {
+    margin-top: 22px;
+    background: oklch(98.5% 0.004 75);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 28px 20px;
+    overflow-x: auto;
+  }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: 0; }
+  .diagram svg { max-width: 100%; height: auto; }
+
+  .takeaway {
+    margin-top: 18px; background: var(--line-soft); border-radius: 10px;
+    padding: 14px 16px; font-size: 13.5px; color: var(--muted); max-width: 70ch;
+  }
+  .takeaway b { color: var(--ink); }
+  .takeaway .lbl {
+    display: block; font-family: var(--mono); font-size: 10px; font-weight: 600;
+    letter-spacing: .1em; text-transform: uppercase; color: var(--clay); margin-bottom: 6px;
+  }
+
+  footer {
+    margin-top: 96px; border-top: 1px solid var(--line); padding-top: 18px;
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+    font-family: var(--mono); font-size: 11.5px; color: var(--muted);
+  }
+  footer a { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+  footer a:hover { color: var(--clay); }
+
+  /* ── IA: контент-патерни (порт із ia.html, поверх chrome flows.html) ── */
+  .sec-lede { color: var(--muted); margin-top: 10px; max-width: 64ch; }
+  .sec-lede a { color: var(--clay); }
+
+  /* модель: 3 рівні */
   .levels { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 24px; }
   .lvl { border: 1px solid var(--line); border-radius: 12px; padding: 18px; background: oklch(98.5% 0.004 75); }
   .lvl .n { font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--clay); }
   .lvl h3 { font-size: 15px; font-weight: 700; margin: 6px 0 8px; }
   .lvl p { font-size: 13px; color: var(--muted); }
 
-  /* ── таб-бар мокап ── */
+  /* таб-бар мокап */
   .tabbar-wrap { margin-top: 26px; }
   .tabbar {
     display: flex; gap: 8px; max-width: 460px; margin: 0 auto;
@@ -137,25 +197,10 @@
   }
   .tab .ic { display: block; font-size: 18px; margin-bottom: 3px; }
   .tab.on { color: var(--clay); background: var(--clay-soft); border-color: var(--clay); }
-  .tabbar-cap { text-align: center; font-size: 12px; color: var(--muted); margin-top: 10px; }
+  .tabbar-cap { text-align: center; font-size: 12px; color: var(--muted); margin: 10px auto 0; max-width: 62ch; }
 
-  /* ── повна мапа (SVG-дерево) ── */
-  .fullmap {
-    margin-top: 24px; background: oklch(98.5% 0.004 75);
-    border: 1px solid var(--line); border-radius: 14px;
-    padding: 28px 20px; overflow-x: auto;
-  }
-  .fullmap svg { display: block; margin: 0 auto; min-width: 940px; max-width: 100%; height: auto; }
-  .map-legend { display: flex; flex-wrap: wrap; gap: 10px 20px; margin-top: 16px; font-size: 12.5px; color: var(--muted); }
-  .map-legend span { display: inline-flex; align-items: center; gap: 7px; }
-  .ml-box { width: 16px; height: 12px; border-radius: 3px; flex-shrink: 0; }
-  .ml-group { background: oklch(94.5% 0.02 50); border: 1.5px solid oklch(52% 0.115 40); }
-  .ml-screen { background: oklch(99% 0.003 75); border: 1px solid oklch(78% 0.01 75); }
-  .ml-soon { background: oklch(99% 0.003 75); border: 1px dashed oklch(60% 0.015 65); }
-
-  /* ── дерево ── */
+  /* дерево */
   .tree { margin-top: 28px; }
-  .tnode { }
   .trunk {
     display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
     padding: 12px 0; border-bottom: 1px solid var(--line);
@@ -169,7 +214,6 @@
     text-transform: uppercase; color: var(--muted); border: 1px solid var(--line);
     padding: 2px 7px; border-radius: 100px;
   }
-
   ul.branch { list-style: none; margin: 0 0 8px 11px; padding-left: 22px; border-left: 1px solid var(--line); }
   ul.branch > li { padding: 10px 0 2px; }
   ul.branch > li.screen { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
@@ -194,10 +238,14 @@
     padding: 2px 7px; border-radius: 100px;
   }
 
-  .legend { display: flex; flex-wrap: wrap; gap: 10px 20px; margin-top: 20px; font-size: 12.5px; color: var(--muted); }
-  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  /* проста легенда дерева (перекриває карткову .legend із chrome) */
+  .tree-legend {
+    display: flex; flex-wrap: wrap; gap: 10px 20px; margin-top: 20px;
+    font-size: 12.5px; color: var(--muted);
+  }
+  .tree-legend > span { display: inline-flex; align-items: center; gap: 6px; }
 
-  /* ── таблиця flows ── */
+  /* таблиця flows → нав */
   .tbl-wrap { overflow-x: auto; margin-top: 18px; border: 1px solid var(--line); border-radius: 10px; background: oklch(98.5% 0.004 75); }
   table { border-collapse: collapse; width: 100%; font-size: 13.5px; line-height: 1.5; }
   th {
@@ -210,19 +258,11 @@
   table tr:hover td { background: oklch(96.5% 0.006 75); }
   td:first-child { font-weight: 600; white-space: nowrap; }
 
-  /* ── нотатки ── */
+  /* нотатки */
   .notes { list-style: none; margin-top: 18px; display: flex; flex-direction: column; gap: 12px; }
   .notes li { padding-left: 18px; position: relative; font-size: 14px; color: var(--muted); max-width: 72ch; }
   .notes li::before { content: '—'; position: absolute; left: 0; color: var(--clay); }
   .notes b { color: var(--ink); }
-
-  footer {
-    margin-top: 96px; border-top: 1px solid var(--line); padding-top: 18px;
-    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
-    font-family: var(--mono); font-size: 11.5px; color: var(--muted);
-  }
-  footer a { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
-  footer a:hover { color: var(--clay); }
 
   @media (max-width: 900px) {
     html { scroll-padding-top: 72px; }
@@ -237,7 +277,10 @@
     .brand span { display: none; }
     .nav-cap, .nav-page.soon { display: none; }
     .nav-page { margin-left: 0; padding: 6px 10px; }
-    .nav-links { flex-direction: row; margin: 0 0 0 auto; overflow-x: auto; scrollbar-width: none; }
+    .nav-links {
+      flex-direction: row; margin: 0 0 0 auto;
+      overflow-x: auto; scrollbar-width: none;
+    }
     .nav-links::-webkit-scrollbar { display: none; }
     .nav-links a { margin-left: 0; padding: 6px 10px; }
     .nav-links a .n { display: none; }
@@ -248,6 +291,8 @@
   @media (max-width: 720px) {
     h1 { font-size: 25px; }
     section { margin-top: 56px; }
+    .sec-tag { display: none; }
+    .diagram { padding: 18px 10px; }
     .levels { grid-template-columns: 1fr; }
     .tab { font-size: 11px; }
   }
@@ -269,13 +314,13 @@
   <a class="nav-page" href="sitemap.html">Sitemap</a>
   <a class="nav-page active" href="#overview" aria-current="page">IA · навігація</a>
   <div class="nav-links" aria-label="Розділи IA">
-    <a href="#map"><span class="n">00</span>Повна мапа</a>
-    <a href="#model"><span class="n">01</span>Модель</a>
-    <a href="#tree"><span class="n">02</span>Дерево</a>
-    <a href="#onflows"><span class="n">03</span>Flows → нав</a>
-    <a href="#notes"><span class="n">04</span>Рішення</a>
+    <a href="#model"><span class="n">00</span>Модель</a>
+    <a href="#tree"><span class="n">01</span>Дерево</a>
+    <a href="#onflows"><span class="n">02</span>Flows → нав</a>
+    <a href="#notes"><span class="n">03</span>Рішення</a>
   </div>
   <a class="nav-page" href="flows.html">User flows</a>
+  <a class="nav-page" href="audit.html">Аудит мапи</a>
   <a class="nav-page soon" aria-disabled="true">Wireframes</a>
 
   <div class="nav-foot">
@@ -290,134 +335,14 @@
   <header class="hero" id="overview">
     <p class="kicker">Куток · information architecture</p>
     <h1>Загальна навігація продукту</h1>
-    <p class="lede">Усі екрани зі <b>sitemap</b> і шляхи з <b>flows</b>, зібрані в єдину навігаційну модель: онбординг до входу, <b>таб-бар із 4 вкладок</b>, деталі всередині. Роль — накладка, не окрема навігація.</p>
-    <p class="hero-meta mono">онбординг · 4 вкладки · 12 екранів · нових екранів не введено</p>
+    <p class="lede">Навігація <b>продукту</b> (мобільного застосунку), не воркспейсу. Зібрано з усіх екранів <b>sitemap</b> (групи A–F) і шляхів <b>flows</b> в єдину модель. Правило: вузли-екрани існують у sitemap, нових екранів не введено; контейнери навігації (онбординг, вкладки) — позначено окремо.</p>
+    <p class="hero-meta mono">продукт, не воркспейс · онбординг + 4 вкладки · вузли звірені зі sitemap</p>
   </header>
 
-  <!-- 00 Повна мапа -->
-  <section id="map" aria-labelledby="map-h">
-    <div class="sec-head">
-      <span class="sec-num mono">00</span>
-      <h2 id="map-h">Повна мапа — всі сторінки відразу</h2>
-    </div>
-    <p class="sec-lede">Уся ієрархія одним деревом: корінь → онбординг і 4 вкладки → 12 екранів. Повні назви й jobs — у дереві нижче.</p>
-
-    <div class="fullmap">
-      <svg viewBox="0 0 1120 384" role="img" aria-label="Дерево інформаційної архітектури: корінь, онбординг, 4 вкладки і всі екрани">
-        <defs>
-          <style>
-            .nlabel { font-family: 'Manrope', sans-serif; fill: oklch(25% 0.012 60); }
-            .njob   { font-family: 'JetBrains Mono', monospace; font-size: 8px; fill: oklch(52% 0.115 40); }
-            .ntag   { font-family: 'JetBrains Mono', monospace; font-size: 8.5px; fill: oklch(48% 0.015 65); }
-            .grp    { fill: oklch(94.5% 0.02 50); stroke: oklch(52% 0.115 40); stroke-width: 1.5; }
-            .scr    { fill: oklch(99% 0.003 75); stroke: oklch(78% 0.01 75); stroke-width: 1.2; }
-            .soon   { fill: oklch(99% 0.003 75); stroke: oklch(60% 0.015 65); stroke-width: 1.2; stroke-dasharray: 4 3; }
-            .edge   { stroke: oklch(66% 0.013 65); stroke-width: 1.2; fill: none; }
-            .edge-soft { stroke: oklch(78% 0.01 75); stroke-width: 1.1; fill: none; stroke-dasharray: 3 3; }
-          </style>
-        </defs>
-
-        <!-- root -->
-        <rect class="grp" x="470" y="16" width="180" height="44" rx="11"/>
-        <text class="nlabel" x="560" y="36" text-anchor="middle" font-size="14" font-weight="800">Куток</text>
-        <text class="ntag"   x="560" y="50" text-anchor="middle">мобільний застосунок</text>
-
-        <!-- root → groups -->
-        <path class="edge" d="M560 60 L144 98"/>
-        <path class="edge" d="M560 60 L352 98"/>
-        <path class="edge" d="M560 60 L560 98"/>
-        <path class="edge" d="M560 60 L768 98"/>
-        <path class="edge" d="M560 60 L976 98"/>
-
-        <!-- groups -->
-        <!-- Онбординг -->
-        <rect class="grp" x="52"  y="98" width="184" height="40" rx="9"/>
-        <text class="nlabel" x="144" y="116" text-anchor="middle" font-size="12" font-weight="700">⓿ Онбординг</text>
-        <text class="ntag"   x="144" y="130" text-anchor="middle">потік · до таб-бару</text>
-        <!-- Пошук -->
-        <rect class="grp" x="260" y="98" width="184" height="40" rx="9"/>
-        <text class="nlabel" x="352" y="116" text-anchor="middle" font-size="12" font-weight="700">① Пошук</text>
-        <text class="ntag"   x="352" y="130" text-anchor="middle">вкладка</text>
-        <!-- Заявки -->
-        <rect class="grp" x="468" y="98" width="184" height="40" rx="9"/>
-        <text class="nlabel" x="560" y="116" text-anchor="middle" font-size="12" font-weight="700">② Заявки</text>
-        <text class="ntag"   x="560" y="130" text-anchor="middle">вкладка</text>
-        <!-- Чати -->
-        <rect class="grp" x="676" y="98" width="184" height="40" rx="9"/>
-        <text class="nlabel" x="768" y="116" text-anchor="middle" font-size="12" font-weight="700">③ Чати</text>
-        <text class="ntag"   x="768" y="130" text-anchor="middle">вкладка</text>
-        <!-- Профіль -->
-        <rect class="grp" x="884" y="98" width="184" height="40" rx="9"/>
-        <text class="nlabel" x="976" y="116" text-anchor="middle" font-size="12" font-weight="700">④ Профіль</text>
-        <text class="ntag"   x="976" y="130" text-anchor="middle">вкладка / кабінет</text>
-
-        <!-- group → screen spines -->
-        <path class="edge" d="M144 138 L144 160 M144 202 L144 212"/>
-        <path class="edge" d="M352 138 L352 160 M352 202 L352 212 M352 254 L352 264"/>
-        <path class="edge" d="M560 138 L560 160"/>
-        <path class="edge" d="M768 138 L768 160 M768 202 L768 212"/>
-        <path class="edge" d="M976 138 L976 160 M976 202 L976 212"/>
-        <path class="edge-soft" d="M976 254 L976 264 M976 306 L976 316"/>
-
-        <!-- screens: Онбординг -->
-        <rect class="scr" x="52" y="160" width="184" height="42" rx="8"/>
-        <text class="nlabel" x="144" y="178" text-anchor="middle" font-size="10.5" font-weight="600">Створення профілю</text>
-        <text class="njob"   x="144" y="193" text-anchor="middle">SJ1 · SJ2</text>
-        <rect class="scr" x="52" y="212" width="184" height="42" rx="8"/>
-        <text class="nlabel" x="144" y="230" text-anchor="middle" font-size="10.5" font-weight="600">Верифікація: тел. + селфі</text>
-        <text class="njob"   x="144" y="245" text-anchor="middle">Main · RJ2</text>
-
-        <!-- screens: Пошук -->
-        <rect class="scr" x="260" y="160" width="184" height="42" rx="8"/>
-        <text class="nlabel" x="352" y="178" text-anchor="middle" font-size="10.5" font-weight="600">Стрічка (каталог + фільтр)</text>
-        <text class="njob"   x="352" y="193" text-anchor="middle">RJ1</text>
-        <rect class="scr" x="260" y="212" width="184" height="42" rx="8"/>
-        <text class="nlabel" x="352" y="230" text-anchor="middle" font-size="10.5" font-weight="600">Профіль іншої людини</text>
-        <text class="njob"   x="352" y="245" text-anchor="middle">RJ2 · RJ4 · ↳RJ3</text>
-        <rect class="scr" x="260" y="264" width="184" height="42" rx="8"/>
-        <text class="nlabel" x="352" y="282" text-anchor="middle" font-size="10.5" font-weight="600">Оголошення кімнати</text>
-        <text class="njob"   x="352" y="297" text-anchor="middle">RJ2 · RJ4 · ↳RJ3</text>
-
-        <!-- screens: Заявки -->
-        <rect class="scr" x="468" y="160" width="184" height="42" rx="8"/>
-        <text class="nlabel" x="560" y="178" text-anchor="middle" font-size="10.5" font-weight="600">Вхідні заявки / кандидати</text>
-        <text class="njob"   x="560" y="193" text-anchor="middle">RJ3</text>
-
-        <!-- screens: Чати -->
-        <rect class="scr" x="676" y="160" width="184" height="42" rx="8"/>
-        <text class="nlabel" x="768" y="178" text-anchor="middle" font-size="10.5" font-weight="600">Список діалогів</text>
-        <text class="njob"   x="768" y="193" text-anchor="middle">RJ3</text>
-        <rect class="scr" x="676" y="212" width="184" height="42" rx="8"/>
-        <text class="nlabel" x="768" y="230" text-anchor="middle" font-size="10.5" font-weight="600">Чат (текст)</text>
-        <text class="njob"   x="768" y="245" text-anchor="middle">RJ3 · взаємний інтерес</text>
-
-        <!-- screens: Профіль -->
-        <rect class="scr" x="884" y="160" width="184" height="42" rx="8"/>
-        <text class="nlabel" x="976" y="178" text-anchor="middle" font-size="10.5" font-weight="600">Мій профіль</text>
-        <text class="njob"   x="976" y="193" text-anchor="middle">SJ1 · RJ4</text>
-        <rect class="scr" x="884" y="212" width="184" height="42" rx="8"/>
-        <text class="nlabel" x="976" y="230" text-anchor="middle" font-size="10.5" font-weight="600">Мої оголошення</text>
-        <text class="njob"   x="976" y="245" text-anchor="middle">RJ1 · господар</text>
-        <rect class="soon" x="900" y="264" width="168" height="42" rx="8"/>
-        <text class="nlabel" x="984" y="282" text-anchor="middle" font-size="10.5" font-weight="600">↳ Ред. оголошення</text>
-        <text class="njob"   x="984" y="297" text-anchor="middle">RJ1 · вкладене</text>
-        <rect class="soon" x="884" y="316" width="184" height="42" rx="8"/>
-        <text class="nlabel" x="976" y="334" text-anchor="middle" font-size="10.5" font-weight="600" fill="oklch(48% 0.015 65)">Лишити відгук ⏳</text>
-        <text class="njob"   x="976" y="349" text-anchor="middle" fill="oklch(48% 0.015 65)">RJ5 · post-MVP</text>
-      </svg>
-    </div>
-
-    <div class="map-legend" aria-hidden="true">
-      <span><span class="ml-box ml-group"></span>контейнер навігації (онбординг / вкладка)</span>
-      <span><span class="ml-box ml-screen"></span>екран (зі sitemap)</span>
-      <span><span class="ml-box ml-soon"></span>вкладене / post-MVP</span>
-    </div>
-  </section>
-
-  <!-- 01 Модель -->
+  <!-- 00 Модель -->
   <section id="model" aria-labelledby="model-h">
     <div class="sec-head">
-      <span class="sec-num mono">01</span>
+      <span class="sec-num mono">00</span>
       <h2 id="model-h">Навігаційна модель</h2>
     </div>
     <p class="sec-lede">Mobile-first. Три рівні навігації; роль (шукач / господар) — накладка поверх тих самих вкладок, а не окремий режим.</p>
@@ -426,43 +351,54 @@
       <div class="lvl">
         <span class="n">Рівень 0</span>
         <h3>Онбординг</h3>
-        <p>Лінійний потік до таб-бару: створення профілю → верифікація. Обов'язковий до першого контакту (research R1).</p>
+        <p>Реєстрація + верифікація. Обов'язкова до першого <b>контакту</b>, <b>не до перегляду</b> (lazy verification, R1): можна одразу ввійти в таб-бар і гортати стрічку — верифікація спрацьовує на дії «Хочу познайомитись». Поза постійною навігацією.</p>
       </div>
       <div class="lvl">
         <span class="n">Рівень 1</span>
         <h3>Таб-бар · 4 вкладки</h3>
-        <p>Постійна навігація: Пошук · Заявки · Чати · Профіль. За дієсловами людини, не за «розділами».</p>
+        <p>Постійна навігація: Пошук · Заявки · Чати · Профіль. Розбито за дієсловами людини, а не за «розділами».</p>
       </div>
       <div class="lvl">
         <span class="n">Рівень 2</span>
         <h3>Деталі й дії</h3>
-        <p>Профілі, оголошення, чат, редагування. Сюди ж — дія «Хочу познайомитись».</p>
+        <p>Профілі, оголошення, чат, редагування — усередині вкладки. Сюди ж — дія «Хочу познайомитись».</p>
       </div>
     </div>
 
     <div class="tabbar-wrap">
-      <div class="tabbar" role="img" aria-label="Мокап таб-бару з 4 вкладок">
+      <div class="tabbar" role="img" aria-label="Мокап таб-бару з 4 вкладок: Пошук, Заявки, Чати, Профіль">
         <div class="tab on"><span class="ic">🔍</span>Пошук</div>
         <div class="tab"><span class="ic">✋</span>Заявки</div>
         <div class="tab"><span class="ic">💬</span>Чати</div>
         <div class="tab"><span class="ic">👤</span>Профіль</div>
       </div>
-      <p class="tabbar-cap">Постійний таб-бар застосунку. Активна — стартова вкладка для primary (шукач).</p>
+      <p class="tabbar-cap">Постійний таб-бар застосунку. На ② Заявки і ③ Чати — in-app лічильники нових / непрочитаних (push поза MVP). Активна — стартова вкладка для primary (шукач).</p>
+    </div>
+
+    <div class="takeaway">
+      <span class="lbl">Роль — накладка, не навігація</span>
+      Одна людина може бути і шукачем, і господарем. Тому немає окремого «режиму господаря»: його екрани (розмістити кімнату, мої оголошення) живуть усередині вкладки <b>Профіль</b>, а вхідні заявки на його кімнату — у вкладці <b>Заявки</b>, спільній для обох ролей.
+    </div>
+
+    <div class="takeaway">
+      <span class="lbl">Стани ≠ навігація</span>
+      empty / loading / error (з <a href="flows.html">flows</a>) — стани екранів, не пункти навігації. У дереві їх немає.
     </div>
   </section>
 
-  <!-- 02 Дерево -->
+  <!-- 01 Дерево -->
   <section id="tree" aria-labelledby="tree-h">
     <div class="sec-head">
-      <span class="sec-num mono">02</span>
+      <span class="sec-num mono">01</span>
       <h2 id="tree-h">Єдине дерево навігації</h2>
     </div>
-    <p class="sec-lede">Усі екрани в одній ієрархії. <span class="mono" style="font-size:12px">(RJx)</span> — job зі <a href="jtbd.html">jtbd</a>. Вузли-екрани існують у <a href="sitemap.html">sitemap</a>.</p>
+    <p class="sec-lede">Усі екрани в одній ієрархії: корінь → онбординг і 4 вкладки. <span class="mono" style="font-size:12px">(RJx)</span> — job зі <a href="jtbd.html">jtbd</a>; вузли-екрани існують у <a href="sitemap.html">sitemap</a>. Контейнери навігації (онбординг, таб-бар, назви вкладок) — позначено окремо.</p>
 
-    <div class="legend">
-      <span><span class="persona p">P</span>primary (Аня, шукач)</span>
+    <div class="tree-legend">
+      <span><span class="persona p">P</span>потрібен primary (Аня, шукач)</span>
       <span><span class="persona s">S</span>secondary (Олена-господар / Артем)</span>
       <span><span class="soon-pill">post-MVP</span>вмикається пізніше</span>
+      <span><span class="job-tag">RJx</span>job зі jtbd</span>
     </div>
 
     <div class="tree">
@@ -479,12 +415,12 @@
           <li class="screen">
             <span class="scr-name">Створення профілю</span>
             <span class="job-tag">SJ1</span><span class="job-tag">SJ2</span>
-            <span class="scr-sub">точка входу (ім'я, фото, про себе, вік)</span>
+            <span class="scr-sub">точка входу — ім'я, фото, про себе, вік</span>
           </li>
           <li class="screen">
             <span class="scr-name">Верифікація: телефон + селфі</span>
             <span class="job-tag">Main</span><span class="job-tag">RJ2</span>
-            <span class="scr-sub">обов'язкова до першого контакту</span>
+            <span class="scr-sub">«мене перевіряють» — до першого контакту, не до перегляду</span>
           </li>
         </ul>
       </div>
@@ -501,7 +437,7 @@
           <li class="screen">
             <span class="scr-name">Стрічка / каталог: кімнати + люди, з фільтром</span>
             <span class="job-tag">RJ1</span>
-            <span class="scr-sub">фільтр (район, ціна, стать) — панель, стан, не екран</span>
+            <span class="scr-sub">фільтр (район, ціна, стать) — панель і стан, не екран</span>
           </li>
           <li class="screen">
             <span class="scr-name">Профіль іншої людини</span>
@@ -522,13 +458,20 @@
           <span class="badge">②</span>
           <span class="tname">Заявки</span>
           <span class="ttag">вкладка</span>
+          <span class="ttag">лічильник нових · in-app</span>
           <span class="persona p">P</span><span class="persona s">S</span>
         </div>
         <ul class="branch">
           <li class="screen">
+            <span class="scr-name">Мої заявки: надіслані / очікують</span>
+            <span class="job-tag">RJ3</span>
+            <span class="persona p">P</span>
+            <span class="scr-sub">дім стану «чекаю» — можна відкликати</span>
+          </li>
+          <li class="screen">
             <span class="scr-name">Вхідні заявки / кандидати</span>
             <span class="job-tag">RJ3</span>
-            <span class="scr-sub">надіслані / отримані — стани вкладки; для Олени це «кандидати»</span>
+            <span class="scr-sub">бік господаря — перегляд кандидатів</span>
           </li>
         </ul>
       </div>
@@ -539,6 +482,7 @@
           <span class="badge">③</span>
           <span class="tname">Чати</span>
           <span class="ttag">вкладка</span>
+          <span class="ttag">лічильник непрочитаних · in-app</span>
           <span class="persona p">P</span><span class="persona s">S</span>
         </div>
         <ul class="branch">
@@ -548,8 +492,8 @@
           </li>
           <li class="screen">
             <span class="scr-name">Чат (текст)</span>
-            <span class="job-tag">RJ3</span>
-            <span class="scr-sub">відкритий лише при взаємному інтересі</span>
+            <span class="job-tag">RJ3</span><span class="job-tag">RJ4</span>
+            <span class="scr-sub">лінк на профіль співрозмовника · відкритий лише при взаємності</span>
           </li>
         </ul>
       </div>
@@ -572,7 +516,13 @@
             <span class="scr-name">Мої оголошення</span>
             <span class="job-tag">RJ1</span>
             <span class="persona s">S</span>
+            <span class="scr-sub">supply · господар</span>
             <span class="scr-sub action">↳ Створення / редагування оголошення (RJ1)</span>
+          </li>
+          <li class="screen">
+            <span class="scr-name">Керування акаунтом</span>
+            <span class="ttag">trust + право</span>
+            <span class="scr-sub">вихід / видалення акаунта і даних — trust + правовий обов'язок</span>
           </li>
           <li class="screen">
             <span class="scr-name">Лишити відгук про людину</span>
@@ -586,48 +536,56 @@
     </div>
   </section>
 
-  <!-- 03 Flows → навігація -->
+  <!-- 02 Flows → навігація -->
   <section id="onflows" aria-labelledby="onflows-h">
     <div class="sec-head">
-      <span class="sec-num mono">03</span>
+      <span class="sec-num mono">02</span>
       <h2 id="onflows-h">Як шляхи лягають на навігацію</h2>
     </div>
-    <p class="sec-lede">Кожен <a href="flows.html">flow</a> — це маршрут крізь вкладки. Ключовий trust-gate <b>① → ② → ③</b> навмисно проходить через три вкладки: кожен крок — окрема видима дія.</p>
+    <p class="sec-lede">Кожен <a href="flows.html">flow</a> — це маршрут крізь вкладки. Стовпчик «Діаграма» позначає, чи покрито шлях окремою діаграмою у flows.</p>
 
     <div class="tbl-wrap">
       <table>
         <thead>
-          <tr><th>Flow (job)</th><th>Стартова вкладка</th><th>Перетин вкладок</th></tr>
+          <tr><th>Flow (job)</th><th>Стартова вкладка</th><th>Перетин вкладок</th><th>Діаграма</th></tr>
         </thead>
         <tbody>
-          <tr><td>Main Job</td><td>Онбординг → ① Пошук</td><td>① → дія → ② Заявки → ③ Чати</td></tr>
-          <tr><td>RJ1 — відсіяти</td><td>① Пошук</td><td>лишається в ①</td></tr>
-          <tr><td>RJ2 — довіра до контакту</td><td>① Пошук → Профіль / Оголошення</td><td>лишається в ①</td></tr>
-          <tr><td>RJ3 — взаємний інтерес</td><td>① Пошук (дія)</td><td>① → ② Заявки → ③ Чати</td></tr>
-          <tr><td>RJ5 — відгук</td><td>④ Профіль</td><td>лишається в ④</td></tr>
+          <tr><td>Main Job</td><td>Онбординг → ① Пошук</td><td>① → (дія) → ② Заявки → ③ Чати</td><td>✅</td></tr>
+          <tr><td>RJ1 — відсіяти</td><td>① Пошук</td><td>лишається в ①</td><td>✅</td></tr>
+          <tr><td>RJ2 — довіра до контакту</td><td>① Пошук → Профіль / Оголошення</td><td>лишається в ①</td><td>✅</td></tr>
+          <tr><td>RJ3 — взаємний інтерес</td><td>① Пошук (дія) → ② Заявки → ③ Чати</td><td>три вкладки послідовно</td><td>✅</td></tr>
+          <tr><td>E — бік господаря</td><td>④ Профіль (оголошення) → ② Заявки → ③ Чати</td><td>публікація → кандидати → чат</td><td>✅</td></tr>
+          <tr><td>RJ4 — підготовка до зустрічі</td><td>③ Чати → лінк на Профіль</td><td>у межах ③ / ①</td><td>⬜ покриває екран профілю</td></tr>
+          <tr><td>RJ5 — відгук</td><td>④ Профіль</td><td>лишається в ④</td><td>⬜ post-MVP</td></tr>
         </tbody>
       </table>
     </div>
+
+    <div class="takeaway">
+      <span class="lbl">Кістяк trust-gate</span>
+      Ключовий продуктовий перехід <b>① → ② → ③</b> (побачив → інтерес взаємний → чат). Він навмисно проходить через три різні вкладки, щоб кожен крок був видимою, окремою дією.
+    </div>
   </section>
 
-  <!-- 04 Рішення -->
+  <!-- 03 Рішення -->
   <section id="notes" aria-labelledby="notes-h">
     <div class="sec-head">
-      <span class="sec-num mono">04</span>
+      <span class="sec-num mono">03</span>
       <h2 id="notes-h">Рішення і відкриті питання</h2>
     </div>
 
     <ul class="notes">
-      <li><b>Чому 4 вкладки, а не 3.</b> Заявки (② — намір, ще не розблоковано) і Чати (③ — відкрита розмова) можна злити в один «Inbox». Розділив свідомо: для trust-продукту різниця «заявка vs діалог» змістова. Об'єднання — кандидат на пост-валідацію.</li>
-      <li><b>Господар без окремого режиму.</b> Якщо інтерв'ю покаже primary = господар (ринок supply-обмежений), «Розмістити кімнату» підніметься з ④ у глобальний <span class="mono">+</span> або власну вкладку. Поки — під ④.</li>
-      <li><b>Чого немає в навігації навмисно</b> (sitemap «Під питанням»): збережені/обране, сповіщення, скоринг сумісності, соц-граф, окремий екран налаштувань (SIROTA — жоден job не вимагає).</li>
-      <li><b>Нових екранів не введено.</b> Усі 12 вузлів — зі sitemap. «Онбординг», «Таб-бар» і назви вкладок — навігаційні контейнери, не екрани.</li>
+      <li><b>Чому 4 вкладки, а не 3.</b> Заявки (② — намір, ще не розблоковано) і Чати (③ — розблокована розмова) можна злити в один «Inbox» з двома підтабами. Розділив свідомо: для trust-продукту різниця «заявка vs відкритий діалог» — змістова, не технічна. Об'єднання — кандидат на пост-валідацію після інтерв'ю.</li>
+      <li><b>Господар без окремого режиму.</b> Якщо інтерв'ю покаже, що primary — господар (sitemap/jtbd: ринок supply-обмежений), «Розмістити кімнату» підніметься з ④ у помітнішу дію (глобальний <span class="mono">+</span> або власна вкладка). Поки — під ④.</li>
+      <li><b>Чого немає в навігації навмисно</b> (з sitemap «Під питанням»): збережені/обране, скоринг сумісності, соц-граф. <i>Push</i>-сповіщення — поза MVP, але <b>in-app лічильники</b> на ② і ③ потрібні. Керування акаунтом (вихід / видалення даних) додано у ④ не за job-каталогом, а як trust + правовий обов'язок (зберігаємо телефон/селфі).</li>
+      <li><b>Екрани — зі sitemap.</b> Додані «Мої заявки (надіслані)» і «Керування акаунтом» внесено й у <a href="sitemap.html">sitemap</a>, тож навігація і мапа лишаються синхронні. «Онбординг», «Таб-бар» і назви вкладок — навігаційні контейнери, не екрани.</li>
+      <li><b>Безпека / приватність</b> — інваріанти (видимість person-card, утримання на платформі, скарга/блок, re-verify фото) у <a href="sitemap.html#рішення-безпеки-і-приватності-до-wireframes">sitemap «Рішення безпеки і приватності»</a>; впливатимуть на стани екранів на етапі wireframes.</li>
     </ul>
   </section>
 
   <footer>
-    <span>Куток · IA · чернетка</span>
-    <span>Джерела: <a href="sitemap.html">sitemap</a> · <a href="flows.html">flows</a> · <a href="../ia.md">ia.md</a></span>
+    <span>Куток · IA · чернетка · наступне: wireframes по вкладках</span>
+    <span>Джерела: <a href="sitemap.html">sitemap</a> · <a href="flows.html">flows</a> · <a href="jtbd.html">jtbd</a> · <a href="../ia.md">ia.md</a></span>
   </footer>
 
 </main>
