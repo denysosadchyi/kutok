@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Верифікація · помилка · Куток</title>
+<style>
+  /* ── ВАЙРФРЕЙМ: лише сірий кістяк. Без кольору, бренд-шрифтів, іконок, тіней. ── */
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: sans-serif; background: #e9e9e9; color: #333; line-height: 1.4; }
+
+  /* ── Каркас вайрфрейму ── */
+  .wf-shell { display: flex; align-items: flex-start; min-height: 100vh; }
+  .wf-stage { flex: 1 1 auto; display: flex; justify-content: center; background: #e9e9e9; }
+  .wf-nav { position: sticky; top: 0; align-self: flex-start;
+    flex: 0 0 240px; width: 240px; height: 100vh; overflow-y: auto;
+    background: #f3f3f3; border-right: 1px solid #ccc; padding: 16px 14px; color: #555; }
+  .wf-nav-title { font-weight: bold; font-size: 12px; color: #444; letter-spacing: .04em; margin-bottom: 10px; }
+  .wf-nav ul { list-style: none; margin: 0; padding: 0; }
+  .wf-nav li.sec { font-size: 10px; text-transform: uppercase; letter-spacing: .07em; color: #888; font-weight: bold; margin-top: 14px; }
+  .wf-nav li.screen { font-size: 12px; color: #444; font-weight: bold; text-transform: none; letter-spacing: 0; margin-top: 5px; padding-left: 10px; }
+  .wf-nav li.screen > ul { margin: 2px 0 0; padding-left: 8px; border-left: 1px solid #d2d2d2; }
+  .wf-nav li.screen > ul > li { padding-left: 8px; }
+  .wf-nav a { display: block; font-size: 11.5px; font-weight: 400; color: #666; text-decoration: none; padding: 2px 6px; }
+  .wf-nav a:hover { background: #e6e6e6; color: #333; }
+  .wf-nav a.active { background: #d8d8d8; color: #222; font-weight: bold; }
+  .wf-nav a.active::before { content: "\25B8  "; }
+
+  .device { width: 100%; max-width: 400px; min-height: 100vh; background: #fff;
+    border-left: 1px solid #ccc; border-right: 1px solid #ccc; display: flex; flex-direction: column; }
+
+  header.app, footer.tabbar { background: #f7f7f7; }
+  header.app { border-bottom: 1px solid #ccc; padding: 10px 12px; }
+  .app-name { font-size: 16px; font-weight: bold; color: #444; }
+  section { border-bottom: 1px solid #ddd; }
+  .pad { padding: 10px 12px; }
+  main { flex: 1; }
+
+  h1.screen-title { font-size: 16px; font-weight: bold; color: #333; }
+  h2.sub { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: #888; font-weight: bold; margin-bottom: 5px; }
+  .hint { font-size: 11.5px; color: #777; margin-top: 4px; }
+  .backlink { font-size: 12px; color: #555; text-decoration: none; }
+  .backlink:hover { text-decoration: underline; }
+
+  /* Форми */
+  .field { display: flex; flex-direction: column; gap: 2px; margin-bottom: 8px; }
+  .field label { font-size: 11px; color: #666; }
+  .field input, .field select, .field textarea {
+    border: 1px solid #bbb; background: #fff; color: #333; padding: 7px 8px; font-size: 13px; font-family: inherit; }
+  .filters-row { display: flex; gap: 8px; }
+  .filters-row .field { flex: 1; }
+  .chk { display: flex; gap: 6px; align-items: center; font-size: 12px; color: #555; margin: 3px 0; }
+  .photo-row { display: flex; gap: 10px; align-items: center; }
+
+  button, a.btn {
+    display: block; width: 100%; text-align: center;
+    border: 1px solid #999; background: #ededed; color: #333;
+    padding: 9px 12px; font-size: 13px; font-family: inherit; cursor: pointer; text-decoration: none; }
+  button.primary, a.btn.primary { border: 1px solid #666; background: #ddd; font-weight: bold; }
+  a.btn.ghost { background: #fff; color: #555; }
+  a.btn.sm { display: inline-block; width: auto; padding: 5px 9px; font-size: 11px; }
+
+  /* Заглушки зображень */
+  .thumb { background: #ddd; border: 1px solid #c4c4c4; display: flex; align-items: center; justify-content: center;
+    text-align: center; font-size: 10px; color: #777; padding: 4px; }
+  .thumb.avatar { flex: 0 0 84px; width: 84px; height: 84px; }
+  .thumb.avatar.lg { width: 96px; height: 96px; flex: none; margin: 0 auto; }
+  .thumb.avatar.sm { flex: 0 0 44px; width: 44px; height: 44px; }
+  .thumb.room-photo { width: 100%; height: 150px; }
+  .thumb.sm { width: 72px; height: 50px; flex: none; font-size: 9px; }
+  .thumb.selfie { width: 120px; height: 120px; flex: none; margin: 0 auto; }
+  .thumb-strip { display: flex; gap: 6px; margin-top: 6px; }
+
+  /* Лічильник / прайс / бейдж / факти */
+  .counter { font-size: 13px; color: #555; } .counter b { color: #333; }
+  .price { font-size: 18px; font-weight: bold; color: #333; margin: 4px 0; }
+  .badge { display: inline-block; font-size: 11px; color: #555; border: 1px solid #bbb; background: #f3f3f3; padding: 1px 6px; margin-top: 5px; }
+  ul.facts { list-style: none; }
+  ul.facts li { font-size: 12.5px; color: #555; padding: 3px 0; border-bottom: 1px dashed #e3e3e3; }
+  .profile-head { text-align: center; }
+  .profile-head h1 { margin-top: 8px; }
+
+  /* Відгуки */
+  .review { border: 1px solid #e0e0e0; padding: 8px 10px; margin-top: 6px; }
+  .review-meta { font-size: 11px; color: #888; margin-bottom: 3px; }
+  .review p.txt { font-size: 12.5px; color: #555; }
+
+  /* Господар / host-row */
+  .host-row { display: flex; gap: 10px; align-items: center; text-decoration: none; color: inherit; }
+  .host-name { font-weight: bold; font-size: 13px; }
+
+  /* Дії / банер / стан-блок */
+  .actions { display: flex; flex-direction: column; gap: 8px; }
+  .banner { border: 1px solid #bbb; background: #f0f0f0; color: #444; padding: 8px 10px; font-size: 12px; margin-bottom: 10px; }
+  .state-block { padding: 30px 18px; text-align: center; }
+  .state-block .state-title { font-size: 14px; font-weight: bold; color: #444; margin-bottom: 6px; }
+  .state-block .state-text { font-size: 12px; color: #666; margin-bottom: 16px; }
+  .state-block .state-actions { display: flex; flex-direction: column; gap: 8px; }
+
+  /* Кроки верифікації */
+  .step .step-title { font-weight: bold; font-size: 12px; color: #444; }
+  .step .step-status { font-size: 12px; color: #555; }
+  .result .result-title { font-weight: bold; font-size: 14px; color: #333; }
+
+  /* Списки рядків (заявки) */
+  ul.list { list-style: none; }
+  .row { display: flex; gap: 10px; align-items: center; padding: 10px 12px; border-bottom: 1px solid #ddd; }
+  .row .row-body { flex: 1; min-width: 0; }
+  .row-title { font-weight: bold; font-size: 13px; color: #333; }
+  .row-sub { font-size: 11.5px; color: #777; }
+  .status { font-size: 10px; border: 1px solid #bbb; background: #f3f3f3; color: #555; padding: 1px 6px; white-space: nowrap; }
+  .row a.cardlink { display: flex; gap: 10px; align-items: center; flex: 1; text-decoration: none; color: inherit; }
+
+  /* Чат */
+  .chat-head { display: flex; flex-direction: column; gap: 6px; }
+  .chat-peer { display: flex; gap: 8px; align-items: center; text-decoration: none; color: inherit; font-size: 12px; }
+  .messages { padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+  .msg { max-width: 78%; padding: 7px 10px; border: 1px solid #ccc; font-size: 12.5px; color: #333; }
+  .msg.in { align-self: flex-start; background: #f1f1f1; }
+  .msg.out { align-self: flex-end; background: #e3e3e3; }
+  .composer { display: flex; gap: 6px; padding: 8px; border-top: 1px solid #ccc; background: #fafafa; }
+  .composer input { flex: 1; border: 1px solid #bbb; padding: 8px; font-size: 13px; font-family: inherit; }
+  .composer button { width: auto; }
+
+  /* Скелетони */
+  .sk { background: #e2e2e2; height: 11px; margin: 7px 0; }
+  .sk.t { height: 14px; width: 80%; } .sk.w90 { width: 90%; } .sk.w70 { width: 70%; }
+  .sk.w50 { width: 50%; } .sk.w40 { width: 40%; } .sk.badge { height: 16px; width: 60%; margin-top: 10px; }
+  .sk.block { height: 120px; width: 100%; }
+  .card { display: flex; gap: 10px; padding: 10px 12px; align-items: flex-start; }
+  .card-body { flex: 1; min-width: 0; padding-top: 4px; }
+
+  footer.tabbar { border-top: 1px solid #ccc; display: flex; margin-top: auto; position: sticky; bottom: 0; }
+  footer.tabbar a { flex: 1; text-align: center; padding: 10px 4px; font-size: 11px; color: #777; text-decoration: none; border-right: 1px solid #e0e0e0; }
+  footer.tabbar a:last-child { border-right: none; }
+  footer.tabbar a.active { color: #333; font-weight: bold; background: #e8e8e8; }
+</style>
+</head>
+<body>
+<div class="wf-shell">
+
+  <nav class="wf-nav" aria-label="Карта вайрфреймів: розділ → екран → стан">
+    <div class="wf-nav-title">Куток · вайрфрейми</div>
+    <ul class="tree">
+      <li class="sec">A · Стати реальним і видимим
+        <ul>
+          <li class="screen">Створення профілю
+            <ul>
+              <li><a href="profile-create.html">успіх</a></li>
+              <li><a href="profile-create-error.html">помилка</a></li>
+              <li><a href="profile-create-loading.html">завантаження</a></li>
+            </ul>
+          </li>
+          <li class="screen">Верифікація: телефон + селфі
+            <ul>
+              <li><a href="verify.html">успіх</a></li>
+              <li><a class="active" href="verify-error.html">помилка</a></li>
+              <li><a href="verify-loading.html">завантаження</a></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li class="sec">B · Знайти і відсіяти
+        <ul>
+          <li class="screen">Стрічка / каталог
+            <ul>
+              <li><a href="listings.html">успіх</a></li>
+              <li><a href="listings-empty.html">порожній</a></li>
+              <li><a href="listings-error.html">помилка</a></li>
+              <li><a href="listings-loading.html">завантаження</a></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li class="sec">C · Розглянути до контакту
+        <ul>
+          <li class="screen">Профіль іншої людини
+            <ul>
+              <li><a href="profile.html">успіх</a></li>
+              <li><a href="profile-empty.html">порожній</a></li>
+              <li><a href="profile-error.html">помилка</a></li>
+              <li><a href="profile-loading.html">завантаження</a></li>
+            </ul>
+          </li>
+          <li class="screen">Оголошення кімнати
+            <ul>
+              <li><a href="room.html">успіх</a></li>
+              <li><a href="room-error.html">помилка</a></li>
+              <li><a href="room-loading.html">завантаження</a></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li class="sec">D · Зав'язати контакт
+        <ul>
+          <li class="screen">Мої заявки
+            <ul>
+              <li><a href="applications.html">успіх</a></li>
+              <li><a href="applications-empty.html">порожній</a></li>
+              <li><a href="applications-loading.html">завантаження</a></li>
+            </ul>
+          </li>
+          <li class="screen">Чат
+            <ul>
+              <li><a href="chat.html">успіх</a></li>
+              <li><a href="chat-empty.html">порожній</a></li>
+              <li><a href="chat-loading.html">завантаження</a></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="wf-stage">
+<div class="device">
+  <header class="app">
+    <div class="app-name">Куток</div>
+  </header>
+  <section class="pad">
+    <h1 class="screen-title">Верифікація</h1>
+    <p class="hint">Перевірка потрібна, щоб написати першим. Безкоштовно.</p>
+  </section>
+  <main>
+  <section class="pad">
+    <label class="chk"><input type="checkbox" checked> Згоден(на) на обробку телефону і селфі (біометрія).</label>
+    <p class="hint"><a href="#">Умови використання</a> · <a href="#">Політика приватності</a></p>
+  </section>
+  <section class="pad step">
+    <p class="step-title">Телефон</p>
+    <p class="step-status">+380 67 ··· 45 — підтверджено ✓</p>
+  </section>
+  <section class="pad">
+    <p class="step-title">Селфі</p>
+    <div class="thumb selfie">селфі</div>
+  </section>
+  <section class="pad result">
+    <div class="banner">Фото не збіглося з фото профілю. Спробуйте ще раз — добре освітлення, без окулярів.</div>
+  </section>
+  <section class="pad actions">
+    <a class="btn primary" href="verify.html">Зробити селфі ще раз</a>
+    <a class="btn ghost" href="#">Звернутись у підтримку</a>
+  </section>
+  </main>
+  <footer class="tabbar">
+    <a href="listings.html">Пошук</a>
+    <a href="applications.html">Заявки</a>
+    <a href="chat.html">Чати</a>
+    <a class="active" href="profile-create.html">Профіль</a>
+  </footer>
+</div>
+  </div>
+</div>
+</body>
+</html>
