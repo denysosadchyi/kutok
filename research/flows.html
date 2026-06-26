@@ -471,6 +471,54 @@ flowchart TD
     </div>
   </section>
 
+  <!-- E host -->
+  <section id="e" aria-labelledby="e-h">
+    <div class="sec-head">
+      <span class="sec-num mono">04</span>
+      <h2 id="e-h">E — бік господаря: підселити, не впустивши «не ту людину»</h2>
+      <span class="sec-tag">Олена · supply</span>
+    </div>
+    <p class="job-quote">«Коли я підселяю в свій дім, я хочу відфільтрувати кандидатів до зустрічі й переконатися, що людина реальна, щоб не впустити проблему.»
+      <span class="who">Сторона пропозиції: «пошук» — це перегляд кандидатів на оголошення.</span></p>
+
+    <div class="diagram">
+      <pre class="mermaid">
+flowchart TD
+    Start(["Олена заходить"]) --> Onb["Онбординг: профіль + верифікація"]
+    Onb --> Create["Створення оголошення: фото, опис, умови"]
+    Create --> Pub{"Опубліковано?"}
+    Pub -->|збій фото| UpErr["Стан: помилка завантаження"]
+    UpErr -->|повторити| Create
+    Pub -->|так| Live["Оголошення активне"]
+
+    Live --> Inbox{"Є вхідні заявки?"}
+    Inbox -->|ще немає| EmptyC["Стан: ще немає кандидатів — порада зробити помітнішим"]
+    EmptyC --> Wait["Чекає — in-app сигнал на нову заявку"]
+    Wait --> Inbox
+    Inbox -->|є| Cand["Вхідні заявки / кандидати"]
+
+    Cand --> View["Профіль кандидата: бейдж, повнота, відгуки"]
+    View --> Q{"Реальний і підходить?"}
+    Q -->|ні / дзвіночки| Decline["Відхилити / поскаржитись"]
+    Decline --> Cand
+    Q -->|так| Accept["Прийняти → взаємно"]
+    Accept --> Chat["Чат (текст) — розблоковано"]
+    Chat --> Meet["Зустріч — поза застосунком"]
+    Meet --> Ok(["Успіх: знайшла сусіда, якому довіряє"])
+
+    classDef state fill:#fff3e0,stroke:#e8a33d,color:#5b4a2f;
+    classDef ok fill:#e7f3ea,stroke:#4a9d6a,color:#234a33;
+    class UpErr,EmptyC,Wait state;
+    class Ok ok;
+      </pre>
+    </div>
+
+    <div class="takeaway">
+      <span class="lbl">Точки зриву</span>
+      Аплоуд фото (error/loading); <b>порожні вхідні на cold-start</b> — стан за замовчуванням, тому потрібна порада, а не порожнеча; «реальність» кандидата тримається на тому ж бейджі з розшифровкою (RJ2 з боку господаря).
+    </div>
+  </section>
+
   <footer>
     <span>Куток · User flows · чернетка</span>
     <span>Джерела: <a href="jtbd.html">jtbd</a> · <a href="sitemap.html">sitemap</a> · <a href="../flows.md">flows.md</a></span>
