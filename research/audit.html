@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <title>Куток — Аудит мапи</title>
-<meta name="description" content="Прискіплива критика sitemap.md і flows.md за чотирма класами дефектів: тупики, відсутні стани, зайва глибина, сироти.">
+<meta name="description" content="Прискіплива критика sitemap.md і flows.md за чотирма класами дефектів — тупики, відсутні стани, зайва глибина, сироти. Правки P0–P2 застосовано.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -116,11 +116,13 @@
     background: oklch(98.5% 0.004 75); padding: 16px 18px;
     font-size: 14px; color: var(--ink); max-width: 70ch;
   }
+  .callout + .callout { margin-top: 14px; }
   .callout .lbl {
     display: block; font-family: var(--mono); font-size: 10px; font-weight: 600;
     letter-spacing: .1em; text-transform: uppercase; color: var(--clay); margin-bottom: 6px;
   }
   .callout b { font-weight: 700; }
+  .callout i { color: var(--muted); font-style: italic; }
 
   section { margin-top: 72px; }
   .sec-head {
@@ -136,6 +138,11 @@
     margin-left: auto; align-self: center;
   }
   .sec-lede { color: var(--muted); margin-top: 12px; max-width: 66ch; }
+  .sec-lede code {
+    font-family: var(--mono); font-size: 12.5px;
+    background: var(--line-soft); color: var(--ink);
+    padding: 1px 5px; border-radius: 4px;
+  }
 
   /* tables */
   .tbl-wrap {
@@ -161,6 +168,7 @@
   }
   td.what { color: var(--ink); min-width: 260px; }
   td.fix { color: var(--muted); min-width: 200px; }
+  td.fix .done { color: oklch(48% 0.09 150); font-weight: 600; }
   th:nth-child(1) { width: 20%; }
   th:nth-child(2) { width: 48%; }
   th:nth-child(3) { width: 32%; }
@@ -177,6 +185,7 @@
   .fix-tier .tier-note { color: var(--muted); font-weight: 400; letter-spacing: .02em; text-transform: none; }
   .fix-group ol { margin: 0; padding-left: 22px; }
   .fix-group li { font-size: 14px; padding: 4px 0; color: var(--ink); }
+  .fix-group li .ok { color: oklch(48% 0.09 150); font-weight: 600; }
   .fix-group li code {
     font-family: var(--mono); font-size: 12px;
     background: var(--line-soft); color: var(--ink);
@@ -189,6 +198,11 @@
     font-size: 13.5px; color: var(--muted); max-width: 70ch;
   }
   .scope-note b { color: var(--ink); }
+  .scope-note code {
+    font-family: var(--mono); font-size: 12px;
+    background: var(--paper); color: var(--ink);
+    padding: 1px 5px; border-radius: 4px;
+  }
 
   footer {
     margin-top: 96px; border-top: 1px solid var(--line); padding-top: 18px;
@@ -243,6 +257,7 @@
   <a class="nav-page" href="jtbd.html">JTBD</a>
   <a class="nav-page" href="critique.html">Критика</a>
   <a class="nav-page" href="sitemap.html">Sitemap</a>
+  <a class="nav-page" href="ia.html">IA · навігація</a>
   <a class="nav-page" href="flows.html">User flows</a>
   <a class="nav-page active" href="#overview" aria-current="page">Аудит мапи</a>
   <div class="nav-links" aria-label="Розділи аудиту">
@@ -250,7 +265,7 @@
     <a href="#states"><span class="n">02</span>Відсутні стани</a>
     <a href="#depth"><span class="n">03</span>Зайва глибина</a>
     <a href="#orphans"><span class="n">04</span>Сироти</a>
-    <a href="#fixes"><span class="n">05</span>Правки</a>
+    <a href="#fixes"><span class="n">05</span>Правки — статус</a>
   </div>
   <a class="nav-page soon" aria-disabled="true">Wireframes</a>
 
@@ -266,12 +281,17 @@
   <header class="hero" id="overview">
     <p class="kicker">Куток · аудит мапи</p>
     <h1>Критика sitemap і flows</h1>
-    <p class="lede">Прискіплива звірка <b>sitemap.md</b> і <b>flows.md</b> за чотирма класами дефектів: тупики, відсутні стани, зайва глибина, сироти. Кожен — таблицею <b>де → що → як лагодити</b>. Звірено з матрицею покриття в <a href="jtbd.html">jtbd</a>.</p>
-    <p class="hero-meta mono">4 класи дефектів · 18 знахідок · 10 правок (P0–P2) · чернетка</p>
+    <p class="lede">Прискіплива критика <b>sitemap.md</b> і <b>flows.md</b> за чотирма класами дефектів: тупики, відсутні стани, зайва глибина, сироти. Формат кожного класу — <b>де → що → як лагодити</b>. Звірено з матрицею покриття в <a href="jtbd.html">jtbd</a>.</p>
+    <p class="hero-meta mono">4 класи дефектів · 18 знахідок · 10 правок P0–P2 застосовано · червень 2026</p>
+
+    <div class="callout">
+      <span class="lbl">Статус</span>
+      <b>✅ Правки P0–P2 застосовано</b> (червень 2026) — див. розділ <a href="#fixes">«Правки — статус»</a> унизу. Класи дефектів нижче лишено як опис знайденого; у фінальному списку позначено, де кожен закрито.
+    </div>
 
     <div class="callout">
       <span class="lbl">Периметр</span>
-      <b>flows.md</b> покриває лише 4 jobs (Main, RJ1, RJ2, RJ3) і лише бік Ані. RJ4, RJ5, SJ1/SJ2, EJ1/EJ2 і <b>весь бік господаря (Олена)</b> не мають жодного flow. Це фон, на якому читаються всі чотири класи.
+      <i>(стан на момент аудиту; flow господаря E відтоді додано — див. <a href="#fixes">«Правки — статус»</a>).</i> <b>flows.md</b> покривав лише 4 jobs (Main, RJ1, RJ2, RJ3) і лише бік Ані. RJ4, RJ5, SJ1/SJ2, EJ1/EJ2 і <b>бік господаря (Олена)</b> не мали flow. Це фон, на якому читаються всі чотири класи.
     </div>
   </header>
 
@@ -280,22 +300,22 @@
     <div class="sec-head">
       <span class="sec-num mono">01</span>
       <h2 id="stuck-h">Тупики</h2>
-      <span class="sec-tag">застрягання без виходу</span>
+      <span class="sec-tag">4 знахідки</span>
     </div>
-    <p class="sec-lede">Flow, де рішення «ні» нікуди не веде, а error/empty не має кнопки далі.</p>
+    <p class="sec-lede">Де людина застрягає без виходу.</p>
 
     <div class="tbl-wrap">
       <table>
         <thead><tr><th>Де</th><th>Що</th><th>Як лагодити</th></tr></thead>
         <tbody>
           <tr>
-            <td class="where"><b>RJ1</b>, вузол <code>Stuck</code></td>
-            <td class="what">Термінальний вузол «під ці критерії нічого немає» — <b>немає жодної вихідної стрілки</b>. У MAIN аналогічний <code>Stuck</code>→<code>Feed</code>, тут глухо. Людина, що відмовилась послаблювати фільтр, впирається в червоний квадрат без CTA.</td>
-            <td class="fix">Додати ребро <code>Stuck → A</code> (стрічка) або «скинути фільтр». Привести до патерну MAIN.</td>
+            <td class="where"><b>RJ1</b>, вузол <code>Stuck</code> («під ці критерії нічого немає»)</td>
+            <td class="what">Термінальний вузол — <b>немає жодної вихідної стрілки</b>. У MAIN аналогічний <code>Stuck</code>→<code>Feed</code>, тут глухо. Людина, що відмовилась послаблювати фільтр, впирається в червоний квадрат без CTA.</td>
+            <td class="fix">Додати ребро <code>Stuck → A</code> (стрічка) або <code>Stuck → скинути фільтр</code>. Привести до патерну MAIN.</td>
           </tr>
           <tr>
-            <td class="where"><b>MAIN</b>, петля верифікації</td>
-            <td class="what"><code>Verify → Q4(ні) → VerErr → Verify</code>: єдиний вихід зі збою — «спробувати ще». Верифікація — <b>обов'язковий гейт до першого контакту</b> (R1). Хто не пройшов селфі-перевірку (камера, документ, лайвнес) — <b>назавжди замкнений з усього продукту</b>. Немає «пізніше / підтримка / дивитись стрічку поки що».</td>
+            <td class="where"><b>MAIN</b>, петля <code>Verify → Q4(ні) → VerErr → Verify</code></td>
+            <td class="what">Єдиний вихід зі збою — «спробувати ще». Верифікація — <b>обов'язковий гейт до першого контакту</b> (R1). Хто не пройшов селфі-перевірку (камера, документ, лайвнес) — <b>назавжди замкнений з усього продукту</b>. Немає «пізніше / підтримка / дивитись стрічку поки що».</td>
             <td class="fix">Гілка «N невдач → ескалація»: ручна перевірка / підтримка / «верифікувати пізніше, доступ обмежений». Розчепити термінальний failure від ретраю.</td>
           </tr>
           <tr>
@@ -304,9 +324,9 @@
             <td class="fix">Додати «скасувати / зберегти чернетку заявки».</td>
           </tr>
           <tr>
-            <td class="where"><b>RJ2</b>, підозра до <b>верифікованого</b> профілю</td>
-            <td class="what"><code>Stuck1/Stuck2 → A</code> — єдина реакція на дзвіночки «повернутись у стрічку». Якщо профіль верифікований, але людина бачить тривожні сигнали — <b>немає «поскаржитись / заблокувати»</b>. Для продукту про безпеку — діра.</td>
-            <td class="fix">Додати дію «поскаржитись/заблокувати» (стан картки). Див. §04 — для неї немає ні job, ні екрана.</td>
+            <td class="where"><b>RJ2</b>, негативна довіра до <b>верифікованого</b> профілю</td>
+            <td class="what"><code>Stuck1/Stuck2 → A</code> — єдина реакція на підозру «повернутись у стрічку». Якщо профіль верифікований, але людина бачить дзвіночки — <b>немає «поскаржитись / заблокувати»</b>. Для продукту про безпеку — діра.</td>
+            <td class="fix">Додати дію «поскаржитись/заблокувати» (стан картки). Див. <a href="#orphans">сироти</a> — для неї немає ні job, ні екрана.</td>
           </tr>
         </tbody>
       </table>
@@ -318,9 +338,9 @@
     <div class="sec-head">
       <span class="sec-num mono">02</span>
       <h2 id="states-h">Відсутні стани</h2>
-      <span class="sec-tag">happy-path без empty/error/loading</span>
+      <span class="sec-tag">6 знахідок</span>
     </div>
-    <p class="sec-lede">Де є щасливий шлях, але нема порожнього, помилки чи завантаження.</p>
+    <p class="sec-lede">Happy-path є, empty/error/loading немає.</p>
 
     <div class="tbl-wrap">
       <table>
@@ -339,10 +359,10 @@
           <tr>
             <td class="where"><b>Бік господаря (E)</b> — повністю</td>
             <td class="what">Жодного flow. Немає empty «ще немає кандидатів» (на cold start це стан за замовчуванням!), error/loading публікації, фото-аплоуду. jtbd прямо каже: primary може виявитись Олена — а її шлях не намальовано взагалі.</td>
-            <td class="fix">Додати flow господаря: створення оголошення → отримання кандидатів (з empty) → перегляд.</td>
+            <td class="fix">Додати flow господаря: створення оголошення → отримання кандидатів (з empty) → перегляд. <span class="done">✅ Зроблено (flows.md, flow E).</span></td>
           </tr>
           <tr>
-            <td class="where"><b>«Вхідні заявки»</b>, <b>«Список діалогів»</b></td>
+            <td class="where"><b>«Вхідні заявки/кандидати»</b>, <b>«Список діалогів»</b></td>
             <td class="what">Вузли є, empty немає. На старті обидва <b>порожні за замовчуванням</b> — це перший екран новачка.</td>
             <td class="fix">Додати empty-стани з підказкою «що далі».</td>
           </tr>
@@ -366,9 +386,9 @@
     <div class="sec-head">
       <span class="sec-num mono">03</span>
       <h2 id="depth-h">Зайва глибина</h2>
-      <span class="sec-tag">main job глибше 3 тапів</span>
+      <span class="sec-tag">3 знахідки</span>
     </div>
-    <p class="sec-lede">Де main чи частий related job ховається глибше трьох тапів для primary-персони (Аня).</p>
+    <p class="sec-lede">Main / частий job глибше 3 тапів для Ані.</p>
 
     <div class="tbl-wrap">
       <table>
@@ -376,7 +396,7 @@
         <tbody>
           <tr>
             <td class="where"><b>Верифікація vs браузинг</b> — пряме протиріччя</td>
-            <td class="what">Зауваги до дерева (A): «без верифікації <b>не можна нічого робити</b>» (R1). Але MAIN-flow дає Ані дійти до <code>Feed</code> і дивитись профілі <b>без</b> верифікації (гейт <code>Q3</code> — лише при «Хочу познайомитись»). Якщо діє формулювання sitemap, побачити перший бейдж (ядро RJ2) — це відкрити → профіль (4 поля) → телефон (номер→SMS→код) → селфі → стрічка → картка → профіль = <b>глибоко за 3 тапи</b>. Документи суперечать одне одному.</td>
+            <td class="what">Зауваги до дерева (A): «без верифікації <b>не можна нічого робити</b>» (R1). Але MAIN-flow дає Ані дійти до <code>Feed</code> і дивитись профілі <b>без</b> верифікації (гейт <code>Q3</code> — лише при «Хочу познайомитись»). Якщо діє формулювання sitemap, то побачити перший бейдж (ядро RJ2) — це відкрити → профіль (4 поля) → телефон (номер→SMS→код) → селфі → стрічка → картка → профіль = <b>глибоко за 3 тапи</b>. Документи суперечать одне одному.</td>
             <td class="fix">Обрати одну модель: <b>lazy verification</b> (браузинг вільний, гейт лише на контакті — як у flow) і виправити зауваги в sitemap. Знімає і глибину, і протиріччя.</td>
           </tr>
           <tr>
@@ -385,7 +405,7 @@
             <td class="fix">Додати лінк «профіль» із чату/діалогу.</td>
           </tr>
           <tr>
-            <td class="where"><b>Господар оцінює реальність кандидата</b> (Main/RJ2, бік Олени)</td>
+            <td class="where"><b>Господар оцінює реальність кандидата</b> (Main/RJ2 з боку Олени)</td>
             <td class="what">E (створити оголошення) → чекати → D (Вхідні заявки) → кандидат → профіль → бейдж. Немає «стрічки»-шорткату. Якщо primary = Олена (jtbd це допускає), її головний job глибоко закопаний.</td>
             <td class="fix">Тримати під питанням; вирішити після інтерв'ю — але зафіксувати ризик у flows.</td>
           </tr>
@@ -399,9 +419,9 @@
     <div class="sec-head">
       <span class="sec-num mono">04</span>
       <h2 id="orphans-h">Сироти</h2>
-      <span class="sec-tag">звірка з матрицею</span>
+      <span class="sec-tag">5 знахідок</span>
     </div>
-    <p class="sec-lede">Екрани без job і jobs без екрана. Матриця в sitemap декларує «0 сиріт + gap Онбординг» — прискіпливо це частково артефакт того, що матриця прирівняла <b>сутності</b> до <b>екранів</b>, а реальне дерево A–F має екранів більше.</p>
+    <p class="sec-lede">Звірка з матрицею (jtbd.md × сутності). Матриця в sitemap.md декларує «0 сиріт + gap Онбординг». Прискіпливо — це частково артефакт того, що матриця прирівняла <b>сутності</b> до <b>екранів</b>, а реальне дерево A–F має екранів більше.</p>
 
     <div class="tbl-wrap">
       <table>
@@ -410,7 +430,7 @@
           <tr>
             <td class="where">Екран <b>«Верифікація: телефон + селфі»</b> (A)</td>
             <td class="what">Сирота в моделі сутностей: є в дереві екранів, але <b>немає колонки в матриці</b> й немає сутності 1–6. Матриця ніколи не оцінила покриття ядрового екрана. «0 сиріт» тримається лише тому, що його не внесли стовпцем.</td>
-            <td class="fix">Той самий «Онбординг gap», який sitemap визнав — довести до кінця: додати сутність/колонку <b>Онбординг/Верифікація</b> і перерахувати матрицю.</td>
+            <td class="fix">Це той самий «Онбординг gap», який sitemap визнав — довести до кінця: додати сутність/колонку <b>Онбординг/Верифікація</b> і перерахувати матрицю.</td>
           </tr>
           <tr>
             <td class="where"><b>Вихідні / надіслані заявки</b> — немає екрана</td>
@@ -419,7 +439,7 @@
           </tr>
           <tr>
             <td class="where"><b>Матриця ↔ «породжуючі jobs»</b> розходяться</td>
-            <td class="what">Сутність «Пошук/фільтр» декларує <b>єдиний</b> job RJ1, а в матриці колонка Стрічка має ✓ для Main, RJ2, SJ2 (∑4). Профіль декларує 5 jobs, а колонка — ✓ для 10 (RJ3/EJ1/EJ2 з'явились лише в матриці). <b>Що джерело істини?</b> Traceability ламається.</td>
+            <td class="what">Сутність «Пошук/фільтр» декларує <b>єдиний</b> job RJ1, а в матриці колонка Стрічка має ✓ для Main, RJ2, SJ2 (∑4). Профіль декларує 5 jobs, а колонка — ✓ для 9 (RJ3/EJ1/EJ2 з'явились лише в матриці). <b>Що джерело істини?</b> Traceability ламається.</td>
             <td class="fix">Узгодити: або розширити «породжуючі jobs» у картках сутностей, або прибрати зайві ✓. Списки мають звірятися.</td>
           </tr>
           <tr>
@@ -437,50 +457,50 @@
     </div>
   </section>
 
-  <!-- 05 Правки -->
+  <!-- 05 Правки — статус -->
   <section id="fixes" aria-labelledby="fixes-h">
     <div class="sec-head">
       <span class="sec-num mono">05</span>
-      <h2 id="fixes-h">Правки</h2>
-      <span class="sec-tag">за пріоритетом</span>
+      <h2 id="fixes-h">Правки — статус</h2>
+      <span class="sec-tag">10 правок</span>
     </div>
-    <p class="sec-lede">Усе — в <code class="mono">.md</code> (джерело істини), HTML регенерується. Ще не застосовано — список на узгодження.</p>
+    <p class="sec-lede">Застосовано в <code>.md</code> (джерело істини) — червень 2026. HTML-рендери регенеруються окремо.</p>
 
     <div class="fixes">
       <div class="fix-group">
-        <span class="fix-tier">P0 <span class="tier-note">справжні діри</span></span>
+        <span class="fix-tier">P0 <span class="tier-note">справжні діри · ✅ усі застосовано</span></span>
         <ol>
-          <li><code>flows.md</code> RJ1: <code>Stuck → A</code> (прибрати термінальний глухий кут).</li>
-          <li><code>flows.md</code> MAIN: ескалація для повторного збою верифікації (не вічна петля).</li>
-          <li><code>sitemap.md</code>: екран «Мої надіслані заявки / очікують» (дім для стану <code>Wait</code>).</li>
-          <li><code>sitemap.md</code>: довести Онбординг/Верифікацію до повноцінної сутності+колонки, перерахувати матрицю.</li>
+          <li><span class="ok">✅</span> <code>flows.md</code> RJ1: термінальний <code>Stuck</code> прибрано — «порожньо» розділено на «фільтр завузький» (→ скинути → A) і «cold-start» (→ CTA → A).</li>
+          <li><span class="ok">✅</span> <code>flows.md</code> MAIN: ескалація після N невдач верифікації (ручна перевірка / підтримка; стрічку видно й без верифікації) — не вічна петля; додано mobile-web збої (камера / SMS).</li>
+          <li><span class="ok">✅</span> <code>sitemap.md</code> + <code>ia.md</code>: екран «Мої заявки: надіслані / очікують» (дім стану <code>Wait</code>) + дія «відкликати».</li>
+          <li><span class="ok">✅</span> <code>sitemap.md</code>: Онбординг доведено до <b>сутності 7</b> + колонки <code>[Он]</code> у матриці; матрицю перераховано (∑4: Main, RJ2, SJ1, SJ2).</li>
         </ol>
       </div>
       <div class="fix-group">
-        <span class="fix-tier">P1 <span class="tier-note">узгодженість</span></span>
+        <span class="fix-tier">P1 <span class="tier-note">узгодженість · ✅ застосовано</span></span>
         <ol start="5">
-          <li>Зняти протиріччя «верифікація до всього» vs «браузинг вільний» — обрати lazy verification, виправити зауваги A.</li>
-          <li>Узгодити «породжуючі jobs» у картках сутностей з ✓ у матриці.</li>
-          <li><code>flows.md</code>: empty-стани для «Вхідні заявки», «Список діалогів», верифікації, чату.</li>
+          <li><span class="ok">✅</span> Обрано <b>lazy verification</b>; зауваги A у sitemap і онбординг у ia.md вирівняно (браузинг вільний, гейт лише на контакті).</li>
+          <li><span class="ok">✅</span> Введено канон: матриця — джерело істини traceability; картки сутностей перейменовано на «головні породжуючі jobs».</li>
+          <li><span class="ok">✅</span> <code>flows.md</code>: empty-стани для вхідних заявок, чату (+ список діалогів через <code>Back</code>), верифікації (розшифровані помилки).</li>
         </ol>
       </div>
       <div class="fix-group">
-        <span class="fix-tier">P2 <span class="tier-note">повнота</span></span>
+        <span class="fix-tier">P2 <span class="tier-note">повнота · ✅ застосовано</span></span>
         <ol start="8">
-          <li>Flow господаря (E) + flow RJ4; або явна примітка про свідоме обмеження скоупу flows.</li>
-          <li>«Поскаржитись/заблокувати» — завести як job або свідомо в «Під питанням».</li>
-          <li>Лінк «профіль» із чату (RJ4).</li>
+          <li><span class="ok">✅</span> Додано flow господаря (E, Олена) + явну примітку «Периметр» про обмеження скоупу (RJ4/RJ5/SJ/EJ без діаграм).</li>
+          <li><span class="ok">✅</span> «Поскаржитись / заблокувати» заведено як дію картки/чату (Main / EJ2) + у розділ «Рішення безпеки і приватності» sitemap.</li>
+          <li><span class="ok">✅</span> Лінк «профіль» із чату (RJ4) — у sitemap і ia.md.</li>
         </ol>
       </div>
     </div>
 
     <div class="scope-note">
-      <b>Наступний крок:</b> погодити обсяг P0 (4 правки в <code class="mono">sitemap.md</code> + <code class="mono">flows.md</code>). Пункти 4 і 5 міняють матрицю покриття — їх варто рішати першими, бо від них залежить решта.
+      <b>Понад аудит</b> (свіжий перегляд продуктової повноти): поля фільтра в карті людини (RJ1 над person-card), in-app сигнал vs push, керування акаунтом/даними, приватність person-card, re-verify фото при зміні, якір «заселення» для RJ5, скасування заявки, дві механіки розблокування (заявка→схвалення vs взаємний) — зафіксовано в <a href="sitemap.html">sitemap.md «Рішення безпеки і приватності»</a> як рішення з дефолтом і <code>[?]</code>.
     </div>
   </section>
 
   <footer>
-    <span>Куток · Аудит мапи · чернетка</span>
+    <span>Куток · Аудит мапи · правки P0–P2 застосовано</span>
     <span>Джерела: <a href="sitemap.html">sitemap</a> · <a href="flows.html">flows</a> · <a href="jtbd.html">jtbd</a> · <a href="../audit.md">audit.md</a></span>
   </footer>
 
