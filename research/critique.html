@@ -58,31 +58,31 @@
 
   /* ── Каркас: навігаційна панель зліва (рівень застосунку) ── */
   .shell {
-    display: grid; grid-template-columns: 240px minmax(0, 1fr);
-    gap: 56px; max-width: 1180px; margin: 0 auto; padding: 0 24px;
+    display: grid; grid-template-columns: 200px minmax(0, 1fr);
+    gap: 44px; max-width: 1180px; margin: 0 auto; padding: 0 24px;
   }
   .sidenav {
     position: sticky; top: 0; align-self: start;
-    width: 240px; height: 100dvh; padding: 56px 24px 28px;
+    width: 200px; height: 100dvh; padding: 38px 20px 22px;
     margin-left: -24px; border-right: 1px solid var(--line);
     display: flex; flex-direction: column;
   }
-  .brand { font-weight: 800; font-size: 16px; color: var(--ink); }
+  .brand { font-weight: 800; font-size: 14.5px; color: var(--ink); }
   .brand:hover { text-decoration: none; }
   .brand span {
-    display: block; font-family: var(--mono); font-size: 10px; font-weight: 400;
+    display: block; font-family: var(--mono); font-size: 9.5px; font-weight: 400;
     color: var(--muted); letter-spacing: .14em; margin-top: 3px;
   }
 
   /* список сторінок */
   .nav-cap {
-    font-family: var(--mono); font-size: 10px; font-weight: 600;
+    font-family: var(--mono); font-size: 9.5px; font-weight: 600;
     letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
-    margin: 36px 0 8px;
+    margin: 22px 0 5px;
   }
   .nav-page {
-    display: block; font-size: 14px; font-weight: 600; color: var(--ink);
-    padding: 8px 11px; margin-left: -11px; border-radius: 7px; white-space: nowrap;
+    display: block; font-size: 12.5px; font-weight: 600; color: var(--ink);
+    padding: 4px 9px; margin-left: -9px; border-radius: 6px; white-space: nowrap;
     transition: color .15s ease, background .15s ease;
   }
   .nav-page:hover { background: var(--line-soft); text-decoration: none; }
@@ -94,15 +94,35 @@
   }
 
   /* секції активної сторінки */
-  .nav-links { display: flex; flex-direction: column; gap: 1px; margin: 4px 0 0 9px; }
+  .nav-links { display: flex; flex-direction: column; gap: 1px; margin: 2px 0 2px 7px; }
   .nav-links a {
-    font-size: 13px; font-weight: 500; color: var(--muted);
-    padding: 5px 11px; margin-left: -11px; border-radius: 7px; white-space: nowrap;
+    font-size: 12px; font-weight: 500; color: var(--muted);
+    padding: 3px 9px; margin-left: -9px; border-radius: 6px; white-space: nowrap;
     transition: color .15s ease, background .15s ease;
   }
   .nav-links a:hover { color: var(--ink); background: var(--line-soft); text-decoration: none; }
   .nav-links a.active { color: var(--clay); background: var(--clay-soft); }
-  .nav-links a .n { font-family: var(--mono); font-size: 10.5px; margin-right: 8px; opacity: .65; }
+
+  .nav-sec { display: flex; align-items: center; gap: 2px; }
+  .nav-sec .nav-page { flex: 1 1 auto; }
+  .nav-toggle {
+    flex: none; display: grid; place-items: center;
+    width: 21px; height: 21px; margin-right: -3px; padding: 0;
+    border: 0; background: none; color: var(--muted);
+    border-radius: 5px; cursor: pointer;
+    transition: color .15s ease, background .15s ease;
+  }
+  .nav-toggle:hover { color: var(--clay); background: var(--clay-soft); }
+  .nav-toggle:focus-visible { outline: 2px solid var(--clay); outline-offset: 1px; }
+  .nav-toggle svg { width: 11px; height: 11px; display: block;
+    transition: transform .2s cubic-bezier(.22, 1, .36, 1); }
+  .nav-toggle[aria-expanded="false"] svg { transform: rotate(-90deg); }
+  .nav-links[hidden] { display: none; }
+  @media (max-width: 880px) {
+    .nav-toggle { display: none; }
+    .nav-links[hidden] { display: flex; }
+  }
+  .nav-links a .n { font-family: var(--mono); font-size: 10px; margin-right: 7px; opacity: .6; }
 
   .nav-foot { margin-top: auto; font-family: var(--mono); font-size: 10.5px; color: var(--muted); line-height: 1.8; }
   .nav-foot a { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
@@ -383,8 +403,11 @@
   <a class="nav-page" href="index.html">Ресерч</a>
   <a class="nav-page" href="personas.html">Персони</a>
   <a class="nav-page" href="jtbd.html">JTBD</a>
-  <a class="nav-page active" href="#overview" aria-current="page">Критика</a>
-  <div class="nav-links" aria-label="Розділи критики">
+  <div class="nav-sec">
+    <a class="nav-page active" href="#overview" aria-current="page">Критика</a>
+    <button class="nav-toggle" type="button" aria-expanded="true" aria-controls="nav-secs" aria-label="Згорнути розділи"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  </div>
+  <div class="nav-links" id="nav-secs" aria-label="Розділи критики">
     <a href="#overview"><span class="n">00</span>Огляд</a>
     <a href="#audit"><span class="n">01</span>Аудит тверджень</a>
     <a href="#danger"><span class="n">02</span>Найнебезпечніше</a>
@@ -641,6 +664,18 @@
   }, { rootMargin: '-15% 0px -75% 0px' });
   ['overview','audit','danger','questions','summary']
     .forEach(id => { const el = document.getElementById(id); if (el) spy.observe(el); });
+</script>
+<script>
+  (function () {
+    var btn = document.querySelector('.nav-toggle');
+    var sec = document.getElementById('nav-secs');
+    if (!btn || !sec) return;
+    btn.addEventListener('click', function () {
+      var open = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!open));
+      sec.hidden = open;
+    });
+  })();
 </script>
 </body>
 </html>
