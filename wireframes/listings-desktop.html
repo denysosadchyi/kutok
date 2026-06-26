@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Список оголошень (десктоп) · Куток</title>
+<style>
+  /* ── ВАЙРФРЕЙМ: лише сірий кістяк. Без кольору, бренд-шрифтів, іконок, тіней. ──
+     Адаптив: mobile-first, з desktop-розкладкою через media-queries. */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: sans-serif;
+    background: #e9e9e9;
+    color: #333;
+    line-height: 1.4;
+  }
+
+  /* ── Контейнер екрана: вузький на мобільному, широкий на десктопі ── */
+  .device {
+    width: 100%;
+    max-width: 400px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: #fff;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Шапка ── */
+  header.app { background: #f7f7f7; border-bottom: 1px solid #ccc; padding: 10px 12px; }
+  .app-bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .app-name { font-size: 16px; font-weight: bold; color: #444; }
+
+  /* Горизонтальна навігація в шапці — лише на десктопі */
+  nav.topnav { display: none; }
+  nav.topnav a {
+    font-size: 13px; color: #777; text-decoration: none;
+    padding: 6px 10px; border: 1px solid transparent;
+  }
+  nav.topnav a:hover { color: #333; background: #ededed; }
+  nav.topnav a.active { color: #333; font-weight: bold; background: #e8e8e8; border-color: #ddd; }
+
+  /* ── Робоча зона ── */
+  .work { display: flex; flex-direction: column; flex: 1; }
+
+  section { border-bottom: 1px solid #ddd; }
+  .pad { padding: 10px 12px; }
+
+  /* Фільтри */
+  .filters-panel { border-bottom: 1px solid #ddd; }
+  .filters-title { display: none; font-size: 12px; font-weight: bold; color: #444; letter-spacing: .04em; margin-bottom: 10px; }
+  form.filters { display: flex; flex-direction: column; gap: 8px; }
+  .field { display: flex; flex-direction: column; gap: 2px; }
+  .field label { font-size: 11px; color: #666; }
+  .field select, .field input {
+    border: 1px solid #bbb; background: #fff; color: #333;
+    padding: 7px 8px; font-size: 13px; font-family: inherit;
+  }
+  .filters-row { display: flex; gap: 8px; }
+  .filters-row .field { flex: 1; }
+  button {
+    border: 1px solid #999; background: #ededed; color: #333;
+    padding: 9px 12px; font-size: 13px; font-family: inherit; cursor: pointer;
+  }
+  button.primary { border: 1px solid #666; background: #ddd; font-weight: bold; }
+
+  /* Лічильник */
+  .counter { font-size: 13px; color: #555; }
+  .counter b { color: #333; }
+
+  /* Список карток */
+  ul.feed { list-style: none; }
+  ul.feed > li { border-bottom: 1px solid #ddd; }
+  article.card { display: flex; gap: 10px; padding: 10px 12px; align-items: flex-start; }
+  .thumb {
+    flex: 0 0 84px; height: 84px; background: #ddd; border: 1px solid #c4c4c4;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center; font-size: 10px; color: #777; padding: 4px;
+  }
+  .thumb.avatar { border-radius: 0; }
+  .card-body { flex: 1; min-width: 0; }
+  .card-kind { font-size: 10px; text-transform: uppercase; letter-spacing: .05em; color: #999; }
+  .card-title { font-size: 14px; font-weight: bold; color: #333; margin: 2px 0; }
+  .card-meta { font-size: 12px; color: #555; }
+  .card-price { font-size: 14px; font-weight: bold; color: #333; margin-top: 4px; }
+  .badge {
+    display: inline-block; font-size: 11px; color: #555;
+    border: 1px solid #bbb; background: #f3f3f3; padding: 1px 6px; margin-top: 5px;
+  }
+  .card-open {
+    font-size: 12px; color: #444; border: 1px solid #aaa; background: #f0f0f0;
+    padding: 5px 10px; display: inline-block; text-decoration: none; margin-top: 6px;
+  }
+  .card a.cardlink { text-decoration: none; color: inherit; }
+
+  /* Таб-бар (мобільний) */
+  footer.tabbar {
+    background: #f7f7f7; border-top: 1px solid #ccc; display: flex;
+    margin-top: auto; position: sticky; bottom: 0;
+  }
+  footer.tabbar a {
+    flex: 1; text-align: center; padding: 10px 4px; font-size: 11px;
+    color: #777; text-decoration: none; border-right: 1px solid #e0e0e0;
+  }
+  footer.tabbar a:last-child { border-right: none; }
+  footer.tabbar a.active { color: #333; font-weight: bold; background: #e8e8e8; }
+
+  /* ══════════════════ DESKTOP ══════════════════ */
+  @media (min-width: 760px) {
+    .device {
+      max-width: 1100px;
+      border-left: 1px solid #ccc;
+      border-right: 1px solid #ccc;
+    }
+
+    /* У шапці з'являється горизонтальна навігація, мобільний таб-бар ховаємо */
+    header.app { padding: 12px 24px; }
+    nav.topnav { display: flex; gap: 4px; }
+    footer.tabbar { display: none; }
+
+    /* Робоча зона стає двоколонковою: ліва панель фільтрів + контент */
+    .work { flex-direction: row; align-items: flex-start; }
+
+    .filters-panel {
+      flex: 0 0 280px; width: 280px;
+      align-self: stretch;
+      border-bottom: none; border-right: 1px solid #ddd;
+      position: sticky; top: 0;
+    }
+    .filters-panel .pad { padding: 20px; }
+    .filters-title { display: block; }
+
+    .content { flex: 1; min-width: 0; }
+    .content > section.pad { padding: 16px 24px; }
+
+    /* Картки — сітка у дві колонки */
+    ul.feed {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+      padding: 8px 16px 16px;
+    }
+    ul.feed > li {
+      border: 1px solid #ddd; margin: 8px;
+    }
+    article.card { padding: 14px; }
+    .card-open { margin-left: 14px; margin-bottom: 14px; }
+  }
+
+  @media (min-width: 1080px) {
+    /* Ширший екран — три колонки карток */
+    ul.feed { grid-template-columns: 1fr 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="device">
+
+  <header class="app">
+    <div class="app-bar">
+      <div class="app-name">Куток</div>
+      <nav class="topnav" aria-label="Головна навігація">
+        <a class="active" href="listings.html">Пошук</a>
+        <a href="applications.html">Заявки</a>
+        <a href="chat.html">Чати</a>
+        <a href="profile-create.html">Профіль</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="work">
+
+    <section class="filters-panel">
+      <div class="pad">
+        <div class="filters-title">Фільтр оголошень</div>
+        <nav aria-label="Фільтр оголошень">
+          <form class="filters" action="listings-desktop.html" method="get">
+            <div class="field">
+              <label for="district">Район Києва</label>
+              <select id="district" name="district">
+                <option>Будь-який район</option>
+                <option selected>Поділ</option>
+                <option>Оболонь</option>
+                <option>Позняки (Лівий берег)</option>
+                <option>Шевченківський</option>
+                <option>Печерськ</option>
+                <option>Голосіїв</option>
+                <option>Солом'янка</option>
+              </select>
+            </div>
+            <div class="filters-row">
+              <div class="field">
+                <label for="price">Ціна до, ₴/міс</label>
+                <input id="price" name="price" type="number" inputmode="numeric" value="10000" min="0" step="500">
+              </div>
+              <div class="field">
+                <label for="gender">Стать сусіда</label>
+                <select id="gender" name="gender">
+                  <option selected>Будь-яка</option>
+                  <option>Жінка</option>
+                  <option>Чоловік</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" class="primary">Застосувати фільтр</button>
+          </form>
+        </nav>
+      </div>
+    </section>
+
+    <div class="content">
+
+      <section class="pad">
+        <p class="counter"><b>24 варіанти</b> · Поділ · до 10 000 ₴/міс</p>
+      </section>
+
+      <main>
+        <ul class="feed">
+
+          <li>
+            <article class="card">
+              <a class="cardlink" href="room.html" style="display:flex; gap:10px; flex:1;">
+                <div class="thumb">фото<br>кімнати</div>
+                <div class="card-body">
+                  <div class="card-kind">Кімната · господар</div>
+                  <h2 class="card-title">Кімната в 2-к квартирі</h2>
+                  <p class="card-meta">Поділ · 1 співмешканець · заїзд з 1 липня</p>
+                  <p class="card-price">9 500 ₴/міс</p>
+                  <span class="badge">телефон ✓ · фото ✓ · документ —</span>
+                </div>
+              </a>
+            </article>
+            <a class="card-open" href="room.html">Відкрити оголошення</a>
+          </li>
+
+          <li>
+            <article class="card">
+              <a class="cardlink" href="room.html" style="display:flex; gap:10px; flex:1;">
+                <div class="thumb">фото<br>кімнати</div>
+                <div class="card-body">
+                  <div class="card-kind">Кімната · господар</div>
+                  <h2 class="card-title">Кімната в 3-к квартирі</h2>
+                  <p class="card-meta">Оболонь · 2 співмешканці · заїзд з 15 липня</p>
+                  <p class="card-price">7 000 ₴/міс</p>
+                  <span class="badge">телефон ✓ · фото — · документ —</span>
+                </div>
+              </a>
+            </article>
+            <a class="card-open" href="room.html">Відкрити оголошення</a>
+          </li>
+
+          <li>
+            <article class="card">
+              <a class="cardlink" href="profile.html" style="display:flex; gap:10px; flex:1;">
+                <div class="thumb avatar">аватар</div>
+                <div class="card-body">
+                  <div class="card-kind">Людина · шукає кімнату</div>
+                  <h2 class="card-title">Артем, 26</h2>
+                  <p class="card-meta">Шевченківський або Поділ · не палю · заїзд з 1 серпня</p>
+                  <p class="card-price">бюджет до 8 000 ₴/міс</p>
+                  <span class="badge">телефон ✓ · фото ✓ · документ —</span>
+                </div>
+              </a>
+            </article>
+            <a class="card-open" href="profile.html">Відкрити профіль</a>
+          </li>
+
+          <li>
+            <article class="card">
+              <a class="cardlink" href="room.html" style="display:flex; gap:10px; flex:1;">
+                <div class="thumb">фото<br>кімнати</div>
+                <div class="card-body">
+                  <div class="card-kind">Кімната · господар</div>
+                  <h2 class="card-title">Окрема кімната в квартирі</h2>
+                  <p class="card-meta">Позняки (Лівий берег) · 1 співмешканець · заїзд одразу</p>
+                  <p class="card-price">8 200 ₴/міс</p>
+                  <span class="badge">телефон ✓ · фото ✓ · документ —</span>
+                </div>
+              </a>
+            </article>
+            <a class="card-open" href="room.html">Відкрити оголошення</a>
+          </li>
+
+          <li>
+            <article class="card">
+              <a class="cardlink" href="room.html" style="display:flex; gap:10px; flex:1;">
+                <div class="thumb">фото<br>кімнати</div>
+                <div class="card-body">
+                  <div class="card-kind">Кімната · господар</div>
+                  <h2 class="card-title">Кімната в 1-к квартирі-студії</h2>
+                  <p class="card-meta">Шевченківський · без сусідів · заїзд з 20 липня</p>
+                  <p class="card-price">9 800 ₴/міс</p>
+                  <span class="badge">телефон ✓ · фото ✓ · документ —</span>
+                </div>
+              </a>
+            </article>
+            <a class="card-open" href="room.html">Відкрити оголошення</a>
+          </li>
+
+          <li>
+            <article class="card">
+              <a class="cardlink" href="profile.html" style="display:flex; gap:10px; flex:1;">
+                <div class="thumb avatar">аватар</div>
+                <div class="card-body">
+                  <div class="card-kind">Людина · шукає кімнату</div>
+                  <h2 class="card-title">Марія, 24</h2>
+                  <p class="card-meta">Поділ або Печерськ · не палю · заїзд з 5 серпня</p>
+                  <p class="card-price">бюджет до 9 000 ₴/міс</p>
+                  <span class="badge">телефон ✓ · фото ✓ · документ —</span>
+                </div>
+              </a>
+            </article>
+            <a class="card-open" href="profile.html">Відкрити профіль</a>
+          </li>
+
+        </ul>
+      </main>
+
+    </div>
+  </div>
+
+  <footer class="tabbar">
+    <a class="active" href="listings.html">Пошук</a>
+    <a href="applications.html">Заявки</a>
+    <a href="chat.html">Чати</a>
+    <a href="profile-create.html">Профіль</a>
+  </footer>
+
+</div>
+</body>
+</html>
