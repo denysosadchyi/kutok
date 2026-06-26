@@ -357,15 +357,14 @@ flowchart TD
     classDef state fill:#fff3e0,stroke:#e8a33d,color:#5b4a2f;
     classDef stuck fill:#fde4e1,stroke:#d2553f,color:#5b2a22;
     classDef ok fill:#e7f3ea,stroke:#4a9d6a,color:#234a33;
-    class E,L state;
-    class Stuck stuck;
+    class E,L,ZI,ZN,Reset state;
     class Ok ok;
       </pre>
     </div>
 
     <div class="takeaway">
-      <span class="lbl">Точка зриву</span>
-      Занадто вузький фільтр → порожньо → тупик або зациклення на послабленні. «Paradox of choice» навпаки.
+      <span class="lbl">Точки зриву</span>
+      Два різні «порожньо»: <b>фільтр завузький</b> (→ послабити / скинути) і <b>cold-start, база порожня</b> (→ сусідні райони / повідомити пізніше). Жоден не термінальний тупик; на старті домінує cold-start.
     </div>
   </section>
 
