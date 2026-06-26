@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Wireframe · Список оголошень · Куток</title>
+<title>Список оголошень · Куток</title>
 <style>
   /* ── ВАЙРФРЕЙМ: лише сірий кістяк. Без кольору, бренд-шрифтів, іконок, тіней. ──
      Шрифт — системний за замовчуванням (вибір гарнітури свідомо на потім). */
@@ -27,23 +27,6 @@
     flex-direction: column;
   }
 
-  /* ── Підписи зон (анотації вайрфрейму, не частина UI) ── */
-  .zone-label {
-    font-size: 10px;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    color: #888;
-    background: #f3f3f3;
-    border-left: 3px solid #bbb;
-    padding: 3px 8px;
-  }
-  .zone-label b { color: #555; }
-  .zone-action {
-    font-size: 10px;
-    color: #777;
-    font-style: italic;
-  }
-
   /* ── Загальні кістякові елементи ── */
   header.app, footer.tabbar { background: #f7f7f7; }
   header.app {
@@ -51,13 +34,6 @@
     padding: 10px 12px;
   }
   .app-name { font-size: 16px; font-weight: bold; color: #444; }
-  .step-note {
-    font-size: 11px;
-    color: #666;
-    border: 1px dashed #bbb;
-    padding: 4px 8px;
-    margin-top: 6px;
-  }
 
   section { border-bottom: 1px solid #ddd; }
   .pad { padding: 10px 12px; }
@@ -164,19 +140,10 @@
 <body>
 <div class="device">
 
-  <!-- ════════ HEADER ════════ -->
   <header class="app">
     <div class="app-name">Куток</div>
-    <p class="step-note">
-      Головний job · крок RJ1 — «відсіяти нерелевантне до витрати уваги».
-      Місце у flow: MAIN → вузол «Стрічка / каталог». Звідси головна персона (Аня, шукач) починає пошук кімнати.
-    </p>
   </header>
 
-  <!-- ════════ ЗОНА 1: ПОШУК І ФІЛЬТРИ ════════ -->
-  <div class="zone-label">
-    Зона: Пошук і фільтри · <span class="zone-action">головна дія: «Застосувати» — звузити вибірку (район · ціна · стать)</span>
-  </div>
   <section class="pad">
     <nav aria-label="Фільтр оголошень">
       <form class="filters" action="listings.html" method="get">
@@ -212,22 +179,13 @@
     </nav>
   </section>
 
-  <!-- ════════ ЗОНА 2: ЛІЧИЛЬНИК РЕЗУЛЬТАТІВ ════════ -->
-  <div class="zone-label">
-    Зона: Лічильник · <span class="zone-action">пасивна — показує обсяг вибірки після фільтра</span>
-  </div>
   <section class="pad">
     <p class="counter"><b>24 варіанти</b> · Поділ · до 10 000 ₴/міс</p>
   </section>
 
-  <!-- ════════ ЗОНА 3: СПИСОК КАРТОК + ЗОНА 4: ВХІД У КАРТКУ ════════ -->
-  <div class="zone-label">
-    Зона: Список карток (кімнати + люди) · <span class="zone-action">головна дія картки: «Відкрити» → деталі (наступний крок RJ2)</span>
-  </div>
   <main>
     <ul class="feed">
 
-      <!-- картка кімнати -->
       <li>
         <article class="card">
           <a class="cardlink" href="room.html" style="display:flex; gap:10px; flex:1;">
@@ -246,7 +204,6 @@
         </div>
       </li>
 
-      <!-- картка кімнати -->
       <li>
         <article class="card">
           <a class="cardlink" href="room.html" style="display:flex; gap:10px; flex:1;">
@@ -265,7 +222,6 @@
         </div>
       </li>
 
-      <!-- картка людини (шукач) -->
       <li>
         <article class="card">
           <a class="cardlink" href="profile.html" style="display:flex; gap:10px; flex:1;">
@@ -284,7 +240,6 @@
         </div>
       </li>
 
-      <!-- картка кімнати -->
       <li>
         <article class="card">
           <a class="cardlink" href="room.html" style="display:flex; gap:10px; flex:1;">
@@ -306,10 +261,6 @@
     </ul>
   </main>
 
-  <!-- ════════ FOOTER: ТАБ-БАР (навігація між розділами) ════════ -->
-  <div class="zone-label">
-    Зона: Навігація · <span class="zone-action">перехід між розділами; зараз активний «Пошук»</span>
-  </div>
   <footer class="tabbar">
     <a class="active" href="listings.html">Пошук</a>
     <a href="applications.html">Заявки</a>
