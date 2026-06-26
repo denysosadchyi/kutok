@@ -188,7 +188,7 @@ FB-групи і Telegram — де-факто єдині інструменти 
 *[The Village Україна](https://www.village.com.ua/village/city/where/293943-ya-zhivu-v-komunaltsi); [me3.com.ua](https://me3.com.ua/article/14352-chogo-boyatsya-orendari-ta-orendodavci-zhitla-rezultati-opituvannya) (дані OLX); [research.md](./research.md) — Доресерч Д3.*
 
 ### S5 — Повний профіль → 88% довіри
-BlaBlaCar × NYU, 18 000+ респондентів. Майже рівень довіри друзям (92%).
+BlaBlaCar × NYU, 18 000+ респондентів. Майже рівень довіри друзям (92%). *Каверат `[?]`: карпулінг → підселення і глобал → UA — екстраполяція (в оригіналі дослідження не марковано; перенесено з критики).*
 *[research.md](./research.md); [BlaBlaCar Trust](https://blog.blablacar.com/trust).*
 
 ### S6 — Бейдж без розшифровки не знімає страх
