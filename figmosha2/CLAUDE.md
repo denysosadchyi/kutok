@@ -172,7 +172,7 @@ The error response includes a `hint` field for common cases — read it before d
 
 ## Where things live (user's setup)
 
-- Bridge: `~/figmosha2/` on WSL Ubuntu at `192.168.31.105` (passwordless ssh as `user`)
+- Bridge: `~/figmosha2/` on WSL2 box `DELL` at `192.168.31.211` (passwordless ssh as `user`)
 - Plugin source: `~/figmosha2/plugin/`
 - Plugin Windows-side (for Figma to import): `C:\Users\User\figmosha-plugin\`
 - Tmux session: `figmosha-bridge`
@@ -181,7 +181,7 @@ The error response includes a `hint` field for common cases — read it before d
 To restart bridge from this dev machine:
 
 ```bash
-ssh user@192.168.31.105 'bash ~/figmosha2/start-bridge.sh'
+ssh user@192.168.31.211 'bash ~/figmosha2/start-bridge.sh'
 ```
 
 When you edit `plugin/code.js` or `plugin/manifest.json` here, sync to user's Windows copy and ask them to re-Run (or re-Import if manifest changed):
@@ -189,6 +189,6 @@ When you edit `plugin/code.js` or `plugin/manifest.json` here, sync to user's Wi
 ```bash
 rsync -azc -e "ssh -o UserKnownHostsFile=/tmp/khosts" \
   plugin/code.js plugin/ui.html plugin/manifest.json \
-  user@192.168.31.105:figmosha-plugin-staging/
-ssh user@192.168.31.105 'cp ~/figmosha-plugin-staging/* /mnt/c/Users/User/figmosha-plugin/'
+  user@192.168.31.211:figmosha-plugin-staging/
+ssh user@192.168.31.211 'cp ~/figmosha-plugin-staging/* /mnt/c/Users/User/figmosha-plugin/'
 ```
