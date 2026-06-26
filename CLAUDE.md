@@ -130,6 +130,15 @@ HTML-файли слугують лише для відображення — в
 
 ---
 
+## Інструменти
+
+**Figmosha 2.0** ([figmosha2/](./figmosha2/)) — local bridge для керування Figma з терміналу/Claude Code (Python-сервер + плагін у Figma Desktop). Інструкції для роботи: [figmosha2/CLAUDE.md](./figmosha2/CLAUDE.md).
+- Запуск bridge: `cd figmosha2 && bash start-bridge.sh` (tmux `figmosha-bridge`, порт `8787`).
+- Статус: `curl -s http://localhost:8787/status`.
+- Плагін у Figma: `Plugins → Development → Figmosha Bridge → Run` (одноразовий імпорт з `figmosha2/plugin/manifest.json`).
+
+---
+
 ## Наступні кроки
 
 **Зроблено:** ресерч + доресерч, персони + JTBD, критика; механізми довіри R1–R5; sitemap → flows → IA → аудит мапи (поки покрито бік Ані, 4 jobs; бік господаря — TODO).
