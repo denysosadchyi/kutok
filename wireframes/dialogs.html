@@ -232,6 +232,13 @@
   <nav class="wf-nav" aria-label="Карта вайрфреймів: роль → екран → стан">
     <div class="wf-nav-title">Куток · вайрфрейми</div>
     <div class="wf-nav-hint">Клікни на розділ або екран, щоб згорнути/розгорнути</div>
+    <div class="wf-nav-tools">
+      <input type="text" class="wf-nav-filter" placeholder="Фільтр за назвою…" oninput="wfNavFilter(this.value)">
+      <div class="wf-nav-toggle-all">
+        <button type="button" onclick="wfNavToggleAll(true)">Розгорнути все</button>
+        <button type="button" onclick="wfNavToggleAll(false)">Згорнути все</button>
+      </div>
+    </div>
     <div class="tree">
       <details class="role">
         <summary>Спільне · обидві ролі</summary>
