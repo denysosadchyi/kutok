@@ -482,7 +482,7 @@
     <p class="hint">Заповніть профіль — так іншим видно, що ви реальна людина.</p>
   </section>
   <main>
-    <form action="verify.html" method="post">
+    <form action="listings.html" method="get">
       <section class="pad">
         <div class="field">
           <label>Фото профілю</label>
@@ -503,17 +503,30 @@
           <label class="chk"><input type="checkbox" checked> Не палю</label>
           <label class="chk"><input type="checkbox"> Маю тварину</label></div>
       </section>
-      <section class="pad"><button class="primary" type="submit">Зберегти і перейти до верифікації</button></section>
+      <section class="pad"><button class="primary" type="submit">Зберегти і почати пошук</button></section>
     </form>
   </main>
-  <footer class="tabbar">
-    <a href="listings.html"><span class="tab-icon" aria-label="іконка: Пошук"></span><span class="tab-label">Пошук</span></a>
-    <a href="applications.html"><span class="tab-icon" aria-label="іконка: Заявки"></span><span class="tab-label">Заявки</span><span class="tab-badge" aria-label="2 нових">2</span></a>
-    <a href="dialogs.html"><span class="tab-icon" aria-label="іконка: Чати"></span><span class="tab-label">Чати</span><span class="tab-badge" aria-label="1 нових">1</span></a>
-    <a class="active" href="my-profile.html"><span class="tab-icon" aria-label="іконка: Профіль"></span><span class="tab-label">Профіль</span></a>
-  </footer>
 </div>
   </div>
 </div>
+<script>
+  function wfNavToggleAll(open) {
+    document.querySelectorAll('.wf-nav details').forEach(function (d) { d.open = open; });
+  }
+  function wfNavFilter(query) {
+    var q = query.trim().toLowerCase();
+    document.querySelectorAll('.wf-nav li.screen').forEach(function (li) {
+      var text = li.textContent.toLowerCase();
+      var match = !q || text.indexOf(q) !== -1;
+      li.style.display = match ? '' : 'none';
+      if (match && q) {
+        var d = li.querySelector('details');
+        if (d) d.open = true;
+        var parentRole = li.closest('details.role');
+        if (parentRole) parentRole.open = true;
+      }
+    });
+  }
+</script>
 </body>
 </html>
