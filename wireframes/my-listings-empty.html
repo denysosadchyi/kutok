@@ -167,206 +167,271 @@
 <body>
 <div class="wf-shell">
 
-  <nav class="wf-nav" aria-label="Карта вайрфреймів: розділ → екран → стан">
+  <nav class="wf-nav" aria-label="Карта вайрфреймів: роль → екран → стан">
     <div class="wf-nav-title">Куток · вайрфрейми</div>
-    <ul class="tree">
-
-      <li class="sec">A · Стати реальним і видимим
+    <div class="wf-nav-hint">Клікни на розділ або екран, щоб згорнути/розгорнути</div>
+    <div class="tree">
+      <details class="role">
+        <summary>Спільне · обидві ролі</summary>
         <ul>
-          <li class="screen">Вхід (existing-user)
-            <ul>
-              <li><a href="login.html">успіх</a></li>
-              <li><a href="login-error.html">помилка</a></li>
-              <li><a href="login-loading.html">завантаження</a></li>
-            </ul>
+          <li class="screen">
+            <details>
+              <summary>Вхід (existing-user) <a class="job-tag" href="../research/sitemap.html#infra" title="Інфраструктура — sitemap, рішення #8">G1</a></summary>
+              <ul>
+                <li><a href="login.html">успіх</a></li>
+                <li><a href="login-error.html">помилка</a></li>
+                <li><a href="login-loading.html">завантаження</a></li>
+              </ul>
+            </details>
           </li>
-          <li class="screen">Створення профілю
-            <ul>
-              <li><a href="profile-create.html">успіх</a></li>
-              <li><a href="profile-create-error.html">помилка</a></li>
-              <li><a href="profile-create-loading.html">завантаження</a></li>
-            </ul>
+          <li class="screen">
+            <details>
+              <summary>Створення профілю <a class="job-tag" href="../research/jtbd.html#social" title="Social Job — виглядати серйозним кандидатом">SJ1</a></summary>
+              <ul>
+                <li><a href="profile-create.html">успіх</a></li>
+                <li><a href="profile-create-error.html">помилка</a></li>
+                <li><a href="profile-create-loading.html">завантаження</a></li>
+              </ul>
+            </details>
           </li>
-          <li class="screen">Згода на дані + біометрію
-            <ul>
-              <li><a href="consent.html">успіх</a></li>
-            </ul>
+          <li class="screen">
+            <details>
+              <summary>Згода на дані + біометрію <a class="job-tag" href="../research/sitemap.html#infra" title="Інфраструктура — sitemap, рішення #9">G2</a></summary>
+              <ul>
+                <li><a href="consent.html">успіх</a></li>
+              </ul>
+            </details>
           </li>
-          <li class="screen">Верифікація · телефон
-            <ul>
-              <li><a href="verify-phone.html">успіх</a></li>
-              <li><a href="verify-phone-error.html">помилка</a></li>
-              <li><a href="verify-phone-loading.html">завантаження</a></li>
-            </ul>
+          <li class="screen">
+            <details>
+              <summary>Верифікація · телефон <a class="job-tag" href="../research/jtbd.html#related" title="RJ2 — переконатися що людина реальна до контакту">RJ2</a></summary>
+              <ul>
+                <li><a href="verify-phone.html">успіх</a></li>
+                <li><a href="verify-phone-error.html">помилка</a></li>
+                <li><a href="verify-phone-loading.html">завантаження</a></li>
+              </ul>
+            </details>
           </li>
-          <li class="screen">Верифікація · SMS-код
-            <ul>
-              <li><a href="verify-code.html">успіх</a></li>
-              <li><a href="verify-code-error.html">помилка</a></li>
-              <li><a href="verify-code-loading.html">завантаження</a></li>
-            </ul>
+          <li class="screen">
+            <details>
+              <summary>Верифікація · SMS-код <a class="job-tag" href="../research/jtbd.html#related" title="RJ2 — переконатися що людина реальна до контакту">RJ2</a></summary>
+              <ul>
+                <li><a href="verify-code.html">успіх</a></li>
+                <li><a href="verify-code-error.html">помилка</a></li>
+                <li><a href="verify-code-loading.html">завантаження</a></li>
+              </ul>
+            </details>
           </li>
-          <li class="screen">Верифікація · селфі
-            <ul>
-              <li><a href="verify-selfie.html">успіх</a></li>
-              <li><a href="verify-selfie-error.html">помилка</a></li>
-              <li><a href="verify-loading.html">перевіряємо (завантаження)</a></li>
-            </ul>
+          <li class="screen">
+            <details>
+              <summary>Верифікація · селфі <a class="job-tag" href="../research/jtbd.html#related" title="RJ2 — переконатися що людина реальна до контакту">RJ2</a></summary>
+              <ul>
+                <li><a href="verify-selfie.html">успіх</a></li>
+                <li><a href="verify-selfie-error.html">помилка</a></li>
+                <li><a href="verify-loading.html">перевіряємо</a></li>
+              </ul>
+            </details>
           </li>
-          <li class="screen">Верифікація · результат
-            <ul>
-              <li><a href="verify.html">готово</a></li>
-              <li><a href="verify-error.html">фото не збіглось</a></li>
-              <li><a href="verify-pending.html">на ручній перевірці</a></li>
-            </ul>
+          <li class="screen">
+            <details>
+              <summary>Верифікація · результат <a class="job-tag" href="../research/jtbd.html#related" title="RJ2 — переконатися що людина реальна до контакту">RJ2</a></summary>
+              <ul>
+                <li><a href="verify.html">готово</a></li>
+                <li><a href="verify-error.html">фото не збіглось</a></li>
+                <li><a href="verify-pending.html">на ручній перевірці</a></li>
+              </ul>
+            </details>
           </li>
-          <li class="screen">Мій профіль
-            <ul>
-              <li><a href="my-profile.html">успіх</a></li>
-              <li><a href="my-profile-loading.html">завантаження</a></li>
-            </ul>
+          <li class="screen">
+            <details>
+              <summary>Мій профіль <a class="job-tag" href="../research/jtbd.html#related" title="RJ4 — прийти на зустріч підготовленим">RJ4</a></summary>
+              <ul>
+                <li><a href="my-profile.html">успіх</a></li>
+                <li><a href="my-profile-loading.html">завантаження</a></li>
+              </ul>
+            </details>
           </li>
-          <li class="screen">Налаштування приватності
-            <ul>
-              <li><a href="privacy-settings.html">успіх</a></li>
-            </ul>
+          <li class="screen">
+            <details>
+              <summary>Налаштування приватності <a class="job-tag" href="../research/sitemap.html#privacy" title="Рішення безпеки і приватності #1">безпека</a></summary>
+              <ul>
+                <li><a href="privacy-settings.html">успіх</a></li>
+              </ul>
+            </details>
           </li>
-          <li class="screen">Заблоковані
-            <ul>
-              <li><a href="blocked.html">успіх</a></li>
-              <li><a href="blocked-empty.html">порожній</a></li>
-            </ul>
+          <li class="screen">
+            <details>
+              <summary>Заблоковані <a class="job-tag" href="../research/sitemap.html#privacy" title="Рішення безпеки і приватності #4">безпека</a></summary>
+              <ul>
+                <li><a href="blocked.html">успіх</a></li>
+                <li><a href="blocked-empty.html">порожній</a></li>
+              </ul>
+            </details>
           </li>
-          <li class="screen">Керування акаунтом
-            <ul>
-              <li><a href="account.html">успіх</a></li>
-            </ul>
+          <li class="screen">
+            <details>
+              <summary>Керування акаунтом <a class="job-tag" href="../research/sitemap.html#privacy" title="Рішення безпеки і приватності #3">безпека</a></summary>
+              <ul>
+                <li><a href="account.html">успіх</a></li>
+              </ul>
+            </details>
+          </li>
+          <li class="screen">
+            <details>
+              <summary>Підтримка / звернення <a class="job-tag" href="../research/sitemap.html#infra" title="Інфраструктура — sitemap, рішення #10">G</a></summary>
+              <ul>
+                <li><a href="support.html">успіх</a></li>
+                <li><a href="support-loading.html">завантаження</a></li>
+              </ul>
+            </details>
+          </li>
+          <li class="screen">
+            <details>
+              <summary>Умови й Політика приватності <a class="job-tag" href="../research/sitemap.html#infra" title="Інфраструктура — sitemap, рішення #9">G</a></summary>
+              <ul>
+                <li><a href="legal.html">успіх</a></li>
+              </ul>
+            </details>
+          </li>
+          <li class="screen">
+            <details>
+              <summary>Відновлення доступу <a class="job-tag" href="../research/sitemap.html#infra" title="Інфраструктура — sitemap, рішення #11">G</a></summary>
+              <ul>
+                <li><a href="recovery.html">успіх</a></li>
+              </ul>
+            </details>
           </li>
         </ul>
-      </li>
-
-      <li class="sec">B · Знайти і відсіяти
+      </details>
+      <details class="role">
+        <summary>Шукач · Аня</summary>
         <ul>
-          <li class="screen">Стрічка / каталог
-            <ul>
-              <li><a href="listings.html">успіх</a></li>
-              <li><a href="listings-empty.html">порожній · вузький фільтр</a></li>
-              <li><a href="listings-empty-coldstart.html">порожній · немає бази</a></li>
-              <li><a href="listings-error.html">помилка</a></li>
-              <li><a href="listings-loading.html">завантаження</a></li>
-              <li><a href="listings-desktop.html">desktop</a></li>
-            </ul>
+          <li class="screen">
+            <details>
+              <summary>Стрічка / каталог <a class="job-tag" href="../research/jtbd.html#related" title="RJ1 — знайти серед багатьох тих, хто базово підходить">RJ1</a></summary>
+              <ul>
+                <li><a href="listings.html">успіх</a></li>
+                <li><a href="listings-empty.html">порожній · вузький фільтр</a></li>
+                <li><a href="listings-empty-coldstart.html">порожній · немає бази</a></li>
+                <li><a href="listings-error.html">помилка</a></li>
+                <li><a href="listings-loading.html">завантаження</a></li>
+                <li><a href="listings-desktop.html">desktop</a></li>
+              </ul>
+            </details>
+          </li>
+          <li class="screen">
+            <details>
+              <summary>Мої заявки <a class="job-tag" href="../research/jtbd.html#related" title="RJ3 — почати розмову тільки якщо інтерес взаємний">RJ3</a></summary>
+              <ul>
+                <li><a href="applications.html">успіх</a></li>
+                <li><a href="applications-empty.html">порожній</a></li>
+                <li><a href="applications-loading.html">завантаження</a></li>
+              </ul>
+            </details>
           </li>
         </ul>
-      </li>
-
-      <li class="sec">C · Розглянути до контакту
+      </details>
+      <details class="role" open>
+        <summary>Господар · Олена</summary>
         <ul>
-          <li class="screen">Профіль іншої людини
-            <ul>
-              <li><a href="profile.html">успіх</a></li>
-              <li><a href="profile-empty.html">порожній</a></li>
-              <li><a href="profile-error.html">помилка</a></li>
-              <li><a href="profile-loading.html">завантаження</a></li>
-            </ul>
+          <li class="screen">
+            <details>
+              <summary>Створення / редагування оголошення <a class="job-tag" href="../research/jtbd.html#related" title="RJ1 з боку господаря — щоб мене знайшли">RJ1</a></summary>
+              <ul>
+                <li><a href="room-create.html">успіх</a></li>
+                <li><a href="room-create-error.html">помилка</a></li>
+                <li><a href="room-create-loading.html">завантаження</a></li>
+              </ul>
+            </details>
           </li>
-          <li class="screen">Оголошення кімнати
-            <ul>
-              <li><a href="room.html">успіх</a></li>
-              <li><a href="room-error.html">помилка</a></li>
-              <li><a href="room-loading.html">завантаження</a></li>
-            </ul>
+          <li class="screen">
+            <details open>
+              <summary>Мої оголошення <a class="job-tag" href="../research/sitemap.html#infra" title="Інфраструктура — sitemap, рішення #12">lifecycle</a></summary>
+              <ul>
+                <li><a href="my-listings.html">успіх</a></li>
+                <li><a class="active" href="my-listings-empty.html">порожній</a></li>
+                <li><a href="my-listings-loading.html">завантаження</a></li>
+              </ul>
+            </details>
           </li>
-          <li class="screen">Скарга на людину
-            <ul>
-              <li><a href="report.html">форма</a></li>
-              <li><a href="report-loading.html">завантаження</a></li>
-              <li><a href="report-error.html">помилка</a></li>
-              <li><a href="report-sent.html">надіслано</a></li>
-            </ul>
-          </li>
-          <li class="screen">Фото-в'юер
-            <ul>
-              <li><a href="photo-viewer.html">успіх</a></li>
-            </ul>
+          <li class="screen">
+            <details>
+              <summary>Вхідні заявки / кандидати <a class="job-tag" href="../research/jtbd.html#related" title="RJ3 з боку господаря — переглядає кандидатів">RJ3</a></summary>
+              <ul>
+                <li><a href="candidates.html">успіх</a></li>
+                <li><a href="candidates-empty.html">порожній</a></li>
+                <li><a href="candidates-loading.html">завантаження</a></li>
+              </ul>
+            </details>
           </li>
         </ul>
-      </li>
-
-      <li class="sec">D · Зав'язати контакт
+      </details>
+      <details class="role">
+        <summary>Взаємодія · обидві ролі</summary>
         <ul>
-          <li class="screen">Мої заявки
-            <ul>
-              <li><a href="applications.html">успіх</a></li>
-              <li><a href="applications-empty.html">порожній</a></li>
-              <li><a href="applications-loading.html">завантаження</a></li>
-            </ul>
+          <li class="screen">
+            <details>
+              <summary>Профіль іншої людини <a class="job-tag" href="../research/jtbd.html#related" title="RJ2 — переконатися що людина реальна до контакту">RJ2</a></summary>
+              <ul>
+                <li><a href="profile.html">успіх</a></li>
+                <li><a href="profile-empty.html">порожній</a></li>
+                <li><a href="profile-error.html">помилка</a></li>
+                <li><a href="profile-loading.html">завантаження</a></li>
+              </ul>
+            </details>
           </li>
-          <li class="screen">Вхідні заявки / кандидати
-            <ul>
-              <li><a href="candidates.html">успіх</a></li>
-              <li><a href="candidates-empty.html">порожній</a></li>
-              <li><a href="candidates-loading.html">завантаження</a></li>
-            </ul>
+          <li class="screen">
+            <details>
+              <summary>Оголошення кімнати <a class="job-tag" href="../research/jtbd.html#related" title="RJ2 — переконатися що людина реальна до контакту">RJ2</a></summary>
+              <ul>
+                <li><a href="room.html">успіх</a></li>
+                <li><a href="room-error.html">помилка</a></li>
+                <li><a href="room-loading.html">завантаження</a></li>
+              </ul>
+            </details>
           </li>
-          <li class="screen">Список діалогів
-            <ul>
-              <li><a href="dialogs.html">успіх</a></li>
-              <li><a href="dialogs-empty.html">порожній</a></li>
-              <li><a href="dialogs-loading.html">завантаження</a></li>
-            </ul>
+          <li class="screen">
+            <details>
+              <summary>Скарга на людину <a class="job-tag" href="../research/jtbd.html#emotional" title="EJ2 — відчути що зробила все від неї залежне">EJ2</a></summary>
+              <ul>
+                <li><a href="report.html">форма</a></li>
+                <li><a href="report-loading.html">завантаження</a></li>
+                <li><a href="report-error.html">помилка</a></li>
+                <li><a href="report-sent.html">надіслано</a></li>
+              </ul>
+            </details>
           </li>
-          <li class="screen">Чат
-            <ul>
-              <li><a href="chat.html">успіх</a></li>
-              <li><a href="chat-empty.html">порожній</a></li>
-              <li><a href="chat-loading.html">завантаження</a></li>
-            </ul>
+          <li class="screen">
+            <details>
+              <summary>Фото-в'юер <a class="job-tag" href="../research/jtbd.html#related" title="RJ4 — прийти на зустріч підготовленим">RJ4</a></summary>
+              <ul>
+                <li><a href="photo-viewer.html">успіх</a></li>
+              </ul>
+            </details>
+          </li>
+          <li class="screen">
+            <details>
+              <summary>Список діалогів <a class="job-tag" href="../research/jtbd.html#related" title="RJ3 — почати розмову тільки якщо інтерес взаємний">RJ3</a></summary>
+              <ul>
+                <li><a href="dialogs.html">успіх</a></li>
+                <li><a href="dialogs-empty.html">порожній</a></li>
+                <li><a href="dialogs-loading.html">завантаження</a></li>
+              </ul>
+            </details>
+          </li>
+          <li class="screen">
+            <details>
+              <summary>Чат <a class="job-tag" href="../research/jtbd.html#related" title="RJ3 — почати розмову тільки якщо інтерес взаємний">RJ3</a></summary>
+              <ul>
+                <li><a href="chat.html">успіх</a></li>
+                <li><a href="chat-empty.html">порожній</a></li>
+                <li><a href="chat-loading.html">завантаження</a></li>
+              </ul>
+            </details>
           </li>
         </ul>
-      </li>
-
-      <li class="sec">E · Розмістити кімнату (господар)
-        <ul>
-          <li class="screen">Створення / редагування оголошення
-            <ul>
-              <li><a href="room-create.html">успіх</a></li>
-              <li><a href="room-create-error.html">помилка</a></li>
-              <li><a href="room-create-loading.html">завантаження</a></li>
-            </ul>
-          </li>
-          <li class="screen">Мої оголошення
-            <ul>
-              <li><a href="my-listings.html">успіх</a></li>
-              <li><a class="active" href="my-listings-empty.html">порожній</a></li>
-              <li><a href="my-listings-loading.html">завантаження</a></li>
-            </ul>
-          </li>
-        </ul>
-      </li>
-
-      <li class="sec">G · Доступ, право, підтримка
-        <ul>
-          <li class="screen">Підтримка / звернення
-            <ul>
-              <li><a href="support.html">успіх</a></li>
-              <li><a href="support-loading.html">завантаження</a></li>
-            </ul>
-          </li>
-          <li class="screen">Умови й Політика приватності
-            <ul>
-              <li><a href="legal.html">успіх</a></li>
-            </ul>
-          </li>
-          <li class="screen">Відновлення доступу
-            <ul>
-              <li><a href="recovery.html">успіх</a></li>
-            </ul>
-          </li>
-        </ul>
-      </li>
-
-    </ul>
+      </details>
+    </div>
   </nav>
 
   <div class="wf-stage">
