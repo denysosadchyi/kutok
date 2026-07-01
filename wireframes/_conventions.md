@@ -60,8 +60,29 @@
 | Верифікація: телефон + селфі | `verify` | `verify.html` (успіх) · `-error` · `-loading` |
 | Мої заявки: надіслані / очікують | `applications` | `applications.html` (успіх) · `-empty` · `-loading` |
 | Чат (текст) | `chat` | `chat.html` (успіх) · `-empty` · `-loading` |
+| Вхід (existing-user) | `login` | `login.html` (успіх) · `-error` · `-loading` |
+| Згода на дані + біометрію | `consent` | `consent.html` (успіх) |
+| Верифікація · телефон | `verify-phone` | `verify-phone.html` (успіх) · `-error` · `-loading` |
+| Верифікація · SMS-код | `verify-code` | `verify-code.html` (успіх) · `-error` · `-loading` |
+| Верифікація · селфі | `verify-selfie` | `verify-selfie.html` (успіх) · `-error` · (завантаження = наявний `verify-loading.html`) |
+| Верифікація · результат | `verify-pending` | `verify-pending.html` (успіх; `verify.html`/`-error` вже існують) |
+| Мій профіль | `my-profile` | `my-profile.html` (успіх) · `-loading` |
+| Налаштування приватності | `privacy-settings` | `privacy-settings.html` (успіх) |
+| Заблоковані | `blocked` | `blocked.html` (успіх) · `-empty` |
+| Керування акаунтом | `account` | `account.html` (успіх) |
+| Скарга на людину | `report` | `report.html` (успіх) · `-loading` · `-error` · `-sent` |
+| Фото-в'юер | `photo-viewer` | `photo-viewer.html` (успіх) |
+| Вхідні заявки / кандидати | `candidates` | `candidates.html` (успіх) · `-empty` · `-loading` |
+| Список діалогів | `dialogs` | `dialogs.html` (успіх) · `-empty` · `-loading` |
+| Створення/редагування оголошення | `room-create` | `room-create.html` (успіх) · `-error` · `-loading` |
+| Мої оголошення | `my-listings` | `my-listings.html` (успіх) · `-empty` · `-loading` |
+| Підтримка / звернення | `support` | `support.html` (успіх) · `-loading` |
+| Умови й Політика приватності | `legal` | `legal.html` (успіх) |
+| Відновлення доступу | `recovery` | `recovery.html` (успіх) |
 
-*Файлів усього: 7 базових + 14 станів = 21 сторінка.*
+*Файлів усього: 7 базових + 14 станів (крок 07) + 19 базових + 21 станом (крок 08) = 61 сторінка,
+26 екранів. Стан `-sent` на `report.html` — виняток поза словником `-empty/-error/-loading`, див.
+[_screens.md](./_screens.md), розділ «Крок 08».*
 
 ## 4-bis. Дерево-навігація — спільний каркас на кожній сторінці
 
