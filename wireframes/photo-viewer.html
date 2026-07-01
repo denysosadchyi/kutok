@@ -533,5 +533,24 @@
 </div>
   </div>
 </div>
+<script>
+  function wfNavToggleAll(open) {
+    document.querySelectorAll('.wf-nav details').forEach(function (d) { d.open = open; });
+  }
+  function wfNavFilter(query) {
+    var q = query.trim().toLowerCase();
+    document.querySelectorAll('.wf-nav li.screen').forEach(function (li) {
+      var text = li.textContent.toLowerCase();
+      var match = !q || text.indexOf(q) !== -1;
+      li.style.display = match ? '' : 'none';
+      if (match && q) {
+        var d = li.querySelector('details');
+        if (d) d.open = true;
+        var parentRole = li.closest('details.role');
+        if (parentRole) parentRole.open = true;
+      }
+    });
+  }
+</script>
 </body>
 </html>
