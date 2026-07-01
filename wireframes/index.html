@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Куток · вайрфрейми</title>
+<style>
+  /* ── Орієнтаційна хаб-сторінка. Не мокап екрана застосунку —
+     той самий сірий кістяк, що й у вайрфреймах, але верстка вільна, ширша за 400px. ── */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: sans-serif;
+    background: #e9e9e9;
+    color: #333;
+    line-height: 1.4;
+  }
+
+  .wrap { max-width: 980px; margin: 0 auto; padding: 40px 24px 64px; }
+
+  h1, h2, h3 { font-weight: bold; }
+
+  /* ── Заголовок ── */
+  header.page-head { margin-bottom: 36px; padding-bottom: 20px; border-bottom: 1px solid #ccc; }
+  header.page-head h1 { font-size: 25px; color: #333; margin-bottom: 8px; }
+  header.page-head p { font-size: 14px; color: #666; max-width: 660px; }
+  header.page-head .meta { font-size: 12px; color: #999; margin-top: 10px; }
+
+  .eyebrow {
+    font-size: 11px; text-transform: uppercase; letter-spacing: .07em;
+    color: #888; font-weight: bold; margin-bottom: 10px;
+  }
+
+  /* ── З чого почати ── */
+  section.start { margin-bottom: 44px; }
+  .start-grid { display: flex; gap: 16px; flex-wrap: wrap; }
+  a.start-link {
+    flex: 1 1 300px;
+    display: block;
+    background: #f3f3f3;
+    border: 1px solid #999;
+    padding: 20px 20px 18px;
+    text-decoration: none;
+    color: #333;
+  }
+  a.start-link:hover { background: #eaeaea; border-color: #666; }
+  a.start-link .tag { font-size: 10px; text-transform: uppercase; letter-spacing: .06em; color: #888; }
+  a.start-link .name { font-size: 19px; font-weight: bold; color: #333; margin: 5px 0 8px; }
+  a.start-link .desc { font-size: 12.5px; color: #666; }
+  a.start-link .go { font-size: 12px; color: #555; margin-top: 14px; font-weight: bold; }
+  a.start-link .go::after { content: " →"; }
+
+  /* ── Повний перелік по ролях ── */
+  section.roles { margin-bottom: 44px; }
+  section.roles > .eyebrow { margin-bottom: 16px; }
+
+  .role-block { border: 1px solid #ccc; background: #ddd; margin-bottom: 18px; }
+  .role-block > h3 {
+    font-size: 12px; text-transform: uppercase; letter-spacing: .06em;
+    color: #555; font-weight: bold; padding: 10px 14px; background: #eee;
+    border-bottom: 1px solid #ccc;
+  }
+  ul.screen-grid {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1px;
+  }
+  ul.screen-grid li { background: #fff; }
+  ul.screen-grid li a {
+    display: block;
+    padding: 11px 14px;
+    text-decoration: none;
+    color: #333;
+    font-size: 13px;
+  }
+  ul.screen-grid li a:hover { background: #f2f2f2; }
+
+  /* ── Джерела правди (.md) ── */
+  footer.docs { border-top: 1px solid #ccc; padding-top: 18px; }
+  footer.docs .eyebrow { margin-bottom: 10px; }
+  footer.docs p { font-size: 12.5px; color: #888; margin-bottom: 12px; max-width: 640px; }
+  footer.docs ul { list-style: none; display: flex; flex-wrap: wrap; gap: 10px; }
+  footer.docs a {
+    font-size: 12.5px; color: #666; text-decoration: none;
+    border: 1px solid #bbb; padding: 6px 12px; background: #f3f3f3; display: inline-block;
+  }
+  footer.docs a:hover { background: #ececec; color: #333; border-color: #999; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="page-head">
+    <h1>Куток · вайрфрейми</h1>
+    <p>Мобільний застосунок для пошуку співмешканців і безпечного підселення у вільні кімнати в Києві. Головна цінність — довіра: верифікація, прозорі профілі, взаємний інтерес перед контактом.</p>
+    <p class="meta">65 сторінок · сірий кістяк · без кольору й декору — лише структура, ієрархія та реальний контент.</p>
+  </header>
+
+  <section class="start" aria-labelledby="start-heading">
+    <div class="eyebrow" id="start-heading">З чого почати</div>
+    <div class="start-grid">
+      <a class="start-link" href="listings.html">
+        <div class="tag">Головний flow · успіх</div>
+        <div class="name">Стрічка / каталог</div>
+        <div class="desc">Найповніший екран продукту: фільтри, картки кімнат і людей, бейдж довіри «телефон ✓ · фото ✓ · документ —», таб-бар. Звідси розходяться всі інші екрани.</div>
+        <div class="go">Відкрити listings.html</div>
+      </a>
+      <a class="start-link" href="login.html">
+        <div class="tag">Вхід</div>
+        <div class="name">Вхід (existing-user)</div>
+        <div class="desc">Повернення на існуючий акаунт — телефон і SMS-код. Точка входу для тих, хто вже має профіль.</div>
+        <div class="go">Відкрити login.html</div>
+      </a>
+    </div>
+  </section>
+
+  <section class="roles" aria-labelledby="roles-heading">
+    <div class="eyebrow" id="roles-heading">Усі екрани · за ролями</div>
+
+    <div class="role-block">
+      <h3>Спільне · обидві ролі</h3>
+      <ul class="screen-grid">
+        <li><a href="login.html">Вхід</a></li>
+        <li><a href="profile-create.html">Створення профілю</a></li>
+        <li><a href="consent.html">Згода на дані</a></li>
+        <li><a href="verify-phone.html">Верифікація · телефон</a></li>
+        <li><a href="verify-code.html">Верифікація · SMS-код</a></li>
+        <li><a href="verify-selfie.html">Верифікація · селфі</a></li>
+        <li><a href="verify.html">Верифікація · результат</a></li>
+        <li><a href="my-profile.html">Мій профіль</a></li>
+        <li><a href="privacy-settings.html">Приватність</a></li>
+        <li><a href="blocked.html">Заблоковані</a></li>
+        <li><a href="account.html">Акаунт</a></li>
+        <li><a href="support.html">Підтримка</a></li>
+        <li><a href="legal.html">Умови й Політика</a></li>
+        <li><a href="recovery.html">Відновлення доступу</a></li>
+      </ul>
+    </div>
+
+    <div class="role-block">
+      <h3>Шукач · Аня</h3>
+      <ul class="screen-grid">
+        <li><a href="listings.html">Стрічка / каталог</a></li>
+        <li><a href="applications.html">Мої заявки</a></li>
+      </ul>
+    </div>
+
+    <div class="role-block">
+      <h3>Господар · Олена</h3>
+      <ul class="screen-grid">
+        <li><a href="room-create.html">Оголошення — створення</a></li>
+        <li><a href="my-listings.html">Мої оголошення</a></li>
+        <li><a href="candidates.html">Кандидати</a></li>
+      </ul>
+    </div>
+
+    <div class="role-block">
+      <h3>Взаємодія · обидві ролі</h3>
+      <ul class="screen-grid">
+        <li><a href="profile.html">Профіль іншої людини</a></li>
+        <li><a href="room.html">Оголошення кімнати</a></li>
+        <li><a href="report.html">Скарга</a></li>
+        <li><a href="photo-viewer.html">Фото-в'юер</a></li>
+        <li><a href="dialogs.html">Діалоги</a></li>
+        <li><a href="chat.html">Чат</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <footer class="docs">
+    <div class="eyebrow">Джерела правди (.md)</div>
+    <p>Уся інформація формується і зберігається в .md-файлах — HTML-вайрфрейми лише відображають її. Редагувати потрібно .md, ніколи HTML напряму.</p>
+    <ul>
+      <li><a href="../sitemap.md">sitemap.md — карта екранів</a></li>
+      <li><a href="../flows.md">flows.md — user flows</a></li>
+      <li><a href="../ia.md">ia.md — інформаційна архітектура</a></li>
+      <li><a href="_screens.md">_screens.md — замовлення екранів і станів</a></li>
+      <li><a href="_conventions.md">_conventions.md — правила вайрфреймів</a></li>
+    </ul>
+  </footer>
+
+</div>
+</body>
+</html>
