@@ -231,18 +231,18 @@
           <p class="hint">Це фото звіримо із селфі на кроці верифікації.</p>
         </div>
       </section>
-      <section class="pad">
-        <div class="field"><label for="name">Ім'я</label><input id="name" name="name" value="Аня"></div>
-        <div class="field"><label for="age">Вік</label><input id="age" name="age" type="number" value="23"></div>
-        <div class="field"><label for="about">Про себе</label><textarea id="about" name="about" rows="3">Переїхала до Києва місяць тому, працюю в кафе на Подолі. Шукаю спокійну кімнату й адекватних сусідів.</textarea></div>
+      <section class="pad" style="opacity:.5">
+        <div class="field"><label for="name">Ім'я</label><input id="name" name="name" value="Аня" disabled></div>
+        <div class="field"><label for="age">Вік</label><input id="age" name="age" type="number" value="23" disabled></div>
+        <div class="field"><label for="about">Про себе</label><textarea id="about" name="about" rows="3" disabled>Переїхала до Києва місяць тому, працюю в кафе на Подолі. Шукаю спокійну кімнату й адекватних сусідів.</textarea></div>
       </section>
-      <section class="pad">
+      <section class="pad" style="opacity:.5">
         <div class="field"><label for="dist">Бажаний район</label>
-          <select id="dist" name="dist"><option selected>Поділ</option><option>Шевченківський</option><option>Лівий берег</option></select></div>
-        <div class="field"><label for="budget">Бюджет до, ₴/міс</label><input id="budget" name="budget" type="number" value="8000"></div>
+          <select id="dist" name="dist" disabled><option selected>Поділ</option><option>Шевченківський</option><option>Лівий берег</option></select></div>
+        <div class="field"><label for="budget">Бюджет до, ₴/міс</label><input id="budget" name="budget" type="number" value="8000" disabled></div>
         <div class="field"><label>Звички</label>
-          <label class="chk"><input type="checkbox" checked> Не палю</label>
-          <label class="chk"><input type="checkbox"> Маю тварину</label></div>
+          <label class="chk"><input type="checkbox" checked disabled> Не палю</label>
+          <label class="chk"><input type="checkbox" disabled> Маю тварину</label></div>
       </section>
       <section class="pad"><button class="primary" type="button" disabled style="opacity:.5">Зберігаємо…</button></section>
     </form>
