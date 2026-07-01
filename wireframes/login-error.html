@@ -508,10 +508,10 @@
   <main>
     <section class="pad">
       <div class="banner">Код невірний або SMS не дійшла.</div>
-      <form class="filters" action="login-loading.html" method="post">
+      <form class="filters" action="login-loading.html" method="get">
         <div class="field">
           <label for="phone">Номер телефону</label>
-          <input id="phone" name="phone" type="tel" inputmode="tel" value="+380 67 123 4567">
+          <input id="phone" name="phone" type="tel" inputmode="tel" value="+380 67 123 45 67">
         </div>
         <div class="field">
           <label for="code">Код з SMS</label>
@@ -523,16 +523,30 @@
     </section>
     <section class="pad">
       <p class="hint"><a href="recovery.html">Немає доступу до номера? Відновлення доступу</a></p>
+      <p class="hint">Ще не маєте акаунта? <a href="profile-create.html">Створити профіль</a></p>
     </section>
   </main>
-  <footer class="tabbar">
-    <a href="listings.html"><span class="tab-icon" aria-label="іконка: Пошук"></span><span class="tab-label">Пошук</span></a>
-    <a href="applications.html"><span class="tab-icon" aria-label="іконка: Заявки"></span><span class="tab-label">Заявки</span><span class="tab-badge" aria-label="2 нових">2</span></a>
-    <a href="dialogs.html"><span class="tab-icon" aria-label="іконка: Чати"></span><span class="tab-label">Чати</span><span class="tab-badge" aria-label="1 нових">1</span></a>
-    <a class="active" href="my-profile.html"><span class="tab-icon" aria-label="іконка: Профіль"></span><span class="tab-label">Профіль</span></a>
-  </footer>
 </div>
   </div>
 </div>
+<script>
+  function wfNavToggleAll(open) {
+    document.querySelectorAll('.wf-nav details').forEach(function (d) { d.open = open; });
+  }
+  function wfNavFilter(query) {
+    var q = query.trim().toLowerCase();
+    document.querySelectorAll('.wf-nav li.screen').forEach(function (li) {
+      var text = li.textContent.toLowerCase();
+      var match = !q || text.indexOf(q) !== -1;
+      li.style.display = match ? '' : 'none';
+      if (match && q) {
+        var d = li.querySelector('details');
+        if (d) d.open = true;
+        var parentRole = li.closest('details.role');
+        if (parentRole) parentRole.open = true;
+      }
+    });
+  }
+</script>
 </body>
 </html>
