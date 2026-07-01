@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Створення профілю · завантаження · Куток</title>
+<title>Створення профілю · Куток</title>
 <style>
   /* ── ВАЙРФРЕЙМ: лише сірий кістяк. Без кольору, бренд-шрифтів, іконок, тіней. ── */
 
@@ -209,7 +209,7 @@
       </div>
     </div>
     <div class="tree">
-      <details class="role" open>
+      <details class="role">
         <summary>Спільне · обидві ролі</summary>
         <ul>
           <li class="screen">
@@ -223,12 +223,10 @@
             </details>
           </li>
           <li class="screen">
-            <details open>
-              <summary>Створення профілю <a class="job-tag" href="../research/jtbd.html#social" title="Social Job — виглядати серйозним кандидатом">SJ1</a></summary>
+            <details>
+              <summary>Вибір ролі <a class="job-tag" href="../research/sitemap.html#infra" title="Продуктове рішення: окремі шляхи шукач/господар">рішення</a></summary>
               <ul>
-                <li><a href="profile-create.html">успіх</a></li>
-                <li><a href="profile-create-error.html">помилка</a></li>
-                <li><a class="active" href="profile-create-loading.html">завантаження</a></li>
+                <li><a href="role-select.html">успіх</a></li>
               </ul>
             </details>
           </li>
@@ -277,16 +275,6 @@
                 <li><a href="verify.html">готово</a></li>
                 <li><a href="verify-error.html">фото не збіглось</a></li>
                 <li><a href="verify-pending.html">на ручній перевірці</a></li>
-              </ul>
-            </details>
-          </li>
-          <li class="screen">
-            <details>
-              <summary>Мій профіль <a class="job-tag" href="../research/jtbd.html#related" title="RJ4 — прийти на зустріч підготовленим">RJ4</a></summary>
-              <ul>
-                <li><a href="my-profile.html">успіх</a></li>
-                <li><a href="my-profile-loading.html">завантаження</a></li>
-                            <li><a href="my-profile-edit.html">редагування</a></li>
               </ul>
             </details>
           </li>
@@ -342,7 +330,7 @@
           </li>
         </ul>
       </details>
-      <details class="role">
+      <details class="role" open>
         <summary>Шукач · Аня</summary>
         <ul>
           <li class="screen">
@@ -365,6 +353,26 @@
                 <li><a href="applications.html">успіх</a></li>
                 <li><a href="applications-empty.html">порожній</a></li>
                 <li><a href="applications-loading.html">завантаження</a></li>
+              </ul>
+            </details>
+          </li>
+          <li class="screen">
+            <details open>
+              <summary>Створення профілю · шукач <a class="job-tag" href="../research/jtbd.html#social" title="Social Job — виглядати серйозним кандидатом">SJ1</a></summary>
+              <ul>
+                <li><a class="active" href="profile-create-seeker.html">успіх</a></li>
+                <li><a href="profile-create-seeker-error.html">помилка</a></li>
+                <li><a href="profile-create-seeker-loading.html">завантаження</a></li>
+              </ul>
+            </details>
+          </li>
+          <li class="screen">
+            <details>
+              <summary>Мій профіль · шукач <a class="job-tag" href="../research/jtbd.html#related" title="RJ4 — прийти на зустріч підготовленим">RJ4</a></summary>
+              <ul>
+                <li><a href="my-profile-seeker.html">успіх</a></li>
+                <li><a href="my-profile-seeker-loading.html">завантаження</a></li>
+                <li><a href="my-profile-seeker-edit.html">редагування</a></li>
               </ul>
             </details>
           </li>
@@ -403,6 +411,26 @@
               </ul>
             </details>
           </li>
+          <li class="screen">
+            <details>
+              <summary>Створення профілю · господар <a class="job-tag" href="../research/jtbd.html#social" title="Social Job — виглядати серйозним господарем">SJ1</a></summary>
+              <ul>
+                <li><a href="profile-create-host.html">успіх</a></li>
+                <li><a href="profile-create-host-error.html">помилка</a></li>
+                <li><a href="profile-create-host-loading.html">завантаження</a></li>
+              </ul>
+            </details>
+          </li>
+          <li class="screen">
+            <details>
+              <summary>Мій профіль · господар <a class="job-tag" href="../research/jtbd.html#related" title="RJ4 — прийти на зустріч підготовленим">RJ4</a></summary>
+              <ul>
+                <li><a href="my-profile-host.html">успіх</a></li>
+                <li><a href="my-profile-host-loading.html">завантаження</a></li>
+                <li><a href="my-profile-host-edit.html">редагування</a></li>
+              </ul>
+            </details>
+          </li>
         </ul>
       </details>
       <details class="role">
@@ -431,7 +459,7 @@
           </li>
           <li class="screen">
             <details>
-              <summary>Скарга на людину <a class="job-tag" href="../research/jtbd.html#emotional" title="EJ2 — відчути що зробила все від неї залежне">EJ2</a></summary>
+              <summary>Скарга на людину <a class="job-tag" href="../research/jtbd.html#emotional" title="EJ2 — застосовується симетрично: скаржитись може і шукач, і господар">EJ2</a></summary>
               <ul>
                 <li><a href="report.html">форма</a></li>
                 <li><a href="report-loading.html">завантаження</a></li>
@@ -487,26 +515,32 @@
       <section class="pad">
         <div class="field">
           <label>Фото профілю</label>
-          <div class="photo-row"><div class="thumb avatar"><span style="color:#999">…</span></div><span class="hint">Завантажуємо фото…</span></div>
+          <div class="photo-row"><div class="thumb avatar">фото</div><a class="btn ghost" href="#"><span class="icon-ph" style="width:22px;height:22px" aria-label="іконка: камера"></span> Завантажити фото</a></div>
           <p class="hint">Це фото звіримо із селфі на кроці верифікації.</p>
         </div>
       </section>
-      <section class="pad" style="opacity:.5">
-        <div class="field"><label for="name">Ім'я</label><input id="name" name="name" value="Аня" disabled></div>
-        <div class="field"><label for="age">Вік</label><input id="age" name="age" type="number" value="23" disabled></div>
-        <div class="field"><label for="about">Про себе</label><textarea id="about" name="about" rows="3" disabled>Переїхала до Києва місяць тому, працюю в кафе на Подолі. Шукаю спокійну кімнату й адекватних сусідів.</textarea></div>
+      <section class="pad">
+        <div class="field"><label for="name">Ім'я</label><input id="name" name="name" value="Аня"></div>
+        <div class="field"><label for="age">Вік</label><input id="age" name="age" type="number" value="23"></div>
+        <div class="field"><label for="about">Про себе</label><textarea id="about" name="about" rows="3">Переїхала до Києва місяць тому, працюю в кафе на Подолі. Шукаю спокійну кімнату й адекватних сусідів.</textarea></div>
       </section>
-      <section class="pad" style="opacity:.5">
+      <section class="pad">
         <div class="field"><label for="dist">Бажаний район</label>
-          <select id="dist" name="dist" disabled><option selected>Поділ</option><option>Шевченківський</option><option>Лівий берег</option></select></div>
-        <div class="field"><label for="budget">Бюджет до, ₴/міс</label><input id="budget" name="budget" type="number" value="8000" disabled></div>
+          <select id="dist" name="dist"><option selected>Поділ</option><option>Шевченківський</option><option>Лівий берег</option></select></div>
+        <div class="field"><label for="budget">Бюджет до, ₴/міс</label><input id="budget" name="budget" type="number" value="8000"></div>
         <div class="field"><label>Звички</label>
-          <label class="chk"><input type="checkbox" checked disabled> Не палю</label>
-          <label class="chk"><input type="checkbox" disabled> Маю тварину</label></div>
+          <label class="chk"><input type="checkbox" checked> Не палю</label>
+          <label class="chk"><input type="checkbox"> Маю тварину</label></div>
       </section>
-      <section class="pad"><button class="primary" type="button" disabled style="opacity:.5">Зберігаємо…</button></section>
+      <section class="pad"><button class="primary" type="submit">Зберегти і почати пошук</button></section>
     </form>
   </main>
+  <footer class="tabbar">
+    <a href="listings.html"><span class="tab-icon" aria-label="іконка: Пошук"></span><span class="tab-label">Пошук</span></a>
+    <a href="applications.html"><span class="tab-icon" aria-label="іконка: Заявки"></span><span class="tab-label">Заявки</span><span class="tab-badge" aria-label="2 нових">2</span></a>
+    <a href="dialogs.html"><span class="tab-icon" aria-label="іконка: Чати"></span><span class="tab-label">Чати</span><span class="tab-badge" aria-label="1 нових">1</span></a>
+    <a class="active" href="my-profile-seeker.html"><span class="tab-icon" aria-label="іконка: Профіль"></span><span class="tab-label">Профіль</span></a>
+  </footer>
 </div>
   </div>
 </div>
