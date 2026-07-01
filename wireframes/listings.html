@@ -265,6 +265,14 @@
   <section class="pad">
     <nav aria-label="Фільтр оголошень">
       <form class="filters" action="listings.html" method="get">
+        <fieldset class="seg-switch">
+          <legend>Тип оголошень</legend>
+          <div class="seg-options">
+            <label><input type="radio" name="type" value="rooms"> Кімнати</label>
+            <label><input type="radio" name="type" value="people"> Люди</label>
+            <label><input type="radio" name="type" value="all" checked> Усі</label>
+          </div>
+        </fieldset>
         <div class="field">
           <label for="district">Район Києва</label>
           <select id="district" name="district">
