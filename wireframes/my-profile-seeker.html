@@ -247,7 +247,7 @@
       </div>
     </div>
     <div class="tree">
-      <details class="role" open>
+      <details class="role">
         <summary>Спільне · обидві ролі</summary>
         <ul>
           <li class="screen">
@@ -262,11 +262,9 @@
           </li>
           <li class="screen">
             <details>
-              <summary>Створення профілю <a class="job-tag" href="../research/jtbd.html#social" title="Social Job — виглядати серйозним кандидатом">SJ1</a></summary>
+              <summary>Вибір ролі <a class="job-tag" href="../research/sitemap.html#infra" title="Продуктове рішення: окремі шляхи шукач/господар">рішення</a></summary>
               <ul>
-                <li><a href="profile-create.html">успіх</a></li>
-                <li><a href="profile-create-error.html">помилка</a></li>
-                <li><a href="profile-create-loading.html">завантаження</a></li>
+                <li><a href="role-select.html">успіх</a></li>
               </ul>
             </details>
           </li>
@@ -315,16 +313,6 @@
                 <li><a href="verify.html">готово</a></li>
                 <li><a href="verify-error.html">фото не збіглось</a></li>
                 <li><a href="verify-pending.html">на ручній перевірці</a></li>
-              </ul>
-            </details>
-          </li>
-          <li class="screen">
-            <details open>
-              <summary>Мій профіль <a class="job-tag" href="../research/jtbd.html#related" title="RJ4 — прийти на зустріч підготовленим">RJ4</a></summary>
-              <ul>
-                <li><a class="active" href="my-profile.html">успіх</a></li>
-                <li><a href="my-profile-loading.html">завантаження</a></li>
-                            <li><a href="my-profile-edit.html">редагування</a></li>
               </ul>
             </details>
           </li>
@@ -380,7 +368,7 @@
           </li>
         </ul>
       </details>
-      <details class="role">
+      <details class="role" open>
         <summary>Шукач · Аня</summary>
         <ul>
           <li class="screen">
@@ -403,6 +391,26 @@
                 <li><a href="applications.html">успіх</a></li>
                 <li><a href="applications-empty.html">порожній</a></li>
                 <li><a href="applications-loading.html">завантаження</a></li>
+              </ul>
+            </details>
+          </li>
+          <li class="screen">
+            <details>
+              <summary>Створення профілю · шукач <a class="job-tag" href="../research/jtbd.html#social" title="Social Job — виглядати серйозним кандидатом">SJ1</a></summary>
+              <ul>
+                <li><a href="profile-create-seeker.html">успіх</a></li>
+                <li><a href="profile-create-seeker-error.html">помилка</a></li>
+                <li><a href="profile-create-seeker-loading.html">завантаження</a></li>
+              </ul>
+            </details>
+          </li>
+          <li class="screen">
+            <details open>
+              <summary>Мій профіль · шукач <a class="job-tag" href="../research/jtbd.html#related" title="RJ4 — прийти на зустріч підготовленим">RJ4</a></summary>
+              <ul>
+                <li><a class="active" href="my-profile-seeker.html">успіх</a></li>
+                <li><a href="my-profile-seeker-loading.html">завантаження</a></li>
+                <li><a href="my-profile-seeker-edit.html">редагування</a></li>
               </ul>
             </details>
           </li>
@@ -441,6 +449,26 @@
               </ul>
             </details>
           </li>
+          <li class="screen">
+            <details>
+              <summary>Створення профілю · господар <a class="job-tag" href="../research/jtbd.html#social" title="Social Job — виглядати серйозним господарем">SJ1</a></summary>
+              <ul>
+                <li><a href="profile-create-host.html">успіх</a></li>
+                <li><a href="profile-create-host-error.html">помилка</a></li>
+                <li><a href="profile-create-host-loading.html">завантаження</a></li>
+              </ul>
+            </details>
+          </li>
+          <li class="screen">
+            <details>
+              <summary>Мій профіль · господар <a class="job-tag" href="../research/jtbd.html#related" title="RJ4 — прийти на зустріч підготовленим">RJ4</a></summary>
+              <ul>
+                <li><a href="my-profile-host.html">успіх</a></li>
+                <li><a href="my-profile-host-loading.html">завантаження</a></li>
+                <li><a href="my-profile-host-edit.html">редагування</a></li>
+              </ul>
+            </details>
+          </li>
         </ul>
       </details>
       <details class="role">
@@ -469,7 +497,7 @@
           </li>
           <li class="screen">
             <details>
-              <summary>Скарга на людину <a class="job-tag" href="../research/jtbd.html#emotional" title="EJ2 — відчути що зробила все від неї залежне">EJ2</a></summary>
+              <summary>Скарга на людину <a class="job-tag" href="../research/jtbd.html#emotional" title="EJ2 — застосовується симетрично: скаржитись може і шукач, і господар">EJ2</a></summary>
               <ul>
                 <li><a href="report.html">форма</a></li>
                 <li><a href="report-loading.html">завантаження</a></li>
@@ -537,12 +565,11 @@
       <p class="hint">Ще немає відгуків — з'являться після першого спільного проживання.</p>
     </section>
     <section class="pad">
-      <a class="btn primary" href="my-profile-edit.html">Редагувати профіль</a>
+      <a class="btn primary" href="my-profile-seeker-edit.html">Редагувати профіль</a>
     </section>
     <section class="pad">
       <ul class="menu">
-        <li><a class="menu-row" href="my-listings.html"><span class="icon-ph" aria-label="іконка: Мої оголошення"></span><span class="menu-label">Мої оголошення</span><span class="chevron"></span></a></li>
-        <li><a class="menu-row" href="candidates.html"><span class="icon-ph" aria-label="іконка: Вхідні заявки / кандидати"></span><span class="menu-label">Вхідні заявки / кандидати</span><span class="chevron"></span></a></li>
+        <li><a class="menu-row" href="profile-create-host.html"><span class="icon-ph" aria-label="іконка: здати кімнату"></span><span class="menu-label">Здаєте кімнату? Стати господарем</span><span class="chevron"></span></a></li>
         <li><a class="menu-row" href="privacy-settings.html"><span class="icon-ph" aria-label="іконка: Налаштування приватності"></span><span class="menu-label">Налаштування приватності</span><span class="chevron"></span></a></li>
         <li><a class="menu-row" href="blocked.html"><span class="icon-ph" aria-label="іконка: Заблоковані"></span><span class="menu-label">Заблоковані</span><span class="chevron"></span></a></li>
         <li><a class="menu-row" href="account.html"><span class="icon-ph" aria-label="іконка: Керування акаунтом"></span><span class="menu-label">Керування акаунтом</span><span class="chevron"></span></a></li>
