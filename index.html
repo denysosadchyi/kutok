@@ -403,8 +403,11 @@ function capSection(id, title, withAll) {
       const anyClosed = [...collapsibles.keys()]
         .some(k => (k.startsWith('role:') || k.startsWith('screen:')) && !isOpen(k));
       for (const k of collapsibles.keys())
-        if (k.startsWith('role:') || k.startsWith('screen:')) setOpen(k, anyClosed, false);
-      if (anyClosed) setOpen(id, true, false);
+        if (k.startsWith('role:') || k.startsWith('screen:')) {
+          applyOpen(k, anyClosed);
+          openState[k] = anyClosed;
+        }
+      if (anyClosed) { applyOpen(id, true); openState[id] = true; }
       saveStore();
       syncAllBtn();
     });
