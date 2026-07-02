@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<title>Куток — Проєкт</title>
+<meta name="description" content="Навігація по всіх матеріалах проєкту Куток: ресерч, вайрфрейми, документи.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --paper:     oklch(97.5% 0.006 75);
+    --ink:       oklch(25% 0.012 60);
+    --muted:     oklch(48% 0.015 65);
+    --line:      oklch(90% 0.008 75);
+    --line-soft: oklch(93.5% 0.006 75);
+    --clay:      oklch(52% 0.115 40);
+    --clay-soft: oklch(94.5% 0.02 50);
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+    --nav-w: 250px;
+  }
+
+  html, body { height: 100%; }
+  body {
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+    background: var(--paper);
+    display: flex;
+    overflow: hidden;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  :focus-visible { outline: 2px solid var(--clay); outline-offset: 2px; border-radius: 2px; }
+  ::selection { background: var(--clay-soft); }
+
+  /* ── Ліва панель ── */
+  nav {
+    flex: none; width: var(--nav-w); height: 100dvh;
+    overflow-y: auto; overscroll-behavior: contain;
+    border-right: 1px solid var(--line);
+    padding: 26px 18px 40px;
+    scrollbar-width: thin;
+  }
+  .brand { display: block; font-weight: 800; font-size: 15px; margin-bottom: 2px; cursor: pointer; }
+  .brand span {
+    display: block; font-family: var(--mono); font-size: 9.5px; font-weight: 400;
+    color: var(--muted); letter-spacing: .14em; margin-top: 3px;
+  }
+
+  .cap {
+    font-family: var(--mono); font-size: 9.5px; font-weight: 600;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+    margin: 24px 0 6px;
+  }
+  .cap:first-of-type { margin-top: 22px; }
+
+  .grp { margin: 14px 0 2px; font-size: 10.5px; font-weight: 700; letter-spacing: .05em;
+    text-transform: uppercase; color: var(--muted); opacity: .85; }
+
+  .pg {
+    display: flex; align-items: baseline; gap: 6px;
+    font-size: 12.5px; font-weight: 600; color: var(--ink);
+    padding: 4px 9px; margin-left: -9px; border-radius: 6px;
+    cursor: pointer; white-space: nowrap;
+    transition: color .15s ease, background .15s ease;
+  }
+  .pg:hover { background: var(--line-soft); }
+  .pg.active { color: var(--clay); background: var(--clay-soft); }
+
+  .states { display: flex; flex-wrap: wrap; gap: 2px 4px; margin: 0 0 3px 9px; }
+  .st {
+    font-family: var(--mono); font-size: 9.5px; color: var(--muted);
+    padding: 2px 6px; border-radius: 5px; cursor: pointer;
+    transition: color .15s ease, background .15s ease;
+  }
+  .st:hover { color: var(--ink); background: var(--line-soft); }
+  .st.active { color: var(--clay); background: var(--clay-soft); }
+
+  /* ── В'юер ── */
+  main { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; height: 100dvh; }
+  .bar {
+    flex: none; display: flex; align-items: center; gap: 10px;
+    padding: 8px 16px; border-bottom: 1px solid var(--line);
+    font-family: var(--mono); font-size: 11px; color: var(--muted);
+  }
+  .bar .path { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .bar a.open {
+    margin-left: auto; flex: none; color: var(--clay); font-weight: 600;
+    padding: 3px 8px; border-radius: 6px;
+  }
+  .bar a.open:hover { background: var(--clay-soft); }
+  iframe { flex: 1 1 auto; width: 100%; border: 0; background: var(--paper); }
+
+  /* мобільний фолбек: панель зверху, згорнута */
+  @media (max-width: 760px) {
+    body { flex-direction: column; overflow: auto; }
+    nav { width: 100%; height: auto; max-height: 45dvh; border-right: 0; border-bottom: 1px solid var(--line); }
+    main { height: 55dvh; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav" aria-label="Навігація проєктом"></nav>
+
+<main>
+  <div class="bar">
+    <span class="path" id="path"></span>
+    <a class="open" id="open" href="research/index.html" target="_blank" rel="noopener">відкрити окремо ↗</a>
+  </div>
+  <iframe id="frame" src="research/index.html" title="Сторінка проєкту"></iframe>
+</main>
+
+<script>
+// Джерело істини для навігації. Ключ станів: з = завантаження, п = порожній,
+// пом = помилка. Нові сторінки додавати сюди.
+const NAV = [
+  { cap: 'Ресерч і документи', items: [
+    { f: 'research/index.html',    t: 'Ресерч (огляд)' },
+    { f: 'research/personas.html', t: 'Персони' },
+    { f: 'research/jtbd.html',     t: 'Jobs to Be Done' },
+    { f: 'research/critique.html', t: 'Критика' },
+    { f: 'research/sitemap.html',  t: 'Sitemap' },
+    { f: 'research/flows.html',    t: 'User Flows' },
+    { f: 'research/ia.html',       t: 'Інформаційна архітектура' },
+    { f: 'research/audit.html',    t: 'Аудит мапи' },
+  ]},
+  { cap: 'Вайрфрейми', items: [
+    { f: 'wireframes/index.html', t: 'Огляд вайрфреймів' },
+
+    { grp: 'Вхід і онбординг' },
+    { f: 'wireframes/login.html', t: 'Вхід', st: [
+      ['wireframes/login-loading.html','з'], ['wireframes/login-error.html','пом'] ]},
+    { f: 'wireframes/role-select.html', t: 'Вибір ролі' },
+    { f: 'wireframes/consent.html',     t: 'Згода на дані' },
+    { f: 'wireframes/legal.html',       t: 'Умови й приватність' },
+    { f: 'wireframes/recovery.html',    t: 'Відновлення доступу' },
+
+    { grp: 'Верифікація' },
+    { f: 'wireframes/verify.html', t: 'Верифікація', st: [
+      ['wireframes/verify-loading.html','з'], ['wireframes/verify-error.html','пом'],
+      ['wireframes/verify-pending.html','перевірка'] ]},
+    { f: 'wireframes/verify-phone.html', t: 'Телефон', st: [
+      ['wireframes/verify-phone-loading.html','з'], ['wireframes/verify-phone-error.html','пом'] ]},
+    { f: 'wireframes/verify-code.html', t: 'Код підтвердження', st: [
+      ['wireframes/verify-code-loading.html','з'], ['wireframes/verify-code-error.html','пом'] ]},
+    { f: 'wireframes/verify-selfie.html', t: 'Селфі', st: [
+      ['wireframes/verify-selfie-error.html','пом'] ]},
+
+    { grp: 'Створення профілю' },
+    { f: 'wireframes/profile-create-seeker.html', t: 'Профіль шукача', st: [
+      ['wireframes/profile-create-seeker-loading.html','з'],
+      ['wireframes/profile-create-seeker-error.html','пом'] ]},
+    { f: 'wireframes/profile-create-host.html', t: 'Профіль господаря', st: [
+      ['wireframes/profile-create-host-loading.html','з'],
+      ['wireframes/profile-create-host-error.html','пом'] ]},
+
+    { grp: 'Стрічка і кімната' },
+    { f: 'wireframes/listings.html', t: 'Список оголошень', st: [
+      ['wireframes/listings-loading.html','з'], ['wireframes/listings-empty.html','п'],
+      ['wireframes/listings-empty-coldstart.html','coldstart'],
+      ['wireframes/listings-error.html','пом'], ['wireframes/listings-desktop.html','десктоп'] ]},
+    { f: 'wireframes/room.html', t: 'Оголошення кімнати', st: [
+      ['wireframes/room-loading.html','з'], ['wireframes/room-error.html','пом'] ]},
+    { f: 'wireframes/photo-viewer.html', t: 'Фото-в’юер' },
+
+    { grp: 'Профілі' },
+    { f: 'wireframes/profile.html', t: 'Профіль людини', st: [
+      ['wireframes/profile-loading.html','з'], ['wireframes/profile-empty.html','п'],
+      ['wireframes/profile-error.html','пом'] ]},
+    { f: 'wireframes/my-profile-seeker.html', t: 'Мій профіль · шукач', st: [
+      ['wireframes/my-profile-seeker-loading.html','з'],
+      ['wireframes/my-profile-seeker-edit.html','ред.'] ]},
+    { f: 'wireframes/my-profile-host.html', t: 'Мій профіль · господар', st: [
+      ['wireframes/my-profile-host-loading.html','з'],
+      ['wireframes/my-profile-host-edit.html','ред.'] ]},
+
+    { grp: 'Господар' },
+    { f: 'wireframes/my-listings.html', t: 'Мої оголошення', st: [
+      ['wireframes/my-listings-loading.html','з'], ['wireframes/my-listings-empty.html','п'] ]},
+    { f: 'wireframes/room-create.html', t: 'Нове оголошення', st: [
+      ['wireframes/room-create-loading.html','з'], ['wireframes/room-create-error.html','пом'] ]},
+    { f: 'wireframes/candidates.html', t: 'Вхідні заявки', st: [
+      ['wireframes/candidates-loading.html','з'], ['wireframes/candidates-empty.html','п'] ]},
+
+    { grp: 'Шукач' },
+    { f: 'wireframes/applications.html', t: 'Мої заявки', st: [
+      ['wireframes/applications-loading.html','з'], ['wireframes/applications-empty.html','п'] ]},
+
+    { grp: 'Чати' },
+    { f: 'wireframes/dialogs.html', t: 'Чати (список)', st: [
+      ['wireframes/dialogs-loading.html','з'], ['wireframes/dialogs-empty.html','п'] ]},
+    { f: 'wireframes/chat.html', t: 'Чат', st: [
+      ['wireframes/chat-loading.html','з'], ['wireframes/chat-empty.html','п'] ]},
+
+    { grp: 'Акаунт і безпека' },
+    { f: 'wireframes/account.html',          t: 'Керування акаунтом' },
+    { f: 'wireframes/privacy-settings.html', t: 'Приватність' },
+    { f: 'wireframes/blocked.html', t: 'Заблоковані', st: [
+      ['wireframes/blocked-empty.html','п'] ]},
+    { f: 'wireframes/report.html', t: 'Скарга', st: [
+      ['wireframes/report-loading.html','з'], ['wireframes/report-sent.html','надіслано'],
+      ['wireframes/report-error.html','пом'] ]},
+    { f: 'wireframes/support.html', t: 'Підтримка', st: [
+      ['wireframes/support-loading.html','з'] ]},
+  ]},
+];
+
+const HOME = 'research/index.html';
+const nav   = document.getElementById('nav');
+const frame = document.getElementById('frame');
+const pathEl = document.getElementById('path');
+const openEl = document.getElementById('open');
+
+// ── рендер панелі ──
+const frag = document.createDocumentFragment();
+const brand = document.createElement('a');
+brand.className = 'brand';
+brand.href = '#' + HOME;
+brand.innerHTML = 'Куток<span>ПРОЄКТ · ВСІ МАТЕРІАЛИ</span>';
+frag.appendChild(brand);
+
+for (const sec of NAV) {
+  const cap = document.createElement('div');
+  cap.className = 'cap';
+  cap.textContent = sec.cap;
+  frag.appendChild(cap);
+  for (const it of sec.items) {
+    if (it.grp) {
+      const g = document.createElement('div');
+      g.className = 'grp';
+      g.textContent = it.grp;
+      frag.appendChild(g);
+      continue;
+    }
+    const a = document.createElement('a');
+    a.className = 'pg';
+    a.href = '#' + it.f;
+    a.dataset.f = it.f;
+    a.textContent = it.t;
+    frag.appendChild(a);
+    if (it.st) {
+      const box = document.createElement('div');
+      box.className = 'states';
+      for (const [f, label] of it.st) {
+        const s = document.createElement('a');
+        s.className = 'st';
+        s.href = '#' + f;
+        s.dataset.f = f;
+        s.textContent = label;
+        box.appendChild(s);
+      }
+      frag.appendChild(box);
+    }
+  }
+}
+nav.appendChild(frag);
+
+// ── навігація ──
+function show(file, push = true) {
+  if (frame.contentWindow.location.pathname.replace(/^\//, '') !== file) frame.src = file;
+  pathEl.textContent = '/' + file;
+  openEl.href = file;
+  for (const el of nav.querySelectorAll('[data-f]'))
+    el.classList.toggle('active', el.dataset.f === file);
+  if (push && location.hash !== '#' + file)
+    history.replaceState(null, '', '#' + file);
+  const act = nav.querySelector('.pg.active, .st.active');
+  if (act) act.scrollIntoView({ block: 'nearest' });
+}
+
+nav.addEventListener('click', e => {
+  const a = e.target.closest('[data-f], .brand');
+  if (!a) return;
+  e.preventDefault();
+  show(a.dataset.f || HOME);
+});
+
+// перехід усередині iframe (лінки між сторінками) → синхронізуємо панель
+frame.addEventListener('load', () => {
+  try {
+    const p = frame.contentWindow.location.pathname.replace(/^\//, '');
+    if (p) show(p, true);
+  } catch (_) { /* cross-origin — ігноруємо */ }
+});
+
+// старт: hash або головна
+show(decodeURIComponent(location.hash.slice(1)) || HOME, false);
+window.addEventListener('hashchange', () =>
+  show(decodeURIComponent(location.hash.slice(1)) || HOME));
+</script>
+</body>
+</html>
