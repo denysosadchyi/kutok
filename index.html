@@ -461,14 +461,32 @@ frame.addEventListener('load', () => {
     doc.__shellHooked = true;
     doc.addEventListener('click', e => {
       const a = e.target.closest('a[href]');
-      if (!a || a.target === '_blank') return;
-      const href = a.getAttribute('href');
-      if (/^(https?:)?\/\//.test(href) || href.startsWith('#') || href.startsWith('mailto:')) return;
-      if (!/\.html(#[^#]*)?$/.test(href)) return;
-      e.preventDefault();
-      const url = new URL(a.href);
-      pendingHash = url.hash;
-      show(url.pathname.replace(/^\//, ''));
+      if (!a) return;
+      const href = a.getAttribute('href') || '';
+      if (href.startsWith('#')) return; // якорі лишаємо самій сторінці
+      const url = new URL(a.href, doc.baseURI);
+      const sameOrigin = url.origin === location.origin;
+      if (sameOrigin && /\.html$/.test(url.pathname) && a.target !== '_blank') {
+        // переходи між сторінками проєкту ведемо через оболонку
+        e.preventDefault();
+        const path = url.pathname.replace(/^\//, '');
+        if (path === file && url.hash) {
+          frame.contentWindow.location.hash = url.hash;
+        } else {
+          pendingHash = url.hash;
+          show(path);
+        }
+      } else if (url.protocol === 'http:' || url.protocol === 'https:') {
+        // зовнішні сайти і сирі .md — у нову вкладку, iframe не чіпаємо
+        e.preventDefault();
+        window.open(url.href, '_blank', 'noopener');
+      }
+    });
+    doc.addEventListener('keydown', e => {
+      if (e.key === '/' && !isTyping(e.target)) {
+        e.preventDefault();
+        filterEl.focus();
+      }
     });
     frame.contentWindow.addEventListener('pagehide', () => {
       frame.classList.remove('ready');
