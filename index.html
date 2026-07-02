@@ -640,6 +640,10 @@ function applyFilter() {
   }
   resCap.cap.hidden = ![...resCap.body.children].some(el => !el.hidden);
   wireCap.cap.hidden = ![...wireCap.body.children].some(el => !el.hidden);
+  for (const r of roleMeta) {
+    const vis = r.body.querySelectorAll('.screen:not([hidden])').length;
+    r.cnt.textContent = vis === r.total ? r.total : vis + '/' + r.total;
+  }
   nomatch.style.display = hits ? 'none' : 'block';
 }
 filterEl.addEventListener('input', applyFilter);
