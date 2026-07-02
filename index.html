@@ -629,10 +629,7 @@ function revealActive(scroll = true) {
   const file = openEl.dataset.f;
   const item = navItems.get(file);
   if (!item) return;
-  for (const id of item.ancestors) {
-    const c = collapsibles.get(id);
-    if (c && c.btn.getAttribute('aria-expanded') !== 'true') setOpen(id, true, false);
-  }
+  for (const id of item.ancestors) applyOpen(id, true); // показ, не намір
   if (scroll) {
     const act = nav.querySelector('.pg.active, .st.active');
     if (act) act.scrollIntoView({ block: 'nearest' });
