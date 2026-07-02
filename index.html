@@ -311,6 +311,10 @@ for (const sec of NAV) {
 }
 nav.appendChild(frag);
 
+// повний перелік дозволених файлів — і навігація, і захист від крафтових hash
+const ALL_FILES = new Set(
+  [...nav.querySelectorAll('[data-f]')].map(el => el.dataset.f));
+
 // ── фільтр ──
 function applyFilter() {
   const q = filterEl.value.trim().toLowerCase();
