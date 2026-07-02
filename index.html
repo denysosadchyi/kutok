@@ -574,10 +574,8 @@ function applyFilter() {
       hits++;
       for (const id of it.ids) {
         if (id.startsWith('role:')) liveRoles.add(id);
-        const c = collapsibles.get(id);
-        if (c) { c.btn.setAttribute('aria-expanded', 'true'); c.body.hidden = false; }
+        applyOpen(id, true);
       }
-      if (it.statesEl && it.statesEl.children.length > 1) it.statesEl.hidden = false;
     }
   }
   nav.querySelectorAll('.secs').forEach(s => {
