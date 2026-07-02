@@ -14,14 +14,16 @@
 
   :root {
     --paper:     oklch(97.5% 0.006 75);
+    --panel:     oklch(96.2% 0.007 75);
     --ink:       oklch(25% 0.012 60);
     --muted:     oklch(48% 0.015 65);
+    --faint:     oklch(62% 0.014 68);
     --line:      oklch(90% 0.008 75);
-    --line-soft: oklch(93.5% 0.006 75);
+    --line-soft: oklch(93% 0.007 75);
     --clay:      oklch(52% 0.115 40);
-    --clay-soft: oklch(94.5% 0.02 50);
+    --clay-soft: oklch(94% 0.022 50);
     --mono: 'JetBrains Mono', ui-monospace, monospace;
-    --nav-w: 260px;
+    --nav-w: 272px;
   }
 
   html, body { height: 100%; }
@@ -35,73 +37,142 @@
   }
 
   a { color: inherit; text-decoration: none; }
-  :focus-visible { outline: 2px solid var(--clay); outline-offset: 2px; border-radius: 2px; }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--clay); outline-offset: 1px; border-radius: 3px; }
   ::selection { background: var(--clay-soft); }
 
   /* ── Ліва панель ── */
   nav {
     flex: none; width: var(--nav-w); height: 100dvh;
     overflow-y: auto; overscroll-behavior: contain;
+    background: var(--panel);
     border-right: 1px solid var(--line);
-    padding: 26px 18px 40px;
+    padding: 24px 16px 48px;
     scrollbar-width: thin;
+    scrollbar-color: var(--line) transparent;
   }
-  .brand { display: block; font-weight: 800; font-size: 15px; cursor: pointer; }
+
+  .brand { display: block; font-weight: 800; font-size: 15.5px; letter-spacing: -.01em; }
   .brand span {
-    display: block; font-family: var(--mono); font-size: 9.5px; font-weight: 400;
-    color: var(--muted); letter-spacing: .14em; margin-top: 3px;
+    display: block; font-family: var(--mono); font-size: 9px; font-weight: 400;
+    color: var(--muted); letter-spacing: .16em; margin-top: 4px;
   }
 
   .filter {
-    width: 100%; margin-top: 16px; padding: 6px 10px;
+    width: 100%; margin-top: 16px; padding: 7px 10px;
     font: inherit; font-size: 12px;
     border: 1px solid var(--line); border-radius: 7px;
-    background: transparent; color: var(--ink);
+    background: var(--paper); color: var(--ink);
+    transition: border-color .15s ease;
   }
+  .filter:hover { border-color: oklch(84% 0.01 70); }
   .filter:focus { outline: none; border-color: var(--clay); }
-  .filter::placeholder { color: var(--muted); opacity: .7; }
+  .filter::placeholder { color: var(--faint); }
 
-  .cap {
+  /* шеврон-індикатор згортання — спільний для всіх рівнів */
+  .chev { flex: none; width: 12px; height: 12px; color: var(--faint); }
+  .chev path { stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+  [aria-expanded] .chev { transform: rotate(0); }
+  [aria-expanded="false"] .chev { transform: rotate(-90deg); }
+  @media (prefers-reduced-motion: no-preference) {
+    .chev { transition: transform .2s cubic-bezier(.22, 1, .36, 1); }
+    .pg, .st, .tag, .secs a, .cap-btn, .role-btn, .tw, .all-btn { transition: color .15s ease, background .15s ease; }
+  }
+
+  /* ── Розділ (cap) ── */
+  .cap { margin-top: 26px; }
+  .cap-head { display: flex; align-items: center; gap: 6px; }
+  .cap-btn {
+    flex: 1 1 auto; display: flex; align-items: center; gap: 7px;
     font-family: var(--mono); font-size: 9.5px; font-weight: 600;
-    letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
-    margin: 24px 0 6px;
+    letter-spacing: .13em; text-transform: uppercase; color: var(--muted);
+    padding: 4px 6px; margin-left: -6px; border-radius: 6px; text-align: left;
   }
-  .grp {
-    margin: 14px 0 2px; font-size: 10.5px; font-weight: 700; letter-spacing: .05em;
-    text-transform: uppercase; color: var(--muted); opacity: .85;
+  .cap-btn:hover { color: var(--ink); background: var(--line-soft); }
+  .all-btn {
+    flex: none; font-family: var(--mono); font-size: 9px; color: var(--faint);
+    padding: 3px 6px; border-radius: 5px; letter-spacing: .04em;
   }
+  .all-btn:hover { color: var(--clay); background: var(--clay-soft); }
+  .cap-body { margin-top: 4px; }
+  .cap-body[hidden] { display: none; }
 
+  /* ── Рядок сторінки (ресерч, огляди) ── */
   .pg {
     display: flex; align-items: baseline; gap: 6px;
     font-size: 12.5px; font-weight: 600; color: var(--ink);
-    padding: 4px 9px; margin-left: -9px; border-radius: 6px;
-    cursor: pointer; white-space: nowrap;
-    transition: color .15s ease, background .15s ease;
+    padding: 4px 8px; border-radius: 6px; line-height: 1.4;
   }
   .pg:hover { background: var(--line-soft); }
   .pg.active { color: var(--clay); background: var(--clay-soft); }
 
-  /* секції активної сторінки (підтягуються з самої сторінки) */
-  .secs { display: flex; flex-direction: column; gap: 1px; margin: 2px 0 5px 9px; }
+  /* секції активної research-сторінки */
+  .secs {
+    display: flex; flex-direction: column; gap: 1px;
+    margin: 2px 0 6px 13px; padding-left: 10px;
+    border-left: 1px solid var(--line);
+  }
   .secs a {
     font-size: 11.5px; font-weight: 500; color: var(--muted);
-    padding: 2.5px 8px; margin-left: -8px; border-radius: 5px;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    transition: color .15s ease, background .15s ease;
+    padding: 2.5px 7px; border-radius: 5px; line-height: 1.4;
   }
   .secs a:hover { color: var(--ink); background: var(--line-soft); }
   .secs a.active { color: var(--clay); background: var(--clay-soft); }
-  .secs .n { font-family: var(--mono); font-size: 9px; margin-right: 6px; opacity: .6; }
+  .secs .n { font-family: var(--mono); font-size: 9px; margin-right: 6px; opacity: .55; }
 
-  /* стани екрана (loading / empty / error …) */
-  .states { display: flex; flex-wrap: wrap; gap: 2px 4px; margin: 0 0 3px 9px; }
+  /* ── Група ролі ── */
+  .role { margin-top: 12px; }
+  .role-btn {
+    width: 100%; display: flex; align-items: center; gap: 7px;
+    font-size: 11px; font-weight: 700; letter-spacing: .05em;
+    text-transform: uppercase; color: var(--muted);
+    padding: 5px 6px; margin-left: -6px; border-radius: 6px; text-align: left;
+  }
+  .role-btn:hover { color: var(--ink); background: var(--line-soft); }
+  .role-btn .cnt {
+    margin-left: auto; font-family: var(--mono); font-size: 9px;
+    font-weight: 400; color: var(--faint); letter-spacing: 0;
+  }
+  .role-body { margin: 1px 0 2px; }
+  .role-body[hidden] { display: none; }
+
+  /* ── Екран: шеврон + назва + job-тег ── */
+  .screen { margin: 0; }
+  .scr-row { display: flex; align-items: flex-start; }
+  .tw {
+    flex: none; display: grid; place-items: center;
+    width: 20px; height: 24px; border-radius: 5px; color: var(--faint);
+  }
+  .tw:hover { color: var(--clay); background: var(--clay-soft); }
+  .tw.void { visibility: hidden; }
+  .scr-row .pg { flex: 1 1 auto; min-width: 0; font-size: 12px; padding: 3.5px 7px; }
+  .tag {
+    flex: none; align-self: center;
+    font-family: var(--mono); font-size: 8.5px; letter-spacing: .06em;
+    text-transform: uppercase; color: var(--faint);
+    border: 1px solid var(--line); border-radius: 4px;
+    padding: 1px 5px; margin-left: 4px;
+  }
+  .tag:hover { color: var(--clay); border-color: var(--clay-soft); background: var(--clay-soft); }
+
+  /* стани екрана — повними словами, з направляючою */
+  .states {
+    display: flex; flex-direction: column; gap: 1px;
+    margin: 1px 0 4px 29px; padding-left: 10px;
+    border-left: 1px solid var(--line);
+  }
+  .states[hidden] { display: none; }
   .st {
-    font-family: var(--mono); font-size: 9.5px; color: var(--muted);
-    padding: 2px 6px; border-radius: 5px; cursor: pointer;
-    transition: color .15s ease, background .15s ease;
+    display: block; font-size: 11.5px; font-weight: 500; color: var(--muted);
+    padding: 2.5px 7px; border-radius: 5px; line-height: 1.4;
   }
   .st:hover { color: var(--ink); background: var(--line-soft); }
-  .st.active { color: var(--clay); background: var(--clay-soft); }
+  .st.active { color: var(--clay); background: var(--clay-soft); font-weight: 600; }
+
+  .nomatch {
+    display: none; margin-top: 18px; font-size: 12px; color: var(--muted);
+    padding: 0 6px; line-height: 1.5;
+  }
 
   /* ── В'юер ── */
   main { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; height: 100dvh; }
@@ -143,97 +214,101 @@
 </main>
 
 <script>
-// Джерело істини для навігації. Ключ станів: з = завантаження, п = порожній,
-// пом = помилка. Нові сторінки додавати сюди.
-const NAV = [
-  { cap: 'Ресерч і документи', items: [
-    { f: 'research/index.html',    t: 'Ресерч (огляд)' },
-    { f: 'research/personas.html', t: 'Персони' },
-    { f: 'research/jtbd.html',     t: 'Jobs to Be Done' },
-    { f: 'research/critique.html', t: 'Критика' },
-    { f: 'research/sitemap.html',  t: 'Sitemap' },
-    { f: 'research/flows.html',    t: 'User Flows' },
-    { f: 'research/ia.html',       t: 'Інформаційна архітектура' },
-    { f: 'research/audit.html',    t: 'Аудит мапи' },
+// ─────────────────────────────────────────────────────────────
+// Джерело істини для навігації. Вайрфрейми — за деревом
+// «роль → екран → стан» з оригінального .wf-nav.
+// ─────────────────────────────────────────────────────────────
+const RESEARCH = [
+  ['research/index.html',    'Ресерч (огляд)'],
+  ['research/personas.html', 'Персони'],
+  ['research/jtbd.html',     'Jobs to Be Done'],
+  ['research/critique.html', 'Критика'],
+  ['research/sitemap.html',  'Sitemap'],
+  ['research/flows.html',    'User Flows'],
+  ['research/ia.html',       'Інформаційна архітектура'],
+  ['research/audit.html',    'Аудит мапи'],
+];
+
+const TAGS = {
+  infra:   'research/sitemap.html#infra',
+  privacy: 'research/sitemap.html#privacy',
+  related: 'research/jtbd.html#related',
+  social:  'research/jtbd.html#social',
+  emo:     'research/jtbd.html#emotional',
+};
+
+const ROLES = [
+  { role: 'Спільне · обидві ролі', screens: [
+    { t: 'Вхід (existing-user)', tag: ['G1', TAGS.infra, 'Інфраструктура — sitemap, рішення #8'], states: [
+      ['login.html', 'успіх'], ['login-error.html', 'помилка'], ['login-loading.html', 'завантаження']]},
+    { t: 'Вибір ролі', tag: ['рішення', TAGS.infra, 'Продуктове рішення: окремі шляхи шукач/господар'], states: [
+      ['role-select.html', 'успіх']]},
+    { t: 'Згода на дані + біометрію', tag: ['G2', TAGS.infra, 'Інфраструктура — sitemap, рішення #9'], states: [
+      ['consent.html', 'успіх']]},
+    { t: 'Верифікація · телефон', tag: ['RJ2', TAGS.related, 'RJ2 — переконатися, що людина реальна, до контакту'], states: [
+      ['verify-phone.html', 'успіх'], ['verify-phone-error.html', 'помилка'], ['verify-phone-loading.html', 'завантаження']]},
+    { t: 'Верифікація · SMS-код', tag: ['RJ2', TAGS.related, 'RJ2 — переконатися, що людина реальна, до контакту'], states: [
+      ['verify-code.html', 'успіх'], ['verify-code-error.html', 'помилка'], ['verify-code-loading.html', 'завантаження']]},
+    { t: 'Верифікація · селфі', tag: ['RJ2', TAGS.related, 'RJ2 — переконатися, що людина реальна, до контакту'], states: [
+      ['verify-selfie.html', 'успіх'], ['verify-selfie-error.html', 'помилка'], ['verify-loading.html', 'перевіряємо']]},
+    { t: 'Верифікація · результат', tag: ['RJ2', TAGS.related, 'RJ2 — переконатися, що людина реальна, до контакту'], states: [
+      ['verify.html', 'готово'], ['verify-error.html', 'фото не збіглось'], ['verify-pending.html', 'на ручній перевірці']]},
+    { t: 'Налаштування приватності', tag: ['безпека', TAGS.privacy, 'Рішення безпеки і приватності #1'], states: [
+      ['privacy-settings.html', 'успіх']]},
+    { t: 'Заблоковані', tag: ['безпека', TAGS.privacy, 'Рішення безпеки і приватності #4'], states: [
+      ['blocked.html', 'успіх'], ['blocked-empty.html', 'порожній']]},
+    { t: 'Керування акаунтом', tag: ['безпека', TAGS.privacy, 'Рішення безпеки і приватності #3'], states: [
+      ['account.html', 'успіх']]},
+    { t: 'Підтримка / звернення', tag: ['G', TAGS.infra, 'Інфраструктура — sitemap, рішення #10'], states: [
+      ['support.html', 'успіх'], ['support-loading.html', 'завантаження']]},
+    { t: 'Умови й Політика приватності', tag: ['G', TAGS.infra, 'Інфраструктура — sitemap, рішення #9'], states: [
+      ['legal.html', 'успіх']]},
+    { t: 'Відновлення доступу', tag: ['G', TAGS.infra, 'Інфраструктура — sitemap, рішення #11'], states: [
+      ['recovery.html', 'успіх']]},
   ]},
-  { cap: 'Вайрфрейми', items: [
-    { f: 'wireframes/index.html', t: 'Огляд вайрфреймів' },
-
-    { grp: 'Вхід і онбординг' },
-    { f: 'wireframes/login.html', t: 'Вхід', st: [
-      ['wireframes/login-loading.html','з'], ['wireframes/login-error.html','пом'] ]},
-    { f: 'wireframes/role-select.html', t: 'Вибір ролі' },
-    { f: 'wireframes/consent.html',     t: 'Згода на дані' },
-    { f: 'wireframes/legal.html',       t: 'Умови й приватність' },
-    { f: 'wireframes/recovery.html',    t: 'Відновлення доступу' },
-
-    { grp: 'Верифікація' },
-    { f: 'wireframes/verify.html', t: 'Верифікація', st: [
-      ['wireframes/verify-loading.html','з'], ['wireframes/verify-error.html','пом'],
-      ['wireframes/verify-pending.html','перевірка'] ]},
-    { f: 'wireframes/verify-phone.html', t: 'Телефон', st: [
-      ['wireframes/verify-phone-loading.html','з'], ['wireframes/verify-phone-error.html','пом'] ]},
-    { f: 'wireframes/verify-code.html', t: 'Код підтвердження', st: [
-      ['wireframes/verify-code-loading.html','з'], ['wireframes/verify-code-error.html','пом'] ]},
-    { f: 'wireframes/verify-selfie.html', t: 'Селфі', st: [
-      ['wireframes/verify-selfie-error.html','пом'] ]},
-
-    { grp: 'Створення профілю' },
-    { f: 'wireframes/profile-create-seeker.html', t: 'Профіль шукача', st: [
-      ['wireframes/profile-create-seeker-loading.html','з'],
-      ['wireframes/profile-create-seeker-error.html','пом'] ]},
-    { f: 'wireframes/profile-create-host.html', t: 'Профіль господаря', st: [
-      ['wireframes/profile-create-host-loading.html','з'],
-      ['wireframes/profile-create-host-error.html','пом'] ]},
-
-    { grp: 'Стрічка і кімната' },
-    { f: 'wireframes/listings.html', t: 'Список оголошень', st: [
-      ['wireframes/listings-loading.html','з'], ['wireframes/listings-empty.html','п'],
-      ['wireframes/listings-empty-coldstart.html','coldstart'],
-      ['wireframes/listings-error.html','пом'], ['wireframes/listings-desktop.html','десктоп'] ]},
-    { f: 'wireframes/room.html', t: 'Оголошення кімнати', st: [
-      ['wireframes/room-loading.html','з'], ['wireframes/room-error.html','пом'] ]},
-    { f: 'wireframes/photo-viewer.html', t: 'Фото-в’юер' },
-
-    { grp: 'Профілі' },
-    { f: 'wireframes/profile.html', t: 'Профіль людини', st: [
-      ['wireframes/profile-loading.html','з'], ['wireframes/profile-empty.html','п'],
-      ['wireframes/profile-error.html','пом'] ]},
-    { f: 'wireframes/my-profile-seeker.html', t: 'Мій профіль · шукач', st: [
-      ['wireframes/my-profile-seeker-loading.html','з'],
-      ['wireframes/my-profile-seeker-edit.html','ред.'] ]},
-    { f: 'wireframes/my-profile-host.html', t: 'Мій профіль · господар', st: [
-      ['wireframes/my-profile-host-loading.html','з'],
-      ['wireframes/my-profile-host-edit.html','ред.'] ]},
-
-    { grp: 'Господар' },
-    { f: 'wireframes/my-listings.html', t: 'Мої оголошення', st: [
-      ['wireframes/my-listings-loading.html','з'], ['wireframes/my-listings-empty.html','п'] ]},
-    { f: 'wireframes/room-create.html', t: 'Нове оголошення', st: [
-      ['wireframes/room-create-loading.html','з'], ['wireframes/room-create-error.html','пом'] ]},
-    { f: 'wireframes/candidates.html', t: 'Вхідні заявки', st: [
-      ['wireframes/candidates-loading.html','з'], ['wireframes/candidates-empty.html','п'] ]},
-
-    { grp: 'Шукач' },
-    { f: 'wireframes/applications.html', t: 'Мої заявки', st: [
-      ['wireframes/applications-loading.html','з'], ['wireframes/applications-empty.html','п'] ]},
-
-    { grp: 'Чати' },
-    { f: 'wireframes/dialogs.html', t: 'Чати (список)', st: [
-      ['wireframes/dialogs-loading.html','з'], ['wireframes/dialogs-empty.html','п'] ]},
-    { f: 'wireframes/chat.html', t: 'Чат', st: [
-      ['wireframes/chat-loading.html','з'], ['wireframes/chat-empty.html','п'] ]},
-
-    { grp: 'Акаунт і безпека' },
-    { f: 'wireframes/account.html',          t: 'Керування акаунтом' },
-    { f: 'wireframes/privacy-settings.html', t: 'Приватність' },
-    { f: 'wireframes/blocked.html', t: 'Заблоковані', st: [
-      ['wireframes/blocked-empty.html','п'] ]},
-    { f: 'wireframes/report.html', t: 'Скарга', st: [
-      ['wireframes/report-loading.html','з'], ['wireframes/report-sent.html','надіслано'],
-      ['wireframes/report-error.html','пом'] ]},
-    { f: 'wireframes/support.html', t: 'Підтримка', st: [
-      ['wireframes/support-loading.html','з'] ]},
+  { role: 'Шукач · Аня', screens: [
+    { t: 'Стрічка / каталог', tag: ['RJ1', TAGS.related, 'RJ1 — знайти серед багатьох тих, хто базово підходить'], states: [
+      ['listings.html', 'успіх'], ['listings-empty.html', 'порожній · вузький фільтр'],
+      ['listings-empty-coldstart.html', 'порожній · немає бази'], ['listings-error.html', 'помилка'],
+      ['listings-loading.html', 'завантаження'], ['listings-desktop.html', 'desktop']]},
+    { t: 'Мої заявки', tag: ['RJ3', TAGS.related, 'RJ3 — почати розмову тільки якщо інтерес взаємний'], states: [
+      ['applications.html', 'успіх'], ['applications-empty.html', 'порожній'], ['applications-loading.html', 'завантаження']]},
+    { t: 'Створення профілю · шукач', tag: ['SJ1', TAGS.social, 'Social Job — виглядати серйозним кандидатом'], states: [
+      ['profile-create-seeker.html', 'успіх'], ['profile-create-seeker-error.html', 'помилка'],
+      ['profile-create-seeker-loading.html', 'завантаження']]},
+    { t: 'Мій профіль · шукач', tag: ['RJ4', TAGS.related, 'RJ4 — прийти на зустріч підготовленим'], states: [
+      ['my-profile-seeker.html', 'успіх'], ['my-profile-seeker-loading.html', 'завантаження'],
+      ['my-profile-seeker-edit.html', 'редагування']]},
+  ]},
+  { role: 'Господар · Олена', screens: [
+    { t: 'Створення / редагування оголошення', tag: ['RJ1', TAGS.related, 'RJ1 з боку господаря — щоб мене знайшли'], states: [
+      ['room-create.html', 'успіх'], ['room-create-error.html', 'помилка'], ['room-create-loading.html', 'завантаження']]},
+    { t: 'Мої оголошення', tag: ['lifecycle', TAGS.infra, 'Інфраструктура — sitemap, рішення #12'], states: [
+      ['my-listings.html', 'успіх'], ['my-listings-empty.html', 'порожній'], ['my-listings-loading.html', 'завантаження']]},
+    { t: 'Вхідні заявки / кандидати', tag: ['RJ3', TAGS.related, 'RJ3 з боку господаря — переглядає кандидатів'], states: [
+      ['candidates.html', 'успіх'], ['candidates-empty.html', 'порожній'], ['candidates-loading.html', 'завантаження']]},
+    { t: 'Створення профілю · господар', tag: ['SJ1', TAGS.social, 'Social Job — виглядати серйозним господарем'], states: [
+      ['profile-create-host.html', 'успіх'], ['profile-create-host-error.html', 'помилка'],
+      ['profile-create-host-loading.html', 'завантаження']]},
+    { t: 'Мій профіль · господар', tag: ['RJ4', TAGS.related, 'RJ4 — прийти на зустріч підготовленим'], states: [
+      ['my-profile-host.html', 'успіх'], ['my-profile-host-loading.html', 'завантаження'],
+      ['my-profile-host-edit.html', 'редагування']]},
+  ]},
+  { role: 'Взаємодія · обидві ролі', screens: [
+    { t: 'Профіль іншої людини', tag: ['RJ2', TAGS.related, 'RJ2 — переконатися, що людина реальна, до контакту'], states: [
+      ['profile.html', 'успіх'], ['profile-empty.html', 'порожній'], ['profile-error.html', 'помилка'],
+      ['profile-loading.html', 'завантаження']]},
+    { t: 'Оголошення кімнати', tag: ['RJ2', TAGS.related, 'RJ2 — переконатися, що людина реальна, до контакту'], states: [
+      ['room.html', 'успіх'], ['room-error.html', 'помилка'], ['room-loading.html', 'завантаження']]},
+    { t: 'Скарга на людину', tag: ['EJ2', TAGS.emo, 'EJ2 — застосовується симетрично: скаржитись може і шукач, і господар'], states: [
+      ['report.html', 'форма'], ['report-loading.html', 'завантаження'], ['report-error.html', 'помилка'],
+      ['report-sent.html', 'надіслано']]},
+    { t: 'Фото-в’юер', tag: ['RJ4', TAGS.related, 'RJ4 — прийти на зустріч підготовленим'], states: [
+      ['photo-viewer.html', 'успіх']]},
+    { t: 'Список діалогів', tag: ['RJ3', TAGS.related, 'RJ3 — почати розмову тільки якщо інтерес взаємний'], states: [
+      ['dialogs.html', 'успіх'], ['dialogs-empty.html', 'порожній'], ['dialogs-loading.html', 'завантаження']]},
+    { t: 'Чат', tag: ['RJ3', TAGS.related, 'RJ3 — почати розмову тільки якщо інтерес взаємний'], states: [
+      ['chat.html', 'успіх'], ['chat-empty.html', 'порожній'], ['chat-loading.html', 'завантаження']]},
   ]},
 ];
 
@@ -243,15 +318,57 @@ const frame  = document.getElementById('frame');
 const pathEl = document.getElementById('path');
 const openEl = document.getElementById('open');
 
+// ── стан згортання: localStorage + дефолти ──
+const STORE_KEY = 'kutok-shell-nav';
+let stored = {};
+try { stored = JSON.parse(localStorage.getItem(STORE_KEY)) || {}; } catch (_) {}
+const collapsibles = new Map(); // id → { btn, body, def }
+
+function saveStore() {
+  const out = {};
+  for (const [id, c] of collapsibles) {
+    const open = c.btn.getAttribute('aria-expanded') === 'true';
+    if (open !== c.def) out[id] = open;
+  }
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(out)); } catch (_) {}
+}
+
+function setOpen(id, open, persist = true) {
+  const c = collapsibles.get(id);
+  if (!c) return;
+  c.btn.setAttribute('aria-expanded', String(open));
+  c.body.hidden = !open;
+  if (persist) saveStore();
+}
+
+function isOpen(id) {
+  const c = collapsibles.get(id);
+  return c && c.btn.getAttribute('aria-expanded') === 'true';
+}
+
+const CHEV = '<svg class="chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>';
+
+function makeCollapsible(id, btn, body) {
+  const def = !(id.startsWith('screen:')); // екрани типово згорнуті, решта — розгорнуті
+  const open = id in stored ? stored[id] : def;
+  btn.setAttribute('aria-expanded', String(open));
+  btn.setAttribute('aria-controls', 'c-' + id.replace(/[^a-z0-9]+/gi, '-'));
+  body.id = 'c-' + id.replace(/[^a-z0-9]+/gi, '-');
+  body.hidden = !open;
+  btn.addEventListener('click', () => setOpen(id, btn.getAttribute('aria-expanded') !== 'true'));
+  collapsibles.set(id, { btn, body, def });
+}
+
 // ── рендер панелі ──
-const navItems = new Map();   // file → { wrap, pg }
-const filterIndex = [];       // { wrap, text, capEl, grpEl }
-const capEls = [], grpEls = [];
+const navItems = new Map();   // file → { pg, ancestors: [ids] }
+const filterables = [];       // { el, text, kind, ids, statesEl? }
 
 const frag = document.createDocumentFragment();
+
 const brand = document.createElement('a');
 brand.className = 'brand';
 brand.href = '#' + HOME;
+brand.dataset.f = HOME;
 brand.innerHTML = 'Куток<span>ПРОЄКТ · ВСІ МАТЕРІАЛИ</span>';
 frag.appendChild(brand);
 
@@ -262,54 +379,166 @@ filterEl.placeholder = 'Фільтр сторінок…  ( / )';
 filterEl.setAttribute('aria-label', 'Фільтр сторінок');
 frag.appendChild(filterEl);
 
-for (const sec of NAV) {
-  const cap = document.createElement('div');
+function capSection(id, title, withAll) {
+  const cap = document.createElement('section');
   cap.className = 'cap';
-  cap.textContent = sec.cap;
-  frag.appendChild(cap);
-  capEls.push(cap);
+  const head = document.createElement('div');
+  head.className = 'cap-head';
+  const btn = document.createElement('button');
+  btn.className = 'cap-btn';
+  btn.type = 'button';
+  btn.innerHTML = CHEV + title;
+  head.appendChild(btn);
+  if (withAll) {
+    const all = document.createElement('button');
+    all.className = 'all-btn';
+    all.type = 'button';
+    all.textContent = 'згорнути все';
+    all.addEventListener('click', () => {
+      const anyClosed = [...collapsibles.keys()]
+        .some(k => (k.startsWith('role:') || k.startsWith('screen:')) && !isOpen(k));
+      for (const k of collapsibles.keys())
+        if (k.startsWith('role:') || k.startsWith('screen:')) setOpen(k, anyClosed, false);
+      if (anyClosed) setOpen(id, true, false);
+      saveStore();
+      syncAllBtn();
+    });
+    head.appendChild(all);
+    cap.__allBtn = all;
+  }
+  const body = document.createElement('div');
+  body.className = 'cap-body';
+  cap.appendChild(head);
+  cap.appendChild(body);
+  makeCollapsible(id, btn, body);
+  return { cap, body };
+}
 
-  let grpEl = null;
-  for (const it of sec.items) {
-    if (it.grp) {
-      grpEl = document.createElement('div');
-      grpEl.className = 'grp';
-      grpEl.textContent = it.grp;
-      frag.appendChild(grpEl);
-      grpEls.push(grpEl);
-      continue;
-    }
-    const wrap = document.createElement('div');
-    wrap.className = 'item';
+function syncAllBtn() {
+  const all = wireCap.cap.__allBtn;
+  if (!all) return;
+  const anyClosed = [...collapsibles.keys()]
+    .some(k => (k.startsWith('role:') || k.startsWith('screen:')) && !isOpen(k));
+  all.textContent = anyClosed ? 'розгорнути все' : 'згорнути все';
+}
+
+// Ресерч і документи
+const resCap = capSection('cap:research', 'Ресерч і документи', false);
+for (const [f, t] of RESEARCH) {
+  const a = document.createElement('a');
+  a.className = 'pg';
+  a.href = '#' + f;
+  a.dataset.f = f;
+  a.textContent = t;
+  resCap.body.appendChild(a);
+  navItems.set(f, { pg: a, ancestors: ['cap:research'] });
+  filterables.push({ el: a, text: (t + ' ' + f).toLowerCase(), ids: ['cap:research'] });
+}
+frag.appendChild(resCap.cap);
+
+// Вайрфрейми: роль → екран → стан
+const wireCap = capSection('cap:wire', 'Вайрфрейми', true);
+
+const hub = document.createElement('a');
+hub.className = 'pg';
+hub.href = '#wireframes/index.html';
+hub.dataset.f = 'wireframes/index.html';
+hub.textContent = 'Огляд вайрфреймів';
+wireCap.body.appendChild(hub);
+navItems.set('wireframes/index.html', { pg: hub, ancestors: ['cap:wire'] });
+filterables.push({ el: hub, text: 'огляд вайрфреймів wireframes/index.html', ids: ['cap:wire'] });
+
+ROLES.forEach((r, ri) => {
+  const roleId = 'role:' + ri;
+  const roleEl = document.createElement('div');
+  roleEl.className = 'role';
+  const rBtn = document.createElement('button');
+  rBtn.className = 'role-btn';
+  rBtn.type = 'button';
+  rBtn.innerHTML = CHEV + r.role + `<span class="cnt">${r.screens.length}</span>`;
+  const rBody = document.createElement('div');
+  rBody.className = 'role-body';
+  roleEl.appendChild(rBtn);
+  roleEl.appendChild(rBody);
+  makeCollapsible(roleId, rBtn, rBody);
+
+  for (const s of r.screens) {
+    const mainFile = 'wireframes/' + s.states[0][0];
+    const screenId = 'screen:' + mainFile;
+    const scr = document.createElement('div');
+    scr.className = 'screen';
+
+    const row = document.createElement('div');
+    row.className = 'scr-row';
+
+    const tw = document.createElement('button');
+    tw.className = 'tw';
+    tw.type = 'button';
+    tw.innerHTML = CHEV;
+    tw.setAttribute('aria-label', 'Стани екрана «' + s.t + '»');
+    row.appendChild(tw);
 
     const a = document.createElement('a');
     a.className = 'pg';
-    a.href = '#' + it.f;
-    a.dataset.f = it.f;
-    a.textContent = it.t;
-    wrap.appendChild(a);
+    a.href = '#' + mainFile;
+    a.dataset.f = mainFile;
+    a.textContent = s.t;
+    row.appendChild(a);
 
-    let text = (it.t + ' ' + it.f).toLowerCase();
-    if (it.st) {
-      const box = document.createElement('div');
-      box.className = 'states';
-      for (const [f, label] of it.st) {
-        const s = document.createElement('a');
-        s.className = 'st';
-        s.href = '#' + f;
-        s.dataset.f = f;
-        s.textContent = label;
-        box.appendChild(s);
-        text += ' ' + (label + ' ' + f).toLowerCase();
-      }
-      wrap.appendChild(box);
+    if (s.tag) {
+      const [label, href, title] = s.tag;
+      const tag = document.createElement('a');
+      tag.className = 'tag';
+      const [tf, th] = href.split('#');
+      tag.href = '#' + tf;
+      tag.dataset.f = tf;
+      tag.dataset.h = th ? '#' + th : '';
+      tag.title = title;
+      tag.textContent = label;
+      row.appendChild(tag);
     }
-    frag.appendChild(wrap);
-    navItems.set(it.f, { wrap, pg: a });
-    filterIndex.push({ wrap, text, capEl: cap, grpEl });
+    scr.appendChild(row);
+
+    const states = document.createElement('div');
+    states.className = 'states';
+    let text = (s.t + ' ' + mainFile + ' ' + (s.tag ? s.tag[0] + ' ' + s.tag[2] : '')).toLowerCase();
+    for (const [sf, sl] of s.states) {
+      const file = 'wireframes/' + sf;
+      const st = document.createElement('a');
+      st.className = 'st';
+      st.href = '#' + file;
+      st.dataset.f = file;
+      st.textContent = sl;
+      states.appendChild(st);
+      text += ' ' + (sl + ' ' + file).toLowerCase();
+      navItems.set(file, { pg: st, ancestors: ['cap:wire', roleId, screenId] });
+    }
+    scr.appendChild(states);
+    navItems.get(mainFile).pg = a; // головний стан підсвічуємо на рядку екрана теж
+
+    if (s.states.length > 1) {
+      makeCollapsible(screenId, tw, states);
+    } else {
+      tw.classList.add('void');
+      tw.tabIndex = -1;
+      states.hidden = true;
+    }
+
+    filterables.push({ el: scr, text, ids: ['cap:wire', roleId, screenId], statesEl: states });
+    rBody.appendChild(scr);
   }
-}
+  wireCap.body.appendChild(roleEl);
+  filterables.push({ el: roleEl, text: r.role.toLowerCase(), ids: ['cap:wire', 'role:' + ri], isRole: true, roleId });
+});
+frag.appendChild(wireCap.cap);
+
+const nomatch = document.createElement('p');
+nomatch.className = 'nomatch';
+nomatch.textContent = 'Нічого не знайдено. Спробуйте коротший запит.';
+frag.appendChild(nomatch);
+
 nav.appendChild(frag);
+syncAllBtn();
 
 // повний перелік дозволених файлів — і навігація, і захист від крафтових hash
 const ALL_FILES = new Set(
@@ -318,17 +547,51 @@ const ALL_FILES = new Set(
 // ── фільтр ──
 function applyFilter() {
   const q = filterEl.value.trim().toLowerCase();
-  const liveCaps = new Set(), liveGrps = new Set();
-  for (const it of filterIndex) {
-    const hit = !q || it.text.includes(q);
-    it.wrap.hidden = !hit;
+  if (!q) {
+    for (const it of filterables) it.el.hidden = false;
+    for (const [id, c] of collapsibles) {
+      const open = id in stored ? stored[id] : c.def;
+      c.btn.setAttribute('aria-expanded', String(open));
+      c.body.hidden = !open;
+    }
+    revealActive(false);
+    nomatch.style.display = 'none';
+    resCap.cap.hidden = wireCap.cap.hidden = false;
+    return;
+  }
+  let hits = 0;
+  const liveRoles = new Set();
+  for (const it of filterables) {
+    if (it.isRole) continue;
+    const hit = it.text.includes(q);
+    it.el.hidden = !hit;
     if (hit) {
-      liveCaps.add(it.capEl);
-      if (it.grpEl) liveGrps.add(it.grpEl);
+      hits++;
+      for (const id of it.ids) {
+        if (id.startsWith('role:')) liveRoles.add(id);
+        const c = collapsibles.get(id);
+        if (c) { c.btn.setAttribute('aria-expanded', 'true'); c.body.hidden = false; }
+      }
+      if (it.statesEl && it.statesEl.children.length > 1) it.statesEl.hidden = false;
     }
   }
-  for (const c of capEls) c.hidden = !!q && !liveCaps.has(c);
-  for (const g of grpEls) g.hidden = !!q && !liveGrps.has(g);
+  for (const it of filterables) {
+    if (!it.isRole) continue;
+    const roleHit = it.text.includes(q);
+    it.el.hidden = !roleHit && !liveRoles.has(it.roleId);
+    if (roleHit) {
+      const c = collapsibles.get(it.roleId);
+      if (c) {
+        c.btn.setAttribute('aria-expanded', 'true');
+        c.body.hidden = false;
+        for (const child of c.body.querySelectorAll('.screen')) child.hidden = false;
+      }
+      hits++;
+    }
+  }
+  resCap.cap.hidden = ![...resCap.body.children].some(el => !el.hidden);
+  wireCap.cap.hidden = ![...wireCap.body.children].some(el => !el.hidden);
+  nomatch.style.display = hits ? 'none' : 'block';
 }
 filterEl.addEventListener('input', applyFilter);
 filterEl.addEventListener('keydown', e => {
@@ -352,26 +615,57 @@ function currentFile() {
   catch (_) { return null; }
 }
 
+function revealActive(scroll = true) {
+  const file = openEl.dataset.f;
+  const item = navItems.get(file);
+  if (!item) return;
+  for (const id of item.ancestors) {
+    const c = collapsibles.get(id);
+    if (c && c.btn.getAttribute('aria-expanded') !== 'true') setOpen(id, true, false);
+  }
+  if (scroll) {
+    const act = nav.querySelector('.pg.active, .st.active');
+    if (act) act.scrollIntoView({ block: 'nearest' });
+  }
+}
+
 function show(file, push = true) {
   if (currentFile() !== file) frame.src = file;
   pathEl.textContent = '/' + file;
   openEl.href = file;
+  openEl.dataset.f = file;
   for (const el of nav.querySelectorAll('[data-f]'))
-    el.classList.toggle('active', el.dataset.f === file);
+    el.classList.toggle('active', el.dataset.f === file && el !== brand && !el.classList.contains('tag'));
   if (push && location.hash !== '#' + file)
     history.replaceState(null, '', '#' + file);
-  const act = nav.querySelector('.pg.active, .st.active');
-  if (act) act.scrollIntoView({ block: 'nearest' });
+  revealActive();
+  syncAllBtn();
+}
+
+function goto(file, hash) {
+  if (hash && file === currentFile()) {
+    try { frame.contentWindow.location.hash = hash; } catch (_) {}
+    show(file);
+    return;
+  }
+  pendingHash = hash || '';
+  show(file);
 }
 
 nav.addEventListener('click', e => {
-  const a = e.target.closest('[data-f], .brand');
+  const tag = e.target.closest('.tag');
+  if (tag) {
+    e.preventDefault();
+    goto(tag.dataset.f, tag.dataset.h);
+    return;
+  }
+  const a = e.target.closest('a[data-f]');
   if (!a) return;
   e.preventDefault();
-  show(a.dataset.f || HOME);
+  show(a.dataset.f);
 });
 
-// ── секції активної сторінки: підтягуємо з її прихованого сайдбара ──
+// ── секції активної research-сторінки: підтягуємо з її прихованого сайдбара ──
 let secsObserver = null;
 
 function buildSecs(doc, file) {
@@ -381,11 +675,11 @@ function buildSecs(doc, file) {
 
   const inner = [...doc.querySelectorAll('.sidenav .nav-links a[href^="#"]')];
   const item = navItems.get(file);
-  if (!inner.length || !item) return;
+  if (!inner.length || !item || !file.startsWith('research/')) return;
 
   const box = document.createElement('div');
   box.className = 'secs';
-  const mirror = new Map(); // href → зовнішній лінк
+  const mirror = new Map();
   for (const l of inner) {
     const a = document.createElement('a');
     const href = l.getAttribute('href');
@@ -469,13 +763,7 @@ frame.addEventListener('load', () => {
       if (sameOrigin && /\.html$/.test(url.pathname) && a.target !== '_blank') {
         // переходи між сторінками проєкту ведемо через оболонку
         e.preventDefault();
-        const path = url.pathname.replace(/^\//, '');
-        if (path === file && url.hash) {
-          frame.contentWindow.location.hash = url.hash;
-        } else {
-          pendingHash = url.hash;
-          show(path);
-        }
+        goto(url.pathname.replace(/^\//, ''), url.hash);
       } else if (url.protocol === 'http:' || url.protocol === 'https:') {
         // зовнішні сайти і сирі .md — у нову вкладку, iframe не чіпаємо
         e.preventDefault();
