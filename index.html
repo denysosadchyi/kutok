@@ -438,7 +438,11 @@ function buildSecs(doc, file) {
 // ── завантаження сторінки в iframe ──
 frame.addEventListener('load', () => {
   const file = currentFile();
-  if (!file) return;
+  if (!file) {
+    // недоступний/чужий документ — просто показуємо як є, не лишаємо порожнечу
+    frame.classList.add('ready');
+    return;
+  }
   const doc = frame.contentDocument;
 
   // ховаємо власний сайдбар сторінки — панель у проєкті одна
