@@ -324,29 +324,31 @@ const STORE_KEY = 'kutok-shell-nav';
 let stored = {};
 try { stored = JSON.parse(localStorage.getItem(STORE_KEY)) || {}; } catch (_) {}
 const collapsibles = new Map(); // id → { btn, body, def }
+const openState = {};           // намір користувача; фільтр і автопоказ його не чіпають
 
 function saveStore() {
   const out = {};
-  for (const [id, c] of collapsibles) {
-    const open = c.btn.getAttribute('aria-expanded') === 'true';
-    if (open !== c.def) out[id] = open;
-  }
-  stored = out;
+  for (const [id, c] of collapsibles)
+    if (openState[id] !== c.def) out[id] = openState[id];
   try { localStorage.setItem(STORE_KEY, JSON.stringify(out)); } catch (_) {}
 }
 
-function setOpen(id, open, persist = true) {
+// лише вигляд (DOM); намір лишається в openState
+function applyOpen(id, open) {
   const c = collapsibles.get(id);
   if (!c) return;
   c.btn.setAttribute('aria-expanded', String(open));
   c.body.hidden = !open;
-  if (persist) saveStore();
 }
 
-function isOpen(id) {
-  const c = collapsibles.get(id);
-  return c && c.btn.getAttribute('aria-expanded') === 'true';
+function setOpen(id, open) {
+  if (!collapsibles.has(id)) return;
+  applyOpen(id, open);
+  openState[id] = open;
+  saveStore();
 }
+
+function isOpen(id) { return !!openState[id]; }
 
 const CHEV = '<svg class="chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>';
 
