@@ -388,12 +388,15 @@ brand.dataset.f = HOME;
 brand.innerHTML = 'Куток<span>ПРОЄКТ · ВСІ МАТЕРІАЛИ</span>';
 frag.appendChild(brand);
 
+const fwrap = document.createElement('div');
+fwrap.className = 'fwrap';
 const filterEl = document.createElement('input');
 filterEl.className = 'filter';
 filterEl.type = 'search';
 filterEl.placeholder = 'Фільтр сторінок…  ( / )';
 filterEl.setAttribute('aria-label', 'Фільтр сторінок');
-frag.appendChild(filterEl);
+fwrap.appendChild(filterEl);
+frag.appendChild(fwrap);
 
 function capSection(id, title, withAll) {
   const cap = document.createElement('section');
