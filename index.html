@@ -541,6 +541,7 @@ ROLES.forEach((r, ri) => {
       st.className = 'st';
       st.href = '#' + file;
       st.dataset.f = file;
+      st.dataset.l = sl;
       st.textContent = sl;
       states.appendChild(st);
       text += ' ' + (sl + ' ' + file).toLowerCase();
