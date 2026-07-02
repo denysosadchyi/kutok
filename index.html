@@ -89,7 +89,7 @@
   }
 
   /* ── Розділ (cap) ── */
-  .cap { margin-top: 26px; }
+  .cap { margin-top: 28px; }
   .cap-head { display: flex; align-items: center; gap: 6px; }
   .cap-btn {
     flex: 1 1 auto; display: flex; align-items: center; gap: 7px;
@@ -99,12 +99,15 @@
   }
   .cap-btn:hover { color: var(--ink); background: var(--line-soft); }
   .all-btn {
-    flex: none; font-family: var(--mono); font-size: 9px; color: var(--faint);
-    padding: 3px 6px; border-radius: 5px; letter-spacing: .04em;
+    flex: none; font-family: var(--mono); font-size: 8.5px; color: var(--faint);
+    text-transform: uppercase; letter-spacing: .08em;
+    padding: 3px 6px; border-radius: 5px;
   }
   .all-btn:hover { color: var(--clay); background: var(--clay-soft); }
-  .cap-body { margin-top: 4px; }
+  .cap-body { margin-top: 6px; }
   .cap-body[hidden] { display: none; }
+  /* текст сторінок 1-го рівня вирівняний із текстом заголовка розділу (x = 19) */
+  .cap-body > .pg { margin-left: 11px; }
 
   /* ── Рядок сторінки (ресерч, огляди) ── */
   .pg {
