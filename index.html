@@ -637,7 +637,16 @@ function revealActive(scroll = true) {
 }
 
 function show(file, push = true) {
-  if (currentFile() !== file) frame.src = file;
+  const cur = currentFile();
+  const inFlight = targetFile !== null && targetFile !== cur;
+  if (targetFile !== file) pendingHash = ''; // новий перехід скасовує чужий якір
+  targetFile = file;
+  if (cur !== file) {
+    frame.src = file;
+  } else if (inFlight) {
+    // документ уже правильний, але в польоті чужа навігація — скасувати
+    try { frame.contentWindow.stop(); } catch (_) {}
+  }
   pathEl.textContent = '/' + file;
   openEl.href = file;
   openEl.dataset.f = file;
