@@ -385,6 +385,7 @@ function makeCollapsible(id, btn, body) {
 // ── рендер панелі ──
 const navItems = new Map();   // file → { pg, ancestors: [ids] }
 const filterables = [];       // { el, text, kind, ids, statesEl? }
+const roleMeta = [];          // { cnt, body, total } — чесний лічильник при фільтрі
 
 const frag = document.createDocumentFragment();
 
