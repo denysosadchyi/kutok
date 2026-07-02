@@ -359,8 +359,9 @@ function makeCollapsible(id, btn, body) {
   btn.setAttribute('aria-controls', 'c-' + id.replace(/[^a-z0-9]+/gi, '-'));
   body.id = 'c-' + id.replace(/[^a-z0-9]+/gi, '-');
   body.hidden = !open;
-  btn.addEventListener('click', () => setOpen(id, btn.getAttribute('aria-expanded') !== 'true'));
   collapsibles.set(id, { btn, body, def });
+  openState[id] = open;
+  btn.addEventListener('click', () => setOpen(id, btn.getAttribute('aria-expanded') !== 'true'));
 }
 
 // ── рендер панелі ──
