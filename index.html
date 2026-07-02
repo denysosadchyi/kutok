@@ -659,13 +659,13 @@ function show(file, push = true) {
 }
 
 function goto(file, hash) {
-  if (hash && file === currentFile()) {
+  if (hash && file === currentFile() && targetFile === file) {
     try { frame.contentWindow.location.hash = hash; } catch (_) {}
     show(file);
     return;
   }
-  pendingHash = hash || '';
-  show(file);
+  show(file);            // спершу перехід: він скидає чужий pendingHash…
+  pendingHash = hash || ''; // …а тоді ставимо свій якір
 }
 
 nav.addEventListener('click', e => {
