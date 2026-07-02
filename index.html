@@ -21,7 +21,7 @@
     --clay:      oklch(52% 0.115 40);
     --clay-soft: oklch(94.5% 0.02 50);
     --mono: 'JetBrains Mono', ui-monospace, monospace;
-    --nav-w: 250px;
+    --nav-w: 260px;
   }
 
   html, body { height: 100%; }
@@ -46,21 +46,30 @@
     padding: 26px 18px 40px;
     scrollbar-width: thin;
   }
-  .brand { display: block; font-weight: 800; font-size: 15px; margin-bottom: 2px; cursor: pointer; }
+  .brand { display: block; font-weight: 800; font-size: 15px; cursor: pointer; }
   .brand span {
     display: block; font-family: var(--mono); font-size: 9.5px; font-weight: 400;
     color: var(--muted); letter-spacing: .14em; margin-top: 3px;
   }
+
+  .filter {
+    width: 100%; margin-top: 16px; padding: 6px 10px;
+    font: inherit; font-size: 12px;
+    border: 1px solid var(--line); border-radius: 7px;
+    background: transparent; color: var(--ink);
+  }
+  .filter:focus { outline: none; border-color: var(--clay); }
+  .filter::placeholder { color: var(--muted); opacity: .7; }
 
   .cap {
     font-family: var(--mono); font-size: 9.5px; font-weight: 600;
     letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
     margin: 24px 0 6px;
   }
-  .cap:first-of-type { margin-top: 22px; }
-
-  .grp { margin: 14px 0 2px; font-size: 10.5px; font-weight: 700; letter-spacing: .05em;
-    text-transform: uppercase; color: var(--muted); opacity: .85; }
+  .grp {
+    margin: 14px 0 2px; font-size: 10.5px; font-weight: 700; letter-spacing: .05em;
+    text-transform: uppercase; color: var(--muted); opacity: .85;
+  }
 
   .pg {
     display: flex; align-items: baseline; gap: 6px;
@@ -72,6 +81,19 @@
   .pg:hover { background: var(--line-soft); }
   .pg.active { color: var(--clay); background: var(--clay-soft); }
 
+  /* секції активної сторінки (підтягуються з самої сторінки) */
+  .secs { display: flex; flex-direction: column; gap: 1px; margin: 2px 0 5px 9px; }
+  .secs a {
+    font-size: 11.5px; font-weight: 500; color: var(--muted);
+    padding: 2.5px 8px; margin-left: -8px; border-radius: 5px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    transition: color .15s ease, background .15s ease;
+  }
+  .secs a:hover { color: var(--ink); background: var(--line-soft); }
+  .secs a.active { color: var(--clay); background: var(--clay-soft); }
+  .secs .n { font-family: var(--mono); font-size: 9px; margin-right: 6px; opacity: .6; }
+
+  /* стани екрана (loading / empty / error …) */
   .states { display: flex; flex-wrap: wrap; gap: 2px 4px; margin: 0 0 3px 9px; }
   .st {
     font-family: var(--mono); font-size: 9.5px; color: var(--muted);
@@ -94,7 +116,11 @@
     padding: 3px 8px; border-radius: 6px;
   }
   .bar a.open:hover { background: var(--clay-soft); }
-  iframe { flex: 1 1 auto; width: 100%; border: 0; background: var(--paper); }
+  iframe {
+    flex: 1 1 auto; width: 100%; border: 0; background: var(--paper);
+    opacity: 0;
+  }
+  iframe.ready { opacity: 1; transition: opacity .12s ease; }
 
   /* мобільний фолбек: панель зверху, згорнута */
   @media (max-width: 760px) {
@@ -212,12 +238,16 @@ const NAV = [
 ];
 
 const HOME = 'research/index.html';
-const nav   = document.getElementById('nav');
-const frame = document.getElementById('frame');
+const nav    = document.getElementById('nav');
+const frame  = document.getElementById('frame');
 const pathEl = document.getElementById('path');
 const openEl = document.getElementById('open');
 
 // ── рендер панелі ──
+const navItems = new Map();   // file → { wrap, pg }
+const filterIndex = [];       // { wrap, text, capEl, grpEl }
+const capEls = [], grpEls = [];
+
 const frag = document.createDocumentFragment();
 const brand = document.createElement('a');
 brand.className = 'brand';
@@ -225,25 +255,41 @@ brand.href = '#' + HOME;
 brand.innerHTML = 'Куток<span>ПРОЄКТ · ВСІ МАТЕРІАЛИ</span>';
 frag.appendChild(brand);
 
+const filterEl = document.createElement('input');
+filterEl.className = 'filter';
+filterEl.type = 'search';
+filterEl.placeholder = 'Фільтр сторінок…  ( / )';
+filterEl.setAttribute('aria-label', 'Фільтр сторінок');
+frag.appendChild(filterEl);
+
 for (const sec of NAV) {
   const cap = document.createElement('div');
   cap.className = 'cap';
   cap.textContent = sec.cap;
   frag.appendChild(cap);
+  capEls.push(cap);
+
+  let grpEl = null;
   for (const it of sec.items) {
     if (it.grp) {
-      const g = document.createElement('div');
-      g.className = 'grp';
-      g.textContent = it.grp;
-      frag.appendChild(g);
+      grpEl = document.createElement('div');
+      grpEl.className = 'grp';
+      grpEl.textContent = it.grp;
+      frag.appendChild(grpEl);
+      grpEls.push(grpEl);
       continue;
     }
+    const wrap = document.createElement('div');
+    wrap.className = 'item';
+
     const a = document.createElement('a');
     a.className = 'pg';
     a.href = '#' + it.f;
     a.dataset.f = it.f;
     a.textContent = it.t;
-    frag.appendChild(a);
+    wrap.appendChild(a);
+
+    let text = (it.t + ' ' + it.f).toLowerCase();
     if (it.st) {
       const box = document.createElement('div');
       box.className = 'states';
@@ -254,16 +300,53 @@ for (const sec of NAV) {
         s.dataset.f = f;
         s.textContent = label;
         box.appendChild(s);
+        text += ' ' + (label + ' ' + f).toLowerCase();
       }
-      frag.appendChild(box);
+      wrap.appendChild(box);
     }
+    frag.appendChild(wrap);
+    navItems.set(it.f, { wrap, pg: a });
+    filterIndex.push({ wrap, text, capEl: cap, grpEl });
   }
 }
 nav.appendChild(frag);
 
+// ── фільтр ──
+function applyFilter() {
+  const q = filterEl.value.trim().toLowerCase();
+  const liveCaps = new Set(), liveGrps = new Set();
+  for (const it of filterIndex) {
+    const hit = !q || it.text.includes(q);
+    it.wrap.hidden = !hit;
+    if (hit) {
+      liveCaps.add(it.capEl);
+      if (it.grpEl) liveGrps.add(it.grpEl);
+    }
+  }
+  for (const c of capEls) c.hidden = !!q && !liveCaps.has(c);
+  for (const g of grpEls) g.hidden = !!q && !liveGrps.has(g);
+}
+filterEl.addEventListener('input', applyFilter);
+filterEl.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { filterEl.value = ''; applyFilter(); filterEl.blur(); }
+});
+document.addEventListener('keydown', e => {
+  if (e.key === '/' && document.activeElement !== filterEl) {
+    e.preventDefault();
+    filterEl.focus();
+  }
+});
+
 // ── навігація ──
+let pendingHash = '';
+
+function currentFile() {
+  try { return frame.contentWindow.location.pathname.replace(/^\//, ''); }
+  catch (_) { return null; }
+}
+
 function show(file, push = true) {
-  if (frame.contentWindow.location.pathname.replace(/^\//, '') !== file) frame.src = file;
+  if (currentFile() !== file) frame.src = file;
   pathEl.textContent = '/' + file;
   openEl.href = file;
   for (const el of nav.querySelectorAll('[data-f]'))
@@ -281,15 +364,117 @@ nav.addEventListener('click', e => {
   show(a.dataset.f || HOME);
 });
 
-// перехід усередині iframe (лінки між сторінками) → синхронізуємо панель
+// ── секції активної сторінки: підтягуємо з її прихованого сайдбара ──
+let secsObserver = null;
+
+function buildSecs(doc, file) {
+  nav.querySelectorAll('.secs').forEach(el => el.remove());
+  if (secsObserver) { secsObserver.disconnect(); secsObserver = null; }
+  if (!doc) return;
+
+  const inner = [...doc.querySelectorAll('.sidenav .nav-links a[href^="#"]')];
+  const item = navItems.get(file);
+  if (!inner.length || !item) return;
+
+  const box = document.createElement('div');
+  box.className = 'secs';
+  const mirror = new Map(); // href → зовнішній лінк
+  for (const l of inner) {
+    const a = document.createElement('a');
+    const href = l.getAttribute('href');
+    a.href = href;
+    const numEl = l.querySelector('.n');
+    if (numEl) {
+      const n = document.createElement('span');
+      n.className = 'n';
+      n.textContent = numEl.textContent;
+      a.appendChild(n);
+      a.appendChild(document.createTextNode(
+        l.textContent.replace(numEl.textContent, '').trim()));
+    } else {
+      a.textContent = l.textContent.trim();
+    }
+    box.appendChild(a);
+    mirror.set(href, a);
+  }
+  item.pg.insertAdjacentElement('afterend', box);
+
+  box.addEventListener('click', e => {
+    const a = e.target.closest('a');
+    if (!a) return;
+    e.preventDefault();
+    const href = a.getAttribute('href');
+    try {
+      const win = frame.contentWindow;
+      if (win.location.hash === href) {
+        const t = win.document.querySelector(href);
+        if (t) t.scrollIntoView({ block: 'start' });
+      } else {
+        win.location.hash = href;
+      }
+    } catch (_) {}
+  });
+
+  // скролспай сторінки продовжує працювати у прихованому сайдбарі — віддзеркалюємо
+  const sync = () => {
+    for (const l of inner) {
+      const mine = mirror.get(l.getAttribute('href'));
+      if (mine) mine.classList.toggle('active', l.classList.contains('active'));
+    }
+  };
+  secsObserver = new MutationObserver(sync);
+  for (const l of inner)
+    secsObserver.observe(l, { attributes: true, attributeFilter: ['class'] });
+  sync();
+}
+
+// ── завантаження сторінки в iframe ──
 frame.addEventListener('load', () => {
-  try {
-    const p = frame.contentWindow.location.pathname.replace(/^\//, '');
-    if (p) show(p, true);
-  } catch (_) { /* cross-origin — ігноруємо */ }
+  const file = currentFile();
+  if (!file) return;
+  const doc = frame.contentDocument;
+
+  // ховаємо власний сайдбар сторінки — панель у проєкті одна
+  if (doc && doc.querySelector('.sidenav') && !doc.getElementById('shell-css')) {
+    const st = doc.createElement('style');
+    st.id = 'shell-css';
+    st.textContent =
+      '.sidenav{display:none!important}' +
+      '.shell{grid-template-columns:minmax(0,1fr)!important;gap:0!important}';
+    doc.head.appendChild(st);
+  }
+
+  // внутрішні переходи між сторінками ведемо через оболонку
+  if (doc && !doc.__shellHooked) {
+    doc.__shellHooked = true;
+    doc.addEventListener('click', e => {
+      const a = e.target.closest('a[href]');
+      if (!a || a.target === '_blank') return;
+      const href = a.getAttribute('href');
+      if (/^(https?:)?\/\//.test(href) || href.startsWith('#') || href.startsWith('mailto:')) return;
+      if (!/\.html(#[^#]*)?$/.test(href)) return;
+      e.preventDefault();
+      const url = new URL(a.href);
+      pendingHash = url.hash;
+      show(url.pathname.replace(/^\//, ''));
+    });
+    frame.contentWindow.addEventListener('pagehide', () => {
+      frame.classList.remove('ready');
+      setTimeout(() => frame.classList.add('ready'), 2500); // запобіжник
+    });
+  }
+
+  show(file);
+  buildSecs(doc, file);
+
+  if (pendingHash) {
+    try { frame.contentWindow.location.hash = pendingHash; } catch (_) {}
+    pendingHash = '';
+  }
+  frame.classList.add('ready');
 });
 
-// старт: hash або головна
+// ── старт: hash або головна ──
 show(decodeURIComponent(location.hash.slice(1)) || HOME, false);
 window.addEventListener('hashchange', () =>
   show(decodeURIComponent(location.hash.slice(1)) || HOME));
