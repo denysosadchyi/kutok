@@ -780,7 +780,7 @@ frame.addEventListener('load', () => {
       if (sameOrigin && /\.html$/.test(url.pathname) && a.target !== '_blank') {
         // переходи між сторінками проєкту ведемо через оболонку
         e.preventDefault();
-        goto(url.pathname.replace(/^\//, ''), url.hash);
+        goto(toFile(url.pathname), url.hash);
       } else if (url.protocol === 'http:' || url.protocol === 'https:') {
         // зовнішні сайти і сирі .md — у нову вкладку, iframe не чіпаємо
         e.preventDefault();
