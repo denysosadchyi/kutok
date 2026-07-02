@@ -459,6 +459,7 @@ for (const [f, t] of RESEARCH) {
   a.className = 'pg';
   a.href = '#' + f;
   a.dataset.f = f;
+  a.dataset.l = t;
   a.textContent = t;
   resCap.body.appendChild(a);
   navItems.set(f, { pg: a, ancestors: ['cap:research'] });
