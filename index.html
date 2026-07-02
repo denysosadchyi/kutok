@@ -330,6 +330,7 @@ function saveStore() {
     const open = c.btn.getAttribute('aria-expanded') === 'true';
     if (open !== c.def) out[id] = open;
   }
+  stored = out;
   try { localStorage.setItem(STORE_KEY, JSON.stringify(out)); } catch (_) {}
 }
 
