@@ -577,6 +577,9 @@ function applyFilter() {
       if (it.statesEl && it.statesEl.children.length > 1) it.statesEl.hidden = false;
     }
   }
+  nav.querySelectorAll('.secs').forEach(s => {
+    s.hidden = !!s.previousElementSibling && s.previousElementSibling.hidden;
+  });
   for (const it of filterables) {
     if (!it.isRole) continue;
     const roleHit = it.text.includes(q);
