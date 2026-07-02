@@ -504,10 +504,13 @@ frame.addEventListener('load', () => {
   frame.classList.add('ready');
 });
 
-// ── старт: hash або головна ──
-show(decodeURIComponent(location.hash.slice(1)) || HOME, false);
-window.addEventListener('hashchange', () =>
-  show(decodeURIComponent(location.hash.slice(1)) || HOME));
+// ── старт: hash або головна (тільки файли з переліку — жодних javascript:/зовнішніх URL) ──
+function fromHash() {
+  const f = decodeURIComponent(location.hash.slice(1));
+  return ALL_FILES.has(f) ? f : HOME;
+}
+show(fromHash(), false);
+window.addEventListener('hashchange', () => show(fromHash()));
 </script>
 </body>
 </html>
