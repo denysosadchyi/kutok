@@ -753,6 +753,7 @@ frame.addEventListener('load', () => {
     frame.classList.add('ready');
     return;
   }
+  targetFile = file; // реальність перемогла (back/forward, програна гонка)
   const doc = frame.contentDocument;
 
   // ховаємо власний сайдбар сторінки — панель у проєкті одна
