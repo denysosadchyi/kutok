@@ -563,6 +563,7 @@ ROLES.forEach((r, ri) => {
   }
   wireCap.body.appendChild(roleEl);
   filterables.push({ el: roleEl, text: r.role.toLowerCase(), ids: ['cap:wire', 'role:' + ri], isRole: true, roleId });
+  roleMeta.push({ cnt: rBtn.querySelector('.cnt'), body: rBody, total: r.screens.length });
 });
 frag.appendChild(wireCap.cap);
 
