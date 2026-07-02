@@ -435,12 +435,13 @@ frame.addEventListener('load', () => {
   const doc = frame.contentDocument;
 
   // ховаємо власний сайдбар сторінки — панель у проєкті одна
-  if (doc && doc.querySelector('.sidenav') && !doc.getElementById('shell-css')) {
+  if (doc && doc.querySelector('.sidenav, .wf-nav') && !doc.getElementById('shell-css')) {
     const st = doc.createElement('style');
     st.id = 'shell-css';
     st.textContent =
       '.sidenav{display:none!important}' +
-      '.shell{grid-template-columns:minmax(0,1fr)!important;gap:0!important}';
+      '.shell{grid-template-columns:minmax(0,1fr)!important;gap:0!important}' +
+      '.wf-nav{display:none!important}';
     doc.head.appendChild(st);
   }
 
