@@ -557,11 +557,7 @@ function applyFilter() {
   const q = filterEl.value.trim().toLowerCase();
   if (!q) {
     for (const it of filterables) it.el.hidden = false;
-    for (const [id, c] of collapsibles) {
-      const open = id in stored ? stored[id] : c.def;
-      c.btn.setAttribute('aria-expanded', String(open));
-      c.body.hidden = !open;
-    }
+    for (const id of collapsibles.keys()) applyOpen(id, openState[id]);
     revealActive(false);
     nomatch.style.display = 'none';
     resCap.cap.hidden = wireCap.cap.hidden = false;
