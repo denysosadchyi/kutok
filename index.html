@@ -586,12 +586,9 @@ function applyFilter() {
     const roleHit = it.text.includes(q);
     it.el.hidden = !roleHit && !liveRoles.has(it.roleId);
     if (roleHit) {
+      for (const id of it.ids) applyOpen(id, true);
       const c = collapsibles.get(it.roleId);
-      if (c) {
-        c.btn.setAttribute('aria-expanded', 'true');
-        c.body.hidden = false;
-        for (const child of c.body.querySelectorAll('.screen')) child.hidden = false;
-      }
+      if (c) for (const child of c.body.querySelectorAll('.screen')) child.hidden = false;
       hits++;
     }
   }
