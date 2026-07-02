@@ -334,8 +334,11 @@ filterEl.addEventListener('input', applyFilter);
 filterEl.addEventListener('keydown', e => {
   if (e.key === 'Escape') { filterEl.value = ''; applyFilter(); filterEl.blur(); }
 });
+function isTyping(el) {
+  return el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.isContentEditable);
+}
 document.addEventListener('keydown', e => {
-  if (e.key === '/' && document.activeElement !== filterEl) {
+  if (e.key === '/' && !isTyping(document.activeElement)) {
     e.preventDefault();
     filterEl.focus();
   }
