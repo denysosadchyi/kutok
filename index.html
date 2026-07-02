@@ -558,6 +558,7 @@ function applyFilter() {
     revealActive(false);
     nomatch.style.display = 'none';
     resCap.cap.hidden = wireCap.cap.hidden = false;
+    nav.querySelectorAll('.secs').forEach(s => { s.hidden = false; });
     return;
   }
   let hits = 0;
