@@ -612,9 +612,16 @@ document.addEventListener('keydown', e => {
 
 // ── навігація ──
 let pendingHash = '';
+let targetFile = null; // куди оболонка веде iframe (під час завантаження ≠ поточному документу)
+
+// оболонка може жити не в корені сервера — шляхи рахуємо від її теки
+const BASE = location.pathname.replace(/[^/]*$/, '');
+function toFile(pathname) {
+  return pathname.startsWith(BASE) ? pathname.slice(BASE.length) : pathname.replace(/^\//, '');
+}
 
 function currentFile() {
-  try { return frame.contentWindow.location.pathname.replace(/^\//, ''); }
+  try { return toFile(frame.contentWindow.location.pathname); }
   catch (_) { return null; }
 }
 
