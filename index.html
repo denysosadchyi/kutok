@@ -580,11 +580,30 @@ const ALL_FILES = new Set(
   [...nav.querySelectorAll('[data-f]')].map(el => el.dataset.f));
 
 // ── фільтр ──
+const labelled = [...nav.querySelectorAll('[data-l]')];
+
+// підсвітка збігу в назві (без збігу — просто текст)
+function markLabel(el, q) {
+  const t = el.dataset.l;
+  const i = q ? t.toLowerCase().indexOf(q) : -1;
+  if (i < 0) {
+    if (el.firstElementChild) el.textContent = t;
+    return;
+  }
+  el.textContent = '';
+  el.append(t.slice(0, i));
+  const m = document.createElement('mark');
+  m.textContent = t.slice(i, i + q.length);
+  el.append(m, t.slice(i + q.length));
+}
+
 function applyFilter() {
   const q = filterEl.value.trim().toLowerCase();
+  for (const el of labelled) markLabel(el, q);
   if (!q) {
     for (const it of filterables) it.el.hidden = false;
     for (const id of collapsibles.keys()) applyOpen(id, openState[id]);
+    for (const r of roleMeta) r.cnt.textContent = r.total;
     revealActive(false);
     nomatch.style.display = 'none';
     resCap.cap.hidden = wireCap.cap.hidden = false;
