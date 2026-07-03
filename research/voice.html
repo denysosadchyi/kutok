@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<title>Куток — Голос</title>
+<meta name="description" content="Голос Кутка: 5 принципів мови продукту з прикладами, антипркладами з ринку і поясненнями з джерел ресерчу.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --paper:     oklch(97.5% 0.006 75);
+    --ink:       oklch(25% 0.012 60);
+    --muted:     oklch(48% 0.015 65);
+    --line:      oklch(90% 0.008 75);
+    --line-soft: oklch(93.5% 0.006 75);
+    --clay:      oklch(52% 0.115 40);
+    --clay-soft: oklch(94.5% 0.02 50);
+    --green:     oklch(52% 0.09 150);
+    --green-soft:oklch(95% 0.03 150);
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  html { scroll-behavior: smooth; scroll-padding-top: 28px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition: none !important; }
+  }
+
+  body {
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: 15.5px;
+    line-height: 1.65;
+    color: var(--ink);
+    background: var(--paper);
+  }
+
+  a { color: var(--clay); text-decoration: none; }
+  a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  :focus-visible { outline: 2px solid var(--clay); outline-offset: 2px; border-radius: 2px; }
+  ::selection { background: var(--clay-soft); }
+
+  .mono { font-family: var(--mono); }
+
+  .skip {
+    position: absolute; left: -9999px; top: 0;
+    background: var(--ink); color: var(--paper);
+    padding: 10px 16px; z-index: 100; border-radius: 0 0 8px 0;
+  }
+  .skip:focus { left: 0; }
+
+  /* ── Каркас: навігаційна панель зліва (рівень застосунку) ── */
+  .shell {
+    display: grid; grid-template-columns: 200px minmax(0, 1fr);
+    gap: 44px; max-width: 1180px; margin: 0 auto; padding: 0 24px;
+  }
+  .sidenav {
+    position: sticky; top: 0; align-self: start;
+    width: 200px; height: 100dvh; padding: 38px 20px 22px;
+    margin-left: -24px; border-right: 1px solid var(--line);
+    display: flex; flex-direction: column;
+  }
+  .brand { font-weight: 800; font-size: 14.5px; color: var(--ink); }
+  .brand:hover { text-decoration: none; }
+  .brand span {
+    display: block; font-family: var(--mono); font-size: 9.5px; font-weight: 400;
+    color: var(--muted); letter-spacing: .14em; margin-top: 3px;
+  }
+
+  .nav-cap {
+    font-family: var(--mono); font-size: 9.5px; font-weight: 600;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+    margin: 22px 0 5px;
+  }
+  .nav-page {
+    display: block; font-size: 12.5px; font-weight: 600; color: var(--ink);
+    padding: 4px 9px; margin-left: -9px; border-radius: 6px; white-space: nowrap;
+    transition: color .15s ease, background .15s ease;
+  }
+  .nav-page:hover { background: var(--line-soft); text-decoration: none; }
+  .nav-page.active { color: var(--clay); background: var(--clay-soft); }
+  .nav-page.soon { color: var(--muted); font-weight: 500; cursor: default; pointer-events: none; }
+  .nav-page.soon::after {
+    content: 'скоро'; float: right; font-family: var(--mono); font-size: 9.5px;
+    letter-spacing: .08em; text-transform: uppercase; opacity: .7; margin-top: 3px;
+  }
+
+  .nav-links { display: flex; flex-direction: column; gap: 1px; margin: 2px 0 2px 7px; }
+  .nav-links a {
+    font-size: 12px; font-weight: 500; color: var(--muted);
+    padding: 3px 9px; margin-left: -9px; border-radius: 6px; white-space: nowrap;
+    transition: color .15s ease, background .15s ease;
+  }
+  .nav-links a:hover { color: var(--ink); background: var(--line-soft); text-decoration: none; }
+  .nav-links a.active { color: var(--clay); background: var(--clay-soft); }
+
+  .nav-sec { display: flex; align-items: center; gap: 2px; }
+  .nav-sec .nav-page { flex: 1 1 auto; }
+  .nav-toggle {
+    flex: none; display: grid; place-items: center;
+    width: 21px; height: 21px; margin-right: -3px; padding: 0;
+    border: 0; background: none; color: var(--muted);
+    border-radius: 5px; cursor: pointer;
+    transition: color .15s ease, background .15s ease;
+  }
+  .nav-toggle:hover { color: var(--clay); background: var(--clay-soft); }
+  .nav-toggle:focus-visible { outline: 2px solid var(--clay); outline-offset: 1px; }
+  .nav-toggle svg { width: 11px; height: 11px; display: block;
+    transition: transform .2s cubic-bezier(.22, 1, .36, 1); }
+  .nav-toggle[aria-expanded="false"] svg { transform: rotate(-90deg); }
+  .nav-links[hidden] { display: none; }
+  @media (max-width: 880px) {
+    .nav-toggle { display: none; }
+    .nav-links[hidden] { display: flex; }
+  }
+  .nav-links a .n { font-family: var(--mono); font-size: 10px; margin-right: 7px; opacity: .6; }
+
+  .nav-foot { margin-top: auto; font-family: var(--mono); font-size: 10.5px; color: var(--muted); line-height: 1.8; }
+  .nav-foot a { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+  .nav-foot a:hover { color: var(--clay); }
+
+  /* ── Сторінка ── */
+  .page { max-width: 760px; padding: 0 0 96px; min-width: 0; }
+
+  .hero { padding-top: 60px; }
+  .kicker { font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  h1 { font-size: 30px; font-weight: 800; letter-spacing: -.02em; line-height: 1.2; margin: 12px 0 14px; }
+  .lede { font-size: 16px; color: var(--muted); max-width: 62ch; }
+  .lede b { color: var(--ink); font-weight: 600; }
+  .hero-meta { font-size: 12px; color: var(--muted); margin-top: 16px; letter-spacing: .02em; }
+
+  .callout {
+    font-size: 13px; color: var(--muted); margin-top: 22px;
+    background: var(--line-soft); border-radius: 10px; padding: 12px 16px; max-width: 66ch;
+  }
+  .callout code { font-family: var(--mono); font-size: 12px; color: var(--clay); }
+
+  /* ── Секції ── */
+  section { margin-top: 88px; }
+  .sec-head {
+    display: flex; align-items: baseline; gap: 14px;
+    border-top: 2px solid var(--ink); padding-top: 16px;
+  }
+  .sec-num { font-size: 12px; font-weight: 600; color: var(--clay); }
+  h2 { font-size: 22px; font-weight: 800; letter-spacing: -.01em; }
+  .sec-lede { color: var(--muted); margin-top: 10px; max-width: 64ch; }
+  .sec-lede b, .sec-lede strong { color: var(--ink); }
+
+  .rule {
+    margin-top: 18px; padding: 14px 18px;
+    border-left: 3px solid var(--clay); background: var(--clay-soft);
+    border-radius: 0 10px 10px 0; font-size: 15px; font-weight: 600;
+    max-width: 68ch;
+  }
+  .rule span { font-family: var(--mono); font-size: 10px; font-weight: 600;
+    letter-spacing: .09em; text-transform: uppercase; color: var(--clay);
+    display: block; margin-bottom: 5px; }
+
+  /* дві колонки: приклад / антиприклад */
+  .ex-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 20px; }
+  .ex-col {
+    border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px;
+    background: oklch(98.5% 0.004 75);
+  }
+  .ex-col .ec-label {
+    font-family: var(--mono); font-size: 11px; font-weight: 600;
+    letter-spacing: .08em; text-transform: uppercase; margin-bottom: 10px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .ex-col.good { background: var(--green-soft); border-color: oklch(88% 0.04 150); }
+  .ex-col.good .ec-label { color: var(--green); }
+  .ex-col.bad { background: var(--clay-soft); border-color: oklch(89% 0.03 50); }
+  .ex-col.bad .ec-label { color: var(--clay); }
+  .ex-col blockquote {
+    font-size: 14px; font-weight: 600; line-height: 1.5; font-style: italic;
+    color: var(--ink);
+  }
+  .ex-col blockquote + blockquote { margin-top: 10px; }
+  .ex-col .ec-src {
+    display: block; margin-top: 8px; font-style: normal;
+    font-family: var(--mono); font-size: 11px; font-weight: 400; color: var(--muted);
+  }
+  @media (max-width: 640px) { .ex-cols { grid-template-columns: 1fr; } }
+
+  .why {
+    margin-top: 20px; padding: 16px 20px;
+    background: var(--line-soft); border-radius: 12px; max-width: 70ch;
+  }
+  .why .why-label {
+    font-family: var(--mono); font-size: 10.5px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 8px;
+  }
+  .why p { font-size: 13.5px; color: var(--muted); line-height: 1.6; }
+  .why p + p { margin-top: 8px; }
+  .why em { font-style: italic; color: var(--ink); }
+  .why code { font-family: var(--mono); font-size: 12px; color: var(--clay); }
+
+  footer {
+    margin-top: 96px; border-top: 1px solid var(--line); padding-top: 18px;
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+    font-family: var(--mono); font-size: 11.5px; color: var(--muted);
+  }
+  footer a { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+  footer a:hover { color: var(--clay); }
+
+  @media (max-width: 900px) {
+    html { scroll-padding-top: 72px; }
+    .shell { display: block; padding: 0 20px; }
+    .sidenav {
+      position: sticky; flex-direction: row; align-items: center; gap: 12px;
+      width: auto; height: 52px; padding: 0 20px; margin: 0 -20px;
+      border-right: none; border-bottom: 1px solid var(--line);
+      background: var(--paper); z-index: 50;
+    }
+    .brand { font-size: 15px; }
+    .brand span { display: none; }
+    .nav-cap, .nav-page.soon { display: none; }
+    .nav-page { margin-left: 0; padding: 6px 10px; }
+    .nav-links {
+      flex-direction: row; margin: 0 0 0 auto;
+      overflow-x: auto; scrollbar-width: none;
+    }
+    .nav-links::-webkit-scrollbar { display: none; }
+    .nav-links a { margin-left: 0; padding: 6px 10px; }
+    .nav-links a .n { display: none; }
+    .nav-foot { display: none; }
+    .page { max-width: none; padding-bottom: 80px; }
+  }
+
+  @media (max-width: 720px) {
+    h1 { font-size: 25px; }
+    section { margin-top: 64px; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#overview">До змісту</a>
+
+<div class="shell">
+
+<nav class="sidenav" aria-label="Навігація">
+  <a class="brand" href="index.html">Куток<span>WORKSPACE</span></a>
+
+  <p class="nav-cap">Сторінки</p>
+  <a class="nav-page" href="index.html">Ресерч</a>
+  <a class="nav-page" href="personas.html">Персони</a>
+  <a class="nav-page" href="jtbd.html">JTBD</a>
+  <a class="nav-page" href="critique.html">Критика</a>
+  <div class="nav-sec">
+    <a class="nav-page active" href="#overview" aria-current="page">Голос</a>
+    <button class="nav-toggle" type="button" aria-expanded="true" aria-controls="nav-secs" aria-label="Згорнути розділи"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  </div>
+  <div class="nav-links" id="nav-secs" aria-label="Розділи голосу">
+    <a href="#overview"><span class="n">00</span>Огляд</a>
+    <a href="#p1"><span class="n">01</span>Факт, а не епітет</a>
+    <a href="#p2"><span class="n">02</span>Спокій без тиску часом</a>
+    <a href="#p3"><span class="n">03</span>Людина в центрі</a>
+    <a href="#p4"><span class="n">04</span>Пояснює, чому питає</a>
+    <a href="#p5"><span class="n">05</span>Береже порадою</a>
+  </div>
+
+  <a class="nav-page" href="sitemap.html">Sitemap</a>
+  <a class="nav-page" href="ia.html">IA · навігація</a>
+  <a class="nav-page" href="flows.html">User flows</a>
+  <a class="nav-page" href="audit.html">Аудит мапи</a>
+  <a class="nav-page soon" aria-disabled="true">Wireframes</a>
+
+  <div class="nav-foot">
+    <a href="../voice.md">voice.md</a><br>
+    <a href="https://github.com/denysosadchyi/kutok">GitHub</a><br>
+    липень 2026
+  </div>
+</nav>
+
+<main class="page">
+
+  <!-- Огляд -->
+  <header class="hero" id="overview">
+    <p class="kicker">Куток · голос</p>
+    <h1>Голос Кутка: 5 принципів мови продукту</h1>
+    <p class="lede">Кожен принцип тут виведений з рядка-джерела — <b>ресерчу, персон, JTBD чи CLAUDE.md</b> — а не з відчуття стилю. Правило файлу: принцип без прямого цитованого джерела сюди не потрапляє. Краще три чесних, ніж п'ять гарних.</p>
+    <p class="hero-meta">Джерела: <a href="../CLAUDE.md">CLAUDE.md</a> · <a href="research.md">research.md</a> · <a href="competitors.md">competitors.md</a> · <a href="personas.md">personas.md</a> · <a href="jtbd.md">jtbd.md</a></p>
+  </header>
+
+  <!-- 1. Факт, а не епітет -->
+  <section id="p1">
+    <div class="sec-head"><span class="sec-num mono">01</span><h2>Факт, а не епітет</h2></div>
+    <p class="sec-lede">Куток каже точно, <b>що перевірено і що є</b> — фактом, а не хвалить.</p>
+
+    <div class="ex-cols">
+      <div class="ex-col good">
+        <div class="ec-label">приклад · Куток</div>
+        <blockquote>«телефон ✓ · фото ✓ · документ —»</blockquote>
+        <blockquote>«Повнота профілю: 90%»</blockquote>
+      </div>
+      <div class="ex-col bad">
+        <div class="ec-label">антиприклад · ринок</div>
+        <blockquote>«Гуртожиток європейського рівня біля метро Мінська у Києві!»<span class="ec-src">OLX</span></blockquote>
+        <blockquote>«AVAILABLE 1ST AUG ✦ CITY VIEWS ✦ 1 MIN TO DLR ✦ NEW BUILD»<span class="ec-src">SpareRoom</span></blockquote>
+      </div>
+    </div>
+
+    <div class="why">
+      <div class="why-label">Пояснення</div>
+      <p>Усі 22 живих оголошення в <a href="research.md#6-мова-конкурентів">research.md, розділ 6</a> переконують епітетами й окликами замість фактів — <em>«Патерн 2: оклики й епітети замість фактів»</em>. Це саме та сліпа зона, яку research.md називає напряму: <em>«Спільна сліпа пляма всіх ринків: бейдж довіри без розшифровки. Жоден гравець не показує, що саме перевірено»</em> (Gap 2).</p>
+      <p><a href="../CLAUDE.md">CLAUDE.md</a> формулює це як принцип тону: <em>«Довіра через ясність і структуру, не через декор чи умовляння»</em>.</p>
+    </div>
+  </section>
+
+  <!-- 2. Спокій без тиску часом -->
+  <section id="p2">
+    <div class="sec-head"><span class="sec-num mono">02</span><h2>Спокій без тиску часом</h2></div>
+    <p class="sec-lede">Куток ніколи не квапить рішення — <b>навіть коли сам просить зачекати</b>.</p>
+
+    <div class="ex-cols">
+      <div class="ex-col good">
+        <div class="ec-label">приклад · Куток</div>
+        <blockquote>«Не вдалось підтвердити автоматично. Заявку передано на ручну перевірку — зазвичай до 24 годин.»<span class="ec-src"><a href="../wireframes/verify-pending.html">verify-pending.html</a></span></blockquote>
+      </div>
+      <div class="ex-col bad">
+        <div class="ec-label">антиприклад · ринок</div>
+        <blockquote>«Терміново! Привіт, шукаю на підселення дівчинку на вересень-місяць»<span class="ec-src">Telegram, КНУсусіди</span></blockquote>
+        <blockquote>«Коли орендодавець квапить із внесенням передоплати…»<span class="ec-src">типова мова оголошень зі знижкою на терміновість</span></blockquote>
+      </div>
+    </div>
+
+    <div class="why">
+      <div class="why-label">Пояснення</div>
+      <p>Доресерч Д2 у research.md прямо називає тиск часом <b>тригером шахрайства</b>, а не просто стилем: <em>«Коли орендодавець квапить із внесенням передоплати... це має стати тривожним дзвінком»</em> (адвокатка Оксана Яринич, DIM.RIA, цит. в research.md).</p>
+      <p>У живій мові ринку (<a href="research.md#6-мова-конкурентів">«Мова конкурентів», розділ 6</a>) «Терміново!» — норма, не виняток. CLAUDE.md прямо забороняє це в тоні бренду: <em>«рівний тон без вигуків, нуль urgency»</em>.</p>
+    </div>
+  </section>
+
+  <!-- 3. Людина в центрі, не кімната -->
+  <section id="p3">
+    <div class="sec-head"><span class="sec-num mono">03</span><h2>Людина в центрі, не кімната</h2></div>
+    <p class="sec-lede">Куток говорить спершу про <b>людину, з якою житимеш</b>, а вже потім про квадратні метри.</p>
+
+    <div class="ex-cols">
+      <div class="ex-col good">
+        <div class="ec-label">приклад · Куток</div>
+        <blockquote>«Хочу познайомитись»<span class="ec-src">CTA на кімнаті й на профілі — не «Забронювати», не «Відгукнутись»</span></blockquote>
+        <blockquote>«Господиня»<span class="ec-src">підпис секції на екрані кімнати — не «Власник об'єкта»</span></blockquote>
+      </div>
+      <div class="ex-col bad">
+        <div class="ec-label">антиприклад · ринок</div>
+        <blockquote>«Продаж кімнати 15 м2 в комунальній квартирі»<span class="ec-src">OLX</span></blockquote>
+        <blockquote>«Last 1 room available in a new 2beds Warehouse with Concierge»<span class="ec-src">SpareRoom</span></blockquote>
+      </div>
+    </div>
+
+    <div class="why">
+      <div class="why-label">Пояснення</div>
+      <p>Усі 22 приклади з розділу 6 «Мова конкурентів» описують кімнату (ціна / м² / локація) і жодного разу — людину, з якою доведеться жити. <a href="competitors.md">competitors.md</a> формулює це як свідомий вибір ставки: <em>«SpareRoom і Roomi вкладають у профіль людини... Badi і OLX вкладають у профіль кімнати... Для нашої аудиторії (довіра як core value) — ставка на людину, ймовірно, правильна»</em>.</p>
+      <p>CLAUDE.md: <em>«Не ще один OLX чи Facebook-група. Куток — це довіра через дизайн»</em>.</p>
+    </div>
+  </section>
+
+  <!-- 4. Пояснює, чому питає -->
+  <section id="p4">
+    <div class="sec-head"><span class="sec-num mono">04</span><h2>Пояснює, чому питає</h2></div>
+    <p class="sec-lede">Перш ніж попросити чутливі дані чи дію, Куток каже, <b>навіщо це саме зараз</b>.</p>
+
+    <div class="ex-cols">
+      <div class="ex-col good">
+        <div class="ec-label">приклад · Куток</div>
+        <blockquote>«Щоб інші бачили, що ви реальна людина, нам потрібні телефон і селфі-перевірка фото. Без цього кроку верифікацію пройти не можна.»<span class="ec-src"><a href="../wireframes/consent.html">consent.html</a></span></blockquote>
+      </div>
+      <div class="ex-col bad">
+        <div class="ec-label">антиприклад · ринок</div>
+        <blockquote>«Привіт, шукаю співмешканку/співмешканця» → одразу контакт у Telegram, без жодного пояснення, чому саме цій людині варто довіряти чи що перевірено<span class="ec-src">КНУсусіди, HomeMate</span></blockquote>
+      </div>
+    </div>
+
+    <div class="why">
+      <div class="why-label">Пояснення</div>
+      <p>research.md Gap 2 — <em>«бейдж довіри без розшифровки. Жоден гравець не показує, що саме перевірено»</em>; <a href="personas.md">personas.md</a> S3 — <em>«сигнали довіри в чатах — імпровізовані»</em>: спільні друзі, фото профілю, стиль тексту — жодного пояснення, просто здогад.</p>
+      <p>Куток протиставляє цьому прямий, проговорений «навіщо» до кожного кроку — саме це, а не сам факт перевірки, у ринку відсутнє повністю.</p>
+    </div>
+  </section>
+
+  <!-- 5. Береже конкретною порадою, не мовчить -->
+  <section id="p5">
+    <div class="sec-head"><span class="sec-num mono">05</span><h2>Береже конкретною порадою, не мовчить</h2></div>
+    <p class="sec-lede">У момент ризику (перша зустріч, перехід у реальний контакт) Куток дає <b>конкретну пораду безпеки</b>, а не просто мовчки передає контроль користувачу.</p>
+
+    <div class="ex-cols">
+      <div class="ex-col good">
+        <div class="ec-label">приклад · Куток</div>
+        <blockquote>«Порада: спілкуйтесь у Кутку до зустрічі. Зустрічайтесь у людному місці.»<span class="ec-src"><a href="../wireframes/chat.html">chat.html</a></span></blockquote>
+      </div>
+      <div class="ex-col bad">
+        <div class="ec-label">антиприклад · ринок</div>
+        <blockquote>«...контакт @kris_tina385» — передача в особисті повідомлення без жодного слова застереження<span class="ec-src">HomeMate, КНУсусіди</span></blockquote>
+      </div>
+    </div>
+
+    <div class="why">
+      <div class="why-label">Пояснення</div>
+      <p>research.md Gap 3 — <em>«Комунікація тікає з платформи → платформи втрачають сигнали якості матчу і не можуть захистити від шахрайства після першого контакту»</em>, а доресерч Д2 підтверджує конкретні UA-тригери (передоплата, тиск часом, спілкування лише через месенджер) саме в момент, коли контакт виходить з-під контролю платформи.</p>
+      <p>У живій мові конкурентів (розділ 6, «Мова конкурентів») цей перехід — це просто <code>@handle</code> без жодного попередження.</p>
+    </div>
+  </section>
+
+  <footer>
+    <span>Куток · Голос · джерело правди для мікрокопі вайрфреймів</span>
+    <span><a href="../voice.md">voice.md</a> · <a href="index.html">← до ресерчу</a></span>
+  </footer>
+
+</main>
+</div>
+
+<script>
+  const toggle = document.querySelector('.nav-toggle');
+  const links  = document.getElementById('nav-secs');
+  if (toggle && links) {
+    toggle.addEventListener('click', () => {
+      const open = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!open));
+      links.hidden = open;
+    });
+  }
+
+  const sections = [...document.querySelectorAll('main section[id], main header[id]')];
+  const navLinks = [...document.querySelectorAll('.nav-links a')];
+  if ('IntersectionObserver' in window && sections.length) {
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (!e.isIntersecting) continue;
+        const id = e.target.id;
+        navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+      }
+    }, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
+    sections.forEach(s => io.observe(s));
+  }
+</script>
+
+</body>
+</html>
