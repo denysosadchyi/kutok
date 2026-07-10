@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Куток — три напрями мови</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,wght@0,400;1,400;1,500&family=Inter:wght@400;500;600;700&family=Zilla+Slab:wght@400;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: Inter, system-ui, sans-serif;
+    background: #EDECE8;
+    color: #201F26;
+  }
+
+  /* ---------- meta chrome (belongs to none of the 3 languages) ---------- */
+  .meta-bar {
+    padding: 14px 20px;
+    font-size: 13px;
+    letter-spacing: .02em;
+    color: #66645C;
+    background: #EDECE8;
+    border-bottom: 1px solid #D9D7CF;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .meta-bar b { color: #201F26; font-weight: 600; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: stretch;
+  }
+  @media (max-width: 980px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+
+  .panel {
+    padding: 40px 30px 56px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    min-height: 100vh;
+  }
+
+  .kicker {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    font-size: 12px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    opacity: .7;
+  }
+  .kicker .num { font-size: 22px; letter-spacing: 0; opacity: 1; }
+
+  .direction-name { font-size: 34px; line-height: 1.05; }
+  .scene {
+    font-size: 14px;
+    line-height: 1.5;
+    opacity: .82;
+    max-width: 42ch;
+  }
+  .scene b { font-weight: 600; opacity: 1; }
+
+  .strategy-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 5px 10px;
+    border-radius: 999px;
+    width: fit-content;
+  }
+
+  /* palette */
+  .palette { display: flex; flex-direction: column; gap: 6px; }
+  .palette-row {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 12.5px;
+  }
+  .swatch { width: 28px; height: 28px; border-radius: 6px; flex-shrink: 0; }
+  .swatch-name { min-width: 108px; }
+  .swatch-hex { font-family: 'IBM Plex Mono', monospace; opacity: .65; }
+  .swatch-role { opacity: .6; font-size: 12px; }
+
+  /* type specimen */
+  .type-specimen { display: flex; flex-direction: column; gap: 10px; }
+  .type-label { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; opacity: .55; }
+  .type-sample-head { font-size: 26px; line-height: 1.15; }
+  .type-sample-body { font-size: 15px; line-height: 1.5; max-width: 40ch; }
+
+  /* icon row */
+  .icon-row { display: flex; gap: 18px; align-items: center; }
+  .icon-chip { display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 10.5px; opacity: .7; }
+  .icon-chip svg { width: 22px; height: 22px; }
+
+  /* ---------- the live listing card ---------- */
+  .card { width: 100%; max-width: 320px; }
+  .card-photo-wrap { position: relative; overflow: hidden; }
+  .card-photo { width: 100%; height: 340px; object-fit: cover; display: block; }
+  .cta-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 14.5px; font-weight: 600; cursor: pointer;
+    border: none; width: 100%; justify-content: center;
+  }
+  .cta-btn svg { width: 17px; height: 17px; }
+  .why-not-reflex {
+    font-size: 12px; line-height: 1.55; opacity: .65;
+    max-width: 42ch; margin-top: auto; padding-top: 18px;
+  }
+
+  /* =========================================================
+     DIRECTION A — «Реєстр» (civic ledger). Restrained.
+     ========================================================= */
+  .panel-a {
+    background: #F3F3EE;
+    color: #201F26;
+    font-family: Fraunces, serif;
+  }
+  .panel-a .kicker, .panel-a .type-label, .panel-a .swatch-role,
+  .panel-a .meta-mono { font-family: 'IBM Plex Mono', monospace; }
+  .panel-a .strategy-tag { background: #E1EAEA; color: #1F5C66; }
+  .panel-a .scene, .panel-a .why-not-reflex { font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; }
+  .panel-a .type-sample-body { font-family: 'IBM Plex Mono', monospace; font-size: 13.5px; }
+
+  .panel-a .card {
+    background: #ffffff;
+    border: 1px solid #D8D7D2;
+  }
+  .panel-a .card-photo-wrap { border-bottom: 1px solid #D8D7D2; }
+  .panel-a .ledger-ref {
+    position: absolute; top: 10px; right: 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; letter-spacing: .05em;
+    background: rgba(255,255,255,.92);
+    color: #201F26;
+    padding: 3px 7px;
+    border: 1px solid #D8D7D2;
+  }
+  .panel-a .seal {
+    position: absolute; left: 10px; bottom: -18px;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: #ffffff; border: 1.5px dashed #1F5C66;
+    display: flex; align-items: center; justify-content: center;
+    color: #1F5C66;
+  }
+  .panel-a .seal svg { width: 22px; height: 22px; }
+  .panel-a .card-body { padding: 26px 18px 18px; display: flex; flex-direction: column; gap: 10px; }
+  .panel-a .name-line { font-size: 19px; font-weight: 500; }
+  .panel-a .meta-line { font-size: 12.5px; opacity: .6; font-family: 'IBM Plex Mono', monospace; display: flex; align-items: center; gap: 5px; }
+  .panel-a .meta-line svg { width: 13px; height: 13px; }
+  .panel-a .bio-line { font-size: 13.5px; opacity: .85; font-family: 'IBM Plex Mono', monospace; line-height: 1.5; }
+  .panel-a hr.ledger-rule { border: none; border-top: 1px solid #D8D7D2; margin: 2px 0; }
+  .panel-a .fact-string {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px; letter-spacing: .03em;
+    color: #1F5C66; background: #E1EAEA;
+    padding: 6px 9px; width: fit-content;
+  }
+  .panel-a .cta-btn { background: #201F26; color: #F3F3EE; padding: 12px; margin-top: 4px; }
+  .panel-a .cta-btn:hover { background: #1F5C66; }
+
+  /* =========================================================
+     DIRECTION B — «Нічна лампа» (dusk lamplight). Committed.
+     ========================================================= */
+  .panel-b {
+    background: #1B140F;
+    color: #F1E8DD;
+    font-family: Inter, system-ui, sans-serif;
+  }
+  .panel-b .direction-name, .panel-b .type-sample-head { font-family: Newsreader, serif; font-style: italic; font-weight: 400; }
+  .panel-b .strategy-tag { background: rgba(224,164,88,.16); color: #E0A458; }
+  .panel-b .scene, .panel-b .type-label, .panel-b .kicker, .panel-b .why-not-reflex { color: #A79A8C; }
+
+  .panel-b .card { background: #241A13; border-radius: 22px; overflow: hidden; box-shadow: 0 20px 44px -20px rgba(0,0,0,.6); }
+  .panel-b .card-photo-wrap { border-radius: 22px 22px 0 0; }
+  .panel-b .card-photo { height: 360px; }
+  .panel-b .badge-pill {
+    position: absolute; top: 14px; left: 14px;
+    display: flex; align-items: center; gap: 6px;
+    background: rgba(20,15,10,.55);
+    backdrop-filter: none;
+    border: 1px solid rgba(224,164,88,.55);
+    color: #E0A458;
+    font-size: 12px; font-weight: 600;
+    padding: 6px 11px 6px 8px;
+    border-radius: 999px;
+    box-shadow: 0 0 0 4px rgba(224,164,88,.08);
+  }
+  .panel-b .badge-pill svg { width: 15px; height: 15px; }
+  .panel-b .card-body { padding: 20px 20px 22px; display: flex; flex-direction: column; gap: 12px; }
+  .panel-b .name-line { font-family: Newsreader, serif; font-style: italic; font-size: 22px; }
+  .panel-b .meta-line { font-size: 12.5px; color: #A79A8C; display: flex; align-items: center; gap: 5px; }
+  .panel-b .meta-line svg { width: 13px; height: 13px; }
+  .panel-b .bio-line { font-size: 14px; line-height: 1.55; color: #D9CFC2; }
+  .panel-b .cta-btn { background: #E0A458; color: #1B140F; border-radius: 999px; padding: 13px; }
+  .panel-b .cta-btn:hover { background: #C97F3B; }
+
+  /* =========================================================
+     DIRECTION C — «Польові нотатки» (caseworker checklist). Full palette.
+     ========================================================= */
+  .panel-c {
+    background: #EFEBE0;
+    color: #34302A;
+    font-family: 'Zilla Slab', serif;
+  }
+  .panel-c .kicker, .panel-c .scene, .panel-c .why-not-reflex,
+  .panel-c .type-label, .panel-c .swatch-role { font-family: 'Space Mono', monospace; }
+  .panel-c .strategy-tag { background: #E3DFCF; color: #34302A; }
+  .panel-c .type-sample-body { font-family: 'Space Mono', monospace; font-size: 13px; }
+
+  .panel-c .card { background: #F6F3EA; border: 1px solid #C9C2AF; }
+  .panel-c .card-photo { height: 300px; filter: saturate(.92); }
+  .panel-c .card-body { padding: 18px; display: flex; flex-direction: column; gap: 14px; }
+  .panel-c .name-line { font-size: 19px; font-weight: 600; }
+  .panel-c .meta-line { font-family: 'Space Mono', monospace; font-size: 12px; opacity: .65; display: flex; align-items: center; gap: 5px; }
+  .panel-c .meta-line svg { width: 13px; height: 13px; }
+  .panel-c .checklist { display: flex; flex-direction: column; gap: 8px; border-top: 1px dashed #C9C2AF; border-bottom: 1px dashed #C9C2AF; padding: 12px 0; }
+  .panel-c .check-row { display: flex; align-items: center; gap: 9px; font-family: 'Space Mono', monospace; font-size: 12.5px; }
+  .check-row svg { width: 18px; height: 18px; flex-shrink: 0; }
+  .check-ok { color: #4B7A4E; }
+  .check-pending { color: #8C5A46; }
+  .panel-c .cta-btn { background: #34302A; color: #EFEBE0; padding: 12px; border-radius: 3px; }
+  .panel-c .cta-btn:hover { background: #4B7A4E; }
+</style>
+</head>
+<body>
+
+  <div class="meta-bar">
+    <span><b>Куток</b> — три напрями візуальної мови (concept/directions.html)</span>
+    <span>За законами <b>/impeccable</b>: OKLCH-дисципліна кольору, без рефлексних палітр, без слоп-патернів. Обери один — я продовжу з нього.</span>
+  </div>
+
+  <div class="grid">
+
+    <!-- ============================================================ -->
+    <!-- DIRECTION A — РЕЄСТР -->
+    <!-- ============================================================ -->
+    <section class="panel panel-a">
+      <div>
+        <div class="kicker"><span class="num">01</span><span>напрям</span></div>
+        <h2 class="direction-name">Реєстр</h2>
+        <span class="strategy-tag">Restrained · один акцент</span>
+      </div>
+
+      <p class="scene"><b>Сцена:</b> Аня перевіряє профіль удень у метро чи за робочим столом — їй потрібна не «затишна» вітальня, а офіційна певність, як у документа. Тепло тут — не колір, а точність.</p>
+
+      <div class="palette">
+        <div class="palette-row"><span class="swatch" style="background:#F3F3EE;border:1px solid #ddd"></span><span class="swatch-name">Папір</span><span class="swatch-hex">#F3F3EE</span><span class="swatch-role">канвас</span></div>
+        <div class="palette-row"><span class="swatch" style="background:#201F26"></span><span class="swatch-name">Чорнило</span><span class="swatch-hex">#201F26</span><span class="swatch-role">текст</span></div>
+        <div class="palette-row"><span class="swatch" style="background:#5B5A63"></span><span class="swatch-name">Приглушене</span><span class="swatch-hex">#5B5A63</span><span class="swatch-role">другорядний текст</span></div>
+        <div class="palette-row"><span class="swatch" style="background:#1F5C66"></span><span class="swatch-name">Печатка</span><span class="swatch-hex">#1F5C66</span><span class="swatch-role">єдиний акцент — лише на верифікації</span></div>
+        <div class="palette-row"><span class="swatch" style="background:#D8D7D2"></span><span class="swatch-name">Лінійка</span><span class="swatch-hex">#D8D7D2</span><span class="swatch-role">розділові риски</span></div>
+      </div>
+
+      <div class="type-specimen">
+        <span class="type-label">Fraunces · заголовок / ім'я</span>
+        <span class="type-sample-head">Дмитро, 27</span>
+        <span class="type-label">IBM Plex Mono · факти й коди</span>
+        <span class="type-sample-body">телефон ✓ · фото ✓ · документ —</span>
+      </div>
+
+      <div class="icon-row">
+        <div class="icon-chip" id="ic-a-1"></div>
+        <div class="icon-chip" id="ic-a-2"></div>
+        <div class="icon-chip" id="ic-a-3"></div>
+        <div class="icon-chip" id="ic-a-4"></div>
+      </div>
+
+      <!-- live card -->
+      <div class="card">
+        <div class="card-photo-wrap">
+          <img class="card-photo" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=480&h=600&fit=crop&auto=format&q=70" alt="Фото профілю — Дмитро, 27">
+          <span class="ledger-ref">СПРАВА № 0114</span>
+          <span class="seal" id="ic-a-seal"></span>
+        </div>
+        <div class="card-body">
+          <div class="name-line">Дмитро, 27</div>
+          <div class="meta-line" id="ic-a-loc">Київ, Печерськ</div>
+          <hr class="ledger-rule">
+          <div class="bio-line">Шукає кімнату з жовтня. Не курить, працює вечорами в бек-офісі банку.</div>
+          <span class="fact-string">TEL ✓ · SELFIE ✓ · DOC —</span>
+          <button class="cta-btn"><span id="ic-a-cta"></span>Хочу познайомитись</button>
+        </div>
+      </div>
+
+      <p class="why-not-reflex">Не крем і не теракота: холодний паперовий нейтраль + одна інституційна барва лише на печатці довіри — не «затишок», а офіційність.</p>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- DIRECTION B — НІЧНА ЛАМПА -->
+    <!-- ============================================================ -->
+    <section class="panel panel-b">
+      <div>
+        <div class="kicker"><span class="num">02</span><span>напрям</span></div>
+        <h2 class="direction-name">Нічна лампа</h2>
+        <span class="strategy-tag">Committed · насичений акцент</span>
+      </div>
+
+      <p class="scene"><b>Сцена:</b> Марта гортає профілі ввечері, лежачи в чужій ще кімнаті, сама з телефоном у темряві — рішення писати незнайомцю ухвалюється не вранці за кавою, а зараз, при одному теплому світлі.</p>
+
+      <div class="palette">
+        <div class="palette-row"><span class="swatch" style="background:#1B140F"></span><span class="swatch-name">Кімната</span><span class="swatch-hex">#1B140F</span><span class="swatch-role">канвас</span></div>
+        <div class="palette-row"><span class="swatch" style="background:#241A13"></span><span class="swatch-name">Поверхня</span><span class="swatch-hex">#241A13</span><span class="swatch-role">картка</span></div>
+        <div class="palette-row"><span class="swatch" style="background:#F1E8DD"></span><span class="swatch-name">Папір лампи</span><span class="swatch-hex">#F1E8DD</span><span class="swatch-role">текст</span></div>
+        <div class="palette-row"><span class="swatch" style="background:#E0A458"></span><span class="swatch-name">Лампа</span><span class="swatch-hex">#E0A458</span><span class="swatch-role">акцент — CTA, бейдж</span></div>
+        <div class="palette-row"><span class="swatch" style="background:#C97F3B"></span><span class="swatch-name">Тінь лампи</span><span class="swatch-hex">#C97F3B</span><span class="swatch-role">hover-стан</span></div>
+      </div>
+
+      <div class="type-specimen">
+        <span class="type-label">Newsreader italic · заголовок / ім'я</span>
+        <span class="type-sample-head">Марта, 24</span>
+        <span class="type-label">Inter · основний текст</span>
+        <span class="type-sample-body" style="font-family:Inter">Переїхала два тижні тому. Лягає рано, шукає тихих сусідів.</span>
+      </div>
+
+      <div class="icon-row">
+        <div class="icon-chip" id="ic-b-1"></div>
+        <div class="icon-chip" id="ic-b-2"></div>
+        <div class="icon-chip" id="ic-b-3"></div>
+        <div class="icon-chip" id="ic-b-4"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-photo-wrap">
+          <img class="card-photo" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=480&h=650&fit=crop&auto=format&q=70" alt="Фото профілю — Марта, 24">
+          <span class="badge-pill" id="ic-b-badge">Верифіковано</span>
+        </div>
+        <div class="card-body">
+          <div class="name-line">Марта, 24</div>
+          <div class="meta-line" id="ic-b-loc">Київ, Оболонь</div>
+          <div class="bio-line">Переїхала два тижні тому. Працює в кав'ярні, лягає рано, шукає тихих сусідів.</div>
+          <button class="cta-btn"><span id="ic-b-cta"></span>Хочу познайомитись</button>
+        </div>
+      </div>
+
+      <p class="why-not-reflex">Не «безпечна тема = світла і м'яка»: тривога Ані живе саме ввечері, тож теплий острівець світла в темряві чесніший за глянцевий світлий каталог.</p>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- DIRECTION C — ПОЛЬОВІ НОТАТКИ -->
+    <!-- ============================================================ -->
+    <section class="panel panel-c">
+      <div>
+        <div class="kicker"><span class="num">03</span><span>напрям</span></div>
+        <h2 class="direction-name">Польові нотатки</h2>
+        <span class="strategy-tag">Full palette · функціональні кольори</span>
+      </div>
+
+      <p class="scene"><b>Сцена:</b> Олена перевіряє кандидатів удень за кухонним столом — їй не потрібна емоція, потрібен статус кожного пункту з першого погляду, як у чек-листі перед зустріччю.</p>
+
+      <div class="palette">
+        <div class="palette-row"><span class="swatch" style="background:#EFEBE0"></span><span class="swatch-name">Крафт-папір</span><span class="swatch-hex">#EFEBE0</span><span class="swatch-role">канвас</span></div>
+        <div class="palette-row"><span class="swatch" style="background:#34302A"></span><span class="swatch-name">Графіт</span><span class="swatch-hex">#34302A</span><span class="swatch-role">текст</span></div>
+        <div class="palette-row"><span class="swatch" style="background:#4B7A4E"></span><span class="swatch-name">Підтверджено</span><span class="swatch-hex">#4B7A4E</span><span class="swatch-role">статус ✓</span></div>
+        <div class="palette-row"><span class="swatch" style="background:#B07E2E"></span><span class="swatch-name">Очікує</span><span class="swatch-hex">#B07E2E</span><span class="swatch-role">статус · в обробці</span></div>
+        <div class="palette-row"><span class="swatch" style="background:#8C5A46"></span><span class="swatch-name">Не додано</span><span class="swatch-hex">#8C5A46</span><span class="swatch-role">статус —, вживається рідко</span></div>
+      </div>
+
+      <div class="type-specimen">
+        <span class="type-label">Zilla Slab · заголовок / ім'я</span>
+        <span class="type-sample-head">Оля, 26</span>
+        <span class="type-label">Space Mono · чек-лист і дані</span>
+        <span class="type-sample-body">телефон — підтверджено</span>
+      </div>
+
+      <div class="icon-row">
+        <div class="icon-chip" id="ic-c-1"></div>
+        <div class="icon-chip" id="ic-c-2"></div>
+        <div class="icon-chip" id="ic-c-3"></div>
+        <div class="icon-chip" id="ic-c-4"></div>
+      </div>
+
+      <div class="card">
+        <img class="card-photo" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=480&h=580&fit=crop&auto=format&q=70" alt="Фото профілю — Оля, 26">
+        <div class="card-body">
+          <div class="name-line">Оля, 26</div>
+          <div class="meta-line" id="ic-c-loc">Київ, Осокорки</div>
+          <div class="checklist">
+            <div class="check-row check-ok"><span id="ic-c-phone"></span>Телефон — підтверджено</div>
+            <div class="check-row check-ok"><span id="ic-c-photo"></span>Фото — звірено з селфі</div>
+            <div class="check-row check-pending"><span id="ic-c-doc"></span>Документ — не додано</div>
+          </div>
+          <button class="cta-btn"><span id="ic-c-cta"></span>Хочу познайомитись</button>
+        </div>
+      </div>
+
+      <p class="why-not-reflex">Не крем-і-теракота «затишку»: три функціональні кольори прив'язані строго до статусу (підтверджено / очікує / не додано), а не до емоції теплоти.</p>
+    </section>
+
+  </div>
+
+<script>
+// Solar icons (iconify.design/solar), embedded inline as raw markup — set via innerHTML to keep fill="currentColor" live.
+const ICONS = {
+  diplomaVerifiedLinear: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17.998c-2.175-.012-3.353-.108-4.121-.877C2 16.243 2 14.828 2 12V8c0-2.828 0-4.243.879-5.121C3.757 2 5.172 2 8 2h8c2.828 0 4.243 0 5.121.879C22 3.757 22 5.172 22 8v4c0 2.828 0 4.243-.879 5.121c-.73.73-1.829.854-3.801.875l-.82.002"/><path stroke-linecap="round" d="M9 6h6M7 9.5h10"/><path d="M10.89 13.945a1.71 1.71 0 0 1 2.22 0c.273.234.614.375.972.404a1.71 1.71 0 0 1 1.57 1.568c.028.36.169.7.402.974a1.71 1.71 0 0 1 0 2.218a1.7 1.7 0 0 0-.403.974a1.71 1.71 0 0 1-1.569 1.569a1.7 1.7 0 0 0-.973.403a1.71 1.71 0 0 1-2.219 0a1.7 1.7 0 0 0-.973-.404a1.71 1.71 0 0 1-1.569-1.568a1.7 1.7 0 0 0-.403-.974a1.71 1.71 0 0 1 0-2.218a1.7 1.7 0 0 0 .403-.974a1.71 1.71 0 0 1 1.57-1.568c.358-.029.699-.17.973-.404Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m10.5 18.2l.857.8l2.143-2"/></g></svg>`,
+  phoneLinear: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="m16.1 13.359l-.528-.532zm.456-.453l.529.532zm2.417-.317l-.358.66zm1.91 1.039l-.358.659zm.539 3.255l.529.532zm-1.42 1.412l-.53-.531zm-1.326.67l.07.747zm-9.86-4.238l.528-.532zM4.002 5.746l-.749.042zm6.474 1.451l.53.532zm.157-2.654l.6-.449zM9.374 2.86l-.601.45zM6.26 2.575l.53.532zm-1.57 1.56l-.528-.531zm7.372 7.362l.529-.532zm4.567 2.394l.455-.453l-1.058-1.064l-.455.453zm1.985-.643l1.91 1.039l.716-1.318l-1.91-1.038zm2.278 3.103l-1.42 1.413l1.057 1.063l1.42-1.412zm-2.286 1.867c-1.45.136-5.201.015-9.263-4.023l-1.057 1.063c4.432 4.407 8.65 4.623 10.459 4.454zm-9.263-4.023c-3.871-3.85-4.512-7.087-4.592-8.492l-1.498.085c.1 1.768.895 5.356 5.033 9.47zm1.376-6.18l.286-.286L9.95 6.666l-.287.285zm.515-3.921L9.974 2.41l-1.201.899l1.26 1.684zM5.733 2.043l-1.57 1.56l1.058 1.064l1.57-1.56zm4.458 5.44c-.53-.532-.53-.532-.53-.53h-.002l-.003.004a1 1 0 0 0-.127.157c-.054.08-.113.185-.163.318a2.1 2.1 0 0 0-.088 1.071c.134.865.73 2.008 2.256 3.526l1.058-1.064c-1.429-1.42-1.769-2.284-1.832-2.692c-.03-.194.001-.29.01-.312q.009-.02 0-.006a.3.3 0 0 1-.03.039l-.01.01l-.01.009zm1.343 4.546c1.527 1.518 2.676 2.11 3.542 2.242c.443.068.8.014 1.071-.087a1.5 1.5 0 0 0 .42-.236l.05-.045l.007-.006l.003-.003l.001-.002s.002-.001-.527-.533c-.53-.532-.528-.533-.528-.533l.002-.002l.002-.002l.006-.005l.01-.01l.038-.03q.014-.009-.007.002c-.025.009-.123.04-.32.01c-.414-.064-1.284-.404-2.712-1.824zm-1.56-9.62C8.954 1.049 6.95.834 5.733 2.044L6.79 3.107c.532-.529 1.476-.475 1.983.202zM4.752 5.704c-.02-.346.139-.708.469-1.036L4.163 3.604c-.537.534-.96 1.29-.909 2.184zm14.72 12.06c-.274.274-.57.428-.865.455l.139 1.494c.735-.069 1.336-.44 1.784-.885zM11.006 7.73c.985-.979 1.058-2.527.229-3.635l-1.201.899c.403.539.343 1.246-.085 1.673zm9.52 6.558c.817.444.944 1.49.367 2.064l1.058 1.064c1.34-1.333.927-3.557-.71-4.446zm-3.441-.849c.384-.382 1.002-.476 1.53-.19l.716-1.317c-1.084-.59-2.428-.427-3.304.443z"/></svg>`,
+  cameraLinear: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="13" r="3"/><path d="M9.778 21h4.444c3.121 0 4.682 0 5.803-.735a4.4 4.4 0 0 0 1.226-1.204c.749-1.1.749-2.633.749-5.697s0-4.597-.749-5.697a4.4 4.4 0 0 0-1.226-1.204c-.72-.473-1.622-.642-3.003-.702c-.659 0-1.226-.49-1.355-1.125A2.064 2.064 0 0 0 13.634 3h-3.268c-.988 0-1.839.685-2.033 1.636c-.129.635-.696 1.125-1.355 1.125c-1.38.06-2.282.23-3.003.702A4.4 4.4 0 0 0 2.75 7.667C2 8.767 2 10.299 2 13.364s0 4.596.749 5.697c.324.476.74.885 1.226 1.204C5.096 21 6.657 21 9.778 21Z"/><path stroke-linecap="round" d="M19 10h-1"/></g></svg>`,
+  mapPointLinear: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 10.143C4 5.646 7.582 2 12 2s8 3.646 8 8.143c0 4.462-2.553 9.67-6.537 11.531a3.45 3.45 0 0 1-2.926 0C6.553 19.812 4 14.606 4 10.144Z"/><circle cx="12" cy="10" r="3"/></g></svg>`,
+  chatRoundDotsLinear: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.009m3.982 0H12m3.991 0H16"/><path stroke-width="1.5" d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2S2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22Z"/></g></svg>`,
+
+  shieldCheckBold: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M3.378 5.082C3 5.62 3 7.22 3 10.417v1.574c0 5.638 4.239 8.375 6.899 9.536c.721.315 1.082.473 2.101.473c1.02 0 1.38-.158 2.101-.473C16.761 20.365 21 17.63 21 11.991v-1.574c0-3.198 0-4.797-.378-5.335c-.377-.537-1.88-1.052-4.887-2.081l-.573-.196C13.595 2.268 12.812 2 12 2s-1.595.268-3.162.805L8.265 3c-3.007 1.03-4.51 1.545-4.887 2.082M15.06 10.5a.75.75 0 0 0-1.12-.999l-3.011 3.374l-.87-.974a.75.75 0 0 0-1.118 1l1.428 1.6a.75.75 0 0 0 1.119 0z" clip-rule="evenodd"/></svg>`,
+  phoneBold: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="m16.556 12.906l-.455.453s-1.083 1.076-4.038-1.862s-1.872-4.014-1.872-4.014l.286-.286c.707-.702.774-1.83.157-2.654L9.374 2.86C8.61 1.84 7.135 1.705 6.26 2.575l-1.57 1.56c-.433.432-.723.99-.688 1.61c.09 1.587.808 5 4.812 8.982c4.247 4.222 8.232 4.39 9.861 4.238c.516-.048.964-.31 1.325-.67l1.42-1.412c.96-.953.69-2.588-.538-3.255l-1.91-1.039c-.806-.437-1.787-.309-2.417.317"/></svg>`,
+  cameraBold: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M9.778 21h4.444c3.121 0 4.682 0 5.803-.735a4.4 4.4 0 0 0 1.226-1.204c.749-1.1.749-2.633.749-5.697s0-4.597-.749-5.697a4.4 4.4 0 0 0-1.226-1.204c-.72-.473-1.622-.642-3.003-.702c-.659 0-1.226-.49-1.355-1.125A2.064 2.064 0 0 0 13.634 3h-3.268c-.988 0-1.839.685-2.033 1.636c-.129.635-.696 1.125-1.355 1.125c-1.38.06-2.282.23-3.003.702A4.4 4.4 0 0 0 2.75 7.667C2 8.767 2 10.299 2 13.364s0 4.596.749 5.697c.324.476.74.885 1.226 1.204C5.096 21 6.657 21 9.778 21M12 9.273c-2.301 0-4.167 1.831-4.167 4.09S9.7 17.456 12 17.456s4.167-1.832 4.167-4.091S14.3 9.273 12 9.273m0 1.636c-1.38 0-2.5 1.099-2.5 2.455c0 1.355 1.12 2.454 2.5 2.454s2.5-1.099 2.5-2.454s-1.12-2.455-2.5-2.455m4.722-.818c0-.452.373-.818.834-.818h1.11c.46 0 .834.366.834.818a.826.826 0 0 1-.833.818h-1.111a.826.826 0 0 1-.834-.818" clip-rule="evenodd"/></svg>`,
+  mapPointBold: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M12 2c-4.418 0-8 4.003-8 8.5c0 4.462 2.553 9.312 6.537 11.174a3.45 3.45 0 0 0 2.926 0C17.447 19.812 20 14.962 20 10.5C20 6.003 16.418 2 12 2m0 10a2 2 0 1 0 0-4a2 2 0 0 0 0 4" clip-rule="evenodd"/></svg>`,
+  chatRoundDotsBold: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><defs><mask id="chatDotsBoldMask"><g fill="none"><path fill="#fff" d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2S2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22"/><path fill="#000" d="M15 12a1 1 0 1 0 2 0a1 1 0 0 0-2 0m-4 0a1 1 0 1 0 2 0a1 1 0 0 0-2 0m-4 0a1 1 0 1 0 2 0a1 1 0 0 0-2 0"/></g></mask></defs><path fill="currentColor" d="M0 0h24v24H0z" mask="url(#chatDotsBoldMask)"/></svg>`,
+
+  phoneBoldDuotone: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="m16.1 13.359l.456-.453c.63-.626 1.611-.755 2.417-.317l1.91 1.039c1.227.667 1.498 2.302.539 3.255l-1.42 1.412c-.362.36-.81.622-1.326.67c-1.192.111-3.645.051-6.539-1.643zm-5.91-5.876l.287-.286c.707-.702.774-1.83.157-2.654L9.374 2.86C8.61 1.84 7.135 1.705 6.26 2.575l-1.57 1.56c-.433.432-.723.99-.688 1.61c.065 1.14.453 3.22 2.149 5.776z" clip-rule="evenodd"/><path fill="currentColor" d="M12.063 11.497c-2.946-2.929-1.88-4.008-1.873-4.015l-4.039 4.04c.667 1.004 1.535 2.081 2.664 3.204c1.14 1.134 2.26 1.975 3.322 2.596L16.1 13.36s-1.082 1.076-4.037-1.862" opacity=".6"/></svg>`,
+  cameraBoldDuotone: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M9.778 21h4.444c3.121 0 4.682 0 5.803-.735a4.4 4.4 0 0 0 1.226-1.204c.749-1.1.749-2.633.749-5.697s0-4.597-.749-5.697a4.4 4.4 0 0 0-1.226-1.204c-.72-.473-1.622-.642-3.003-.702c-.659 0-1.226-.49-1.355-1.125A2.064 2.064 0 0 0 13.634 3h-3.268c-.988 0-1.839.685-2.033 1.636c-.129.635-.696 1.125-1.355 1.125c-1.38.06-2.282.23-3.003.702A4.4 4.4 0 0 0 2.75 7.667C2 8.767 2 10.299 2 13.364s0 4.596.749 5.697c.324.476.74.885 1.226 1.204C5.096 21 6.657 21 9.778 21" opacity=".5"/><path fill="currentColor" d="M17.556 9.272a.826.826 0 0 0-.833.819c0 .452.373.818.833.818h1.111c.46 0 .834-.367.834-.818a.826.826 0 0 0-.834-.819z"/><path fill="currentColor" fill-rule="evenodd" d="M12 9.272c-2.3 0-4.166 1.832-4.166 4.091s1.865 4.091 4.167 4.091c2.3 0 4.166-1.831 4.166-4.09s-1.865-4.092-4.166-4.092m0 1.637c-1.38 0-2.5 1.099-2.5 2.454s1.12 2.455 2.5 2.455c1.381 0 2.5-1.099 2.5-2.455c0-1.355-1.119-2.454-2.5-2.454" clip-rule="evenodd"/></svg>`,
+  documentTextBoldDuotone: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M3 10c0-3.771 0-5.657 1.172-6.828S7.229 2 11 2h2c3.771 0 5.657 0 6.828 1.172S21 6.229 21 10v4c0 3.771 0 5.657-1.172 6.828S16.771 22 13 22h-2c-3.771 0-5.657 0-6.828-1.172S3 17.771 3 14z" opacity=".5"/><path fill="currentColor" fill-rule="evenodd" d="M7.25 12a.75.75 0 0 1 .75-.75h8a.75.75 0 0 1 0 1.5H8a.75.75 0 0 1-.75-.75m0-4A.75.75 0 0 1 8 7.25h8a.75.75 0 0 1 0 1.5H8A.75.75 0 0 1 7.25 8m0 8a.75.75 0 0 1 .75-.75h5a.75.75 0 0 1 0 1.5H8a.75.75 0 0 1-.75-.75" clip-rule="evenodd"/></svg>`,
+  mapPointBoldDuotone: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2c-4.418 0-8 4.003-8 8.5c0 4.462 2.553 9.312 6.537 11.174a3.45 3.45 0 0 0 2.926 0C17.447 19.812 20 14.962 20 10.5C20 6.003 16.418 2 12 2" opacity=".5"/><path fill="currentColor" d="M12 12.5a2.5 2.5 0 1 0 0-5a2.5 2.5 0 0 0 0 5"/></svg>`,
+  chatRoundDotsBoldDuotone: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M12 23c6.075 0 11-4.925 11-11S18.075 1 12 1S1 5.925 1 12c0 1.76.413 3.423 1.148 4.898c.195.392.26.84.147 1.263l-.655 2.448a1.43 1.43 0 0 0 1.75 1.751l2.45-.655a1.8 1.8 0 0 1 1.262.147A10.96 10.96 0 0 0 12 23" opacity=".5"/><path fill="currentColor" d="M10.9 12a1.1 1.1 0 1 0 2.2 0a1.1 1.1 0 0 0-2.2 0m-4.4 0a1.1 1.1 0 1 0 2.2 0a1.1 1.1 0 0 0-2.2 0m8.8 0a1.1 1.1 0 1 0 2.2 0a1.1 1.1 0 0 0-2.2 0"/></svg>`,
+};
+
+function setIcon(id, svg, label) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.innerHTML = label !== undefined ? svg : svg;
+}
+function chip(id, svg, label) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.innerHTML = svg + (label ? `<span>${label}</span>` : '');
+}
+
+// A — Linear
+chip('ic-a-1', ICONS.diplomaVerifiedLinear, 'печатка');
+chip('ic-a-2', ICONS.phoneLinear, 'телефон');
+chip('ic-a-3', ICONS.cameraLinear, 'селфі');
+chip('ic-a-4', ICONS.mapPointLinear, 'локація');
+setIcon('ic-a-seal', ICONS.diplomaVerifiedLinear);
+setIcon('ic-a-loc', ICONS.mapPointLinear + ' Київ, Печерськ');
+document.getElementById('ic-a-loc').innerHTML = ICONS.mapPointLinear + '<span style="margin-left:5px">Київ, Печерськ</span>';
+setIcon('ic-a-cta', ICONS.chatRoundDotsLinear);
+
+// B — Bold
+chip('ic-b-1', ICONS.shieldCheckBold, 'верифікація');
+chip('ic-b-2', ICONS.phoneBold, 'телефон');
+chip('ic-b-3', ICONS.cameraBold, 'селфі');
+chip('ic-b-4', ICONS.mapPointBold, 'локація');
+document.getElementById('ic-b-badge').innerHTML = ICONS.shieldCheckBold + '<span>Верифіковано</span>';
+document.getElementById('ic-b-loc').innerHTML = ICONS.mapPointBold + '<span style="margin-left:5px">Київ, Оболонь</span>';
+setIcon('ic-b-cta', ICONS.chatRoundDotsBold);
+
+// C — Bold Duotone
+chip('ic-c-1', ICONS.phoneBoldDuotone, 'телефон');
+chip('ic-c-2', ICONS.cameraBoldDuotone, 'селфі');
+chip('ic-c-3', ICONS.documentTextBoldDuotone, 'документ');
+chip('ic-c-4', ICONS.mapPointBoldDuotone, 'локація');
+document.getElementById('ic-c-loc').innerHTML = ICONS.mapPointBoldDuotone + '<span style="margin-left:5px">Київ, Осокорки</span>';
+document.getElementById('ic-c-phone').innerHTML = ICONS.phoneBoldDuotone;
+document.getElementById('ic-c-photo').innerHTML = ICONS.cameraBoldDuotone;
+document.getElementById('ic-c-doc').innerHTML = ICONS.documentTextBoldDuotone;
+setIcon('ic-c-cta', ICONS.chatRoundDotsBoldDuotone);
+</script>
+
+</body>
+</html>
