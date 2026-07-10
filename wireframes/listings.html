@@ -66,7 +66,9 @@
     width: 100%;
     max-width: 400px;
     min-height: 100vh;
-    background: #fff;
+    background: var(--canvas);
+    color: var(--text);
+    font-family: Inter, system-ui, sans-serif;
     border-left: 1px solid #ccc;
     border-right: 1px solid #ccc;
     display: flex;
@@ -74,49 +76,56 @@
   }
 
   /* ── Загальні кістякові елементи ── */
-  header.app, footer.tabbar { background: #f7f7f7; }
+  header.app, footer.tabbar { background: var(--surface); }
   header.app {
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid var(--line);
     padding: 10px 12px;
   }
-  .app-name { font-size: 16px; font-weight: bold; color: #444; }
+  .app-name { font-family: Newsreader, serif; font-style: italic; font-size: 18px; font-weight: 500; color: var(--text); }
 
-  section { border-bottom: 1px solid #ddd; }
+  section { border-bottom: 1px solid var(--line); }
   .pad { padding: 10px 12px; }
 
   /* Фільтри */
   form.filters { display: flex; flex-direction: column; gap: 8px; }
   .field { display: flex; flex-direction: column; gap: 2px; }
-  .field label { font-size: 11px; color: #666; }
+  .field label { font-size: 11px; color: var(--text-muted); }
   .field select, .field input {
-    border: 1px solid #bbb;
-    background: #fff;
-    color: #333;
+    border: 1px solid var(--line);
+    background: var(--surface-2);
+    color: var(--text);
     padding: 7px 8px;
     font-size: 13px;
     font-family: inherit;
+    border-radius: 8px;
   }
+  .field select:focus, .field input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
   .filters-row { display: flex; gap: 8px; }
   .filters-row .field { flex: 1; }
   fieldset.seg-switch { border: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 2px; }
-  fieldset.seg-switch legend { font-size: 11px; color: #666; padding: 0; }
-  .seg-options { display: flex; border: 1px solid #bbb; }
-  .seg-options label { flex: 1; display: flex; align-items: center; justify-content: center; gap: 4px; padding: 7px 4px; font-size: 12px; color: #333; border-right: 1px solid #bbb; }
+  fieldset.seg-switch legend { font-size: 11px; color: var(--text-muted); padding: 0; }
+  .seg-options { display: flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
+  .seg-options label { flex: 1; display: flex; align-items: center; justify-content: center; gap: 4px; padding: 7px 4px; font-size: 12px; color: var(--text-muted); border-right: 1px solid var(--line); }
   .seg-options label:last-child { border-right: none; }
+  .seg-options label:has(input:checked) { background: var(--accent); color: var(--canvas); font-weight: 600; }
+  .seg-options input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   button {
-    border: 1px solid #999;
-    background: #ededed;
-    color: #333;
+    border: 1px solid var(--line);
+    background: var(--surface-2);
+    color: var(--text);
     padding: 9px 12px;
     font-size: 13px;
     font-family: inherit;
+    border-radius: 999px;
     cursor: pointer;
   }
-  button.primary { border: 1px solid #666; background: #ddd; font-weight: bold; }
+  button.primary { border: none; background: var(--accent); color: var(--canvas); font-weight: 600; }
+  button.primary:hover { background: var(--accent-strong); }
+  button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
   /* Лічильник */
-  .counter { font-size: 13px; color: #555; }
-  .counter b { color: #333; }
+  .counter { font-size: 13px; color: var(--text-muted); }
+  .counter b { color: var(--text); font-weight: 600; }
 
   /* Список карток */
   ul.feed { list-style: none; }
