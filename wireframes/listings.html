@@ -129,7 +129,7 @@
 
   /* Список карток */
   ul.feed { list-style: none; }
-  ul.feed > li { border-bottom: 1px solid #ddd; }
+  ul.feed > li { border-bottom: 1px solid var(--line); }
   article.card {
     display: flex;
     gap: 10px;
@@ -139,32 +139,34 @@
   .thumb {
     flex: 0 0 84px;
     height: 84px;
-    background: #ddd;
-    border: 1px solid #c4c4c4;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    font-size: 10px;
-    color: #777;
-    padding: 4px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
   }
-  .thumb.avatar { border-radius: 0; }
+  .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .thumb.avatar { border-radius: 50%; }
   .card-body { flex: 1; min-width: 0; }
-  .card-kind { font-size: 10px; text-transform: uppercase; letter-spacing: .05em; color: #999; }
-  .card-title { font-size: 14px; font-weight: bold; color: #333; margin: 2px 0; }
-  .card-meta { font-size: 12px; color: #555; }
-  .card-price { font-size: 14px; font-weight: bold; color: #333; margin-top: 4px; }
+  .card-kind { font-size: 10px; text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); }
+  .card-title { font-family: Newsreader, serif; font-style: italic; font-weight: 500; font-size: 15px; color: var(--text); margin: 2px 0; }
+  .card-meta { font-size: 12px; color: var(--text-muted); }
+  .card-price { font-size: 14px; font-weight: 600; color: var(--text); margin-top: 4px; }
   .badge {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
     font-size: 11px;
-    color: #555;
-    border: 1px solid #bbb;
-    background: #f3f3f3;
-    padding: 1px 6px;
-    margin-top: 5px;
+    font-weight: 600;
+    color: var(--accent);
+    border: 1px solid rgba(224, 164, 88, .4);
+    background: rgba(224, 164, 88, .12);
+    border-radius: 999px;
+    padding: 2px 8px;
+    margin-top: 6px;
   }
+  .badge svg { width: 12px; height: 12px; flex-shrink: 0; }
   .card a.cardlink { text-decoration: none; color: inherit; }
+  .card a.cardlink:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 10px; }
 
   /* Таб-бар */
   footer.tabbar {
