@@ -170,7 +170,7 @@
 
   /* Таб-бар */
   footer.tabbar {
-    border-top: 1px solid #ccc;
+    border-top: 1px solid var(--line);
     display: flex;
     margin-top: auto;
     position: sticky;
@@ -181,12 +181,13 @@
     text-align: center;
     padding: 10px 4px;
     font-size: 11px;
-    color: #777;
+    color: var(--text-muted);
     text-decoration: none;
-    border-right: 1px solid #e0e0e0;
+    border-right: 1px solid var(--line);
   }
   footer.tabbar a:last-child { border-right: none; }
-  footer.tabbar a.active { color: #333; font-weight: bold; background: #e8e8e8; }
+  footer.tabbar a.active { color: var(--accent); font-weight: 600; background: transparent; }
+  footer.tabbar a:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 
   .wf-nav-hint { font-size: 10px; color: #999; margin-bottom: 8px; font-style: italic; }
   .wf-nav .tree { margin-top: 2px; }
