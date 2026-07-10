@@ -121,13 +121,14 @@
   .job-tag:hover { color: #222; border-color: #999; background: #e6e6e6; }
 
   footer.tabbar a { display: flex; flex-direction: column; align-items: center; gap: 3px; position: relative; padding: 8px 4px 7px; }
-  .tab-icon { width: 18px; height: 18px; background: #d6d6d6; border: 1px solid #b0b0b0; }
-  footer.tabbar a.active .tab-icon { background: #bdbdbd; border-color: #888; }
+  .tab-icon { width: 18px; height: 18px; color: var(--text-muted); }
+  .tab-icon svg { width: 100%; height: 100%; display: block; }
+  footer.tabbar a.active .tab-icon { color: var(--accent); }
   .tab-label { font-size: 11px; }
   .tab-badge {
     position: absolute; top: 3px; right: 16%; min-width: 14px; height: 14px; padding: 0 3px;
-    background: #666; color: #fff; font-size: 9px; font-weight: bold; line-height: 14px; text-align: center;
-    border: 1px solid #444;
+    background: var(--accent); color: var(--canvas); font-size: 9px; font-weight: 700; line-height: 14px; text-align: center;
+    border-radius: 999px;
   }
   .icon-ph { display: inline-block; background: #d6d6d6; border: 1px solid #b0b0b0; vertical-align: middle; }
   .menu-row { display: flex; align-items: center; gap: 10px; padding: 11px 12px; text-decoration: none; color: #333; }
