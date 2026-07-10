@@ -13,7 +13,7 @@
 | **Тон** | ясний, спокійний, точний |
 | **Live** | [kutok.vercel.app](https://kutok.vercel.app) — дашборд ресерчу |
 
-Детальний бриф → [CLAUDE.md](./CLAUDE.md) · продуктовий контекст → [PRODUCT.md](./PRODUCT.md) · візуальна система → [DESIGN.md](./DESIGN.md)
+Детальний бриф → [CLAUDE.md](./CLAUDE.md) · продуктовий контекст → [PRODUCT.md](./PRODUCT.md) · візуальна система research-сторінок → [DESIGN-artifacts.md](./DESIGN-artifacts.md)
 Проектування → [sitemap.md](./sitemap.md) (сутності + екрани) · [flows.md](./flows.md) (user flows) · [ia.md](./ia.md) (навігація) · [audit.md](./audit.md) (аудит мапи)
 
 ---
@@ -107,7 +107,7 @@
 
 | Шлях | Що тут | Статус |
 |------|--------|--------|
-| [`CLAUDE.md`](./CLAUDE.md) · [`PRODUCT.md`](./PRODUCT.md) · [`DESIGN.md`](./DESIGN.md) | Бриф, продуктовий контекст, візуальна система артефактів | ✅ |
+| [`CLAUDE.md`](./CLAUDE.md) · [`PRODUCT.md`](./PRODUCT.md) · [`DESIGN-artifacts.md`](./DESIGN-artifacts.md) | Бриф, продуктовий контекст, візуальна система артефактів | ✅ |
 | [`sitemap.md`](./sitemap.md) · [`flows.md`](./flows.md) · [`ia.md`](./ia.md) · [`audit.md`](./audit.md) | Проектування: сутності + екрани, user flows, навігація, аудит мапи | ✅ чернетка |
 | [`research/`](./research/) | [research.md](./research/research.md) (конкуренти · бенчмарк · патерни · висновки · доресерч), [competitors.md](./research/competitors.md), [personas.md](./research/personas.md), [jtbd.md](./research/jtbd.md), [critique.md](./research/critique.md), [interviews.md](./research/interviews.md), [дашборд](./research/index.html) | ✅ |
 | [`research/screens/`](./research/screens/) | Скріни еталонів бенчмарку (Airbnb, Tinder); скріни конкурентів — TODO | 🟡 частково |
