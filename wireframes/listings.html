@@ -183,13 +183,16 @@
   .card a.cardlink { text-decoration: none; color: inherit; }
   .card a.cardlink:focus-visible { outline: 2px solid var(--accent-text); outline-offset: 2px; border-radius: 10px; }
 
-  /* Таб-бар */
+  /* Таб-бар: плаваюча пігулка з відступом 8px від країв */
   footer.tabbar {
-    border-top: 1px solid var(--line);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    overflow: hidden;
     display: flex;
-    margin-top: auto;
+    margin: auto 8px 8px;
     position: sticky;
-    bottom: 0;
+    bottom: 8px;
+    box-shadow: 0 6px 20px rgba(42, 36, 28, .12), 0 1px 3px rgba(42, 36, 28, .08);
   }
   footer.tabbar a {
     flex: 1;
@@ -198,9 +201,7 @@
     font-size: var(--fs-caption);
     color: var(--text-muted);
     text-decoration: none;
-    border-right: 1px solid var(--line);
   }
-  footer.tabbar a:last-child { border-right: none; }
   footer.tabbar a.active { color: var(--accent-text); font-weight: 600; background: transparent; }
   footer.tabbar a:focus-visible { outline: 2px solid var(--accent-text); outline-offset: -2px; }
 
