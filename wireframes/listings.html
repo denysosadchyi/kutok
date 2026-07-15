@@ -89,31 +89,26 @@
 
   /* ── Загальні кістякові елементи ── */
   footer.tabbar { background: var(--surface); }
-  /* Хедер: усе (фон, рамка, скруглення) на .header-shell — самому sticky-елементі.
-     header.app всередині — тільки layout (flex/padding), без власного фону/рамки/
-     радіуса, щоб не було подвійного вирізання того самого кута двома шарами. */
+  /* Хедер: два шари. .header-shell (сам sticky-елемент, без падингу згори — жодного
+     зазору від верху екрана) — нижній шар, БІЛИЙ. header.app всередині — верхній шар,
+     кольору ЗАГАЛЬНОГО фону сторінки (--surface, той самий, що канвас), і саме він
+     має скруглення знизу — тільки поки шапка "прилипла" (.is-stuck, IntersectionObserver
+     нижче у файлі). У кутках, де скруглення зрізає бежевий фон header.app, знизу
+     проступає білий фон .header-shell. У спокої (нагорі сторінки) — прямий бежевий
+     хедер, жодного білого не видно, бо header.app при квадратних кутках повністю
+     перекриває .header-shell. */
   .header-shell {
     position: sticky;
     top: 0;
     z-index: 5;
     background: var(--surface-2);
-    border-bottom: 1px solid var(--line);
     will-change: transform;
     transform: translateZ(0);
     -webkit-transform: translateZ(0);
   }
-  /* Скруглення й повна рамка — тільки поки шапка реально "прилипла" при скролі
-     (клас ставить IntersectionObserver внизу файлу); у спокої, нагорі сторінки —
-     звичайна пряма шапка */
-  .header-shell.is-stuck {
-    border: 1px solid var(--line);
-    border-top: none;
-    border-radius: 0 0 32px 32px;
-    /* Картка фільтрів під хедером теж біла і йде впритул (без відступу) —
-       без тіні дві білі поверхні зливаються в одну пляму, і скруглення губиться */
-    box-shadow: 0 4px 10px rgba(42, 36, 28, .12);
-  }
   header.app {
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
     padding: 10px 12px;
     display: flex;
     align-items: center;
