@@ -222,7 +222,11 @@
   .filters-row { display: flex; gap: 8px; }
   .filters-row .field { flex: 1; min-width: 0; } /* без цього select не стискається і вилазить за картку */
   fieldset.seg-switch { border: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 2px; }
-  fieldset.seg-switch legend { font-size: var(--fs-caption); color: var(--text-muted); padding: 0; }
+  /* Легенда лишається для читалок екрана (доступна назва групи radio), візуально прибрана — контекст і так зрозумілий */
+  fieldset.seg-switch legend {
+    position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+  }
   /* iOS-стиль сегментованого контролю: нейтральний трек, вибраний пункт — інсетна
      плаваюча піґулка з тінню, а не заливка на всю комірку від краю до краю */
   .seg-options {
