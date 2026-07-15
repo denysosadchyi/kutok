@@ -89,23 +89,12 @@
 
   /* ── Загальні кістякові елементи ── */
   footer.tabbar { background: var(--surface); }
-  /* Хедер: два шари фону — білий підклад проступає через скруглені кутки верхнього шару */
-  /* Білий підклад — просто фон обгортки; хедер (в потоці, власний --surface,
-     скруглені кутки) малюється поверх неї, тому в кутках, де його фон "вирізано"
-     скругленням, природно проступає білий, без z-index-трюків, які глючили при sticky */
-  .header-shell {
+  /* Хедер: один елемент — фон, скруглення і sticky всі на ньому самому,
+     без окремих шарів/обгорток (ті глючили компонуванням під час live-скролу) */
+  header.app {
     position: sticky;
     top: 0;
     z-index: 5;
-    background: var(--surface-2);
-    /* форсує окремий compositing-шар для sticky-елемента — без цього деякі рушії
-       (типово Safari/iOS) миготять прозорістю на border-radius+фоні під час live-скролу
-       чи rubber-band bounce; на "застиглих" скріншотах до/після цього не видно */
-    will-change: transform;
-    transform: translateZ(0);
-    -webkit-transform: translateZ(0);
-  }
-  header.app {
     background: var(--surface);
     border-bottom: 1px solid var(--line);
     border-radius: 0 0 32px 32px;
