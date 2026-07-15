@@ -89,14 +89,14 @@
 
   /* ── Загальні кістякові елементи ── */
   footer.tabbar { background: var(--surface); }
-  /* Хедер: два шари. .header-shell (сам sticky-елемент, без падингу згори — жодного
-     зазору від верху екрана) — нижній шар, БІЛИЙ. header.app всередині — верхній шар,
-     кольору ЗАГАЛЬНОГО фону сторінки (--surface, той самий, що канвас), і саме він
-     має скруглення знизу — тільки поки шапка "прилипла" (.is-stuck, IntersectionObserver
-     нижче у файлі). У кутках, де скруглення зрізає бежевий фон header.app, знизу
-     проступає білий фон .header-shell. У спокої (нагорі сторінки) — прямий бежевий
-     хедер, жодного білого не видно, бо header.app при квадратних кутках повністю
-     перекриває .header-shell. */
+  /* Хедер: два шари однакового розміру, накладені один на одного.
+     .header-shell — нижній шар, БІЛИЙ, без падингів (жодного зазору від верху екрана).
+     header.app — верхній шар, кольору ЗАГАЛЬНОГО фону сторінки (--surface), скруглений
+     знизу ЗАВЖДИ. Оскільки нижній (білий) у спокої НЕ скруглений, у кутках, де дуга
+     зрізає бежевий, проступає білий — це і є «білі області, що просвічуються».
+     При скролі (.is-stuck, клас ставить IntersectionObserver внизу файлу) білий шар
+     доскруглюється так само → бежевий накриває його рівно один в один → білий зникає,
+     кутки чисті. */
   .header-shell {
     position: sticky;
     top: 0;
@@ -106,21 +106,19 @@
     transform: translateZ(0);
     -webkit-transform: translateZ(0);
   }
+  .header-shell.is-stuck {
+    border-radius: 0 0 32px 32px;
+  }
   header.app {
     background: var(--surface);
-    border-bottom: 1px solid var(--line);
+    border: 1px solid var(--line);
+    border-top: none;
+    border-radius: 0 0 32px 32px;
     padding: 10px 12px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 6px;
-  }
-  /* Скруглення — тільки поки шапка реально "прилипла" (клас ставить
-     IntersectionObserver внизу файлу); у спокої, нагорі сторінки — пряма шапка */
-  .header-shell.is-stuck header.app {
-    border: 1px solid var(--line);
-    border-top: none;
-    border-radius: 0 0 32px 32px;
   }
   /* Лого: наданий растровий знак (фон вирізано, кроп впритул) + вордмарк геометричним
      гротеском Space Grotesk — навмисно не Newsreader і не Inter, окрема марка,
