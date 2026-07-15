@@ -738,13 +738,37 @@
   <div class="wf-stage">
 <div class="device">
 
-  <header class="app">
-    <div class="app-name">Куток</div>
-  </header>
+  <div class="header-shell">
+    <header class="app">
+      <div class="logo">
+        <img class="logo-mark" src="assets/logo-mark.png" alt="" width="601" height="562">
+        <span class="logo-word">Куток</span>
+        <span class="logo-tagline">безпечний пошук<br>кімнат і сусідів</span>
+      </div>
+      <button type="button" class="icon-btn search-trigger" popovertarget="search-popover" aria-label="Відкрити пошук">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M21.788 21.788a.723.723 0 0 0 0-1.022L18.122 17.1a9.157 9.157 0 1 0-1.022 1.022l3.666 3.666a.723.723 0 0 0 1.022 0" clip-rule="evenodd"/></svg>
+      </button>
+    </header>
+  </div>
 
-  <section class="pad">
+  <div id="search-popover" popover class="search-popover">
+    <form class="search-popover-form" role="search" action="listings.html" method="get">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M21.788 21.788a.723.723 0 0 0 0-1.022L18.122 17.1a9.157 9.157 0 1 0-1.022 1.022l3.666 3.666a.723.723 0 0 0 1.022 0" clip-rule="evenodd"/></svg>
+      <input type="search" name="q" placeholder="Пошук за назвою, районом…" aria-label="Пошук оголошень">
+    </form>
+  </div>
+
+  <section class="filters-section">
     <nav aria-label="Фільтр оголошень">
       <form class="filters" id="listings-filters" action="listings.html" method="get">
+        <fieldset class="seg-switch">
+          <legend>Тип оголошень</legend>
+          <div class="seg-options">
+            <label><input type="radio" name="type" value="rooms"> Кімнати <span class="seg-count">0</span></label>
+            <label><input type="radio" name="type" value="people"> Люди <span class="seg-count">0</span></label>
+            <label><input type="radio" name="type" value="all" checked> Усі <span class="seg-count">0</span></label>
+          </div>
+        </fieldset>
         <div class="field">
           <label for="district">Район Києва</label>
           <select id="district" name="district">
