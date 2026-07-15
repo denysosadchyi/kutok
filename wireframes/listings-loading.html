@@ -320,14 +320,23 @@
   }
   .card-body { padding: 12px 14px 14px; }
 
-  /* ── Скелетони (стан завантаження): темні смуги на поверхні картки, з м'яким мерехтінням ── */
-  .sk { background: var(--surface-2); border-radius: 4px; height: 11px; margin: 7px 0; position: relative; overflow: hidden; }
-  .sk.t  { height: 14px; width: 80%; }   /* заголовок */
+  /* ── Скелетони (стан завантаження): світлі смуги на поверхні білої картки, з м'яким
+     мерехтінням. Форма повторює справжню картку — велике фото зверху, дані знизу. ── */
+  .sk { background: var(--line); border-radius: 4px; height: 11px; margin: 7px 0; position: relative; overflow: hidden; }
+  /* Плейсхолдер фото: на всю ширину картки, тієї ж висоти, що й справжнє фото */
+  .sk.photo { height: 180px; width: 100%; margin: 0; border-radius: 0; }
+  .sk.t  { height: 18px; width: 80%; }   /* заголовок (Newsreader 22px) */
   .sk.w90 { width: 90%; } .sk.w70 { width: 70%; } .sk.w50 { width: 50%; } .sk.w40 { width: 40%; }
-  .sk.badge { height: 16px; width: 60%; border-radius: 999px; margin-top: 10px; }
+  /* Бейдж довіри лежить на фото — світліша піґулка в тому ж куті, що й справжня */
+  .sk.badge {
+    position: absolute; left: 10px; bottom: 10px;
+    height: 20px; width: 45%; margin: 0;
+    border-radius: 999px;
+    background: var(--surface);
+  }
   .sk::after {
     content: ""; position: absolute; inset: 0;
-    background: linear-gradient(90deg, transparent, rgba(224,164,88,.16), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 254, 252, .6), transparent);
     animation: sk-shimmer 1.6s ease-in-out infinite;
   }
   @keyframes sk-shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
