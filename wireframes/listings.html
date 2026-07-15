@@ -139,7 +139,7 @@
   .field select option { background-color: var(--surface-2); color: var(--text); }
   .field select:focus, .field input:focus { outline: 2px solid var(--accent-text); outline-offset: 1px; }
   .filters-row { display: flex; gap: 8px; }
-  .filters-row .field { flex: 1; }
+  .filters-row .field { flex: 1; min-width: 0; } /* без цього select не стискається і вилазить за картку */
   fieldset.seg-switch { border: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 2px; }
   fieldset.seg-switch legend { font-size: var(--fs-caption); color: var(--text-muted); padding: 0; }
   /* iOS-стиль сегментованого контролю: нейтральний трек, вибраний пункт — інсетна
