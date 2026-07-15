@@ -93,7 +93,15 @@
   /* Білий підклад — просто фон обгортки; хедер (в потоці, власний --surface,
      скруглені кутки) малюється поверх неї, тому в кутках, де його фон "вирізано"
      скругленням, природно проступає білий, без z-index-трюків, які глючили при sticky */
-  .header-shell { position: sticky; top: 0; z-index: 5; background: var(--surface-2); }
+  .header-shell {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: var(--surface-2);
+    will-change: transform; /* форсує окремий compositing-шар — без цього Chromium іноді
+      промальовує border-radius+фон дитини поверх sticky-елемента з артефактом-миготінням
+      прозорості під час самого скролу (не видно на "застиглих" скріншотах до/після) */
+  }
   header.app {
     background: var(--surface);
     border-bottom: 1px solid var(--line);
