@@ -135,8 +135,9 @@
     border-radius: 999px;
     cursor: pointer;
   }
-  button.primary { border: none; background: var(--accent-deep); color: var(--on-accent); font-weight: 600; }
-  button.primary:hover { background: var(--accent-deep-strong); }
+  /* Легкий горизонтальний градієнт «світло лампи»; обидва краї тримають ≥4.5:1 зі світлим текстом */
+  button.primary { border: none; background: linear-gradient(90deg, #9A671F, #7A4D13); color: var(--on-accent); font-weight: 600; }
+  button.primary:hover { background: linear-gradient(90deg, #85581A, #6F460F); }
   button:focus-visible { outline: 2px solid var(--accent-text); outline-offset: 2px; }
 
   /* Лічильник */
