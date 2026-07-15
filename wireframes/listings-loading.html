@@ -342,10 +342,26 @@
   @keyframes sk-shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
   @media (prefers-reduced-motion: reduce) { .sk::after { animation: none; } }
 
-  footer.tabbar { border-top: 1px solid var(--line); display: flex; margin-top: auto; position: sticky; bottom: 0; }
-  footer.tabbar a { flex: 1; text-align: center; padding: 10px 4px; font-size: 11px; color: var(--text-muted); text-decoration: none; border-right: 1px solid var(--line); }
-  footer.tabbar a:last-child { border-right: none; }
-  footer.tabbar a.active { color: var(--accent); font-weight: 600; background: transparent; }
+  /* Таб-бар: плаваюча пігулка з відступом 8px від країв */
+  footer.tabbar {
+    background: var(--surface-2);
+    border-radius: 999px;
+    overflow: hidden;
+    display: flex;
+    margin: auto 8px calc(8px + env(safe-area-inset-bottom));
+    position: sticky;
+    bottom: calc(8px + env(safe-area-inset-bottom));
+    box-shadow: 0 6px 20px rgba(42, 36, 28, .12), 0 1px 3px rgba(42, 36, 28, .08);
+  }
+  footer.tabbar a {
+    flex: 1;
+    text-align: center;
+    padding: 10px 4px;
+    font-size: var(--fs-caption);
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+  footer.tabbar a.active { color: var(--accent); font-weight: 600; background: var(--surface); }
   footer.tabbar a:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 
   .wf-nav-hint { font-size: 10px; color: #999; margin-bottom: 8px; font-style: italic; }
