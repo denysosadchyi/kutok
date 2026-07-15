@@ -8,18 +8,29 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@500;600&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
 <style>
-  /* ── Мова «Нічна лампа» (concept.md → «Обраний напрям»): Committed-палітра,
-     Newsreader italic + Inter, Solar Bold. Навігатор вайрфреймів зліва (.wf-nav)
-     лишається нейтральним інструментом — тема застосована лише до .device. ── */
+  /* ── Мова «Денна кімната» — світла тема тієї ж мови «Нічна лампа» (concept.md):
+     той самий теплий бурштин, Newsreader (прямий) + Inter, Solar Bold. Навігатор
+     вайрфреймів зліва (.wf-nav) лишається нейтральним інструментом — тема
+     застосована лише до .device. ── */
   :root {
-    --canvas: #1B140F;
-    --surface: #241A13;
-    --surface-2: #2B2018;
-    --text: #F1E8DD;
-    --text-muted: #A79A8C;
-    --accent: #E0A458;
-    --accent-strong: #C97F3B;
-    --line: #3A2C21;
+    --canvas: #F5F1EB;
+    --surface: #F5F1EB;
+    --surface-2: #FFFEFC;
+    --text: #2A241C;
+    --text-muted: #75695A;
+    --accent: #E55636;         /* акцент з лого (колір даху) — тінти, ореоли */
+    --accent-text: #8A2812;    /* акцент як текст/іконка на світлому (контраст ≥4.5:1) */
+    --accent-deep: #7D2410;    /* заливка CTA/активних станів: світлий текст на #E55636 не тримає контраст */
+    --accent-deep-strong: #58190B; /* hover/pressed глибокої заливки */
+    --on-accent: #FFF9F0;      /* текст на глибокій бурштиновій заливці */
+    --line: #E8E2D8;
+    /* Типографічна драбина (product: фіксований rem-скейл, крок ~1.15–1.25):
+       11 → 13 → 16 → 18 → 20. Роль ваги: 400 текст, 500 заголовки-serif, 600 акцент. */
+    --fs-caption: 0.6875rem;   /* 11px: лейбли, оверлайни, таби, бейдж */
+    --fs-secondary: 0.8125rem; /* 13px: мета, лічильник, сегменти */
+    --fs-body: 1rem;           /* 16px: поля, кнопки */
+    --fs-title: 1.125rem;      /* 18px: заголовок картки */
+    --fs-display: 1.25rem;     /* 20px: назва застосунку */
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: sans-serif; background: #e9e9e9; color: #333; line-height: 1.4; }
