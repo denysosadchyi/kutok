@@ -140,14 +140,28 @@
     clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
   }
   .seg-options label:has(input:checked) {
-    background: var(--accent-deep);
-    color: var(--on-accent);
+    background: var(--surface-2);
+    color: var(--accent-text);
     font-weight: 600;
     box-shadow: 0 1px 3px rgba(42, 36, 28, .16), 0 1px 1px rgba(42, 36, 28, .08);
   }
   .seg-options label:has(input:focus-visible) { outline: 2px solid var(--accent-text); outline-offset: 2px; }
-  .seg-count { font-variant-numeric: tabular-nums; opacity: .65; }
-  .seg-options label:has(input:checked) .seg-count { opacity: .85; }
+  /* Лічильник у сегменті — та сама кругла піґулка, що й на табах навбара знизу */
+  .seg-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    border-radius: 999px;
+    background: var(--accent-deep);
+    color: var(--on-accent);
+    font-size: 0.625rem;
+    font-weight: 700;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
   button {
     border: 1px solid var(--line);
     background: var(--surface-2);
