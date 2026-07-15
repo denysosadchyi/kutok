@@ -90,7 +90,7 @@
   /* ── Загальні кістякові елементи ── */
   footer.tabbar { background: var(--surface); }
   /* Хедер: два шари фону — білий підклад проступає через скруглені кутки верхнього шару */
-  .header-shell { position: relative; isolation: isolate; }
+  .header-shell { position: sticky; top: 0; z-index: 5; isolation: isolate; }
   .header-backdrop { position: absolute; inset: 0; background: var(--surface-2); z-index: -1; }
   header.app {
     background: var(--surface);
