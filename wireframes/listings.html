@@ -116,15 +116,36 @@
   .filters-row .field { flex: 1; }
   fieldset.seg-switch { border: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 2px; }
   fieldset.seg-switch legend { font-size: var(--fs-caption); color: var(--text-muted); padding: 0; }
-  .seg-options { display: flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
-  .seg-options label { flex: 1; display: flex; align-items: center; justify-content: center; gap: 4px; padding: 9px 4px; font-size: var(--fs-secondary); color: var(--text-muted); border-right: 1px solid var(--line); }
-  .seg-options label:last-child { border-right: none; }
+  /* iOS-стиль сегментованого контролю: нейтральний трек, вибраний пункт — інсетна
+     плаваюча піґулка з тінню, а не заливка на всю комірку від краю до краю */
+  .seg-options {
+    display: flex;
+    gap: 2px;
+    padding: 2px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 11px;
+  }
+  .seg-options label {
+    flex: 1;
+    display: flex; align-items: center; justify-content: center; gap: 4px;
+    padding: 7px 4px;
+    font-size: var(--fs-secondary);
+    color: var(--text-muted);
+    border-radius: 9px;
+    transition: background .15s ease-out, color .15s ease-out, box-shadow .15s ease-out;
+  }
   .seg-options input {
     position: absolute; width: 1px; height: 1px; overflow: hidden;
     clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
   }
-  .seg-options label:has(input:checked) { background: var(--accent-deep); color: var(--on-accent); font-weight: 600; }
-  .seg-options label:has(input:focus-visible) { outline: 2px solid var(--accent-text); outline-offset: -2px; }
+  .seg-options label:has(input:checked) {
+    background: var(--surface-2);
+    color: var(--text);
+    font-weight: 600;
+    box-shadow: 0 1px 3px rgba(42, 36, 28, .16), 0 1px 1px rgba(42, 36, 28, .08);
+  }
+  .seg-options label:has(input:focus-visible) { outline: 2px solid var(--accent-text); outline-offset: 2px; }
   .seg-count { font-variant-numeric: tabular-nums; opacity: .65; }
   .seg-options label:has(input:checked) .seg-count { opacity: .85; }
   button {
