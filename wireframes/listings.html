@@ -98,9 +98,12 @@
     top: 0;
     z-index: 5;
     background: var(--surface-2);
-    will-change: transform; /* форсує окремий compositing-шар — без цього Chromium іноді
-      промальовує border-radius+фон дитини поверх sticky-елемента з артефактом-миготінням
-      прозорості під час самого скролу (не видно на "застиглих" скріншотах до/після) */
+    /* форсує окремий compositing-шар для sticky-елемента — без цього деякі рушії
+       (типово Safari/iOS) миготять прозорістю на border-radius+фоні під час live-скролу
+       чи rubber-band bounce; на "застиглих" скріншотах до/після цього не видно */
+    will-change: transform;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
   }
   header.app {
     background: var(--surface);
