@@ -108,7 +108,11 @@
   }
   header.app {
     background: var(--surface);
-    border-bottom: 1px solid var(--line);
+    /* Full border, не тільки border-bottom: сам скруглений край мусить бути
+       обведений лінією по контуру, інакше на близьких відтінках (surface/surface-2)
+       заокруглення не читається оком, навіть якщо колір технічно правильний */
+    border: 1px solid var(--line);
+    border-top: none;
     border-radius: 0 0 32px 32px;
     padding: 10px 12px;
     display: flex;
