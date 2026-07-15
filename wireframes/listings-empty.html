@@ -834,6 +834,16 @@
       }
     });
   }
+  (function () {
+    var shell = document.querySelector('.header-shell');
+    if (!shell) return;
+    // .device починається з самого верху сторінки, тому scrollY > 0 — це рівно
+    // момент, коли шапка прилипає. Без сентінел-елемента: будь-який дів у потоці
+    // (навіть 1px) зсував би шапку на свою висоту.
+    function sync() { shell.classList.toggle('is-stuck', window.scrollY > 0); }
+    window.addEventListener('scroll', sync, { passive: true });
+    sync();
+  })();
 </script>
 </body>
 </html>
