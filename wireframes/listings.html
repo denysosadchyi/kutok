@@ -98,8 +98,21 @@
   section { border-bottom: 1px solid var(--line); }
   .pad { padding: 10px 12px; }
 
-  /* Фільтри */
-  form.filters { display: flex; flex-direction: column; gap: 8px; }
+  /* Фільтри: та сама картка, що й у кімнати/людини — білий блок на канвасі */
+  section.filters-section {
+    border-bottom: none;
+    padding: 12px 12px 0;
+  }
+  form.filters {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 14px;
+    box-shadow: 0 1px 2px rgba(42, 36, 28, .05);
+  }
   .field { display: flex; flex-direction: column; gap: 2px; }
   .field label { font-size: var(--fs-caption); color: var(--text-muted); }
   .field select, .field input {
