@@ -932,12 +932,14 @@
     });
   }
   (function () {
-    var sentinel = document.getElementById('header-sentinel');
     var shell = document.querySelector('.header-shell');
-    if (!sentinel || !shell || !('IntersectionObserver' in window)) return;
-    new IntersectionObserver(function (entries) {
-      shell.classList.toggle('is-stuck', !entries[0].isIntersecting);
-    }).observe(sentinel);
+    if (!shell) return;
+    // .device починається з самого верху сторінки, тому scrollY > 0 — це рівно
+    // момент, коли шапка прилипає. Без сентінел-елемента: будь-який дів у потоці
+    // (навіть 1px) зсував би шапку на свою висоту.
+    function sync() { shell.classList.toggle('is-stuck', window.scrollY > 0); }
+    window.addEventListener('scroll', sync, { passive: true });
+    sync();
   })();
 </script>
 </body>
