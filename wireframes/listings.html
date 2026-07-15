@@ -180,6 +180,9 @@
   .card-meta { font-size: var(--fs-secondary); line-height: 1.45; color: var(--text-muted); }
   .card-price { font-size: var(--fs-body); font-weight: 600; font-variant-numeric: tabular-nums; color: var(--text); margin-top: 4px; }
   .badge {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
     display: inline-flex;
     align-items: center;
     gap: 4px;
@@ -187,10 +190,10 @@
     font-weight: 600;
     color: var(--accent-text);
     border: 1px solid rgba(201, 127, 59, .45);
-    background: rgba(224, 164, 88, .16);
+    background: rgba(255, 254, 252, .92);
+    box-shadow: 0 1px 3px rgba(42, 36, 28, .18);
     border-radius: 999px;
-    padding: 2px 8px;
-    margin-top: 6px;
+    padding: 3px 9px;
   }
   .badge svg { width: 12px; height: 12px; flex-shrink: 0; }
   .card a.cardlink { display: block; text-decoration: none; color: inherit; }
