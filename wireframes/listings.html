@@ -929,6 +929,14 @@
       }
     });
   }
+  (function () {
+    var sentinel = document.getElementById('header-sentinel');
+    var shell = document.querySelector('.header-shell');
+    if (!sentinel || !shell || !('IntersectionObserver' in window)) return;
+    new IntersectionObserver(function (entries) {
+      shell.classList.toggle('is-stuck', !entries[0].isIntersecting);
+    }).observe(sentinel);
+  })();
 </script>
 </body>
 </html>
