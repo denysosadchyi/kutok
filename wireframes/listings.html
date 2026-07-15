@@ -100,13 +100,13 @@
   /* Фільтри */
   form.filters { display: flex; flex-direction: column; gap: 8px; }
   .field { display: flex; flex-direction: column; gap: 2px; }
-  .field label { font-size: 11px; color: var(--text-muted); }
+  .field label { font-size: var(--fs-caption); color: var(--text-muted); }
   .field select, .field input {
     border: 1px solid var(--line);
     background: var(--surface-2);
     color: var(--text);
     padding: 8px 10px;
-    font-size: 16px; /* <16px змушує iOS Safari зумити екран при фокусі */
+    font-size: var(--fs-body); /* <16px змушує iOS Safari зумити екран при фокусі */
     font-family: inherit;
     border-radius: 8px;
   }
