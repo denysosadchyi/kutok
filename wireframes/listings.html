@@ -89,12 +89,19 @@
 
   /* ── Загальні кістякові елементи ── */
   footer.tabbar { background: var(--surface); }
-  /* Хедер: один елемент — фон, скруглення і sticky всі на ньому самому,
-     без окремих шарів/обгорток (ті глючили компонуванням під час live-скролу) */
-  header.app {
+  /* Хедер: два шари фону — білий підклад обгортки проступає через скруглені кутки
+     верхнього шару (header.app). Підклад — просто фон .header-shell, без окремого
+     .header-backdrop-дива й без z-index — та версія глючила прозорістю під sticky. */
+  .header-shell {
     position: sticky;
     top: 0;
     z-index: 5;
+    background: var(--surface-2);
+    will-change: transform;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+  }
+  header.app {
     background: var(--surface);
     border-bottom: 1px solid var(--line);
     border-radius: 0 0 32px 32px;
