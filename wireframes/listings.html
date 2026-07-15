@@ -93,13 +93,15 @@
      верхнього шару (header.app). Підклад — просто фон .header-shell, без окремого
      .header-backdrop-дива й без z-index — та версія глючила прозорістю під sticky. */
   .header-shell {
+    /* ПЛАСКИЙ прямокутник, без border-radius і overflow:hidden — саме тому, що вона
+       НЕ скруглена, її білий фон лишається видимим у кутках, де header.app (з
+       border-radius нижче) вирізає власний фон. Раніше тут був той самий border-radius,
+       що й на header.app — це й ламало ефект: обгортка обрізала свій же білий фон
+       тим самим скругленням, тож у кутку не лишалось що показувати. */
     position: sticky;
     top: 0;
     z-index: 5;
     background: var(--surface-2);
-    border-radius: 0 0 32px 32px; /* дублює скруглення header.app — підстраховка, щоб
-      кутки лишались круглими навіть якщо десь глюкне рендер самого header.app під час sticky */
-    overflow: hidden;
     will-change: transform;
     transform: translateZ(0);
     -webkit-transform: translateZ(0);
