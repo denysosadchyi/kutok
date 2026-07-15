@@ -97,12 +97,18 @@
     top: 0;
     z-index: 5;
     background: var(--surface);
-    border: 1px solid var(--line);
-    border-top: none;
-    border-radius: 0 0 32px 32px;
+    border-bottom: 1px solid var(--line);
     will-change: transform;
     transform: translateZ(0);
     -webkit-transform: translateZ(0);
+  }
+  /* Скруглення й повна рамка — тільки поки шапка реально "прилипла" при скролі
+     (клас ставить IntersectionObserver внизу файлу); у спокої, нагорі сторінки —
+     звичайна пряма шапка */
+  .header-shell.is-stuck {
+    border: 1px solid var(--line);
+    border-top: none;
+    border-radius: 0 0 32px 32px;
   }
   header.app {
     padding: 10px 12px;
