@@ -89,31 +89,27 @@
 
   /* ── Загальні кістякові елементи ── */
   footer.tabbar { background: var(--surface); }
-  /* Хедер: два шари фону — білий підклад обгортки проступає через скруглені кутки
-     верхнього шару (header.app). Підклад — просто фон .header-shell, без окремого
-     .header-backdrop-дива й без z-index — та версія глючила прозорістю під sticky. */
+  /* Хедер: та сама механіка, що вже працює в таб-барі знизу — біла плаваюча картка
+     з РЕАЛЬНИМ проміжком (не тонкою різницею відтінків) навколо. .header-shell —
+     сама sticky-позиція, без фону, з падингом з боків і знизу (згори 0, бо
+     притиснута до верху екрана). header.app — біла картка (--surface-2, той самий
+     колір, що й у картках стрічки/поповера), скруглена знизу, з проміжком
+     канвасу навколо — тому крива видно завжди, це геометричний зазор, а не
+     ледь відмінний відтінок. */
   .header-shell {
-    /* ПЛАСКИЙ прямокутник, без border-radius і overflow:hidden — саме тому, що вона
-       НЕ скруглена, її білий фон лишається видимим у кутках, де header.app (з
-       border-radius нижче) вирізає власний фон. Раніше тут був той самий border-radius,
-       що й на header.app — це й ламало ефект: обгортка обрізала свій же білий фон
-       тим самим скругленням, тож у кутку не лишалось що показувати. */
     position: sticky;
     top: 0;
     z-index: 5;
-    background: var(--surface-2);
+    padding: 0 8px 8px;
     will-change: transform;
     transform: translateZ(0);
     -webkit-transform: translateZ(0);
   }
   header.app {
-    background: var(--surface);
-    /* Full border, не тільки border-bottom: сам скруглений край мусить бути
-       обведений лінією по контуру, інакше на близьких відтінках (surface/surface-2)
-       заокруглення не читається оком, навіть якщо колір технічно правильний */
+    background: var(--surface-2);
     border: 1px solid var(--line);
-    border-top: none;
-    border-radius: 0 0 32px 32px;
+    border-radius: 0 0 20px 20px;
+    box-shadow: 0 4px 12px rgba(42, 36, 28, .1);
     padding: 10px 12px;
     display: flex;
     align-items: center;
