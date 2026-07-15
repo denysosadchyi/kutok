@@ -189,9 +189,9 @@
     border-radius: 999px;
     overflow: hidden;
     display: flex;
-    margin: auto 8px 8px;
+    margin: auto 8px calc(8px + env(safe-area-inset-bottom));
     position: sticky;
-    bottom: 8px;
+    bottom: calc(8px + env(safe-area-inset-bottom));
     box-shadow: 0 6px 20px rgba(42, 36, 28, .12), 0 1px 3px rgba(42, 36, 28, .08);
   }
   footer.tabbar a {
