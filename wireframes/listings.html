@@ -89,31 +89,22 @@
 
   /* ── Загальні кістякові елементи ── */
   footer.tabbar { background: var(--surface); }
-  /* Хедер: два шари фону — білий підклад обгортки проступає через скруглені кутки
-     верхнього шару (header.app). Підклад — просто фон .header-shell, без окремого
-     .header-backdrop-дива й без z-index — та версія глючила прозорістю під sticky. */
+  /* Хедер: усе (фон, рамка, скруглення) на .header-shell — самому sticky-елементі.
+     header.app всередині — тільки layout (flex/padding), без власного фону/рамки/
+     радіуса, щоб не було подвійного вирізання того самого кута двома шарами. */
   .header-shell {
-    /* ПЛАСКИЙ прямокутник, без border-radius і overflow:hidden — саме тому, що вона
-       НЕ скруглена, її білий фон лишається видимим у кутках, де header.app (з
-       border-radius нижче) вирізає власний фон. Раніше тут був той самий border-radius,
-       що й на header.app — це й ламало ефект: обгортка обрізала свій же білий фон
-       тим самим скругленням, тож у кутку не лишалось що показувати. */
     position: sticky;
     top: 0;
     z-index: 5;
-    background: var(--surface-2);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-top: none;
+    border-radius: 0 0 32px 32px;
     will-change: transform;
     transform: translateZ(0);
     -webkit-transform: translateZ(0);
   }
   header.app {
-    background: var(--surface);
-    /* Full border, не тільки border-bottom: сам скруглений край мусить бути
-       обведений лінією по контуру, інакше на близьких відтінках (surface/surface-2)
-       заокруглення не читається оком, навіть якщо колір технічно правильний */
-    border: 1px solid var(--line);
-    border-top: none;
-    border-radius: 0 0 32px 32px;
     padding: 10px 12px;
     display: flex;
     align-items: center;
