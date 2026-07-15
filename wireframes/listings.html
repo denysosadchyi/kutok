@@ -97,11 +97,11 @@
     justify-content: space-between;
     gap: 6px;
   }
-  /* Лого: кутовий знак («куток» — тепла засвічена ніша) + вордмарк геометричним
+  /* Лого: наданий растровий знак (фон вирізано, кроп впритул) + вордмарк геометричним
      гротеском Space Grotesk — навмисно не Newsreader і не Inter, окрема марка,
      використовується лише тут, один раз */
-  .logo { display: flex; align-items: center; gap: 7px; }
-  .logo-mark { width: 20px; height: 20px; color: var(--accent-deep); flex-shrink: 0; }
+  .logo { display: flex; align-items: center; gap: 6px; }
+  .logo-mark { height: 26px; width: auto; flex-shrink: 0; display: block; }
   .logo-word {
     font-family: "Space Grotesk", Inter, system-ui, sans-serif;
     font-size: var(--fs-display);
