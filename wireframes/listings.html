@@ -88,8 +88,12 @@
   }
 
   /* ── Загальні кістякові елементи ── */
-  header.app, footer.tabbar { background: var(--surface); }
+  footer.tabbar { background: var(--surface); }
+  /* Хедер: два шари фону — білий підклад проступає через скруглені кутки верхнього шару */
+  .header-shell { position: relative; isolation: isolate; }
+  .header-backdrop { position: absolute; inset: 0; background: var(--surface-2); z-index: -1; }
   header.app {
+    background: var(--surface);
     border-bottom: 1px solid var(--line);
     border-radius: 0 0 32px 32px;
     padding: 10px 12px;
