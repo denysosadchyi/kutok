@@ -158,7 +158,7 @@
   }
   .icon-btn svg { width: 18px; height: 18px; }
   .icon-btn:hover { background: var(--line); color: var(--text); }
-  .icon-btn:focus-visible { outline: 2px solid var(--accent-text); outline-offset: 2px; }
+  .icon-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .search-trigger { anchor-name: --search-anchor; }
   #search-popover {
     position: fixed;
@@ -237,7 +237,7 @@
     color-scheme: light;
   }
   .field select option { background-color: var(--surface-2); color: var(--text); }
-  .field select:focus, .field input:focus { outline: 2px solid var(--accent-text); outline-offset: 1px; }
+  .field select:focus, .field input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
   .filters-row { display: flex; gap: 8px; }
   .filters-row .field { flex: 1; min-width: 0; } /* без цього select не стискається і вилазить за картку */
   fieldset.seg-switch { border: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 2px; }
@@ -275,7 +275,7 @@
     font-weight: 600;
     box-shadow: 0 1px 3px rgba(42, 36, 28, .16), 0 1px 1px rgba(42, 36, 28, .08);
   }
-  .seg-options label:has(input:focus-visible) { outline: 2px solid var(--accent-text); outline-offset: 2px; }
+  .seg-options label:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
   /* Лічильник у сегменті — та сама кругла піґулка, що й на табах навбара знизу;
      у невибраному сегменті приглушена, гучний акцентний фон лишається тільки за вибраним */
   .seg-count {
@@ -316,7 +316,7 @@
     font-weight: 600;
   }
   button.primary:hover { filter: brightness(1.08); }
-  button:focus-visible { outline: 2px solid var(--accent-text); outline-offset: 2px; }
+  button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
   /* Список карток: білі блоки на канвасі, велике горизонтальне фото зверху, дані знизу */
   ul.feed { list-style: none; padding: 12px; display: flex; flex-direction: column; gap: 12px; }
@@ -369,7 +369,7 @@
   }
   .badge svg { width: 12px; height: 12px; flex-shrink: 0; color: #5FA873; } /* щит — окремий, фіксовано зелений */
   .card a.cardlink { display: block; text-decoration: none; color: inherit; }
-  .card a.cardlink:focus-visible { outline: 2px solid var(--accent-text); outline-offset: -2px; border-radius: 16px; }
+  .card a.cardlink:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: 16px; }
 
   /* Таб-бар: плаваюча пігулка з відступом 8px від країв */
   footer.tabbar {
@@ -390,8 +390,8 @@
     color: var(--text-muted);
     text-decoration: none;
   }
-  footer.tabbar a.active { color: var(--accent-text); font-weight: 600; background: var(--surface); }
-  footer.tabbar a:focus-visible { outline: 2px solid var(--accent-text); outline-offset: -2px; }
+  footer.tabbar a.active { color: var(--accent); font-weight: 600; background: var(--surface); }
+  footer.tabbar a:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 
   .wf-nav-hint { font-size: 10px; color: #999; margin-bottom: 8px; font-style: italic; }
   .wf-nav .tree { margin-top: 2px; }
@@ -432,7 +432,7 @@
   footer.tabbar a { display: flex; flex-direction: column; align-items: center; gap: 3px; position: relative; padding: 7px 4px 6px; margin: 4px 3px; border-radius: 999px; }
   .tab-icon { width: 18px; height: 18px; color: var(--text-muted); }
   .tab-icon svg { width: 100%; height: 100%; display: block; }
-  footer.tabbar a.active .tab-icon { color: var(--accent-text); }
+  footer.tabbar a.active .tab-icon { color: var(--accent); }
   .tab-label { font-size: var(--fs-caption); }
   .tab-badge {
     position: absolute; top: 3px; right: 16%; min-width: 14px; height: 14px; padding: 0 3px;
