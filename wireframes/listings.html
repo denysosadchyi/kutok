@@ -94,9 +94,22 @@
     padding: 10px 12px;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 6px;
   }
-  .app-name { font-family: Newsreader, serif; font-size: var(--fs-display); font-weight: 600; line-height: 1.2; color: var(--text); }
+  /* Лого: кутовий знак («куток» — тепла засвічена ніша) + вордмарк геометричним
+     гротеском Space Grotesk — навмисно не Newsreader і не Inter, окрема марка,
+     використовується лише тут, один раз */
+  .logo { display: flex; align-items: center; gap: 7px; }
+  .logo-mark { width: 20px; height: 20px; color: var(--accent-deep); flex-shrink: 0; }
+  .logo-word {
+    font-family: "Space Grotesk", Inter, system-ui, sans-serif;
+    font-size: var(--fs-display);
+    font-weight: 600;
+    letter-spacing: -.01em;
+    line-height: 1;
+    color: var(--text);
+  }
 
   /* Значок пошуку в шапці + поповер із полем пошуку (нативний Popover API + anchor positioning) */
   .icon-btn {
