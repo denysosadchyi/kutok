@@ -115,6 +115,13 @@
     justify-content: space-between;
     gap: 6px;
   }
+  /* Скруглення — тільки поки шапка реально "прилипла" (клас ставить
+     IntersectionObserver внизу файлу); у спокої, нагорі сторінки — пряма шапка */
+  .header-shell.is-stuck header.app {
+    border: 1px solid var(--line);
+    border-top: none;
+    border-radius: 0 0 32px 32px;
+  }
   /* Лого: наданий растровий знак (фон вирізано, кроп впритул) + вордмарк геометричним
      гротеском Space Grotesk — навмисно не Newsreader і не Inter, окрема марка,
      використовується лише тут, один раз */
