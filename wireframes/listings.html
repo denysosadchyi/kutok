@@ -92,8 +92,64 @@
   header.app {
     border-bottom: 1px solid var(--line);
     padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
   }
   .app-name { font-family: Newsreader, serif; font-size: var(--fs-display); font-weight: 600; line-height: 1.2; color: var(--text); }
+
+  /* Значок пошуку в шапці + поповер із полем пошуку (нативний Popover API + anchor positioning) */
+  .icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    border: none;
+    background: transparent;
+    padding: 0;
+    border-radius: 9px;
+    color: var(--text-muted);
+    cursor: pointer;
+  }
+  .icon-btn svg { width: 18px; height: 18px; }
+  .icon-btn:hover { background: var(--line); color: var(--text); }
+  .icon-btn:focus-visible { outline: 2px solid var(--accent-text); outline-offset: 2px; }
+  .search-trigger { anchor-name: --search-anchor; }
+  #search-popover {
+    position: fixed;
+    position-anchor: --search-anchor;
+    position-area: bottom left;
+    margin: 8px 0 0;
+    width: min(340px, 92vw);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--surface-2);
+    box-shadow: 0 8px 24px rgba(42, 36, 28, .16), 0 2px 6px rgba(42, 36, 28, .08);
+    padding: 8px;
+  }
+  .search-popover-form {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    border-radius: 10px;
+    padding: 8px 10px;
+  }
+  .search-popover-form svg { width: 16px; height: 16px; color: var(--text-muted); flex-shrink: 0; }
+  .search-popover-form input {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: var(--fs-body);
+    font-family: inherit;
+    color: var(--text);
+  }
+  .search-popover-form input::placeholder { color: var(--text-muted); }
 
   section { border-bottom: 1px solid var(--line); }
   .pad { padding: 10px 12px; }
