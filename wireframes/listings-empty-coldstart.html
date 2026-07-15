@@ -6,7 +6,7 @@
 <title>Список оголошень · порожня база · Куток</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@500;600&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@500;600&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet">
 <style>
   /* ── Мова «Денна кімната» — світла тема тієї ж мови «Нічна лампа» (concept.md):
      той самий теплий бурштин, Newsreader (прямий) + Inter, Solar Bold. Навігатор
@@ -19,9 +19,6 @@
     --text: #2A241C;
     --text-muted: #75695A;
     --accent: #E55636;         /* акцент з лого (колір даху) — тінти, ореоли */
-    --accent-text: #8A2812;    /* акцент як текст/іконка на світлому (контраст ≥4.5:1) */
-    --accent-deep: #7D2410;    /* заливка CTA/активних станів: світлий текст на #E55636 не тримає контраст */
-    --accent-deep-strong: #58190B; /* hover/pressed глибокої заливки */
     --on-accent: #FFF9F0;      /* текст на глибокій бурштиновій заливці */
     --line: #E8E2D8;
     /* Типографічна драбина (product: фіксований rem-скейл, крок ~1.15–1.25):
@@ -70,13 +67,12 @@
   }
 
   /* ── Загальні кістякові елементи ── */
-  footer.tabbar { background: var(--surface); }
   /* Хедер: два шари однакового розміру, накладені один на одного.
      .header-shell — нижній шар, БІЛИЙ, без падингів (жодного зазору від верху екрана).
      header.app — верхній шар, кольору ЗАГАЛЬНОГО фону сторінки (--surface), скруглений
      знизу ЗАВЖДИ. Оскільки нижній (білий) у спокої НЕ скруглений, у кутках, де дуга
      зрізає бежевий, проступає білий — це і є «білі області, що просвічуються».
-     При скролі (.is-stuck, клас ставить IntersectionObserver внизу файлу) білий шар
+     При скролі (.is-stuck, клас ставить scroll-слухач внизу файлу) білий шар
      доскруглюється так само → бежевий накриває його рівно один в один → білий зникає,
      кутки чисті. */
   .header-shell {
