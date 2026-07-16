@@ -508,14 +508,18 @@
     font-size: var(--fs-secondary); color: var(--text);
     background: var(--surface); border-radius: 999px; padding: 6px 12px;
   }
-  /* Дія */
-  .btn-cta {
-    display: block; text-align: center; text-decoration: none;
-    background: var(--accent); color: var(--on-accent); font-weight: 600;
-    font-size: var(--fs-body); border-radius: 999px; padding: 12px 14px;
+  /* Кнопка редагування — маленька, неакцентна, у блоці користувача */
+  .edit-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    margin-top: 12px;
+    font-size: var(--fs-secondary); font-weight: 500;
+    color: var(--text); text-decoration: none;
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 999px; padding: 6px 14px;
   }
-  .btn-cta:hover { filter: brightness(1.08); }
-  .btn-cta:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .edit-link svg { width: 14px; height: 14px; color: var(--text-muted); }
+  .edit-link:hover { background: var(--line); }
+  .edit-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   /* Меню налаштувань */
   main.profile .menu-card { padding: 4px 0; }
   main.profile .menu-row {
