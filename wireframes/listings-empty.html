@@ -308,6 +308,18 @@
     padding: 30px 18px;
     text-align: center;
   }
+  .state-icon {
+    width: 84px;
+    height: 84px;
+    margin: 0 auto 16px;
+    border-radius: 24px;
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+  }
+  .state-icon svg { width: 48px; height: 48px; display: block; }
   .state-block .state-title {
     font-family: Newsreader, serif;
     font-weight: 500;
@@ -792,6 +804,7 @@
 
   <main>
     <div class="state-block">
+      <div class="state-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M10 3a7 7 0 1 0 4.192 12.606l4.1 4.101a1 1 0 0 0 1.415-1.414l-4.1-4.1A7 7 0 0 0 10 3m-5 7a5 5 0 1 1 10 0a5 5 0 0 1-10 0" clip-rule="evenodd"/></svg></div>
       <p class="state-title">Нічого не знайшлось</p>
       <p class="state-text">За такими умовами оголошень зараз немає. Спробуй ширший район чи більший бюджет — і покажемо більше.</p>
       <div class="state-actions">

@@ -308,6 +308,18 @@
 
   /* ── Стан-блок (порожньо / помилка) — повідомлення + дія-вихід ── */
   .state-block { padding: 30px 18px; text-align: center; }
+  .state-icon {
+    width: 84px;
+    height: 84px;
+    margin: 0 auto 16px;
+    border-radius: 24px;
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+  }
+  .state-icon svg { width: 48px; height: 48px; display: block; }
   .state-block .state-title {
     font-family: Newsreader, serif;
     font-weight: 500;
@@ -792,6 +804,7 @@
       <li>
         <article class="card">
           <div class="state-block">
+            <div class="state-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7.5 19a5.5 5.5 0 0 1-1.06-10.9A6.5 6.5 0 0 1 18.9 9.5a4.75 4.75 0 0 1-.65 9.5z"/><path stroke="var(--surface)" stroke-width="4" stroke-linecap="round" d="M4 3.5 20.5 20"/><path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M4 3.5 20.5 20"/></svg></div>
             <p class="state-title">Не вдалося завантажити оголошення</p>
             <p class="state-text">Перевір з'єднання і спробуй ще раз.</p>
             <div class="state-actions">
