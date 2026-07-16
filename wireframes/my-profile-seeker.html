@@ -5,6 +5,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Мій профіль · шукач · Куток</title>
 <style>
+  /* ── Мова «Денна кімната» — світла тема тієї ж мови «Нічна лампа» (concept.md):
+     той самий теплий бурштин, Newsreader (прямий) + Inter, Solar Bold. Навігатор
+     вайрфреймів зліва (.wf-nav) лишається нейтральним інструментом — тема
+     застосована лише до .device. ── */
+  :root {
+    --canvas: #F5F1EB;
+    --surface: #F5F1EB;
+    --surface-2: #FFFEFC;
+    --text: #2A241C;
+    --text-muted: #75695A;
+    --accent: #E55636;         /* акцент з лого (колір даху) — тінти, ореоли */
+    --on-accent: #FFF9F0;      /* текст на глибокій бурштиновій заливці */
+    --line: #E8E2D8;
+    /* Типографічна драбина (product: фіксований rem-скейл, крок ~1.15–1.25):
+       11 → 13 → 16 → 18 → 20. Роль ваги: 400 текст, 500 заголовки-serif, 600 акцент. */
+    --fs-caption: 0.6875rem;   /* 11px: лейбли, оверлайни, таби, бейдж */
+    --fs-secondary: 0.8125rem; /* 13px: мета, лічильник, сегменти */
+    --fs-body: 1rem;           /* 16px: поля, кнопки */
+    --fs-display: 1.25rem;     /* 20px: назва застосунку */
+  }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: sans-serif;
@@ -12,8 +32,12 @@
     color: #333;
     line-height: 1.4;
   }
+
+  /* ── Каркас вайрфрейму: дерево-навігація зліва + сцена з макетом ── */
   .wf-shell { display: flex; align-items: flex-start; min-height: 100vh; }
   .wf-stage { flex: 1 1 auto; display: flex; justify-content: center; background: #e9e9e9; }
+
+  /* ── Дерево сторінок (сіре, без кольору). Однакове на кожній сторінці вайрфрейму. ── */
   .wf-nav {
     position: sticky; top: 0; align-self: flex-start;
     flex: 0 0 240px; width: 240px; height: 100vh; overflow-y: auto;
@@ -41,134 +65,329 @@
   .wf-nav a:hover { background: #e6e6e6; color: #333; }
   .wf-nav a.active { background: #d8d8d8; color: #222; font-weight: bold; }
   .wf-nav a.active::before { content: "\25B8  "; }
+
   .device {
     width: 100%;
     max-width: 400px;
     min-height: 100vh;
-    background: #fff;
+    background: var(--canvas);
+    color: var(--text);
+    font-family: Inter, system-ui, sans-serif;
+    line-height: 1.5;
     border-left: 1px solid #ccc;
     border-right: 1px solid #ccc;
     display: flex;
     flex-direction: column;
   }
-  header.app, footer.tabbar { background: #f7f7f7; }
+
+  /* ── Загальні кістякові елементи ── */
+  /* Хедер: два шари однакового розміру, накладені один на одного.
+     .header-shell — нижній шар, БІЛИЙ, без падингів (жодного зазору від верху екрана).
+     header.app — верхній шар, кольору ЗАГАЛЬНОГО фону сторінки (--surface), скруглений
+     знизу ЗАВЖДИ. Оскільки нижній (білий) у спокої НЕ скруглений, у кутках, де дуга
+     зрізає бежевий, проступає білий — це і є «білі області, що просвічуються».
+     При скролі (.is-stuck, клас ставить scroll-слухач внизу файлу) білий шар
+     доскруглюється так само → бежевий накриває його рівно один в один → білий зникає,
+     кутки чисті. */
+  .header-shell {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: var(--surface-2);
+    will-change: transform;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+  }
+  .header-shell.is-stuck {
+    border-radius: 0 0 32px 32px;
+  }
   header.app {
-    border-bottom: 1px solid #ccc;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-top: none;
+    border-radius: 0 0 32px 32px;
     padding: 10px 12px;
-  }
-  .app-name { font-size: 16px; font-weight: bold; color: #444; }
-  section { border-bottom: 1px solid #ddd; }
-  .pad { padding: 10px 12px; }
-  form.filters { display: flex; flex-direction: column; gap: 8px; }
-  .field { display: flex; flex-direction: column; gap: 2px; }
-  .field label { font-size: 11px; color: #666; }
-  .field select, .field input, .field textarea {
-    border: 1px solid #bbb;
-    background: #fff;
-    color: #333;
-    padding: 7px 8px;
-    font-size: 13px;
-    font-family: inherit;
-  }
-  .filters-row { display: flex; gap: 8px; }
-  .filters-row .field { flex: 1; }
-  button, a.btn {
-    border: 1px solid #999;
-    background: #ededed;
-    color: #333;
-    padding: 9px 12px;
-    font-size: 13px;
-    font-family: inherit;
-    cursor: pointer;
-    display: block;
-    width: 100%;
-    text-decoration: none;
-    text-align: center;
-  }
-  button.primary, a.btn.primary { border: 1px solid #666; background: #ddd; font-weight: bold; }
-  button.ghost, a.btn.ghost { background: transparent; }
-  button[disabled], a.btn[disabled] { opacity: .5; cursor: default; }
-  .counter { font-size: 13px; color: #555; }
-  .counter b { color: #333; }
-  ul.feed { list-style: none; }
-  ul.feed > li { border-bottom: 1px solid #ddd; }
-  article.card {
-    display: flex;
-    gap: 10px;
-    padding: 10px 12px;
-    align-items: flex-start;
-  }
-  .thumb {
-    flex: 0 0 84px;
-    height: 84px;
-    background: #ddd;
-    border: 1px solid #c4c4c4;
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+  }
+  /* Лого: наданий растровий знак (фон вирізано, кроп впритул) + вордмарк геометричним
+     гротеском Space Grotesk — навмисно не Newsreader і не Inter, окрема марка,
+     використовується лише тут, один раз */
+  .logo { display: flex; align-items: center; gap: 8px; min-width: 0; flex: 1 1 auto; }
+  .logo-mark { height: 26px; width: auto; flex-shrink: 0; display: block; }
+  .logo-word {
+    font-family: "Space Grotesk", Inter, system-ui, sans-serif;
+    font-size: var(--fs-display);
+    font-weight: 600;
+    letter-spacing: -.01em;
+    line-height: 1.2;
+    color: var(--text);
+    flex-shrink: 0;
+  }
+  .logo-tagline {
+    font-size: var(--fs-caption);
+    color: var(--text-muted);
+    line-height: 1.25;
+    padding-left: 8px;
+    margin-left: 1px;
+    border-left: 1px solid var(--line);
+    min-width: 0;
+  }
+
+  /* Значок пошуку в шапці + поповер із полем пошуку (нативний Popover API + anchor positioning) */
+  .icon-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
     justify-content: center;
-    text-align: center;
-    font-size: 10px;
-    color: #777;
-    padding: 4px;
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    border: none;
+    background: transparent;
+    padding: 0;
+    border-radius: 9px;
+    color: var(--text-muted);
+    cursor: pointer;
   }
-  .thumb.avatar { border-radius: 0; }
-  .thumb.avatar.sm { flex-basis: 44px; height: 44px; }
-  .card-body { flex: 1; min-width: 0; }
-  .card-kind { font-size: 10px; text-transform: uppercase; letter-spacing: .05em; color: #999; }
-  .card-title { font-size: 14px; font-weight: bold; color: #333; margin: 2px 0; }
-  .card-meta { font-size: 12px; color: #555; }
-  .card-price { font-size: 14px; font-weight: bold; color: #333; margin-top: 4px; }
-  .badge {
-    display: inline-block;
-    font-size: 11px;
-    color: #555;
-    border: 1px solid #bbb;
-    background: #f3f3f3;
-    padding: 1px 6px;
-    margin-top: 5px;
+  .icon-btn svg { width: 18px; height: 18px; }
+  .icon-btn:hover { background: var(--line); color: var(--text); }
+  .icon-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .search-trigger { anchor-name: --search-anchor; }
+  #search-popover {
+    position: fixed;
+    position-anchor: --search-anchor;
+    position-area: bottom span-left;
+    margin: 8px 0 0;
+    width: min(376px, calc(100vw - 24px)); /* ширина контенту хедера (400px девайс − 2×12px падинг) */
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--surface-2);
+    box-shadow: 0 8px 24px rgba(42, 36, 28, .16), 0 2px 6px rgba(42, 36, 28, .08);
+    padding: 8px;
   }
-  .status {
-    display: inline-block;
-    font-size: 11px;
-    color: #555;
-    border: 1px solid #bbb;
-    background: #eee;
-    padding: 2px 7px;
-  }
-  .card a.cardlink { text-decoration: none; color: inherit; }
-  footer.tabbar {
-    border-top: 1px solid #ccc;
+  .search-popover-form {
     display: flex;
-    margin-top: auto;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    border-radius: 10px;
+    padding: 8px 10px;
+  }
+  .search-popover-form svg { width: 16px; height: 16px; color: var(--text-muted); flex-shrink: 0; }
+  .search-popover-form input {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: var(--fs-body);
+    font-family: inherit;
+    color: var(--text);
+  }
+  .search-popover-form input::placeholder { color: var(--text-muted); }
+
+  section { border-bottom: 1px solid var(--line); }
+  .pad { padding: 10px 12px; }
+
+  /* Фільтри: та сама картка, що й у кімнати/людини, але злита з хедером —
+     без бокових/верхніх відступів, кутки зверху не скруглені (лист, що
+     висувається з-під хедера), скруглення й тінь знизу вдвічі більші */
+  section.filters-section {
+    border-bottom: none;
+    padding: 0;
+  }
+  form.filters {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: var(--surface-2);
+    border-radius: 0 0 32px 32px;
+    padding: 14px;
+    box-shadow: 0 1px 3px rgba(42, 36, 28, .06);
+  }
+  .field { display: flex; flex-direction: column; gap: 2px; }
+  .field label { font-size: var(--fs-caption); color: var(--text-muted); }
+  .field select, .field input {
+    border: 1px solid var(--line);
+    background: var(--surface-2);
+    color: var(--text);
+    padding: 8px 14px;
+    font-size: var(--fs-body); /* <16px змушує iOS Safari зумити екран при фокусі */
+    font-family: inherit;
+    border-radius: 999px;
+  }
+  /* Власна стрілка замість нативної (та була притиснута до краю) + відступ під неї */
+  .field select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding-right: 34px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2375695A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 13px;
+    color-scheme: light;
+  }
+  .field select option { background-color: var(--surface-2); color: var(--text); }
+  .field select:focus, .field input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .filters-row { display: flex; gap: 8px; }
+  .filters-row .field { flex: 1; min-width: 0; } /* без цього select не стискається і вилазить за картку */
+  fieldset.seg-switch { border: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 2px; }
+  /* Легенда лишається для читалок екрана (доступна назва групи radio), візуально прибрана — контекст і так зрозумілий */
+  fieldset.seg-switch legend {
+    position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+  }
+  /* iOS-стиль сегментованого контролю: нейтральний трек, вибраний пункт — інсетна
+     плаваюча піґулка з тінню, а не заливка на всю комірку від краю до краю */
+  .seg-options {
+    display: flex;
+    gap: 2px;
+    padding: 2px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+  }
+  .seg-options label {
+    flex: 1;
+    display: flex; align-items: center; justify-content: center; gap: 4px;
+    padding: 7px 10px;
+    font-size: var(--fs-secondary);
+    color: var(--text-muted);
+    border-radius: 999px;
+    transition: background .15s ease-out, color .15s ease-out, box-shadow .15s ease-out;
+  }
+  .seg-options input {
+    position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+  }
+  .seg-options label:has(input:checked) {
+    background: var(--surface-2);
+    color: var(--accent);
+    font-weight: 600;
+    box-shadow: 0 1px 3px rgba(42, 36, 28, .16), 0 1px 1px rgba(42, 36, 28, .08);
+  }
+  .seg-options label:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
+  /* Лічильник у сегменті — та сама кругла піґулка, що й на табах навбара знизу;
+     у невибраному сегменті приглушена, гучний акцентний фон лишається тільки за вибраним */
+  .seg-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    border-radius: 999px;
+    background: var(--line);
+    color: var(--text-muted);
+    font-size: 0.625rem;
+    font-weight: 700;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .seg-options label:has(input:checked) .seg-count {
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+  button {
+    border: 1px solid var(--line);
+    background: var(--surface-2);
+    color: var(--text);
+    padding: 10px 14px;
+    font-size: var(--fs-body);
+    font-family: inherit;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  /* Горизонтальний градієнт бурштин → оранж (обидва одної світлості, ≥4.5:1 зі світлим
+     текстом по всій ширині) + світіння зверху для легкого об'єму */
+  button.primary {
+    border: none;
+    background: var(--accent);
+    color: var(--on-accent);
+    font-weight: 600;
+  }
+  button.primary:hover { filter: brightness(1.08); }
+  button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* Список карток: білі блоки на канвасі, велике горизонтальне фото зверху, дані знизу */
+  ul.feed { list-style: none; padding: 12px; display: flex; flex-direction: column; gap: 12px; }
+  article.card {
+    background: var(--surface-2);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(42, 36, 28, .06);
+  }
+  article.card:active { background: var(--surface); }
+  .thumb {
+    position: relative;
+    width: 100%;
+    height: 180px;
+    background: var(--surface);
+  }
+  .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .card-body { padding: 12px 14px 14px; }
+  .card-kind { font-size: 0.5625rem; text-transform: uppercase; letter-spacing: .08em; color: var(--text-muted); }
+  .card-title {
+    font-family: Newsreader, serif;
+    font-weight: 500;
+    font-size: 1.375rem;
+    line-height: 1.25;
+    color: var(--text);
+    margin: 3px 0;
+    text-decoration: underline dotted;
+    text-decoration-color: rgba(229, 86, 54, .5);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+  .card-meta { font-size: var(--fs-secondary); line-height: 1.45; color: var(--text-muted); }
+  .card-price { font-size: var(--fs-body); font-weight: 600; font-variant-numeric: tabular-nums; color: var(--text); margin-top: 4px; }
+  .badge {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: var(--fs-caption);
+    font-weight: 600;
+    color: #FFF8E9; /* теплий білий, не чистий #fff */
+    border: 1px solid rgba(255, 249, 240, .18);
+    background: rgba(23, 17, 10, .52);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border-radius: 999px;
+    padding: 3px 9px;
+  }
+  .badge svg { width: 12px; height: 12px; flex-shrink: 0; color: #5FA873; } /* щит — окремий, фіксовано зелений */
+  .card a.cardlink { display: block; text-decoration: none; color: inherit; }
+  .card a.cardlink:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: 16px; }
+
+  /* Таб-бар: плаваюча пігулка з відступом 8px від країв */
+  footer.tabbar {
+    background: var(--surface-2);
+    border-radius: 999px;
+    overflow: hidden;
+    display: flex;
+    margin: auto 8px calc(8px + env(safe-area-inset-bottom));
     position: sticky;
-    bottom: 0;
+    bottom: calc(8px + env(safe-area-inset-bottom));
+    box-shadow: 0 6px 20px rgba(42, 36, 28, .12), 0 1px 3px rgba(42, 36, 28, .08);
   }
   footer.tabbar a {
     flex: 1;
     text-align: center;
     padding: 10px 4px;
-    font-size: 11px;
-    color: #777;
+    font-size: var(--fs-caption);
+    color: var(--text-muted);
     text-decoration: none;
-    border-right: 1px solid #e0e0e0;
   }
-  footer.tabbar a:last-child { border-right: none; }
-  footer.tabbar a.active { color: #333; font-weight: bold; background: #e8e8e8; }
-  .sk { background: #e2e2e2; border: 1px solid #d4d4d4; }
-  .hint { font-size: 12px; color: #777; margin-top: 6px; }
-  .chk { display: flex; gap: 6px; align-items: center; font-size: 13px; color: #333; }
-
-  h1.screen-title { font-size: 16px; font-weight: bold; color: #333; }
-  .profile-head { text-align: center; }
-  .profile-head h1 { margin: 8px 0 4px; }
-  .profile-head p { font-size: 12.5px; color: #555; }
-  .thumb.avatar.lg { width: 96px; height: 96px; flex: none; margin: 0 auto; }
-  .meter { height: 8px; background: #e2e2e2; border: 1px solid #ccc; margin-top: 6px; }
-  .meter-fill { height: 100%; background: #bbb; }
-  ul.menu { list-style: none; }
-  ul.menu li { border-bottom: 1px solid #ddd; }
-  ul.menu a { display: block; padding: 12px; font-size: 13px; color: #333; text-decoration: none; }
-  ul.menu a:hover { background: #f5f5f5; }
+  footer.tabbar a.active { color: var(--accent); font-weight: 600; background: var(--surface); }
+  footer.tabbar a:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 
   .wf-nav-hint { font-size: 10px; color: #999; margin-bottom: 8px; font-style: italic; }
   .wf-nav .tree { margin-top: 2px; }
@@ -206,14 +425,16 @@
   }
   .job-tag:hover { color: #222; border-color: #999; background: #e6e6e6; }
 
-  footer.tabbar a { display: flex; flex-direction: column; align-items: center; gap: 3px; position: relative; padding: 8px 4px 7px; }
-  .tab-icon { width: 18px; height: 18px; background: #d6d6d6; border: 1px solid #b0b0b0; }
-  footer.tabbar a.active .tab-icon { background: #bdbdbd; border-color: #888; }
-  .tab-label { font-size: 11px; }
+  footer.tabbar a { display: flex; flex-direction: column; align-items: center; gap: 3px; position: relative; padding: 7px 4px 6px; margin: 4px 3px; border-radius: 999px; }
+  .tab-icon { position: relative; width: 18px; height: 18px; color: var(--text-muted); }
+  .tab-icon svg { width: 100%; height: 100%; display: block; }
+  footer.tabbar a.active .tab-icon { color: var(--accent); }
+  .tab-label { font-size: var(--fs-caption); }
+  /* Лічильник висить на самій іконці, у її правому верхньому куті */
   .tab-badge {
-    position: absolute; top: 3px; right: 16%; min-width: 14px; height: 14px; padding: 0 3px;
-    background: #666; color: #fff; font-size: 9px; font-weight: bold; line-height: 14px; text-align: center;
-    border: 1px solid #444;
+    position: absolute; top: -5px; right: -7px; min-width: 14px; height: 14px; padding: 0 3px;
+    background: #5FA873; color: var(--on-accent); font-size: 0.625rem; font-weight: 700; line-height: 14px; text-align: center;
+    border-radius: 999px;
   }
   .icon-ph { display: inline-block; background: #d6d6d6; border: 1px solid #b0b0b0; vertical-align: middle; }
   .menu-row { display: flex; align-items: center; gap: 10px; padding: 11px 12px; text-decoration: none; color: #333; }
@@ -222,15 +443,86 @@
   .menu-row .menu-label { flex: 1; font-size: 13px; }
   .menu-row .chevron { width: 7px; height: 7px; border-top: 1px solid #999; border-right: 1px solid #999; transform: rotate(45deg); flex-shrink: 0; background: none; }
 
-  h2.sub { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: #888; font-weight: bold; margin-bottom: 5px; }
-  ul.facts { list-style: none; }
-  ul.facts li { font-size: 12.5px; color: #555; padding: 3px 0; border-bottom: 1px dashed #e3e3e3; }
-
   .wf-nav-tools { margin-bottom: 8px; }
   .wf-nav-filter { width: 100%; box-sizing: border-box; font-size: 11px; padding: 5px 6px; border: 1px solid #bbb; margin-bottom: 5px; font-family: inherit; }
   .wf-nav-toggle-all { display: flex; gap: 4px; }
-  .wf-nav-toggle-all button { flex: 1; font-size: 10px; padding: 4px 2px; border: 1px solid #ccc; background: #eee; cursor: pointer; }
+  .wf-nav-toggle-all button { flex: 1; font-size: 10px; padding: 4px 2px; border: 1px solid #ccc; background: #eee; color: #555; cursor: pointer; }
   .wf-nav-toggle-all button:hover { background: #e0e0e0; }
+
+  /* ── Профіль шукача ── */
+  main.profile { display: flex; flex-direction: column; gap: 12px; padding: 12px; }
+  main.profile .card {
+    background: var(--surface-2);
+    border-radius: 16px;
+    box-shadow: 0 1px 3px rgba(42, 36, 28, .06);
+    padding: 16px;
+  }
+  /* Картка ідентичності */
+  .profile-card { text-align: center; }
+  .avatar-link { display: inline-block; border-radius: 24px; }
+  .avatar-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .avatar {
+    width: 96px; height: 96px; border-radius: 24px;
+    object-fit: cover; display: block; margin: 0 auto 12px;
+    background: var(--surface);
+  }
+  .profile-name {
+    font-family: Newsreader, serif; font-weight: 500; font-size: 1.5rem;
+    line-height: 1.2; color: var(--text); margin: 0 0 6px;
+  }
+  .profile-bio {
+    font-size: var(--fs-secondary); line-height: 1.5; color: var(--text-muted);
+    max-width: 32ch; margin: 0 auto 12px;
+  }
+  .verify-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: var(--fs-caption); font-weight: 600; color: var(--text);
+    background: rgba(95, 168, 115, .12); border: 1px solid rgba(95, 168, 115, .35);
+    border-radius: 999px; padding: 4px 11px;
+  }
+  .verify-badge svg { width: 13px; height: 13px; color: #5FA873; flex-shrink: 0; }
+  /* Метр повноти профілю */
+  .meter-block { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line); text-align: left; }
+  .meter-label { font-size: var(--fs-secondary); color: var(--text-muted); margin: 0 0 6px; }
+  .meter-label b { color: var(--text); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .meter { height: 8px; background: var(--line); border-radius: 999px; overflow: hidden; }
+  .meter-fill { height: 100%; background: var(--accent); border-radius: 999px; }
+  .meter-hint { font-size: var(--fs-caption); color: var(--text-muted); margin: 8px 0 0; }
+  /* Секційний оверлайн */
+  .card-overline {
+    font-size: var(--fs-caption); text-transform: uppercase; letter-spacing: .06em;
+    color: var(--text-muted); font-weight: 600; margin: 0 0 10px;
+  }
+  .muted-note { font-size: var(--fs-secondary); line-height: 1.5; color: var(--text-muted); margin: 0; }
+  /* Чипи фактів */
+  ul.chips { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; }
+  ul.chips li {
+    font-size: var(--fs-secondary); color: var(--text);
+    background: var(--surface); border-radius: 999px; padding: 6px 12px;
+  }
+  /* Дія */
+  .btn-cta {
+    display: block; text-align: center; text-decoration: none;
+    background: var(--accent); color: var(--on-accent); font-weight: 600;
+    font-size: var(--fs-body); border-radius: 999px; padding: 12px 14px;
+  }
+  .btn-cta:hover { filter: brightness(1.08); }
+  .btn-cta:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  /* Меню налаштувань */
+  main.profile .menu-card { padding: 4px 0; }
+  main.profile .menu-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 13px 16px; text-decoration: none; color: var(--text);
+    border-bottom: 1px solid var(--line);
+  }
+  main.profile .menu-row:last-child { border-bottom: none; }
+  main.profile .menu-row:hover { background: var(--surface); }
+  main.profile .menu-row:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+  .menu-ic { width: 22px; height: 22px; color: var(--text-muted); flex-shrink: 0; }
+  .menu-ic svg { width: 100%; height: 100%; display: block; }
+  .menu-txt { flex: 1; font-size: var(--fs-secondary); }
+  .menu-chev { width: 15px; height: 15px; color: var(--text-muted); flex-shrink: 0; }
+  .menu-chev svg { width: 100%; height: 100%; display: block; }
 </style>
 </head>
 <body>
@@ -541,49 +833,105 @@
 
   <div class="wf-stage">
 <div class="device">
-  <header class="app">
-    <div class="app-name">Куток</div>
-  </header>
-  <main>
-    <section class="pad profile-head">
-      <a href="photo-viewer.html"><div class="thumb avatar lg">фото</div></a>
-      <h1 class="screen-title">Аня, 23</h1>
-      <p>Переїхала до Києва місяць тому, працюю в кафе на Подолі. Шукаю спокійну кімнату й адекватних сусідів.</p>
-      <p class="badge">телефон ✓ · фото ✓ · документ —</p>
+
+  <div class="header-shell">
+    <header class="app">
+      <div class="logo">
+        <img class="logo-mark" src="assets/logo-mark.png" alt="" width="601" height="562">
+        <span class="logo-word">Куток</span>
+        <span class="logo-tagline">безпечний пошук<br>кімнат і сусідів</span>
+      </div>
+      <button type="button" class="icon-btn search-trigger" popovertarget="search-popover" aria-label="Відкрити пошук">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M21.788 21.788a.723.723 0 0 0 0-1.022L18.122 17.1a9.157 9.157 0 1 0-1.022 1.022l3.666 3.666a.723.723 0 0 0 1.022 0" clip-rule="evenodd"/></svg>
+      </button>
+    </header>
+  </div>
+
+  <div id="search-popover" popover class="search-popover">
+    <form class="search-popover-form" role="search" action="listings.html" method="get">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M21.788 21.788a.723.723 0 0 0 0-1.022L18.122 17.1a9.157 9.157 0 1 0-1.022 1.022l3.666 3.666a.723.723 0 0 0 1.022 0" clip-rule="evenodd"/></svg>
+      <input type="search" name="q" placeholder="Пошук за назвою, районом…" aria-label="Пошук оголошень">
+    </form>
+  </div>
+
+  <main class="profile">
+
+    <section class="card profile-card">
+      <a class="avatar-link" href="photo-viewer.html">
+        <img class="avatar" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=320&h=320&fit=crop&auto=format&q=70" alt="Фото профілю — Аня, 23">
+      </a>
+      <h1 class="profile-name">Аня, 23</h1>
+      <p class="profile-bio">Переїхала до Києва місяць тому, працюю в кафе на Подолі. Шукаю спокійну кімнату й адекватних сусідів.</p>
+      <span class="verify-badge"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M3.378 5.082C3 5.62 3 7.22 3 10.417v1.574c0 5.638 4.239 8.375 6.899 9.536c.721.315 1.082.473 2.101.473c1.02 0 1.38-.158 2.101-.473C16.761 20.365 21 17.63 21 11.991v-1.574c0-3.198 0-4.797-.378-5.335c-.377-.537-1.88-1.052-4.887-2.081l-.573-.196C13.595 2.268 12.812 2 12 2s-1.595.268-3.162.805L8.265 3c-3.007 1.03-4.51 1.545-4.887 2.082M15.06 10.5a.75.75 0 0 0-1.12-.999l-3.011 3.374l-.87-.974a.75.75 0 0 0-1.118 1l1.428 1.6a.75.75 0 0 0 1.119 0z" clip-rule="evenodd"/></svg> телефон, фото</span>
+
+      <div class="meter-block">
+        <p class="meter-label">Повнота профілю <b>90%</b></p>
+        <div class="meter"><div class="meter-fill" style="width:90%"></div></div>
+        <p class="meter-hint">Додайте документ, щоб підвищити довіру профілю.</p>
+      </div>
     </section>
-    <section class="pad">
-      <p class="counter">Повнота профілю: <b>90%</b></p>
-      <div class="meter"><div class="meter-fill" style="width:90%"></div></div>
-      <p class="hint">Додайте документ, щоб підвищити рівень довіри профілю.</p>
-    </section>
-    <section class="pad">
-      <h2 class="sub">Звички та умови</h2>
-      <ul class="facts"><li>Не палю</li><li>Без тварин</li><li>Бюджет до 8 000 ₴/міс</li><li>Шукає: Поділ</li></ul>
-    </section>
-    <section class="pad">
-      <h2 class="card-title">Відгуки про мене</h2>
-      <p class="hint">Ще немає відгуків — з'являться після першого спільного проживання.</p>
-    </section>
-    <section class="pad">
-      <a class="btn primary" href="my-profile-seeker-edit.html">Редагувати профіль</a>
-    </section>
-    <section class="pad">
-      <ul class="menu">
-        <li><a class="menu-row" href="profile-create-host.html"><span class="icon-ph" aria-label="іконка: здати кімнату"></span><span class="menu-label">Здаєте кімнату? Стати господарем</span><span class="chevron"></span></a></li>
-        <li><a class="menu-row" href="privacy-settings.html"><span class="icon-ph" aria-label="іконка: Налаштування приватності"></span><span class="menu-label">Налаштування приватності</span><span class="chevron"></span></a></li>
-        <li><a class="menu-row" href="blocked.html"><span class="icon-ph" aria-label="іконка: Заблоковані"></span><span class="menu-label">Заблоковані</span><span class="chevron"></span></a></li>
-        <li><a class="menu-row" href="account.html"><span class="icon-ph" aria-label="іконка: Керування акаунтом"></span><span class="menu-label">Керування акаунтом</span><span class="chevron"></span></a></li>
-        <li><a class="menu-row" href="support.html"><span class="icon-ph" aria-label="іконка: Підтримка"></span><span class="menu-label">Підтримка</span><span class="chevron"></span></a></li>
-        <li><a class="menu-row" href="legal.html"><span class="icon-ph" aria-label="іконка: Умови використання · Політика приватності"></span><span class="menu-label">Умови використання · Політика приватності</span><span class="chevron"></span></a></li>
+
+    <section class="card">
+      <h2 class="card-overline">Звички та умови</h2>
+      <ul class="chips">
+        <li>Не палю</li>
+        <li>Без тварин</li>
+        <li>Бюджет до 8 000 ₴/міс</li>
+        <li>Шукає: Поділ</li>
       </ul>
     </section>
+
+    <section class="card">
+      <h2 class="card-overline">Відгуки про мене</h2>
+      <p class="muted-note">Ще немає відгуків — з'являться після першого спільного проживання.</p>
+    </section>
+
+    <div class="profile-action">
+      <a class="btn-cta" href="my-profile-seeker-edit.html">Редагувати профіль</a>
+    </div>
+
+    <nav class="card menu-card" aria-label="Налаштування профілю">
+      <a class="menu-row" href="profile-create-host.html">
+        <span class="menu-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M11.3 2.62a1 1 0 0 1 1.4 0l8 7.7A1 1 0 0 1 21 11.05V20a1 1 0 0 1-1 1h-4.5a1 1 0 0 1-1-1v-4a1 1 0 0 0-1-1h-3a1 1 0 0 0-1 1v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-8.95a1 1 0 0 1 .3-.72z"/></svg></span>
+        <span class="menu-txt">Здаєте кімнату? Стати господарем</span>
+        <span class="menu-chev"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="m9 6 6 6-6 6"/></svg></span>
+      </a>
+      <a class="menu-row" href="privacy-settings.html">
+        <span class="menu-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2c-.3 0-.6.07-.9.2L5 4.8C4 5.2 3.5 6 3.5 7v4.5c0 4.6 3.2 7.5 7.6 9.2c.5.2 1.3.2 1.8 0c4.4-1.7 7.6-4.6 7.6-9.2V7c0-1-.5-1.8-1.5-2.2L12.9 2.2A2.3 2.3 0 0 0 12 2m3.2 7.3-3.8 4.2-1.5-1.6a1 1 0 0 0-1.5 1.3l2.2 2.5a1 1 0 0 0 1.5 0l4.6-5a1 1 0 1 0-1.5-1.3"/></svg></span>
+        <span class="menu-txt">Налаштування приватності</span>
+        <span class="menu-chev"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="m9 6 6 6-6 6"/></svg></span>
+      </a>
+      <a class="menu-row" href="blocked.html">
+        <span class="menu-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M12 2a10 10 0 1 0 0 20a10 10 0 0 0 0-20M4 12a8 8 0 0 1 12.9-6.3L5.7 16.9A7.97 7.97 0 0 1 4 12m4.1 6.3L19.3 7.1a8 8 0 0 1-11.2 11.2" clip-rule="evenodd"/></svg></span>
+        <span class="menu-txt">Заблоковані</span>
+        <span class="menu-chev"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="m9 6 6 6-6 6"/></svg></span>
+      </a>
+      <a class="menu-row" href="account.html">
+        <span class="menu-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 8.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7m8.1 2.2-.8-.2c-.1-.4-.3-.8-.5-1.1l.4-.7a1 1 0 0 0-.1-1.2l-1.1-1.1a1 1 0 0 0-1.2-.1l-.7.4c-.3-.2-.7-.4-1.1-.5l-.2-.8A1 1 0 0 0 13 4.5h-2a1 1 0 0 0-1 .8l-.2.8c-.4.1-.8.3-1.1.5l-.7-.4a1 1 0 0 0-1.2.1L5.7 7.4a1 1 0 0 0-.1 1.2l.4.7c-.2.3-.4.7-.5 1.1l-.8.2a1 1 0 0 0-.8 1v1.6a1 1 0 0 0 .8 1l.8.2c.1.4.3.8.5 1.1l-.4.7a1 1 0 0 0 .1 1.2l1.1 1.1a1 1 0 0 0 1.2.1l.7-.4c.3.2.7.4 1.1.5l.2.8a1 1 0 0 0 1 .8h2a1 1 0 0 0 1-.8l.2-.8c.4-.1.8-.3 1.1-.5l.7.4a1 1 0 0 0 1.2-.1l1.1-1.1a1 1 0 0 0 .1-1.2l-.4-.7c.2-.3.4-.7.5-1.1l.8-.2a1 1 0 0 0 .8-1v-1.6a1 1 0 0 0-.8-1"/></svg></span>
+        <span class="menu-txt">Керування акаунтом</span>
+        <span class="menu-chev"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="m9 6 6 6-6 6"/></svg></span>
+      </a>
+      <a class="menu-row" href="support.html">
+        <span class="menu-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20a10 10 0 0 0 0-20m0 15.5a1.2 1.2 0 1 1 0-2.4a1.2 1.2 0 0 1 0 2.4m1.6-5.7c-.6.4-.7.6-.7 1v.2a1 1 0 1 1-2 0v-.2c0-1.3.7-2 1.5-2.5c.6-.4.9-.7.9-1.2c0-.6-.5-1.1-1.3-1.1c-.6 0-1 .3-1.3.8a1 1 0 0 1-1.7-1a3.2 3.2 0 0 1 3-1.8c1.8 0 3.3 1.2 3.3 3c0 1.4-.9 2.1-1.7 2.6"/></svg></span>
+        <span class="menu-txt">Підтримка</span>
+        <span class="menu-chev"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="m9 6 6 6-6 6"/></svg></span>
+      </a>
+      <a class="menu-row" href="legal.html">
+        <span class="menu-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8.8a2 2 0 0 0-.6-1.4l-4.8-4.8A2 2 0 0 0 13.2 2zm2 11h8a1 1 0 1 1 0 2H8a1 1 0 1 1 0-2m0 4h6a1 1 0 1 1 0 2H8a1 1 0 1 1 0-2m0-8h4a1 1 0 1 1 0 2H8a1 1 0 1 1 0-2"/></svg></span>
+        <span class="menu-txt">Умови використання · Політика приватності</span>
+        <span class="menu-chev"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="m9 6 6 6-6 6"/></svg></span>
+      </a>
+    </nav>
+
   </main>
+
   <footer class="tabbar">
-    <a href="listings.html"><span class="tab-icon" aria-label="іконка: Пошук"></span><span class="tab-label">Пошук</span></a>
-    <a href="applications.html"><span class="tab-icon" aria-label="іконка: Заявки"></span><span class="tab-label">Заявки</span><span class="tab-badge" aria-label="2 нових">2</span></a>
-    <a href="dialogs.html"><span class="tab-icon" aria-label="іконка: Чати"></span><span class="tab-label">Чати</span><span class="tab-badge" aria-label="1 нових">1</span></a>
-    <a class="active" href="my-profile-seeker.html"><span class="tab-icon" aria-label="іконка: Профіль"></span><span class="tab-label">Профіль</span></a>
+    <a href="listings.html"><span class="tab-icon" aria-label="іконка: Пошук"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M21.788 21.788a.723.723 0 0 0 0-1.022L18.122 17.1a9.157 9.157 0 1 0-1.022 1.022l3.666 3.666a.723.723 0 0 0 1.022 0" clip-rule="evenodd"/></svg></span><span class="tab-label">Пошук</span></a>
+    <a href="applications.html"><span class="tab-icon" aria-label="іконка: Заявки"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M4.172 3.172C3 4.343 3 6.229 3 10v4c0 3.771 0 5.657 1.172 6.828S7.229 22 11 22h2c3.771 0 5.657 0 6.828-1.172S21 17.771 21 14v-4c0-3.771 0-5.657-1.172-6.828S16.761 2 13 2h-2C7.229 2 5.343 2 4.172 3.172M7.25 8A.75.75 0 0 1 8 7.25h8a.75.75 0 0 1 0 1.5H8A.75.75 0 0 1 7.25 8m0 4a.75.75 0 0 1 .75-.75h8a.75.75 0 0 1 0 1.5H8a.75.75 0 0 1-.75-.75M8 15.25a.75.75 0 0 0 0 1.5h5a.75.75 0 0 0 0-1.5z" clip-rule="evenodd"/></svg><span class="tab-badge" aria-label="2 нових">2</span></span><span class="tab-label">Заявки</span></a>
+    <a href="dialogs.html"><span class="tab-icon" aria-label="іконка: Чати"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><defs><mask id="tabChatMask"><g fill="none"><path fill="#fff" d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2S2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22"/><path fill="#000" d="M15 12a1 1 0 1 0 2 0a1 1 0 0 0-2 0m-4 0a1 1 0 1 0 2 0a1 1 0 0 0-2 0m-4 0a1 1 0 1 0 2 0a1 1 0 0 0-2 0"/></g></mask></defs><path fill="currentColor" d="M0 0h24v24H0z" mask="url(#tabChatMask)"/></svg><span class="tab-badge" aria-label="1 нових">1</span></span><span class="tab-label">Чати</span></a>
+    <a class="active" href="my-profile-seeker.html"><span class="tab-icon" aria-label="іконка: Профіль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="6" r="4" fill="currentColor"/><ellipse cx="12" cy="17" fill="currentColor" rx="7" ry="4"/></svg></span><span class="tab-label">Профіль</span></a>
   </footer>
+
 </div>
   </div>
 </div>
@@ -605,6 +953,16 @@
       }
     });
   }
+  (function () {
+    var shell = document.querySelector('.header-shell');
+    if (!shell) return;
+    // .device починається з самого верху сторінки, тому scrollY > 0 — це рівно
+    // момент, коли шапка прилипає. Без сентінел-елемента: будь-який дів у потоці
+    // (навіть 1px) зсував би шапку на свою висоту.
+    function sync() { shell.classList.toggle('is-stuck', window.scrollY > 0); }
+    window.addEventListener('scroll', sync, { passive: true });
+    sync();
+  })();
 </script>
 </body>
 </html>
