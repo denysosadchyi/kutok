@@ -353,18 +353,21 @@
   .card-loc { display: flex; align-items: center; gap: 5px; margin-top: 7px; font-size: var(--fs-secondary); color: var(--ink); }
   .card-loc svg { width: 14px; height: 14px; flex-shrink: 0; color: var(--ink); }
 
-  /* ── Навбар: суцільна оливкова смуга, кремові лейбли, помаранчеві лічильники ── */
+  /* ── Навбар: плаваюча оливкова піґулка (відступи 8px), активний пункт —
+     світла внутрішня піґулка з оливковим текстом ── */
   .tabbar {
-    position: sticky; bottom: 0; margin-top: auto;
-    background: var(--olive); display: flex;
-    padding-bottom: env(safe-area-inset-bottom);
-    box-shadow: 0 -1px 4px rgba(27, 23, 18, .16);
+    position: sticky; bottom: calc(8px + env(safe-area-inset-bottom)); margin: auto 8px calc(8px + env(safe-area-inset-bottom));
+    background: var(--olive); display: flex; gap: 2px;
+    border-radius: 999px; padding: 6px;
+    box-shadow: 0 8px 22px rgba(27, 23, 18, .28), 0 2px 5px rgba(27, 23, 18, .16);
   }
   .tabbar a {
-    flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px;
-    padding: 11px 4px 10px; position: relative; color: rgba(243, 238, 217, .58);
+    flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
+    padding: 8px 4px 7px; position: relative; color: rgba(243, 238, 217, .58);
+    border-radius: 999px;
   }
-  .tabbar a.active { color: var(--on-olive); font-weight: 600; }
+  .tabbar a.active { background: var(--on-olive); color: var(--olive); font-weight: 700; }
+  .tabbar a.active .tab-ico { color: var(--olive); }
   .tabbar a:focus-visible { outline: 2px solid var(--on-olive); outline-offset: -3px; }
   .tab-ico { position: relative; width: 22px; height: 22px; }
   .tab-ico svg { width: 100%; height: 100%; display: block; }
