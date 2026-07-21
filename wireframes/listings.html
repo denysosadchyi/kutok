@@ -231,8 +231,10 @@
   }
   .seg label:has(input:checked) .seg-count { background: var(--cobalt); color: var(--on-cobalt); }
 
-  /* Три рівні однорядкові піґулки: лейбл · значення · шеврон, однакова висота з сегментом */
-  .filter-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  /* Три однорядкові піґулки під сегментом. Лейбл лишається тільки де значення
+     без нього незрозуміле (стать); «Поділ» і «до 10 000 ₴» самоочевидні.
+     Колонки підігнані під вміст, щоб нічого не обрізалось. */
+  .filter-grid { display: grid; grid-template-columns: .85fr 1.2fr 1.25fr; gap: 8px; }
   .fsel {
     position: relative; display: flex; align-items: center; gap: 6px; min-width: 0;
     border: 1.5px solid var(--line); background: var(--paper-2);
@@ -692,11 +694,11 @@
             <span class="verified"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M3.378 5.082C3 5.62 3 7.22 3 10.417v1.574c0 5.638 4.239 8.375 6.899 9.536c.721.315 1.082.473 2.101.473c1.02 0 1.38-.158 2.101-.473C16.761 20.365 21 17.63 21 11.991v-1.574c0-3.198 0-4.797-.378-5.335c-.377-.537-1.88-1.052-4.887-2.081l-.573-.196C13.595 2.268 12.812 2 12 2s-1.595.268-3.162.805L8.265 3c-3.007 1.03-4.51 1.545-4.887 2.082M15.06 10.5a.75.75 0 0 0-1.12-.999l-3.011 3.374l-.87-.974a.75.75 0 0 0-1.118 1l1.428 1.6a.75.75 0 0 0 1.119 0z" clip-rule="evenodd"/></svg>телефон, фото</span>
           </div>
           <div class="card-body">
-            <div class="card-head">
+            <div class="card-main">
               <h2 class="card-title">Кімната в 2-к квартирі</h2>
-              <div class="card-price"><span class="amount">9 500 ₴</span><span class="per">/місяць</span></div>
+              <p class="card-loc"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.8-6.5-10.5a6.5 6.5 0 0 1 13 0C18.5 15.2 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.3"/></svg>Поділ, Київ</p>
             </div>
-            <p class="card-loc"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.8-6.5-10.5a6.5 6.5 0 0 1 13 0C18.5 15.2 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.3"/></svg>Поділ, Київ</p>
+            <div class="card-price"><span class="amount">9 500 ₴</span><span class="per">/місяць</span></div>
           </div>
         </a>
       </li>
@@ -708,11 +710,11 @@
             <span class="verified"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M3.378 5.082C3 5.62 3 7.22 3 10.417v1.574c0 5.638 4.239 8.375 6.899 9.536c.721.315 1.082.473 2.101.473c1.02 0 1.38-.158 2.101-.473C16.761 20.365 21 17.63 21 11.991v-1.574c0-3.198 0-4.797-.378-5.335c-.377-.537-1.88-1.052-4.887-2.081l-.573-.196C13.595 2.268 12.812 2 12 2s-1.595.268-3.162.805L8.265 3c-3.007 1.03-4.51 1.545-4.887 2.082M15.06 10.5a.75.75 0 0 0-1.12-.999l-3.011 3.374l-.87-.974a.75.75 0 0 0-1.118 1l1.428 1.6a.75.75 0 0 0 1.119 0z" clip-rule="evenodd"/></svg>телефон</span>
           </div>
           <div class="card-body">
-            <div class="card-head">
+            <div class="card-main">
               <h2 class="card-title">Кімната в 3-к квартирі</h2>
-              <div class="card-price"><span class="amount">7 000 ₴</span><span class="per">/місяць</span></div>
+              <p class="card-loc"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.8-6.5-10.5a6.5 6.5 0 0 1 13 0C18.5 15.2 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.3"/></svg>Оболонь, Київ</p>
             </div>
-            <p class="card-loc"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.8-6.5-10.5a6.5 6.5 0 0 1 13 0C18.5 15.2 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.3"/></svg>Оболонь, Київ</p>
+            <div class="card-price"><span class="amount">7 000 ₴</span><span class="per">/місяць</span></div>
           </div>
         </a>
       </li>
@@ -724,11 +726,11 @@
             <span class="verified"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M3.378 5.082C3 5.62 3 7.22 3 10.417v1.574c0 5.638 4.239 8.375 6.899 9.536c.721.315 1.082.473 2.101.473c1.02 0 1.38-.158 2.101-.473C16.761 20.365 21 17.63 21 11.991v-1.574c0-3.198 0-4.797-.378-5.335c-.377-.537-1.88-1.052-4.887-2.081l-.573-.196C13.595 2.268 12.812 2 12 2s-1.595.268-3.162.805L8.265 3c-3.007 1.03-4.51 1.545-4.887 2.082M15.06 10.5a.75.75 0 0 0-1.12-.999l-3.011 3.374l-.87-.974a.75.75 0 0 0-1.118 1l1.428 1.6a.75.75 0 0 0 1.119 0z" clip-rule="evenodd"/></svg>телефон, фото</span>
           </div>
           <div class="card-body">
-            <div class="card-head">
+            <div class="card-main">
               <h2 class="card-title">Артем, 26</h2>
-              <div class="card-price"><span class="amount">до 8 000 ₴</span><span class="per">бюджет/міс</span></div>
+              <p class="card-loc"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.8-6.5-10.5a6.5 6.5 0 0 1 13 0C18.5 15.2 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.3"/></svg>Шевченківський або Поділ</p>
             </div>
-            <p class="card-loc"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.8-6.5-10.5a6.5 6.5 0 0 1 13 0C18.5 15.2 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.3"/></svg>Шевченківський або Поділ</p>
+            <div class="card-price"><span class="amount">до 8 000 ₴</span><span class="per">бюджет/міс</span></div>
           </div>
         </a>
       </li>
@@ -740,11 +742,11 @@
             <span class="verified"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M3.378 5.082C3 5.62 3 7.22 3 10.417v1.574c0 5.638 4.239 8.375 6.899 9.536c.721.315 1.082.473 2.101.473c1.02 0 1.38-.158 2.101-.473C16.761 20.365 21 17.63 21 11.991v-1.574c0-3.198 0-4.797-.378-5.335c-.377-.537-1.88-1.052-4.887-2.081l-.573-.196C13.595 2.268 12.812 2 12 2s-1.595.268-3.162.805L8.265 3c-3.007 1.03-4.51 1.545-4.887 2.082M15.06 10.5a.75.75 0 0 0-1.12-.999l-3.011 3.374l-.87-.974a.75.75 0 0 0-1.118 1l1.428 1.6a.75.75 0 0 0 1.119 0z" clip-rule="evenodd"/></svg>телефон, фото</span>
           </div>
           <div class="card-body">
-            <div class="card-head">
+            <div class="card-main">
               <h2 class="card-title">Окрема кімната в квартирі</h2>
-              <div class="card-price"><span class="amount">8 200 ₴</span><span class="per">/місяць</span></div>
+              <p class="card-loc"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.8-6.5-10.5a6.5 6.5 0 0 1 13 0C18.5 15.2 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.3"/></svg>Позняки, Київ</p>
             </div>
-            <p class="card-loc"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.8-6.5-10.5a6.5 6.5 0 0 1 13 0C18.5 15.2 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.3"/></svg>Позняки, Київ</p>
+            <div class="card-price"><span class="amount">8 200 ₴</span><span class="per">/місяць</span></div>
           </div>
         </a>
       </li>
