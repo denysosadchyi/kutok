@@ -231,29 +231,76 @@
   }
   .seg label:has(input:checked) .seg-count { background: var(--cobalt); color: var(--on-cobalt); }
 
-  /* Три однорядкові піґулки під сегментом. Лейбл лишається тільки де значення
-     без нього незрозуміле (стать); «Поділ» і «до 10 000 ₴» самоочевидні.
-     Колонки підігнані під вміст, щоб нічого не обрізалось. */
-  .filter-grid { display: grid; grid-template-columns: .78fr 1.12fr 1.42fr; gap: 8px; }
-  .fsel {
-    position: relative; display: flex; align-items: center; gap: 6px; min-width: 0;
-    border: 1.5px solid var(--line); background: var(--paper-2);
-    border-radius: 12px; padding: 0 26px 0 12px; height: 42px;
+  /* Фільтри живуть у боттом-шиті (нативний popover); угорі — тільки сегмент типу.
+     Відкриває шит кобальтовий FAB над таб-баром. */
+  .fab {
+    position: sticky; bottom: 88px; z-index: 4;
+    align-self: flex-end;
+    margin: -66px 14px 12px auto; /* негативний верхній відступ: не розсуває стрічку */
+    width: 54px; height: 54px; border-radius: 999px; border: none;
+    background: var(--cobalt); color: var(--on-cobalt); cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+    box-shadow: 0 6px 16px rgba(27, 23, 18, .30), 0 2px 4px rgba(27, 23, 18, .18);
   }
-  .fsel-cap { font-size: var(--fs-caption); color: var(--ink-muted); flex-shrink: 0; }
+  .fab svg { width: 24px; height: 24px; }
+  .fab:hover { filter: brightness(1.08); }
+  .fab:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+  #filter-sheet {
+    position: fixed;
+    inset: auto;
+    bottom: 0;
+    /* центр сцени = центр в'юпорта, зсунутий на пів ширини wf-nav (240px) */
+    left: calc(240px + (100vw - 240px) / 2);
+    transform: translateX(-50%);
+    margin: 0;
+    width: min(400px, 100vw);
+    border: 1px solid var(--line); border-bottom: none;
+    border-radius: 22px 22px 0 0;
+    background: var(--paper-2);
+    padding: 16px 18px calc(20px + env(safe-area-inset-bottom));
+    box-shadow: 0 -12px 40px rgba(27, 23, 18, .25);
+  }
+  #filter-sheet::backdrop { background: rgba(27, 23, 18, .38); }
+  .sheet-grip { width: 40px; height: 4px; border-radius: 999px; background: var(--line); margin: 0 auto 14px; }
+  .sheet-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .sheet-title { font-weight: 800; font-size: 1.125rem; letter-spacing: -.01em; color: var(--ink); }
+  .sheet-close {
+    width: 34px; height: 34px; border-radius: 999px; border: 1.5px solid var(--line);
+    background: transparent; color: var(--ink-muted); cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .sheet-close svg { width: 15px; height: 15px; }
+  .sheet-close:hover { color: var(--ink); border-color: var(--ink-muted); }
+  .sheet-close:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
+  .sheet-form { display: flex; flex-direction: column; gap: 13px; }
+  .sheet-field { display: flex; flex-direction: column; gap: 6px; }
+  .sheet-field .cap { font-size: var(--fs-caption); text-transform: uppercase; letter-spacing: .07em; color: var(--ink-muted); }
+  .fsel {
+    position: relative; display: flex; align-items: center; min-width: 0; width: 100%;
+    border: 1.5px solid var(--line); background: var(--paper);
+    border-radius: 12px; padding: 0 30px 0 13px; height: 46px;
+  }
   .fsel select {
     appearance: none; -webkit-appearance: none; -moz-appearance: none;
     border: none; background: transparent; font: inherit;
-    font-size: var(--fs-secondary); font-weight: 700; color: var(--ink); cursor: pointer;
+    font-size: var(--fs-body); font-weight: 600; color: var(--ink); cursor: pointer;
     flex: 1; min-width: 0; padding: 0;
     overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   }
   .fsel::after {
-    content: ""; position: absolute; right: 12px; top: 50%; margin-top: -5px;
-    width: 7px; height: 7px; border-right: 1.5px solid var(--ink-muted); border-bottom: 1.5px solid var(--ink-muted);
+    content: ""; position: absolute; right: 14px; top: 50%; margin-top: -5px;
+    width: 8px; height: 8px; border-right: 1.5px solid var(--ink-muted); border-bottom: 1.5px solid var(--ink-muted);
     transform: rotate(45deg); pointer-events: none;
   }
   .fsel:focus-within { outline: 2px solid var(--cobalt); outline-offset: 1px; }
+  .sheet-apply {
+    margin-top: 5px; border: none; background: var(--cobalt); color: var(--on-cobalt);
+    font: inherit; font-size: var(--fs-body); font-weight: 700;
+    padding: 13px; border-radius: 12px; cursor: pointer;
+  }
+  .sheet-apply:hover { filter: brightness(1.08); }
+  .sheet-apply:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 
   /* ── Стрічка каталог-карток ── */
   .feed { list-style: none; padding: 12px 16px 22px; display: flex; flex-direction: column; gap: 24px; }
