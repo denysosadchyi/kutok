@@ -366,18 +366,17 @@
     bottom: 10px;
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: 5px;
     font-size: var(--fs-caption);
     font-weight: 600;
-    color: #FFF8E9; /* теплий білий, не чистий #fff */
-    border: 1px solid rgba(255, 249, 240, .18);
-    background: rgba(23, 17, 10, .52);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+    color: var(--text);
+    border: 1px solid var(--line);
+    background: var(--surface-2); /* непрозора кремова піґулка — читається на будь-якому фото, без blur */
     border-radius: 999px;
-    padding: 3px 9px;
+    padding: 4px 10px;
+    box-shadow: 0 1px 2px rgba(27, 23, 18, .18);
   }
-  .badge svg { width: 12px; height: 12px; flex-shrink: 0; color: #5FA873; } /* щит — окремий, фіксовано зелений */
+  .badge svg { width: 13px; height: 13px; flex-shrink: 0; color: var(--olive); } /* щит — олива = «перевірено» бренду */
   .card a.cardlink { display: block; text-decoration: none; color: inherit; }
   .card a.cardlink:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: 16px; }
 
