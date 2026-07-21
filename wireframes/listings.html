@@ -231,23 +231,23 @@
   }
   .seg label:has(input:checked) .seg-count { background: var(--cobalt); color: var(--on-cobalt); }
 
-  /* Три рівні дропдауни в сітці 3×1 — однакова ширина, нічого не «висить» */
+  /* Три рівні однорядкові піґулки: лейбл · значення · шеврон, однакова висота з сегментом */
   .filter-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
   .fsel {
-    position: relative; display: flex; flex-direction: column; gap: 2px; min-width: 0;
+    position: relative; display: flex; align-items: center; gap: 6px; min-width: 0;
     border: 1.5px solid var(--line); background: var(--paper-2);
-    border-radius: 10px; padding: 7px 24px 7px 11px;
+    border-radius: 12px; padding: 0 26px 0 12px; height: 42px;
   }
-  .fsel-cap { font-size: 9px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-muted); }
+  .fsel-cap { font-size: var(--fs-caption); color: var(--ink-muted); flex-shrink: 0; }
   .fsel select {
     appearance: none; -webkit-appearance: none; -moz-appearance: none;
     border: none; background: transparent; font: inherit;
-    font-size: var(--fs-secondary); font-weight: 600; color: var(--ink); cursor: pointer;
-    width: 100%; min-width: 0; padding: 0;
+    font-size: var(--fs-secondary); font-weight: 700; color: var(--ink); cursor: pointer;
+    flex: 1; min-width: 0; padding: 0;
     overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   }
   .fsel::after {
-    content: ""; position: absolute; right: 11px; top: 50%; margin-top: -4px;
+    content: ""; position: absolute; right: 12px; top: 50%; margin-top: -5px;
     width: 7px; height: 7px; border-right: 1.5px solid var(--ink-muted); border-bottom: 1.5px solid var(--ink-muted);
     transform: rotate(45deg); pointer-events: none;
   }
