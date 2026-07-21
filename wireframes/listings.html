@@ -140,6 +140,7 @@
     top: 0;
     z-index: 5;
     background: var(--paper);
+    background-image: var(--grain);
     border-bottom: 1px solid var(--line);
     padding: 20px 18px 15px;
     display: flex;
@@ -197,7 +198,6 @@
     border: 1px solid var(--line);
     border-radius: 14px;
     background: var(--paper-2);
-    box-shadow: 0 12px 30px rgba(27, 23, 18, .22), 0 2px 6px rgba(27, 23, 18, .10);
     padding: 10px;
   }
   .search-form {
@@ -232,7 +232,6 @@
   .seg input { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); }
   .seg label:has(input:checked) {
     background: var(--paper); color: var(--cobalt); font-weight: 700;
-    box-shadow: 0 1px 2px rgba(27, 23, 18, .14);
   }
   .seg label:has(input:focus-visible) { outline: 2px solid var(--cobalt); outline-offset: 2px; }
   .seg-count {
@@ -252,7 +251,6 @@
     width: 54px; height: 54px; border-radius: 999px; border: none;
     background: var(--cobalt); color: var(--on-cobalt); cursor: pointer;
     display: inline-flex; align-items: center; justify-content: center;
-    box-shadow: 0 6px 16px rgba(27, 23, 18, .30), 0 2px 4px rgba(27, 23, 18, .18);
   }
   .fab svg { width: 24px; height: 24px; }
   .fab:hover { filter: brightness(1.08); }
@@ -272,8 +270,8 @@
     border: 1px solid var(--line); border-bottom: none;
     border-radius: 22px 22px 0 0;
     background: var(--paper-2);
+    background-image: var(--grain);
     padding: 16px 18px calc(20px + env(safe-area-inset-bottom));
-    box-shadow: 0 -12px 40px rgba(27, 23, 18, .25);
   }
   #filter-sheet::backdrop { background: rgba(27, 23, 18, .38); }
   .sheet-grip { width: 40px; height: 4px; border-radius: 999px; background: var(--line); margin: 0 auto 14px; }
@@ -333,7 +331,6 @@
     display: inline-flex; align-items: center; gap: 6px;
     background: var(--paper-2); border-radius: 999px;
     padding: 4px 12px 4px 5px; font-size: var(--fs-caption); font-weight: 600; color: var(--ink);
-    box-shadow: 0 1px 4px rgba(27, 23, 18, .25);
   }
   .vcheck {
     width: 19px; height: 19px; border-radius: 999px; flex-shrink: 0;
@@ -365,7 +362,6 @@
     position: sticky; bottom: calc(8px + env(safe-area-inset-bottom)); margin: auto 8px calc(8px + env(safe-area-inset-bottom));
     background: var(--olive); display: flex; gap: 2px;
     border-radius: 999px; padding: 6px;
-    box-shadow: 0 8px 22px rgba(27, 23, 18, .28), 0 2px 5px rgba(27, 23, 18, .16);
   }
   .tabbar a {
     flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
