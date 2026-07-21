@@ -18,7 +18,9 @@
     --paper: #F5EEDF;          /* теплий кремовий папір каталогу — канвас (освітлений) */
     --paper-2: #FDF9F0;        /* що «виступає»: картки, поля, бейдж */
     /* Зерно паперу: SVG feTurbulence, чорнильний шум ~4% поверх канвасу */
-    --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.55' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='0.2'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.35' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='0.13'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    /* Світле зерно для темних поверхонь (оливкове меню) */
+    --grain-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.35' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='0' intercept='1'/%3E%3CfeFuncG type='linear' slope='0' intercept='1'/%3E%3CfeFuncB type='linear' slope='0' intercept='1'/%3E%3CfeFuncA type='linear' slope='0.10'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     --ink: #1B1712;            /* чорнило — тепле майже-чорне */
     --ink-muted: #6F6553;      /* другорядний текст */
     --olive: #6E7B2E;          /* ОЛИВА — бренд: вордмарк, навбар */
@@ -178,14 +180,14 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border: 1.5px solid var(--ink);
+    border: 1.5px solid var(--olive);
     border-radius: 999px;
     background: transparent;
-    color: var(--ink);
+    color: var(--olive);
     cursor: pointer;
   }
   .head-btn svg { width: 18px; height: 18px; }
-  .head-btn:hover { background: var(--ink); color: var(--paper-2); }
+  .head-btn:hover { background: var(--olive); color: var(--on-olive); }
   .head-btn:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
 
   /* Пошук — нативний popover, прив'язаний до кнопки (anchor positioning) */
@@ -368,7 +370,7 @@
      світла внутрішня піґулка з оливковим текстом ── */
   .tabbar {
     position: sticky; bottom: calc(8px + env(safe-area-inset-bottom)); margin: auto 8px calc(8px + env(safe-area-inset-bottom));
-    background: var(--olive); display: flex; gap: 2px;
+    background: var(--olive); background-image: var(--grain-light); display: flex; gap: 2px;
     border-radius: 999px; padding: 6px;
   }
   .tabbar a {
