@@ -231,31 +231,27 @@
   }
   .seg label:has(input:checked) .seg-count { background: var(--cobalt); color: var(--on-cobalt); }
 
-  .chips { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-  .chip {
-    position: relative; display: inline-flex; align-items: center; gap: 7px;
+  /* Три рівні дропдауни в сітці 3×1 — однакова ширина, нічого не «висить» */
+  .filter-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .fsel {
+    position: relative; display: flex; flex-direction: column; gap: 2px; min-width: 0;
     border: 1.5px solid var(--line); background: var(--paper-2);
-    border-radius: 10px; padding: 7px 30px 7px 12px; cursor: pointer;
+    border-radius: 10px; padding: 7px 24px 7px 11px;
   }
-  .chip-cap { font-size: var(--fs-caption); color: var(--ink-muted); }
-  .chip select {
+  .fsel-cap { font-size: 9px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-muted); }
+  .fsel select {
     appearance: none; -webkit-appearance: none; -moz-appearance: none;
     border: none; background: transparent; font: inherit;
     font-size: var(--fs-secondary); font-weight: 600; color: var(--ink); cursor: pointer;
+    width: 100%; min-width: 0; padding: 0;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   }
-  .chip::after {
-    content: ""; position: absolute; right: 12px; top: 50%; margin-top: -5px;
-    width: 8px; height: 8px; border-right: 1.5px solid var(--ink-muted); border-bottom: 1.5px solid var(--ink-muted);
+  .fsel::after {
+    content: ""; position: absolute; right: 11px; top: 50%; margin-top: -4px;
+    width: 7px; height: 7px; border-right: 1.5px solid var(--ink-muted); border-bottom: 1.5px solid var(--ink-muted);
     transform: rotate(45deg); pointer-events: none;
   }
-  .chip:focus-within { outline: 2px solid var(--cobalt); outline-offset: 1px; }
-  .chip-apply {
-    margin-left: auto; border: none; background: var(--cobalt); color: var(--on-cobalt);
-    font: inherit; font-size: var(--fs-secondary); font-weight: 700;
-    padding: 9px 18px; border-radius: 10px; cursor: pointer;
-  }
-  .chip-apply:hover { filter: brightness(1.08); }
-  .chip-apply:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
+  .fsel:focus-within { outline: 2px solid var(--cobalt); outline-offset: 1px; }
 
   /* ── Стрічка каталог-карток ── */
   .feed { list-style: none; padding: 8px 14px 16px; display: flex; flex-direction: column; gap: 16px; }
