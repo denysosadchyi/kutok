@@ -258,11 +258,13 @@
     position: fixed;
     inset: auto;
     bottom: 0;
-    /* центр сцени = центр в'юпорта, зсунутий на пів ширини wf-nav (240px) */
-    left: calc(240px + (100vw - 240px) / 2);
-    transform: translateX(-50%);
+    /* прив'язка до .device (anchor-name: --device): шит ніколи не виходить за макет */
+    position-anchor: --device;
+    left: anchor(left);
+    width: anchor-size(width);
     margin: 0;
-    width: min(400px, 100vw);
+    max-height: 82vh;
+    overflow-y: auto;
     border: 1px solid var(--line); border-bottom: none;
     border-radius: 22px 22px 0 0;
     background: var(--paper-2);
