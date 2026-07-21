@@ -18,7 +18,7 @@
     --paper: #F5EEDF;          /* теплий кремовий папір каталогу — канвас (освітлений) */
     --paper-2: #FDF9F0;        /* що «виступає»: картки, поля, бейдж */
     /* Зерно паперу: SVG feTurbulence, чорнильний шум ~4% поверх канвасу */
-    --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='0.045'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='0.11'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     --ink: #1B1712;            /* чорнило — тепле майже-чорне */
     --ink-muted: #6F6553;      /* другорядний текст */
     --olive: #6E7B2E;          /* ОЛИВА — бренд: вордмарк, навбар */
@@ -338,6 +338,16 @@
     display: inline-flex; align-items: center; justify-content: center;
   }
   .vcheck svg { width: 10px; height: 10px; }
+  /* Район — кремова піґулка з піном знизу-зліва на фото (дзеркало бейджа) */
+  .place {
+    position: absolute; left: 12px; bottom: 12px;
+    display: inline-flex; align-items: center; gap: 5px;
+    max-width: 55%;
+    background: var(--paper-2); border-radius: 999px;
+    padding: 5px 11px 5px 9px; font-size: var(--fs-caption); font-weight: 600; color: var(--ink);
+  }
+  .place svg { width: 13px; height: 13px; flex-shrink: 0; }
+  .place span.t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
   /* Дві колонки, як на борді: зліва назва → одразу під нею локація; справа ціна → «/місяць» */
   .card-body { padding: 13px 2px 0; display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
@@ -353,8 +363,6 @@
     color: var(--cobalt); font-variant-numeric: tabular-nums; white-space: nowrap;
   }
   .card-price .per { display: block; font-size: var(--fs-caption); color: var(--ink-muted); margin-top: 1px; }
-  .card-loc { display: flex; align-items: center; gap: 5px; margin-top: 7px; font-size: var(--fs-secondary); color: var(--ink); }
-  .card-loc svg { width: 14px; height: 14px; flex-shrink: 0; color: var(--ink); }
 
   /* ── Навбар: плаваюча оливкова піґулка (відступи 8px), активний пункт —
      світла внутрішня піґулка з оливковим текстом ── */
@@ -775,12 +783,11 @@
         <a class="card" href="room.html">
           <div class="card-photo">
             <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800&h=560&fit=crop&auto=format&q=70" alt="Фото кімнати в 2-к квартирі на Поділі">
-            <span class="verified"><span class="vcheck"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>телефон, фото</span>
+            <span class="place"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.8-6.5-10.5a6.5 6.5 0 0 1 13 0C18.5 15.2 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.3"/></svg><span class="t">Поділ, Київ</span></span><span class="verified"><span class="vcheck"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>телефон, фото</span>
           </div>
           <div class="card-body">
             <div class="card-main">
               <h2 class="card-title">Кімната в 2-к квартирі</h2>
-              <p class="card-loc"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.8-6.5-10.5a6.5 6.5 0 0 1 13 0C18.5 15.2 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.3"/></svg>Поділ, Київ</p>
             </div>
             <div class="card-price"><span class="amount">9 500 ₴</span><span class="per">/місяць</span></div>
           </div>
@@ -791,12 +798,11 @@
         <a class="card" href="room.html">
           <div class="card-photo">
             <img src="https://images.unsplash.com/photo-1505873242700-f289a29e1e0f?w=800&h=560&fit=crop&auto=format&q=70" alt="Фото кімнати в 3-к квартирі на Оболоні">
-            <span class="verified"><span class="vcheck"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>телефон</span>
+            <span class="place"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.8-6.5-10.5a6.5 6.5 0 0 1 13 0C18.5 15.2 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.3"/></svg><span class="t">Оболонь, Київ</span></span><span class="verified"><span class="vcheck"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>телефон</span>
           </div>
           <div class="card-body">
             <div class="card-main">
               <h2 class="card-title">Кімната в 3-к квартирі</h2>
-              <p class="card-loc"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.8-6.5-10.5a6.5 6.5 0 0 1 13 0C18.5 15.2 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.3"/></svg>Оболонь, Київ</p>
             </div>
             <div class="card-price"><span class="amount">7 000 ₴</span><span class="per">/місяць</span></div>
           </div>
@@ -807,12 +813,11 @@
         <a class="card" href="profile.html">
           <div class="card-photo">
             <img src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=800&h=560&fit=crop&auto=format&q=70" alt="Фото профілю — Артем, 26">
-            <span class="verified"><span class="vcheck"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>телефон, фото</span>
+            <span class="place"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.8-6.5-10.5a6.5 6.5 0 0 1 13 0C18.5 15.2 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.3"/></svg><span class="t">Шевченківський або Поділ</span></span><span class="verified"><span class="vcheck"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>телефон, фото</span>
           </div>
           <div class="card-body">
             <div class="card-main">
               <h2 class="card-title">Артем, 26</h2>
-              <p class="card-loc"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.8-6.5-10.5a6.5 6.5 0 0 1 13 0C18.5 15.2 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.3"/></svg>Шевченківський або Поділ</p>
             </div>
             <div class="card-price"><span class="amount">до 8 000 ₴</span><span class="per">бюджет/міс</span></div>
           </div>
@@ -823,12 +828,11 @@
         <a class="card" href="room.html">
           <div class="card-photo">
             <img src="https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=800&h=560&fit=crop&auto=format&q=70" alt="Фото окремої кімнати в квартирі на Позняках">
-            <span class="verified"><span class="vcheck"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>телефон, фото</span>
+            <span class="place"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.8-6.5-10.5a6.5 6.5 0 0 1 13 0C18.5 15.2 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.3"/></svg><span class="t">Позняки, Київ</span></span><span class="verified"><span class="vcheck"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>телефон, фото</span>
           </div>
           <div class="card-body">
             <div class="card-main">
               <h2 class="card-title">Окрема кімната в квартирі</h2>
-              <p class="card-loc"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.8-6.5-10.5a6.5 6.5 0 0 1 13 0C18.5 15.2 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.3"/></svg>Позняки, Київ</p>
             </div>
             <div class="card-price"><span class="amount">8 200 ₴</span><span class="per">/місяць</span></div>
           </div>
