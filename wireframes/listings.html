@@ -8,30 +8,26 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
-  /* ── Мова «Каталог 73» — north-star: шведський друкований модерн-каталог 1970-х
-     (IKEA / FÄRGKARTA för inredning). Full-palette / функціональні кольори (не «один
-     акцент»): кремовий папір-канвас, чорнило-текст і три названі ролі — олива (бренд:
-     вордмарк, таб-бар), кобальт (дія: CTA/ціна/актив/фокус), помаранч (сигнальні
-     лічильники). Важкий гротеск Unbounded (лише вордмарк) + Inter (весь UI). Навігатор
-     вайрфреймів зліва (.wf-nav) лишається нейтральним інструментом — тема на .device. ── */
+  /* ===== Мова «Каталог 73» — north-star: шведський друкований модерн-каталог 1970-х
+     (IKEA / FÄRGKARTA för inredning). Екран зібрано З НУЛЯ під борд: видавничий тип-хедер,
+     стрічка каталог-карток (фото зі скругленням → бейдж «перевірено» знизу-справа →
+     назва+ціна у рядок → локація з піном → деталь), суцільний оливковий навбар.
+     Full-palette / функціональні ролі: папір+чорнило + олива(бренд) / кобальт(дія) / помаранч(сигнал).
+     Навігатор вайрфреймів зліва (.wf-nav) — нейтральний інструмент, теми не має. ===== */
   :root {
-    --canvas: #F1E7D3;         /* теплий кремовий папір каталогу */
-    --surface: #F1E7D3;        /* = canvas: верхній шар хедера, трек сегмента */
-    --surface-2: #FBF6EA;      /* що «виступає»: картки, поля, таб-піґулки, нижній шар хедера */
-    --text: #1B1712;           /* чорнило — тепле майже-чорне */
-    --text-muted: #6F6553;     /* другорядний текст (≥4.5:1 на канвасі) */
-    --accent: #1E59A3;         /* КОБАЛЬТ — дія: CTA, ціна, активний таб, вибраний сегмент, фокус */
-    --on-accent: #F6F1E4;      /* текст на кобальті */
-    --olive: #6E7B2E;          /* ОЛИВА — бренд: вордмарк, таб-бар */
+    --paper: #F1E7D3;          /* теплий кремовий папір каталогу — канвас */
+    --paper-2: #FBF6EA;        /* що «виступає»: картки, поля, бейдж */
+    --ink: #1B1712;            /* чорнило — тепле майже-чорне */
+    --ink-muted: #6F6553;      /* другорядний текст */
+    --olive: #6E7B2E;          /* ОЛИВА — бренд: вордмарк, навбар */
     --on-olive: #F3EED9;       /* кремові іконки/лейбли на оливі */
-    --orange: #DC5A2A;         /* ПОМАРАНЧ — сигнальні лічильники (сповіщення) */
+    --cobalt: #1E59A3;         /* КОБАЛЬТ — дія: ціна, CTA, актив, фокус */
+    --on-cobalt: #F6F1E4;      /* текст на кобальті */
+    --orange: #DC5A2A;         /* ПОМАРАНЧ — сигнальні лічильники */
     --line: #E4D8BF;           /* розділювачі, рамки на папері */
-    /* Типографічна драбина (product: фіксований rem-скейл, крок ~1.15–1.25):
-       11 → 13 → 16 → 22. Роль ваги: 400 текст, 600 акцент, 800 заголовки-гротеск. */
-    --fs-caption: 0.6875rem;   /* 11px: лейбли, оверлайни, таби, бейдж */
-    --fs-secondary: 0.8125rem; /* 13px: мета, лічильник, сегменти */
-    --fs-body: 1rem;           /* 16px: поля, кнопки */
-    --fs-display: 1.25rem;     /* 20px: вордмарк (Unbounded, широкий) */
+    --fs-caption: 0.6875rem;   /* 11px */
+    --fs-secondary: 0.8125rem; /* 13px */
+    --fs-body: 1rem;           /* 16px */
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -73,335 +69,6 @@
   .wf-nav a:hover { background: #e6e6e6; color: #333; }
   .wf-nav a.active { background: #d8d8d8; color: #222; font-weight: bold; }
   .wf-nav a.active::before { content: "\25B8  "; }
-
-  .device {
-    width: 100%;
-    max-width: 400px;
-    min-height: 100vh;
-    background: var(--canvas);
-    color: var(--text);
-    font-family: Inter, system-ui, sans-serif;
-    line-height: 1.5;
-    border-left: 1px solid #ccc;
-    border-right: 1px solid #ccc;
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* ── Загальні кістякові елементи ── */
-  /* Хедер: два шари однакового розміру, накладені один на одного.
-     .header-shell — нижній шар, БІЛИЙ, без падингів (жодного зазору від верху екрана).
-     header.app — верхній шар, кольору ЗАГАЛЬНОГО фону сторінки (--surface), скруглений
-     знизу ЗАВЖДИ. Оскільки нижній (білий) у спокої НЕ скруглений, у кутках, де дуга
-     зрізає бежевий, проступає білий — це і є «білі області, що просвічуються».
-     При скролі (.is-stuck, клас ставить scroll-слухач внизу файлу) білий шар
-     доскруглюється так само → бежевий накриває його рівно один в один → білий зникає,
-     кутки чисті. */
-  .header-shell {
-    position: sticky;
-    top: 0;
-    z-index: 5;
-    background: var(--surface-2);
-    will-change: transform;
-    transform: translateZ(0);
-    -webkit-transform: translateZ(0);
-  }
-  .header-shell.is-stuck {
-    border-radius: 0 0 32px 32px;
-  }
-  header.app {
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-top: none;
-    border-radius: 0 0 32px 32px;
-    padding: 10px 12px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 6px;
-  }
-  /* Лого: наданий растровий знак (фон вирізано, кроп впритул) + вордмарк геометричним
-     гротеском Space Grotesk — навмисно не Newsreader і не Inter, окрема марка,
-     використовується лише тут, один раз */
-  .logo { display: flex; align-items: center; gap: 8px; min-width: 0; flex: 1 1 auto; }
-  .logo-mark { height: 26px; width: auto; flex-shrink: 0; display: block; }
-  .logo-word {
-    font-family: "Unbounded", Inter, system-ui, sans-serif;
-    font-size: var(--fs-display);
-    font-weight: 700;
-    letter-spacing: -.02em;
-    line-height: 1.1;
-    color: var(--olive);
-    flex-shrink: 0;
-  }
-  .logo-tagline {
-    font-size: var(--fs-caption);
-    color: var(--text-muted);
-    line-height: 1.25;
-    padding-left: 8px;
-    margin-left: 1px;
-    border-left: 1px solid var(--line);
-    min-width: 0;
-  }
-
-  /* Значок пошуку в шапці + поповер із полем пошуку (нативний Popover API + anchor positioning) */
-  .icon-btn {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    flex-shrink: 0;
-    border: 1.5px solid var(--text);
-    background: transparent;
-    padding: 0;
-    border-radius: 999px;
-    color: var(--text);
-    cursor: pointer;
-  }
-  .icon-btn svg { width: 17px; height: 17px; }
-  .icon-btn:hover { background: var(--text); color: var(--surface-2); }
-  .icon-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-  .search-trigger { anchor-name: --search-anchor; }
-  #search-popover {
-    position: fixed;
-    position-anchor: --search-anchor;
-    position-area: bottom span-left;
-    margin: 8px 0 0;
-    width: min(376px, calc(100vw - 24px)); /* ширина контенту хедера (400px девайс − 2×12px падинг) */
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    background: var(--surface-2);
-    box-shadow: 0 8px 24px rgba(42, 36, 28, .16), 0 2px 6px rgba(42, 36, 28, .08);
-    padding: 8px;
-  }
-  .search-popover-form {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    border: 1px solid var(--line);
-    background: var(--surface);
-    border-radius: 10px;
-    padding: 8px 10px;
-  }
-  .search-popover-form svg { width: 16px; height: 16px; color: var(--text-muted); flex-shrink: 0; }
-  .search-popover-form input {
-    flex: 1;
-    min-width: 0;
-    border: none;
-    background: transparent;
-    outline: none;
-    font-size: var(--fs-body);
-    font-family: inherit;
-    color: var(--text);
-  }
-  .search-popover-form input::placeholder { color: var(--text-muted); }
-
-  section { border-bottom: 1px solid var(--line); }
-  .pad { padding: 10px 12px; }
-
-  /* Фільтри: та сама картка, що й у кімнати/людини, але злита з хедером —
-     без бокових/верхніх відступів, кутки зверху не скруглені (лист, що
-     висувається з-під хедера), скруглення й тінь знизу вдвічі більші */
-  section.filters-section {
-    border-bottom: none;
-    padding: 0;
-  }
-  form.filters {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    background: var(--surface-2);
-    border-radius: 0 0 32px 32px;
-    padding: 14px;
-    box-shadow: 0 1px 3px rgba(42, 36, 28, .06);
-  }
-  .field { display: flex; flex-direction: column; gap: 2px; }
-  .field label { font-size: var(--fs-caption); color: var(--text-muted); }
-  .field select, .field input {
-    border: 1px solid var(--line);
-    background: var(--surface-2);
-    color: var(--text);
-    padding: 8px 14px;
-    font-size: var(--fs-body); /* <16px змушує iOS Safari зумити екран при фокусі */
-    font-family: inherit;
-    border-radius: 999px;
-  }
-  /* Власна стрілка замість нативної (та була притиснута до краю) + відступ під неї */
-  .field select {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    padding-right: 34px;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2375695A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-    background-size: 13px;
-    color-scheme: light;
-  }
-  .field select option { background-color: var(--surface-2); color: var(--text); }
-  .field select:focus, .field input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
-  .filters-row { display: flex; gap: 8px; }
-  .filters-row .field { flex: 1; min-width: 0; } /* без цього select не стискається і вилазить за картку */
-  fieldset.seg-switch { border: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 2px; }
-  /* Легенда лишається для читалок екрана (доступна назва групи radio), візуально прибрана — контекст і так зрозумілий */
-  fieldset.seg-switch legend {
-    position: absolute; width: 1px; height: 1px; overflow: hidden;
-    clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
-  }
-  /* iOS-стиль сегментованого контролю: нейтральний трек, вибраний пункт — інсетна
-     плаваюча піґулка з тінню, а не заливка на всю комірку від краю до краю */
-  .seg-options {
-    display: flex;
-    gap: 2px;
-    padding: 2px;
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: 999px;
-  }
-  .seg-options label {
-    flex: 1;
-    display: flex; align-items: center; justify-content: center; gap: 4px;
-    padding: 7px 10px;
-    font-size: var(--fs-secondary);
-    color: var(--text-muted);
-    border-radius: 999px;
-    transition: background .15s ease-out, color .15s ease-out, box-shadow .15s ease-out;
-  }
-  .seg-options input {
-    position: absolute; width: 1px; height: 1px; overflow: hidden;
-    clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
-  }
-  .seg-options label:has(input:checked) {
-    background: var(--surface-2);
-    color: var(--accent);
-    font-weight: 600;
-    box-shadow: 0 1px 3px rgba(42, 36, 28, .16), 0 1px 1px rgba(42, 36, 28, .08);
-  }
-  .seg-options label:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
-  /* Лічильник у сегменті — та сама кругла піґулка, що й на табах навбара знизу;
-     у невибраному сегменті приглушена, гучний акцентний фон лишається тільки за вибраним */
-  .seg-count {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 16px;
-    height: 16px;
-    padding: 0 4px;
-    border-radius: 999px;
-    background: var(--line);
-    color: var(--text-muted);
-    font-size: 0.625rem;
-    font-weight: 700;
-    line-height: 1;
-    font-variant-numeric: tabular-nums;
-  }
-  .seg-options label:has(input:checked) .seg-count {
-    background: var(--accent);
-    color: var(--on-accent);
-  }
-  button {
-    border: 1px solid var(--line);
-    background: var(--surface-2);
-    color: var(--text);
-    padding: 10px 14px;
-    font-size: var(--fs-body);
-    font-family: inherit;
-    border-radius: 999px;
-    cursor: pointer;
-  }
-  /* Горизонтальний градієнт бурштин → оранж (обидва одної світлості, ≥4.5:1 зі світлим
-     текстом по всій ширині) + світіння зверху для легкого об'єму */
-  button.primary {
-    border: none;
-    background: var(--accent);
-    color: var(--on-accent);
-    font-weight: 600;
-  }
-  button.primary:hover { filter: brightness(1.08); }
-  button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-
-  /* Список карток: білі блоки на канвасі, велике горизонтальне фото зверху, дані знизу */
-  ul.feed { list-style: none; padding: 12px; display: flex; flex-direction: column; gap: 12px; }
-  article.card {
-    background: var(--surface-2);
-    border: 1px solid var(--line);
-    border-radius: 18px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(27, 23, 18, .07);
-  }
-  article.card:active { background: var(--surface); }
-  .thumb {
-    position: relative;
-    width: 100%;
-    height: 180px;
-    background: var(--surface);
-  }
-  .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .card-body {
-    padding: 12px 14px 14px;
-    display: grid;
-    grid-template-columns: 1fr auto;
-    grid-template-areas: "kind kind" "title price" "meta meta";
-    column-gap: 10px;
-    align-items: baseline;
-  }
-  .card-kind { grid-area: kind; font-size: 0.5625rem; text-transform: uppercase; letter-spacing: .1em; color: var(--text-muted); margin-bottom: 2px; }
-  .card-title {
-    grid-area: title;
-    font-family: Inter, system-ui, sans-serif;
-    font-weight: 800;
-    letter-spacing: -.015em;
-    font-size: 1.3125rem;
-    line-height: 1.15;
-    color: var(--text);
-    margin: 0;
-  }
-  .card-meta { grid-area: meta; font-size: var(--fs-secondary); line-height: 1.45; color: var(--text-muted); margin-top: 5px; }
-  .card-price { grid-area: price; justify-self: end; text-align: right; white-space: nowrap; font-size: 1.125rem; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--accent); }
-  .badge {
-    position: absolute;
-    left: 10px;
-    bottom: 10px;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    font-size: var(--fs-caption);
-    font-weight: 600;
-    color: var(--text);
-    border: 1px solid var(--line);
-    background: var(--surface-2); /* непрозора кремова піґулка — читається на будь-якому фото, без blur */
-    border-radius: 999px;
-    padding: 4px 10px;
-    box-shadow: 0 1px 2px rgba(27, 23, 18, .18);
-  }
-  .badge svg { width: 13px; height: 13px; flex-shrink: 0; color: var(--olive); } /* щит — олива = «перевірено» бренду */
-  .card a.cardlink { display: block; text-decoration: none; color: inherit; }
-  .card a.cardlink:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: 16px; }
-
-  /* Таб-бар: плаваюча пігулка з відступом 8px від країв */
-  footer.tabbar {
-    background: var(--olive);
-    overflow: visible;
-    display: flex;
-    margin: auto 0 0;
-    position: sticky;
-    bottom: 0;
-    padding-bottom: env(safe-area-inset-bottom);
-    box-shadow: 0 -1px 4px rgba(27, 23, 18, .14);
-  }
-  footer.tabbar a {
-    flex: 1;
-    text-align: center;
-    padding: 10px 4px;
-    font-size: var(--fs-caption);
-    color: rgba(243, 238, 217, .6);
-    text-decoration: none;
-  }
-  footer.tabbar a.active { color: var(--on-olive); font-weight: 600; background: transparent; }
-  footer.tabbar a:focus-visible { outline: 2px solid var(--on-olive); outline-offset: -3px; }
-
   .wf-nav-hint { font-size: 10px; color: #999; margin-bottom: 8px; font-style: italic; }
   .wf-nav .tree { margin-top: 2px; }
   .wf-nav details.role { margin-top: 10px; border-top: 1px solid #ddd; padding-top: 8px; }
@@ -437,30 +104,222 @@
     padding: 0 4px; text-decoration: none; flex-shrink: 0; margin-left: auto;
   }
   .job-tag:hover { color: #222; border-color: #999; background: #e6e6e6; }
-
-  footer.tabbar a { display: flex; flex-direction: column; align-items: center; gap: 4px; position: relative; padding: 9px 4px 8px; margin: 0; border-radius: 0; }
-  .tab-icon { position: relative; width: 20px; height: 20px; color: inherit; }
-  .tab-icon svg { width: 100%; height: 100%; display: block; }
-  footer.tabbar a.active .tab-icon { color: var(--on-olive); }
-  .tab-label { font-size: var(--fs-caption); }
-  /* Лічильник висить на самій іконці, у її правому верхньому куті — помаранч на оливі */
-  .tab-badge {
-    position: absolute; top: -5px; right: -7px; min-width: 14px; height: 14px; padding: 0 3px;
-    background: var(--orange); color: var(--on-olive); font-size: 0.625rem; font-weight: 700; line-height: 14px; text-align: center;
-    border-radius: 999px;
-  }
-  .icon-ph { display: inline-block; background: #d6d6d6; border: 1px solid #b0b0b0; vertical-align: middle; }
-  .menu-row { display: flex; align-items: center; gap: 10px; padding: 11px 12px; text-decoration: none; color: #333; }
-  .menu-row:hover { background: #f2f2f2; }
-  .menu-row .icon-ph { width: 20px; height: 20px; flex-shrink: 0; }
-  .menu-row .menu-label { flex: 1; font-size: 13px; }
-  .menu-row .chevron { width: 7px; height: 7px; border-top: 1px solid #999; border-right: 1px solid #999; transform: rotate(45deg); flex-shrink: 0; background: none; }
-
   .wf-nav-tools { margin-bottom: 8px; }
   .wf-nav-filter { width: 100%; box-sizing: border-box; font-size: 11px; padding: 5px 6px; border: 1px solid #bbb; margin-bottom: 5px; font-family: inherit; }
   .wf-nav-toggle-all { display: flex; gap: 4px; }
   .wf-nav-toggle-all button { flex: 1; font-size: 10px; padding: 4px 2px; border: 1px solid #ccc; background: #eee; color: #555; cursor: pointer; }
   .wf-nav-toggle-all button:hover { background: #e0e0e0; }
+
+  /* ════════════ Застосунок «Куток» — мова «Каталог 73» ════════════ */
+  .device {
+    width: 100%;
+    max-width: 400px;
+    min-height: 100vh;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: Inter, system-ui, sans-serif;
+    line-height: 1.5;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+  }
+  .device a { color: inherit; text-decoration: none; }
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+  }
+
+  /* ── Видавничий хедер: тільки тип, без лого-мітки (як на north-star) ── */
+  .app-head {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+    padding: 20px 18px 15px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .head-word {
+    font-family: "Unbounded", Inter, system-ui, sans-serif;
+    font-weight: 700;
+    font-size: 2rem;
+    line-height: .95;
+    letter-spacing: -.03em;
+    color: var(--olive);
+  }
+  .head-sub {
+    margin-top: 7px;
+    font-size: var(--fs-secondary);
+    color: var(--ink-muted);
+  }
+  .head-btn {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    margin-top: 2px;
+    anchor-name: --search-anchor;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid var(--ink);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .head-btn svg { width: 18px; height: 18px; }
+  .head-btn:hover { background: var(--ink); color: var(--paper-2); }
+  .head-btn:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
+
+  /* Пошук — нативний popover, прив'язаний до кнопки (anchor positioning) */
+  #search-popover {
+    position: fixed;
+    position-anchor: --search-anchor;
+    position-area: bottom span-left;
+    margin: 8px 0 0;
+    width: min(320px, calc(100vw - 32px));
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--paper-2);
+    box-shadow: 0 12px 30px rgba(27, 23, 18, .22), 0 2px 6px rgba(27, 23, 18, .10);
+    padding: 10px;
+  }
+  .search-form {
+    display: flex; align-items: center; gap: 8px;
+    border: 1.5px solid var(--line); background: var(--paper);
+    border-radius: 10px; padding: 9px 12px;
+  }
+  .search-form svg { width: 16px; height: 16px; color: var(--ink-muted); flex-shrink: 0; }
+  .search-form input {
+    flex: 1; min-width: 0; border: none; background: transparent; outline: none;
+    font: inherit; font-size: var(--fs-body); color: var(--ink);
+  }
+  .search-form input::placeholder { color: var(--ink-muted); }
+
+  /* ── Фільтр: сегмент типу + компактні теги-чипи (не важка картка-форма) ── */
+  .filterbar {
+    padding: 14px 14px 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+  }
+  .seg {
+    display: flex; gap: 3px; padding: 3px;
+    background: var(--paper-2); border: 1.5px solid var(--line); border-radius: 12px;
+  }
+  .seg label {
+    flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 9px 8px; border-radius: 9px;
+    font-size: var(--fs-secondary); color: var(--ink-muted); cursor: pointer;
+    transition: background .15s ease, color .15s ease;
+  }
+  .seg input { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); }
+  .seg label:has(input:checked) {
+    background: var(--paper); color: var(--cobalt); font-weight: 700;
+    box-shadow: 0 1px 2px rgba(27, 23, 18, .14);
+  }
+  .seg label:has(input:focus-visible) { outline: 2px solid var(--cobalt); outline-offset: 2px; }
+  .seg-count {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 17px; height: 17px; padding: 0 5px; border-radius: 999px;
+    background: var(--line); color: var(--ink-muted);
+    font-size: .625rem; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums;
+  }
+  .seg label:has(input:checked) .seg-count { background: var(--cobalt); color: var(--on-cobalt); }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .chip {
+    position: relative; display: inline-flex; align-items: center; gap: 7px;
+    border: 1.5px solid var(--line); background: var(--paper-2);
+    border-radius: 10px; padding: 7px 30px 7px 12px; cursor: pointer;
+  }
+  .chip-cap { font-size: var(--fs-caption); color: var(--ink-muted); }
+  .chip select {
+    appearance: none; -webkit-appearance: none; -moz-appearance: none;
+    border: none; background: transparent; font: inherit;
+    font-size: var(--fs-secondary); font-weight: 600; color: var(--ink); cursor: pointer;
+  }
+  .chip::after {
+    content: ""; position: absolute; right: 12px; top: 50%; margin-top: -5px;
+    width: 8px; height: 8px; border-right: 1.5px solid var(--ink-muted); border-bottom: 1.5px solid var(--ink-muted);
+    transform: rotate(45deg); pointer-events: none;
+  }
+  .chip:focus-within { outline: 2px solid var(--cobalt); outline-offset: 1px; }
+  .chip-apply {
+    margin-left: auto; border: none; background: var(--cobalt); color: var(--on-cobalt);
+    font: inherit; font-size: var(--fs-secondary); font-weight: 700;
+    padding: 9px 18px; border-radius: 10px; cursor: pointer;
+  }
+  .chip-apply:hover { filter: brightness(1.08); }
+  .chip-apply:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
+
+  /* ── Стрічка каталог-карток ── */
+  .feed { list-style: none; padding: 8px 14px 16px; display: flex; flex-direction: column; gap: 16px; }
+  .card {
+    display: block;
+    background: var(--paper-2);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(27, 23, 18, .06);
+  }
+  .card:active { background: var(--paper); }
+  .card:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
+  .card-photo { position: relative; width: 100%; aspect-ratio: 16 / 10; background: var(--paper); }
+  .card-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  /* Бейдж «перевірено» — непрозора кремова піґулка знизу-справа над фото (як на борді).
+     Показує ЩО саме перевірено (телефон/фото) — принцип «нічого німого» з PRODUCT.md. */
+  .verified {
+    position: absolute; right: 10px; bottom: 10px;
+    display: inline-flex; align-items: center; gap: 5px;
+    background: var(--paper-2); border: 1px solid var(--line); border-radius: 999px;
+    padding: 5px 11px; font-size: var(--fs-caption); font-weight: 600; color: var(--ink);
+    box-shadow: 0 1px 3px rgba(27, 23, 18, .22);
+  }
+  .verified svg { width: 14px; height: 14px; flex-shrink: 0; color: var(--olive); }
+
+  .card-body { padding: 14px 16px 16px; }
+  .card-kind { font-size: .5625rem; text-transform: uppercase; letter-spacing: .11em; color: var(--ink-muted); }
+  .card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-top: 3px; }
+  .card-title {
+    font-weight: 800; letter-spacing: -.02em;
+    font-size: 1.375rem; line-height: 1.1; color: var(--ink);
+  }
+  .card-price { text-align: right; flex-shrink: 0; }
+  .card-price .amount {
+    display: block; font-size: 1.25rem; font-weight: 800; letter-spacing: -.02em;
+    color: var(--cobalt); font-variant-numeric: tabular-nums; white-space: nowrap;
+  }
+  .card-price .per { display: block; font-size: var(--fs-caption); color: var(--ink-muted); margin-top: 1px; }
+  .card-loc { display: flex; align-items: center; gap: 6px; margin-top: 11px; font-size: var(--fs-secondary); color: var(--ink); }
+  .card-loc svg { width: 14px; height: 14px; flex-shrink: 0; color: var(--olive); }
+  .card-detail { margin-top: 4px; font-size: var(--fs-secondary); color: var(--ink-muted); }
+
+  /* ── Навбар: суцільна оливкова смуга, кремові лейбли, помаранчеві лічильники ── */
+  .tabbar {
+    position: sticky; bottom: 0; margin-top: auto;
+    background: var(--olive); display: flex;
+    padding-bottom: env(safe-area-inset-bottom);
+    box-shadow: 0 -1px 4px rgba(27, 23, 18, .16);
+  }
+  .tabbar a {
+    flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px;
+    padding: 11px 4px 10px; position: relative; color: rgba(243, 238, 217, .58);
+  }
+  .tabbar a.active { color: var(--on-olive); font-weight: 600; }
+  .tabbar a:focus-visible { outline: 2px solid var(--on-olive); outline-offset: -3px; }
+  .tab-ico { position: relative; width: 22px; height: 22px; }
+  .tab-ico svg { width: 100%; height: 100%; display: block; }
+  .tab-txt { font-size: var(--fs-caption); }
+  .tab-dot {
+    position: absolute; top: -4px; right: -8px; min-width: 15px; height: 15px; padding: 0 4px;
+    background: var(--orange); color: var(--on-olive);
+    font-size: .625rem; font-weight: 700; line-height: 15px; text-align: center; border-radius: 999px;
+  }
 </style>
 </head>
 <body>
@@ -772,148 +631,162 @@
   <div class="wf-stage">
 <div class="device">
 
-  <div class="header-shell">
-    <header class="app">
-      <div class="logo">
-        <img class="logo-mark" src="assets/logo-mark.png" alt="" width="601" height="562">
-        <span class="logo-word">Куток</span>
-        <span class="logo-tagline">безпечний пошук<br>кімнат і сусідів</span>
-      </div>
-      <button type="button" class="icon-btn search-trigger" popovertarget="search-popover" aria-label="Відкрити пошук">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M21.788 21.788a.723.723 0 0 0 0-1.022L18.122 17.1a9.157 9.157 0 1 0-1.022 1.022l3.666 3.666a.723.723 0 0 0 1.022 0" clip-rule="evenodd"/></svg>
-      </button>
-    </header>
-  </div>
+  <header class="app-head">
+    <div>
+      <h1 class="head-word">Куток</h1>
+      <p class="head-sub">Кімнати й сусіди в Києві, між своїми</p>
+    </div>
+    <button type="button" class="head-btn" popovertarget="search-popover" aria-label="Відкрити пошук">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M21.788 21.788a.723.723 0 0 0 0-1.022L18.122 17.1a9.157 9.157 0 1 0-1.022 1.022l3.666 3.666a.723.723 0 0 0 1.022 0" clip-rule="evenodd"/></svg>
+    </button>
+  </header>
 
-  <div id="search-popover" popover class="search-popover">
-    <form class="search-popover-form" role="search" action="listings.html" method="get">
+  <div id="search-popover" popover>
+    <form class="search-form" role="search" action="listings.html" method="get">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M21.788 21.788a.723.723 0 0 0 0-1.022L18.122 17.1a9.157 9.157 0 1 0-1.022 1.022l3.666 3.666a.723.723 0 0 0 1.022 0" clip-rule="evenodd"/></svg>
       <input type="search" name="q" placeholder="Пошук за назвою, районом…" aria-label="Пошук оголошень">
     </form>
   </div>
 
-  <section class="filters-section">
-    <nav aria-label="Фільтр оголошень">
-      <form class="filters" action="listings.html" method="get">
-        <fieldset class="seg-switch">
-          <legend>Тип оголошень</legend>
-          <div class="seg-options">
-            <label><input type="radio" name="type" value="rooms"> Кімнати <span class="seg-count">18</span></label>
-            <label><input type="radio" name="type" value="people"> Люди <span class="seg-count">6</span></label>
-            <label><input type="radio" name="type" value="all" checked> Усі <span class="seg-count">24</span></label>
-          </div>
-        </fieldset>
-        <div class="field">
-          <label for="district">Район Києва</label>
-          <select id="district" name="district">
-            <option>Будь-який район</option>
+  <section class="filterbar" aria-label="Фільтр оголошень">
+    <form class="filters-form" action="listings.html" method="get">
+      <fieldset class="seg">
+        <legend class="sr-only">Тип оголошень</legend>
+        <label><input type="radio" name="type" value="rooms"> Кімнати <span class="seg-count">18</span></label>
+        <label><input type="radio" name="type" value="people"> Люди <span class="seg-count">6</span></label>
+        <label><input type="radio" name="type" value="all" checked> Усі <span class="seg-count">24</span></label>
+      </fieldset>
+      <div class="chips">
+        <label class="chip">
+          <span class="chip-cap">Район</span>
+          <select name="district" aria-label="Район Києва">
+            <option>Будь-який</option>
             <option selected>Поділ</option>
             <option>Оболонь</option>
-            <option>Позняки (Лівий берег)</option>
+            <option>Позняки</option>
             <option>Шевченківський</option>
             <option>Печерськ</option>
             <option>Голосіїв</option>
             <option>Солом'янка</option>
           </select>
-        </div>
-        <div class="filters-row">
-          <div class="field">
-            <label for="price">Ціна до, ₴/міс</label>
-            <input id="price" name="price" type="number" inputmode="numeric" value="10000" min="0" step="500">
-          </div>
-          <div class="field">
-            <label for="gender">Стать сусіда</label>
-            <select id="gender" name="gender">
-              <option selected>Будь-яка</option>
-              <option>Жінка</option>
-              <option>Чоловік</option>
-            </select>
-          </div>
-        </div>
-        <button type="submit" class="primary">Застосувати фільтр</button>
-      </form>
-    </nav>
+        </label>
+        <label class="chip">
+          <span class="chip-cap">Ціна</span>
+          <select name="price" aria-label="Ціна за місяць">
+            <option>до 8 000 ₴</option>
+            <option selected>до 10 000 ₴</option>
+            <option>до 15 000 ₴</option>
+            <option>будь-яка</option>
+          </select>
+        </label>
+        <label class="chip">
+          <span class="chip-cap">Стать</span>
+          <select name="gender" aria-label="Стать сусіда">
+            <option selected>будь-яка</option>
+            <option>жінка</option>
+            <option>чоловік</option>
+          </select>
+        </label>
+        <button type="submit" class="chip-apply">Показати</button>
+      </div>
+    </form>
   </section>
 
   <main>
     <ul class="feed">
 
       <li>
-        <article class="card">
-          <a class="cardlink" href="room.html">
-            <div class="thumb">
-              <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800&h=450&fit=crop&auto=format&q=70" alt="Фото кімнати в 2-к квартирі на Поділі">
-              <span class="badge"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M3.378 5.082C3 5.62 3 7.22 3 10.417v1.574c0 5.638 4.239 8.375 6.899 9.536c.721.315 1.082.473 2.101.473c1.02 0 1.38-.158 2.101-.473C16.761 20.365 21 17.63 21 11.991v-1.574c0-3.198 0-4.797-.378-5.335c-.377-.537-1.88-1.052-4.887-2.081l-.573-.196C13.595 2.268 12.812 2 12 2s-1.595.268-3.162.805L8.265 3c-3.007 1.03-4.51 1.545-4.887 2.082M15.06 10.5a.75.75 0 0 0-1.12-.999l-3.011 3.374l-.87-.974a.75.75 0 0 0-1.118 1l1.428 1.6a.75.75 0 0 0 1.119 0z" clip-rule="evenodd"/></svg>телефон, фото</span>
-            </div>
-            <div class="card-body">
-              <div class="card-kind">Кімната · господар</div>
+        <a class="card" href="room.html">
+          <div class="card-photo">
+            <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800&h=500&fit=crop&auto=format&q=70" alt="Фото кімнати в 2-к квартирі на Поділі">
+            <span class="verified"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M3.378 5.082C3 5.62 3 7.22 3 10.417v1.574c0 5.638 4.239 8.375 6.899 9.536c.721.315 1.082.473 2.101.473c1.02 0 1.38-.158 2.101-.473C16.761 20.365 21 17.63 21 11.991v-1.574c0-3.198 0-4.797-.378-5.335c-.377-.537-1.88-1.052-4.887-2.081l-.573-.196C13.595 2.268 12.812 2 12 2s-1.595.268-3.162.805L8.265 3c-3.007 1.03-4.51 1.545-4.887 2.082M15.06 10.5a.75.75 0 0 0-1.12-.999l-3.011 3.374l-.87-.974a.75.75 0 0 0-1.118 1l1.428 1.6a.75.75 0 0 0 1.119 0z" clip-rule="evenodd"/></svg>телефон, фото</span>
+          </div>
+          <div class="card-body">
+            <div class="card-kind">Кімната · господар</div>
+            <div class="card-head">
               <h2 class="card-title">Кімната в 2-к квартирі</h2>
-              <p class="card-meta">Поділ · 1 співмешканець · заїзд з 1 липня</p>
-              <p class="card-price">9 500 ₴/міс</p>
+              <div class="card-price"><span class="amount">9 500 ₴</span><span class="per">/місяць</span></div>
             </div>
-          </a>
-        </article>
+            <p class="card-loc"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7m0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5"/></svg>Поділ, Київ</p>
+            <p class="card-detail">1 співмешканець · заїзд з 1 липня</p>
+          </div>
+        </a>
       </li>
 
       <li>
-        <article class="card">
-          <a class="cardlink" href="room.html">
-            <div class="thumb">
-              <img src="https://images.unsplash.com/photo-1505873242700-f289a29e1e0f?w=800&h=450&fit=crop&auto=format&q=70" alt="Фото кімнати в 3-к квартирі на Оболоні">
-              <span class="badge"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M3.378 5.082C3 5.62 3 7.22 3 10.417v1.574c0 5.638 4.239 8.375 6.899 9.536c.721.315 1.082.473 2.101.473c1.02 0 1.38-.158 2.101-.473C16.761 20.365 21 17.63 21 11.991v-1.574c0-3.198 0-4.797-.378-5.335c-.377-.537-1.88-1.052-4.887-2.081l-.573-.196C13.595 2.268 12.812 2 12 2s-1.595.268-3.162.805L8.265 3c-3.007 1.03-4.51 1.545-4.887 2.082M15.06 10.5a.75.75 0 0 0-1.12-.999l-3.011 3.374l-.87-.974a.75.75 0 0 0-1.118 1l1.428 1.6a.75.75 0 0 0 1.119 0z" clip-rule="evenodd"/></svg>телефон</span>
-            </div>
-            <div class="card-body">
-              <div class="card-kind">Кімната · господар</div>
+        <a class="card" href="room.html">
+          <div class="card-photo">
+            <img src="https://images.unsplash.com/photo-1505873242700-f289a29e1e0f?w=800&h=500&fit=crop&auto=format&q=70" alt="Фото кімнати в 3-к квартирі на Оболоні">
+            <span class="verified"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M3.378 5.082C3 5.62 3 7.22 3 10.417v1.574c0 5.638 4.239 8.375 6.899 9.536c.721.315 1.082.473 2.101.473c1.02 0 1.38-.158 2.101-.473C16.761 20.365 21 17.63 21 11.991v-1.574c0-3.198 0-4.797-.378-5.335c-.377-.537-1.88-1.052-4.887-2.081l-.573-.196C13.595 2.268 12.812 2 12 2s-1.595.268-3.162.805L8.265 3c-3.007 1.03-4.51 1.545-4.887 2.082M15.06 10.5a.75.75 0 0 0-1.12-.999l-3.011 3.374l-.87-.974a.75.75 0 0 0-1.118 1l1.428 1.6a.75.75 0 0 0 1.119 0z" clip-rule="evenodd"/></svg>телефон</span>
+          </div>
+          <div class="card-body">
+            <div class="card-kind">Кімната · господар</div>
+            <div class="card-head">
               <h2 class="card-title">Кімната в 3-к квартирі</h2>
-              <p class="card-meta">Оболонь · 2 співмешканці · заїзд з 15 липня</p>
-              <p class="card-price">7 000 ₴/міс</p>
+              <div class="card-price"><span class="amount">7 000 ₴</span><span class="per">/місяць</span></div>
             </div>
-          </a>
-        </article>
+            <p class="card-loc"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7m0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5"/></svg>Оболонь, Київ</p>
+            <p class="card-detail">2 співмешканці · заїзд з 15 липня</p>
+          </div>
+        </a>
       </li>
 
       <li>
-        <article class="card">
-          <a class="cardlink" href="profile.html">
-            <div class="thumb">
-              <img src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=800&h=450&fit=crop&auto=format&q=70" alt="Фото профілю — Артем, 26">
-              <span class="badge"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M3.378 5.082C3 5.62 3 7.22 3 10.417v1.574c0 5.638 4.239 8.375 6.899 9.536c.721.315 1.082.473 2.101.473c1.02 0 1.38-.158 2.101-.473C16.761 20.365 21 17.63 21 11.991v-1.574c0-3.198 0-4.797-.378-5.335c-.377-.537-1.88-1.052-4.887-2.081l-.573-.196C13.595 2.268 12.812 2 12 2s-1.595.268-3.162.805L8.265 3c-3.007 1.03-4.51 1.545-4.887 2.082M15.06 10.5a.75.75 0 0 0-1.12-.999l-3.011 3.374l-.87-.974a.75.75 0 0 0-1.118 1l1.428 1.6a.75.75 0 0 0 1.119 0z" clip-rule="evenodd"/></svg>телефон, фото</span>
-            </div>
-            <div class="card-body">
-              <div class="card-kind">Людина · шукає кімнату</div>
+        <a class="card" href="profile.html">
+          <div class="card-photo">
+            <img src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=800&h=500&fit=crop&auto=format&q=70" alt="Фото профілю — Артем, 26">
+            <span class="verified"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M3.378 5.082C3 5.62 3 7.22 3 10.417v1.574c0 5.638 4.239 8.375 6.899 9.536c.721.315 1.082.473 2.101.473c1.02 0 1.38-.158 2.101-.473C16.761 20.365 21 17.63 21 11.991v-1.574c0-3.198 0-4.797-.378-5.335c-.377-.537-1.88-1.052-4.887-2.081l-.573-.196C13.595 2.268 12.812 2 12 2s-1.595.268-3.162.805L8.265 3c-3.007 1.03-4.51 1.545-4.887 2.082M15.06 10.5a.75.75 0 0 0-1.12-.999l-3.011 3.374l-.87-.974a.75.75 0 0 0-1.118 1l1.428 1.6a.75.75 0 0 0 1.119 0z" clip-rule="evenodd"/></svg>телефон, фото</span>
+          </div>
+          <div class="card-body">
+            <div class="card-kind">Людина · шукає кімнату</div>
+            <div class="card-head">
               <h2 class="card-title">Артем, 26</h2>
-              <p class="card-meta">Шевченківський або Поділ · не палю · заїзд з 1 серпня</p>
-              <p class="card-price">бюджет до 8 000 ₴/міс</p>
+              <div class="card-price"><span class="amount">до 8 000 ₴</span><span class="per">бюджет/міс</span></div>
             </div>
-          </a>
-        </article>
+            <p class="card-loc"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7m0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5"/></svg>Шевченківський або Поділ</p>
+            <p class="card-detail">не палю · заїзд з 1 серпня</p>
+          </div>
+        </a>
       </li>
 
       <li>
-        <article class="card">
-          <a class="cardlink" href="room.html">
-            <div class="thumb">
-              <img src="https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=800&h=450&fit=crop&auto=format&q=70" alt="Фото окремої кімнати в квартирі на Позняках">
-              <span class="badge"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M3.378 5.082C3 5.62 3 7.22 3 10.417v1.574c0 5.638 4.239 8.375 6.899 9.536c.721.315 1.082.473 2.101.473c1.02 0 1.38-.158 2.101-.473C16.761 20.365 21 17.63 21 11.991v-1.574c0-3.198 0-4.797-.378-5.335c-.377-.537-1.88-1.052-4.887-2.081l-.573-.196C13.595 2.268 12.812 2 12 2s-1.595.268-3.162.805L8.265 3c-3.007 1.03-4.51 1.545-4.887 2.082M15.06 10.5a.75.75 0 0 0-1.12-.999l-3.011 3.374l-.87-.974a.75.75 0 0 0-1.118 1l1.428 1.6a.75.75 0 0 0 1.119 0z" clip-rule="evenodd"/></svg>телефон, фото</span>
-            </div>
-            <div class="card-body">
-              <div class="card-kind">Кімната · господар</div>
+        <a class="card" href="room.html">
+          <div class="card-photo">
+            <img src="https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=800&h=500&fit=crop&auto=format&q=70" alt="Фото окремої кімнати в квартирі на Позняках">
+            <span class="verified"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M3.378 5.082C3 5.62 3 7.22 3 10.417v1.574c0 5.638 4.239 8.375 6.899 9.536c.721.315 1.082.473 2.101.473c1.02 0 1.38-.158 2.101-.473C16.761 20.365 21 17.63 21 11.991v-1.574c0-3.198 0-4.797-.378-5.335c-.377-.537-1.88-1.052-4.887-2.081l-.573-.196C13.595 2.268 12.812 2 12 2s-1.595.268-3.162.805L8.265 3c-3.007 1.03-4.51 1.545-4.887 2.082M15.06 10.5a.75.75 0 0 0-1.12-.999l-3.011 3.374l-.87-.974a.75.75 0 0 0-1.118 1l1.428 1.6a.75.75 0 0 0 1.119 0z" clip-rule="evenodd"/></svg>телефон, фото</span>
+          </div>
+          <div class="card-body">
+            <div class="card-kind">Кімната · господар</div>
+            <div class="card-head">
               <h2 class="card-title">Окрема кімната в квартирі</h2>
-              <p class="card-meta">Позняки (Лівий берег) · 1 співмешканець · заїзд одразу</p>
-              <p class="card-price">8 200 ₴/міс</p>
+              <div class="card-price"><span class="amount">8 200 ₴</span><span class="per">/місяць</span></div>
             </div>
-          </a>
-        </article>
+            <p class="card-loc"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7m0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5"/></svg>Позняки, Київ</p>
+            <p class="card-detail">1 співмешканець · заїзд одразу</p>
+          </div>
+        </a>
       </li>
 
     </ul>
   </main>
 
   <footer class="tabbar">
-    <a class="active" href="listings.html"><span class="tab-icon" aria-label="іконка: Пошук"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M21.788 21.788a.723.723 0 0 0 0-1.022L18.122 17.1a9.157 9.157 0 1 0-1.022 1.022l3.666 3.666a.723.723 0 0 0 1.022 0" clip-rule="evenodd"/></svg></span><span class="tab-label">Пошук</span></a>
-    <a href="applications.html"><span class="tab-icon" aria-label="іконка: Заявки"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M4.172 3.172C3 4.343 3 6.229 3 10v4c0 3.771 0 5.657 1.172 6.828S7.229 22 11 22h2c3.771 0 5.657 0 6.828-1.172S21 17.771 21 14v-4c0-3.771 0-5.657-1.172-6.828S16.771 2 13 2h-2C7.229 2 5.343 2 4.172 3.172M7.25 8A.75.75 0 0 1 8 7.25h8a.75.75 0 0 1 0 1.5H8A.75.75 0 0 1 7.25 8m0 4a.75.75 0 0 1 .75-.75h8a.75.75 0 0 1 0 1.5H8a.75.75 0 0 1-.75-.75M8 15.25a.75.75 0 0 0 0 1.5h5a.75.75 0 0 0 0-1.5z" clip-rule="evenodd"/></svg><span class="tab-badge" aria-label="2 нових">2</span></span><span class="tab-label">Заявки</span></a>
-    <a href="dialogs.html"><span class="tab-icon" aria-label="іконка: Чати"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><defs><mask id="tabChatMask"><g fill="none"><path fill="#fff" d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2S2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22"/><path fill="#000" d="M15 12a1 1 0 1 0 2 0a1 1 0 0 0-2 0m-4 0a1 1 0 1 0 2 0a1 1 0 0 0-2 0m-4 0a1 1 0 1 0 2 0a1 1 0 0 0-2 0"/></g></mask></defs><path fill="currentColor" d="M0 0h24v24H0z" mask="url(#tabChatMask)"/></svg><span class="tab-badge" aria-label="1 нових">1</span></span><span class="tab-label">Чати</span></a>
-    <a href="my-profile-seeker.html"><span class="tab-icon" aria-label="іконка: Профіль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="6" r="4" fill="currentColor"/><ellipse cx="12" cy="17" fill="currentColor" rx="7" ry="4"/></svg></span><span class="tab-label">Профіль</span></a>
+    <a class="active" href="listings.html">
+      <span class="tab-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M21.788 21.788a.723.723 0 0 0 0-1.022L18.122 17.1a9.157 9.157 0 1 0-1.022 1.022l3.666 3.666a.723.723 0 0 0 1.022 0" clip-rule="evenodd"/></svg></span>
+      <span class="tab-txt">Пошук</span>
+    </a>
+    <a href="applications.html">
+      <span class="tab-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M4.172 3.172C3 4.343 3 6.229 3 10v4c0 3.771 0 5.657 1.172 6.828S7.229 22 11 22h2c3.771 0 5.657 0 6.828-1.172S21 17.771 21 14v-4c0-3.771 0-5.657-1.172-6.828S16.771 2 13 2h-2C7.229 2 5.343 2 4.172 3.172M7.25 8A.75.75 0 0 1 8 7.25h8a.75.75 0 0 1 0 1.5H8A.75.75 0 0 1 7.25 8m0 4a.75.75 0 0 1 .75-.75h8a.75.75 0 0 1 0 1.5H8a.75.75 0 0 1-.75-.75M8 15.25a.75.75 0 0 0 0 1.5h5a.75.75 0 0 0 0-1.5z" clip-rule="evenodd"/></svg><span class="tab-dot" aria-label="2 нових">2</span></span>
+      <span class="tab-txt">Заявки</span>
+    </a>
+    <a href="dialogs.html">
+      <span class="tab-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><defs><mask id="tabChatMask"><g fill="none"><path fill="#fff" d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2S2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22"/><path fill="#000" d="M15 12a1 1 0 1 0 2 0a1 1 0 0 0-2 0m-4 0a1 1 0 1 0 2 0a1 1 0 0 0-2 0m-4 0a1 1 0 1 0 2 0a1 1 0 0 0-2 0"/></g></mask></defs><path fill="currentColor" d="M0 0h24v24H0z" mask="url(#tabChatMask)"/></svg><span class="tab-dot" aria-label="1 нових">1</span></span>
+      <span class="tab-txt">Чати</span>
+    </a>
+    <a href="my-profile-seeker.html">
+      <span class="tab-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="6" r="4" fill="currentColor"/><ellipse cx="12" cy="17" fill="currentColor" rx="7" ry="4"/></svg></span>
+      <span class="tab-txt">Профіль</span>
+    </a>
   </footer>
 
 </div>
@@ -937,16 +810,6 @@
       }
     });
   }
-  (function () {
-    var shell = document.querySelector('.header-shell');
-    if (!shell) return;
-    // .device починається з самого верху сторінки, тому scrollY > 0 — це рівно
-    // момент, коли шапка прилипає. Без сентінел-елемента: будь-який дів у потоці
-    // (навіть 1px) зсував би шапку на свою висоту.
-    function sync() { shell.classList.toggle('is-stuck', window.scrollY > 0); }
-    window.addEventListener('scroll', sync, { passive: true });
-    sync();
-  })();
 </script>
 </body>
 </html>
