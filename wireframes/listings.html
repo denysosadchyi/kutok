@@ -273,11 +273,13 @@
   }
   .verified svg { width: 14px; height: 14px; flex-shrink: 0; color: var(--olive); }
 
-  .card-body { padding: 12px 2px 0; }
-  .card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
+  /* Дві колонки, як на борді: зліва назва → одразу під нею локація; справа ціна → «/місяць» */
+  .card-body { padding: 13px 2px 0; display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
+  .card-main { min-width: 0; }
   .card-title {
     font-weight: 800; letter-spacing: -.02em;
     font-size: 1.375rem; line-height: 1.12; color: var(--ink);
+    max-width: 12ch; /* назва ламається на два рядки, як на борді, а не тягнеться до ціни */
   }
   .card-price { text-align: right; flex-shrink: 0; }
   .card-price .amount {
@@ -285,8 +287,8 @@
     color: var(--cobalt); font-variant-numeric: tabular-nums; white-space: nowrap;
   }
   .card-price .per { display: block; font-size: var(--fs-caption); color: var(--ink-muted); margin-top: 1px; }
-  .card-loc { display: flex; align-items: center; gap: 6px; margin-top: 9px; font-size: var(--fs-secondary); color: var(--ink); }
-  .card-loc svg { width: 15px; height: 15px; flex-shrink: 0; color: var(--ink); }
+  .card-loc { display: flex; align-items: center; gap: 5px; margin-top: 7px; font-size: var(--fs-secondary); color: var(--ink); }
+  .card-loc svg { width: 14px; height: 14px; flex-shrink: 0; color: var(--ink); }
 
   /* ── Навбар: суцільна оливкова смуга, кремові лейбли, помаранчеві лічильники ── */
   .tabbar {
