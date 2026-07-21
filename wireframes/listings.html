@@ -319,16 +319,22 @@
   .card-photo { position: relative; width: 100%; aspect-ratio: 4 / 3; border-radius: 14px; overflow: hidden; background: var(--paper-2); }
   .card-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .card:active .card-photo { filter: brightness(.97); }
-  /* Бейдж «перевірено» — непрозора кремова піґулка знизу-справа над фото (як на борді).
-     Показує ЩО саме перевірено (телефон/фото) — принцип «нічого німого» з PRODUCT.md. */
+  /* Бейдж «перевірено» — як на референсі: кремова піґулка знизу-справа,
+     чорнильний кружечок з галочкою + текст. Текст показує ЩО саме перевірено
+     (телефон/фото) — принцип «нічого німого» з PRODUCT.md. */
   .verified {
     position: absolute; right: 12px; bottom: 12px;
-    display: inline-flex; align-items: center; gap: 5px;
-    background: var(--paper-2); border: 1px solid var(--line); border-radius: 999px;
-    padding: 5px 11px; font-size: var(--fs-caption); font-weight: 600; color: var(--ink);
-    box-shadow: 0 1px 3px rgba(27, 23, 18, .22);
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--paper-2); border-radius: 999px;
+    padding: 4px 12px 4px 5px; font-size: var(--fs-caption); font-weight: 600; color: var(--ink);
+    box-shadow: 0 1px 4px rgba(27, 23, 18, .25);
   }
-  .verified svg { width: 14px; height: 14px; flex-shrink: 0; color: var(--olive); }
+  .vcheck {
+    width: 19px; height: 19px; border-radius: 999px; flex-shrink: 0;
+    background: var(--ink); color: var(--paper-2);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .vcheck svg { width: 10px; height: 10px; }
 
   /* Дві колонки, як на борді: зліва назва → одразу під нею локація; справа ціна → «/місяць» */
   .card-body { padding: 13px 2px 0; display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
