@@ -339,22 +339,27 @@
     background: var(--surface);
   }
   .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .card-body { padding: 12px 14px 14px; }
-  .card-kind { font-size: 0.5625rem; text-transform: uppercase; letter-spacing: .08em; color: var(--text-muted); }
-  .card-title {
-    font-family: Newsreader, serif;
-    font-weight: 500;
-    font-size: 1.375rem;
-    line-height: 1.25;
-    color: var(--text);
-    margin: 3px 0;
-    text-decoration: underline dotted;
-    text-decoration-color: rgba(229, 86, 54, .5);
-    text-decoration-thickness: 1px;
-    text-underline-offset: 3px;
+  .card-body {
+    padding: 12px 14px 14px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas: "kind kind" "title price" "meta meta";
+    column-gap: 10px;
+    align-items: baseline;
   }
-  .card-meta { font-size: var(--fs-secondary); line-height: 1.45; color: var(--text-muted); }
-  .card-price { font-size: var(--fs-body); font-weight: 600; font-variant-numeric: tabular-nums; color: var(--text); margin-top: 4px; }
+  .card-kind { grid-area: kind; font-size: 0.5625rem; text-transform: uppercase; letter-spacing: .1em; color: var(--text-muted); margin-bottom: 2px; }
+  .card-title {
+    grid-area: title;
+    font-family: Inter, system-ui, sans-serif;
+    font-weight: 800;
+    letter-spacing: -.015em;
+    font-size: 1.3125rem;
+    line-height: 1.15;
+    color: var(--text);
+    margin: 0;
+  }
+  .card-meta { grid-area: meta; font-size: var(--fs-secondary); line-height: 1.45; color: var(--text-muted); margin-top: 5px; }
+  .card-price { grid-area: price; justify-self: end; text-align: right; white-space: nowrap; font-size: 1.125rem; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--accent); }
   .badge {
     position: absolute;
     left: 10px;
