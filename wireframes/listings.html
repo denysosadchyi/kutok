@@ -645,9 +645,9 @@
         <label><input type="radio" name="type" value="people"> Люди <span class="seg-count">6</span></label>
         <label><input type="radio" name="type" value="all" checked> Усі <span class="seg-count">24</span></label>
       </fieldset>
-      <div class="chips">
-        <label class="chip">
-          <span class="chip-cap">Район</span>
+      <div class="filter-grid">
+        <label class="fsel">
+          <span class="fsel-cap">Район</span>
           <select name="district" aria-label="Район Києва">
             <option>Будь-який</option>
             <option selected>Поділ</option>
@@ -659,24 +659,23 @@
             <option>Солом'янка</option>
           </select>
         </label>
-        <label class="chip">
-          <span class="chip-cap">Ціна</span>
+        <label class="fsel">
+          <span class="fsel-cap">Ціна до</span>
           <select name="price" aria-label="Ціна за місяць">
-            <option>до 8 000 ₴</option>
-            <option selected>до 10 000 ₴</option>
-            <option>до 15 000 ₴</option>
+            <option>8 000 ₴</option>
+            <option selected>10 000 ₴</option>
+            <option>15 000 ₴</option>
             <option>будь-яка</option>
           </select>
         </label>
-        <label class="chip">
-          <span class="chip-cap">Стать</span>
+        <label class="fsel">
+          <span class="fsel-cap">Стать</span>
           <select name="gender" aria-label="Стать сусіда">
             <option selected>будь-яка</option>
             <option>жінка</option>
             <option>чоловік</option>
           </select>
         </label>
-        <button type="submit" class="chip-apply">Показати</button>
       </div>
     </form>
   </section>
