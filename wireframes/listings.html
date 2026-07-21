@@ -706,7 +706,7 @@
     </form>
   </div>
 
-  <section class="filterbar" aria-label="Фільтр оголошень">
+  <section class="filterbar" aria-label="Тип оголошень">
     <form class="filters-form" action="listings.html" method="get">
       <fieldset class="seg">
         <legend class="sr-only">Тип оголошень</legend>
@@ -714,7 +714,20 @@
         <label><input type="radio" name="type" value="people"> Люди <span class="seg-count">6</span></label>
         <label><input type="radio" name="type" value="all" checked> Усі <span class="seg-count">24</span></label>
       </fieldset>
-      <div class="filter-grid">
+    </form>
+  </section>
+
+  <div id="filter-sheet" popover>
+    <div class="sheet-grip" aria-hidden="true"></div>
+    <div class="sheet-head">
+      <h2 class="sheet-title">Фільтр</h2>
+      <button type="button" class="sheet-close" popovertarget="filter-sheet" popovertargetaction="hide" aria-label="Закрити фільтр">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg>
+      </button>
+    </div>
+    <form class="sheet-form" action="listings.html" method="get">
+      <div class="sheet-field">
+        <span class="cap">Район Києва</span>
         <label class="fsel">
           <select name="district" aria-label="Район Києва">
             <option>Весь Київ</option>
@@ -727,6 +740,9 @@
             <option>Солом'янка</option>
           </select>
         </label>
+      </div>
+      <div class="sheet-field">
+        <span class="cap">Ціна, ₴/міс</span>
         <label class="fsel">
           <select name="price" aria-label="Ціна за місяць">
             <option>до 8 000 ₴</option>
@@ -735,8 +751,10 @@
             <option>без межі</option>
           </select>
         </label>
+      </div>
+      <div class="sheet-field">
+        <span class="cap">Стать сусіда</span>
         <label class="fsel">
-          <span class="fsel-cap">Стать</span>
           <select name="gender" aria-label="Стать сусіда">
             <option selected>будь-яка</option>
             <option>жінка</option>
@@ -744,8 +762,9 @@
           </select>
         </label>
       </div>
+      <button type="submit" class="sheet-apply">Показати 24 оголошення</button>
     </form>
-  </section>
+  </div>
 
   <main>
     <ul class="feed">
