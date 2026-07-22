@@ -136,6 +136,8 @@
     clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
   }
 
+  main { flex: 1 1 auto; } /* заповнює вільну висоту: навбар і FAB завжди внизу */
+
   /* ── Видавничий хедер: тільки тип, без лого-мітки (як на north-star) ── */
   .app-head {
     position: sticky;
@@ -248,7 +250,7 @@
   .fab {
     position: sticky; bottom: 88px; z-index: 4;
     align-self: flex-end;
-    margin: -66px 14px 12px auto; /* негативний верхній відступ: не розсуває стрічку */
+    margin: 0 14px 12px auto; /* притиснутий до низу над навбаром (main заповнює висоту) */
     width: 54px; height: 54px; border-radius: 999px; border: none;
     background: var(--cobalt); color: var(--on-cobalt); cursor: pointer;
     display: inline-flex; align-items: center; justify-content: center;

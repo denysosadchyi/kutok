@@ -136,6 +136,8 @@
     clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
   }
 
+  main { flex: 1 1 auto; } /* заповнює вільну висоту: навбар і FAB завжди внизу */
+
   /* ── Видавничий хедер: тільки тип, без лого-мітки (як на north-star) ── */
   .app-head {
     position: sticky;
@@ -248,7 +250,7 @@
   .fab {
     position: sticky; bottom: 88px; z-index: 4;
     align-self: flex-end;
-    margin: -66px 14px 12px auto; /* негативний верхній відступ: не розсуває стрічку */
+    margin: 0 14px 12px auto; /* притиснутий до низу над навбаром (main заповнює висоту) */
     width: 54px; height: 54px; border-radius: 999px; border: none;
     background: var(--cobalt); color: var(--on-cobalt); cursor: pointer;
     display: inline-flex; align-items: center; justify-content: center;
@@ -390,7 +392,8 @@
   }
 
   /* ── Порожні / помилкові стани ── */
-  .state-block { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 54px 28px 44px; }
+  .state-main { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: center; }
+  .state-block { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 32px 28px; }
   .state-icon { width: 88px; height: 88px; border-radius: 28px; background: rgba(27, 23, 18, .05); display: flex; align-items: center; justify-content: center; color: var(--olive); margin-bottom: 22px; }
   .state-icon svg { width: 44px; height: 44px; }
   .state-title { font-family: "Unbounded", Inter, system-ui, sans-serif; font-weight: 700; font-size: 1.375rem; letter-spacing: -.02em; line-height: 1.1; color: var(--ink); margin-bottom: 9px; }
@@ -803,7 +806,7 @@
     </form>
   </div>
 
-  <main>
+  <main class="state-main">
     <div class="state-block">
       <div class="state-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21V9.5L12 4l8 5.5V21"/><path d="M9.5 21v-6h5v6"/></svg></div>
       <h2 class="state-title">У Києві поки немає оголошень</h2>
