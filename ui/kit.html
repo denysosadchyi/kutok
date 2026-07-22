@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Кіт компонентів · Куток «Каталог 73»</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<style>
+  /* Презентаційні хелпери ВІТРИНИ (не частина кіту; лишень для розкладки демо).
+     Використовують ті самі токени, щоб не було дрейфу. */
+  body { margin: 0; background: #e9e9e9; font-family: var(--font-body); color: var(--ink); }
+  .sh-head { max-width: 760px; margin: 0 auto; padding: 34px 20px 6px; }
+  .sh-head h1 { font-family: var(--font-display); font-weight: var(--w-bold); font-size: 1.75rem; letter-spacing: -.03em; color: var(--ink); }
+  .sh-head p { margin-top: 8px; font-size: var(--fs-secondary); color: var(--ink-muted); line-height: 1.5; }
+  .sh-col { max-width: 420px; margin: 24px auto 60px; }
+  .sh-col .app { min-height: 0; border-radius: 18px; overflow: hidden; padding-bottom: 8px; }
+  .sh-group { font-family: var(--font-display); font-weight: var(--w-bold); font-size: 1.0625rem; letter-spacing: -.02em; color: var(--ink); padding: 22px 18px 4px; }
+  .sh-item { padding: 16px 18px; border-top: var(--hair) solid var(--line); }
+  .sh-group + .sh-item { border-top: none; }
+  .sh-label { font-size: var(--fs-caption); text-transform: uppercase; letter-spacing: .08em; color: var(--ink-muted); font-weight: var(--w-bold); margin-bottom: 12px; }
+  .sh-note { font-size: var(--fs-caption); color: var(--ink-muted); margin-top: 10px; line-height: 1.4; }
+  .sh-stack { display: flex; flex-direction: column; gap: 12px; }
+  .sh-inline { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .sh-onphoto { position: relative; width: 100%; aspect-ratio: 16 / 8; border-radius: var(--r-photo); overflow: hidden; background: var(--paper-2); }
+  .sh-onphoto img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  /* хедери/таб-бар у вітрині показуємо статично (без sticky), щоб не липли */
+  .sh-item .app-head, .sh-item .tabbar, .sh-item .composer { position: static; margin-left: 0; margin-right: 0; }
+</style>
+</head>
+<body>
+
+<div class="sh-head">
+  <h1>Кіт компонентів — «Каталог 73»</h1>
+  <p>Витрина <code>ui/kit.css</code>. Кожен компонент — зі станами; тексти з <code>wireframes/microcopy.md</code>. Пофарбовані компоненти (картка, бейдж, сегмент, шит, таб-бар, метр, меню, стани) — 1:1 з еталонів <code>listings.html</code> / <code>my-profile-seeker.html</code>; сірі (рядок списку, банер, чекбокс, радіо, чат, поле, «назад»-хедер) — структура зі свого вайрфрейма, вигляд із мови. Каркас вайрфреймів (<code>.wf-*</code>, рамка <code>.device</code>) не тягнеться.</p>
+</div>
+
+<div class="sh-col">
+<div class="app">
+
+  <!-- ═══════════ ОБОЛОНКА ═══════════ -->
+  <div class="sh-group">Оболонка</div>
+
+  <div class="sh-item">
+    <div class="sh-label">Шапка · шар 1 — вордмарк (первинний таб)</div>
+    <header class="app-head">
+      <div>
+        <div class="head-brand">Куток</div>
+        <h1 class="head-word">Пошук</h1>
+        <p class="head-sub">Кімнати й сусіди в Києві, між своїми</p>
+      </div>
+      <button type="button" class="head-btn" aria-label="Відкрити пошук">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg>
+      </button>
+    </header>
+  </div>
+
+  <div class="sh-item">
+    <div class="sh-label">Шапка · шар 2 — назад + заголовок (вторинний екран)</div>
+    <header class="app-head app-head--back">
+      <a class="head-back" href="#"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>До списку</a>
+      <h1 class="head-title">Оголошення кімнати</h1>
+    </header>
+  </div>
+
+  <div class="sh-item">
+    <div class="sh-label">Таб-бар (шукач)</div>
+    <footer class="tabbar">
+      <a class="active" href="#"><span class="tab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg></span><span class="tab-txt">Пошук</span></a>
+      <a href="#"><span class="tab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8.5 8.5h7M8.5 12.5h7M8.5 16.5h4"/></svg><span class="tab-dot">2</span></span><span class="tab-txt">Заявки</span></a>
+      <a href="#"><span class="tab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.6a8.6 8.6 0 1 0-7.5-4.4L3.4 20.6l4.5-1.1a8.56 8.56 0 0 0 4.1 1.1z"/></svg><span class="tab-dot">1</span></span><span class="tab-txt">Чати</span></a>
+      <a href="#"><span class="tab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.7"/><path d="M5 20.2c1.3-3.5 3.9-5.2 7-5.2s5.7 1.7 7 5.2"/></svg></span><span class="tab-txt">Профіль</span></a>
+    </footer>
+    <p class="sh-note">Повна оболонка як окрема розмітка — <code>ui/shell.html</code>.</p>
+  </div>
+
+  <!-- ═══════════ НАВІГАЦІЯ ═══════════ -->
+  <div class="sh-group">Навігація</div>
+
+  <div class="sh-item">
+    <div class="sh-label">Поповер пошуку</div>
+    <div class="search-popover">
+      <form class="search-form" role="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg>
+        <input type="search" placeholder="Пошук за назвою, районом…" aria-label="Пошук оголошень">
+      </form>
+    </div>
+  </div>
+
+  <div class="sh-item">
+    <div class="sh-label">Список-меню налаштувань</div>
+    <nav class="menu-list" aria-label="Налаштування профілю" style="padding-left:0; padding-right:0;">
+      <a class="menu-row" href="#"><span class="menu-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V9.5L12 4l8 5.5V21"/><path d="M9.5 21v-6h5v6"/></svg></span><span class="menu-txt">Здаєте кімнату? Стати господарем</span><span class="menu-chev"></span></a>
+      <a class="menu-row" href="#"><span class="menu-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg></span><span class="menu-txt">Налаштування приватності</span><span class="menu-chev"></span></a>
+      <a class="menu-row" href="#"><span class="menu-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M6 6l12 12"/></svg></span><span class="menu-txt">Заблоковані</span><span class="menu-chev"></span></a>
+      <a class="menu-row" href="#"><span class="menu-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12.5h6M9 16h6"/></svg></span><span class="menu-txt">Умови використання · Політика приватності</span><span class="menu-chev"></span></a>
+    </nav>
+  </div>
+
+  <!-- ═══════════ КАРТКИ Й СПИСКИ ═══════════ -->
+  <div class="sh-group">Картки й списки</div>
+
+  <div class="sh-item">
+    <div class="sh-label">Каталог-картка оголошення</div>
+    <a class="card" href="#">
+      <div class="card-photo">
+        <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800&h=560&fit=crop&auto=format&q=70" alt="Фото кімнати">
+        <span class="place"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.8-6.5-10.5a6.5 6.5 0 0 1 13 0C18.5 15.2 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.3"/></svg><span class="t">Поділ, Київ</span></span>
+        <span class="badge badge--on-photo"><span class="badge-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>телефон, фото</span>
+      </div>
+      <div class="card-body">
+        <div class="card-main"><h2 class="card-title">Кімната в 2-к квартирі</h2></div>
+        <div class="card-price"><span class="amount">9 500 ₴</span><span class="per">/місяць</span></div>
+      </div>
+    </a>
+  </div>
+
+  <div class="sh-item">
+    <div class="sh-label">Рядок списку — діалог (прев'ю + непрочитані)</div>
+    <a class="row" href="#">
+      <span class="avatar avatar--sm ph">фото</span>
+      <span class="row-body">
+        <span class="row-title">Олена</span>
+        <span class="row-meta">Кімната на Подолі</span>
+        <span class="row-meta row-preview">Можемо созвонитись і домовитись про перегляд?</span>
+      </span>
+      <span class="row-side"><span class="row-time">2 год тому</span><span class="row-unread">1</span></span>
+    </a>
+  </div>
+
+  <div class="sh-item">
+    <div class="sh-label">Рядок списку — кандидат (бейдж + дії)</div>
+    <div class="row" style="align-items:flex-start;">
+      <span class="avatar avatar--sm ph">аватар</span>
+      <span class="row-body">
+        <span class="row-title">Артем, 26</span>
+        <span class="row-meta">Не палю · заїзд з 1 серпня</span>
+        <span class="badge" style="margin-top:8px;">телефон ✓ · фото ✓ · документ —</span>
+        <span class="row-actions">
+          <a class="btn btn--primary btn--sm" href="#">Прийняти</a>
+          <a class="btn btn--ghost btn--sm" href="#">Відхилити</a>
+        </span>
+      </span>
+    </div>
+  </div>
+
+  <div class="sh-item">
+    <div class="sh-label">Аватар / фото-плейсхолдер</div>
+    <div class="sh-inline">
+      <span class="avatar ph">фото</span>
+      <span class="avatar avatar--md ph">фото</span>
+      <span class="avatar avatar--sm ph">фото</span>
+    </div>
+  </div>
+
+  <div class="sh-item">
+    <div class="sh-label">Бейдж верифікації — стани комбінацій</div>
+    <div class="sh-onphoto">
+      <img src="https://images.unsplash.com/photo-1505873242700-f289a29e1e0f?w=800&h=400&fit=crop&auto=format&q=70" alt="">
+      <span class="badge badge--on-photo"><span class="badge-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>телефон, фото</span>
+    </div>
+    <div class="sh-inline" style="margin-top:12px;">
+      <span class="badge">телефон ✓ · фото ✓ · документ ✓</span>
+      <span class="badge">телефон ✓ · фото ✓ · документ —</span>
+      <span class="badge">телефон ✓ · фото — · документ —</span>
+    </div>
+    <p class="sh-note">Один API: <code>.badge</code> (інлайн) + <code>.badge--on-photo</code> (оверлей на фото). Зводить дрейф <code>.verified</code>/<code>.profile-badge</code>/<code>.badge</code> в одне.</p>
+  </div>
+
+  <div class="sh-item">
+    <div class="sh-label">Рядок людини (співрозмовник / господар)</div>
+    <div class="person-row">
+      <span class="avatar avatar--sm ph">фото</span>
+      <span>
+        <span class="person-name">Олена, 28</span>
+        <span class="badge" style="margin-top:4px;">телефон ✓ · фото ✓ · документ —</span>
+      </span>
+    </div>
+  </div>
+
+  <div class="sh-item">
+    <div class="sh-label">Факти й чипи</div>
+    <ul class="chips">
+      <li>Не палю</li><li>Без тварин</li><li>Бюджет до 8 000 ₴/міс</li><li>Шукаю: Поділ</li>
+    </ul>
+    <ul class="facts" style="margin-top:14px;">
+      <li>Поділ, вул. Костянтинівська</li><li>1 співмешканець</li><li>Заїзд з 1 липня</li>
+    </ul>
+  </div>
+
+  <div class="sh-item">
+    <div class="sh-label">Метр повноти профілю</div>
+    <div class="meter-block" style="max-width:none;">
+      <p class="meter-label">Повнота профілю <b>90%</b></p>
+      <div class="meter"><div class="meter-fill" style="width:90%"></div></div>
+      <p class="meter-hint">Додайте документ, щоб підвищити рівень довіри профілю.</p>
+    </div>
+  </div>
+
+  <div class="sh-item">
+    <div class="sh-label">Лічильник результатів</div>
+    <div class="sh-inline"><p class="counter">Кандидатів: <b>3</b></p><p class="counter">2 з 5</p></div>
+  </div>
+
+  <!-- ═══════════ ФОРМИ ═══════════ -->
+  <div class="sh-group">Форми</div>
+
+  <div class="sh-item">
+    <div class="sh-label">Кнопки — стани</div>
+    <div class="sh-stack">
+      <button class="btn btn--primary btn--block">Показати 24 оголошення</button>
+      <a class="btn btn--ghost btn--block" href="#"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L18.5 9.5a2.1 2.1 0 0 0-3-3L5 17v3z"/><path d="M13.5 7.5l3 3"/></svg>Редагувати профіль</a>
+      <div class="sh-inline">
+        <button class="btn btn--primary btn--sm">Прийняти</button>
+        <button class="btn btn--ghost btn--sm">Відхилити</button>
+        <button class="btn btn--primary" disabled>Зберігаємо…</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="sh-item">
+    <div class="sh-label">Поля форми</div>
+    <div class="sh-stack">
+      <div class="field"><label for="f1">Номер телефону</label><input id="f1" type="tel" placeholder="+380" value="+380 67 123 45 67"></div>
+      <div class="field"><label for="f2">Код із SMS (6 цифр)</label><input id="f2" inputmode="numeric" maxlength="6" placeholder="000000"></div>
+      <div class="field"><label for="f3">Опишіть проблему</label><textarea id="f3" placeholder="Наприклад: не приходить SMS-код на верифікацію телефону."></textarea></div>
+    </div>
+  </div>
+
+  <div class="sh-item">
+    <div class="sh-label">Випадний список (кастомна стрілка)</div>
+    <label class="fsel"><select aria-label="Район"><option selected>Поділ</option><option>Оболонь</option><option>Позняки</option></select></label>
+  </div>
+
+  <div class="sh-item">
+    <div class="sh-label">Сегмент типу</div>
+    <fieldset class="seg">
+      <legend class="sr-only">Тип оголошень</legend>
+      <label><input type="radio" name="type"> Кімнати <span class="seg-count">18</span></label>
+      <label><input type="radio" name="type"> Люди <span class="seg-count">6</span></label>
+      <label><input type="radio" name="type" checked> Усі <span class="seg-count">24</span></label>
+    </fieldset>
+  </div>
+
+  <div class="sh-item">
+    <div class="sh-label">Чекбокс</div>
+    <div class="sh-stack">
+      <label class="chk-line"><input type="checkbox" checked><span class="chk-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>Погоджуюсь на обробку персональних даних (ім'я, вік, телефон, про себе) відповідно до Політики приватності</label>
+      <label class="chk-line"><input type="checkbox"><span class="chk-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>Не палю</label>
+    </div>
+  </div>
+
+  <div class="sh-item">
+    <div class="sh-label">Радіо-список</div>
+    <div>
+      <label class="radio-option"><input type="radio" name="reason" checked><span class="radio-dot"></span>Підозрілий профіль / фейкові фото</label>
+      <label class="radio-option"><input type="radio" name="reason"><span class="radio-dot"></span>Просить гроші наперед</label>
+      <label class="radio-option"><input type="radio" name="reason"><span class="radio-dot"></span>Неадекватна поведінка</label>
+      <label class="radio-option"><input type="radio" name="reason"><span class="radio-dot"></span>Інше</label>
+    </div>
+  </div>
+
+  <div class="sh-item">
+    <div class="sh-label">Ряд завантаження фото — порожній слот / з прев'ю</div>
+    <div class="photo-row">
+      <span class="photo-slot"><img src="https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=200&h=200&fit=crop&auto=format&q=70" alt=""></span>
+      <button class="photo-slot" aria-label="Додати фото"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+      <button class="photo-slot" aria-label="Додати фото"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+    </div>
+  </div>
+
+  <div class="sh-item">
+    <div class="sh-label">FAB фільтра</div>
+    <button class="fab" aria-label="Відкрити фільтр"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h7M17.5 7H20M4 12h2.5M13 12h7M4 17h7M17.5 17H20"/><circle cx="14.5" cy="7" r="2.4"/><circle cx="9.5" cy="12" r="2.4"/><circle cx="14.5" cy="17" r="2.4"/></svg></button>
+  </div>
+
+  <div class="sh-item">
+    <div class="sh-label">Боттом-шит фільтра</div>
+    <div class="sheet">
+      <div class="sheet-grip"></div>
+      <div class="sheet-head">
+        <span class="sheet-title">Фільтр</span>
+        <button class="sheet-close" aria-label="Закрити фільтр"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
+      </div>
+      <form class="sheet-form">
+        <div class="field"><span class="cap">Район Києва</span><label class="fsel"><select><option selected>Поділ</option><option>Оболонь</option></select></label></div>
+        <div class="field"><span class="cap">Ціна, ₴/міс</span><label class="fsel"><select><option selected>до 10 000 ₴</option><option>до 15 000 ₴</option></select></label></div>
+        <div class="field"><span class="cap">Стать сусіда</span><label class="fsel"><select><option selected>будь-яка</option><option>жінка</option></select></label></div>
+        <button type="button" class="btn btn--primary btn--block">Показати 24 оголошення</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ═══════════ ЗВОРОТНИЙ ЗВʼЯЗОК ═══════════ -->
+  <div class="sh-group">Зворотний зв'язок</div>
+
+  <div class="sh-item">
+    <div class="sh-label">Порожній стан — нема результатів</div>
+    <div class="state-block">
+      <div class="state-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18l-7 8v5l-4 2v-7L3 5z"/></svg></div>
+      <h2 class="state-title">Нічого не знайшлось</h2>
+      <p class="state-text">За такими умовами оголошень зараз немає. Спробуй ширший район чи більший бюджет — і покажемо більше.</p>
+      <div class="state-actions">
+        <button class="btn btn--primary">Послабити фільтри</button>
+        <button class="btn btn--ghost">Скинути всі фільтри</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="sh-item">
+    <div class="sh-label">Порожній стан — cold start / помилка</div>
+    <div class="state-block">
+      <div class="state-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V9.5L12 4l8 5.5V21"/><path d="M9.5 21v-6h5v6"/></svg></div>
+      <h2 class="state-title">У Києві поки немає оголошень</h2>
+      <p class="state-text">Ми щойно запустились — перші господарі та шукачі ще додають кімнати й профілі. Спробуй зайти трохи згодом.</p>
+    </div>
+  </div>
+
+  <div class="sh-item">
+    <div class="sh-label">Банер — помилка / успіх / інфо</div>
+    <div class="sh-stack">
+      <div class="banner banner--error"><span class="banner-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16h.01"/></svg></span>Код невірний. Перевірте цифри й спробуйте ще раз.</div>
+      <div class="banner banner--success"><span class="banner-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9"/></svg></span>Скаргу надіслано. Розглянемо протягом 48 годин.</div>
+      <div class="banner banner--info"><span class="banner-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg></span>Не вдалось підтвердити автоматично. Заявку передано на ручну перевірку — зазвичай до 24 годин.</div>
+    </div>
+  </div>
+
+  <div class="sh-item">
+    <div class="sh-label">Скелетон завантаження</div>
+    <div class="sk sk-photo"></div>
+    <div class="sk-body"><div class="sk sk-title"></div><div class="sk sk-price"></div></div>
+  </div>
+
+  <div class="sh-item">
+    <div class="sh-label">Пояснювальний текст</div>
+    <p class="hint">Порада: спілкуйтесь у Кутку до зустрічі. Зустрічайтесь у людному місці.</p>
+  </div>
+
+  <!-- ═══════════ ЧАТ ═══════════ -->
+  <div class="sh-group">Чат</div>
+
+  <div class="sh-item">
+    <div class="sh-label">Бульбашки — вхідне / вихідне</div>
+    <div class="chat-thread" style="padding-left:0; padding-right:0;">
+      <div class="msg msg--out">Вітаю! Кімната ще вільна?</div>
+      <div class="msg msg--in">Вітаю! Так, вільна з 1 липня. Розкажіть трохи про себе?</div>
+      <div class="msg msg--out">Звісно. Переїхала до Києва місяць тому, працюю в кафе на Подолі.</div>
+    </div>
+  </div>
+
+  <div class="sh-item">
+    <div class="sh-label">Поле вводу повідомлення</div>
+    <form class="composer" style="background-image:none;">
+      <input type="text" placeholder="Напишіть повідомлення" aria-label="Повідомлення">
+      <button class="send" type="submit" aria-label="Надіслати"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l16-7-7 16-2.5-6.5L4 12z"/></svg></button>
+    </form>
+  </div>
+
+</div>
+</div>
+
+</body>
+</html>
