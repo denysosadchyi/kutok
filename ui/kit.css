@@ -1,0 +1,527 @@
+/* ============================================================================
+   Куток — kit.css · компонентний кіт мови «Каталог 73»
+   Пласка система (урок 7): змінні в :root + класи компонентів. Без розколу на
+   рівні токенів (це урок 8). Джерело істини значень — DESIGN.md; структура
+   компонентів — wireframes (пофарбовані 1:1, сірі — структура зі свого
+   вайрфрейма, вигляд із мови). Каркас вайрфреймів (.wf-*, рамка .device) сюди
+   НЕ входить. Усі кольори — тільки через var(): жодного сирого hex у правилах.
+   ============================================================================ */
+
+:root {
+  /* ── Колір (DESIGN.md) ── */
+  --paper: #F5EEDF;          /* канвас — теплий кремовий папір */
+  --paper-2: #FDF9F0;        /* що «виступає»: піґулки, поля, бейджі */
+  --ink: #1B1712;            /* чорнило — основний текст */
+  --ink-muted: #6F6553;      /* другорядний текст */
+  --olive: #6E7B2E;          /* бренд */
+  --on-olive: #F3EED9;       /* на оливі */
+  --cobalt: #1E59A3;         /* дія */
+  --on-cobalt: #F6F1E4;      /* на кобальті */
+  --orange: #DC5A2A;         /* сигнал */
+  --line: #E4D8BF;           /* рамки полів, розділювачі */
+
+  /* Тонування ink/on-olive (щоб не було сирих rgba у компонентах) */
+  --ink-03: rgba(27, 23, 18, .03);   /* hover меню */
+  --ink-04: rgba(27, 23, 18, .04);   /* трек сегмента, ghost-hover */
+  --ink-05: rgba(27, 23, 18, .05);   /* фон іконки стану */
+  --ink-07: rgba(27, 23, 18, .07);   /* скелетон */
+  --ink-08: rgba(27, 23, 18, .08);   /* трек метра */
+  --scrim: rgba(27, 23, 18, .38);    /* бекдроп шита */
+  --white-50: rgba(255, 255, 255, .5);      /* неактивний лічильник сегмента */
+  --tab-idle: rgba(243, 238, 217, .58);     /* неактивний таб */
+
+  /* Зерно паперу (feTurbulence) — 13% на світлому, 10% на темному */
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.35' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='0.13'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --grain-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.35' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='0' intercept='1'/%3E%3CfeFuncG type='linear' slope='0' intercept='1'/%3E%3CfeFuncB type='linear' slope='0' intercept='1'/%3E%3CfeFuncA type='linear' slope='0.10'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+
+  /* ── Типографіка ── */
+  --font-display: "Unbounded", Inter, system-ui, sans-serif;  /* тільки заголовки */
+  --font-body: Inter, system-ui, sans-serif;                  /* увесь UI */
+  --fs-caption: 0.6875rem;   /* 11px — оверлайни, лейбли, бейджі, таби */
+  --fs-secondary: 0.8125rem; /* 13px — мета, сегмент */
+  --fs-body: 1rem;           /* 16px — поля, кнопки, текст */
+  --fs-word: 2.5rem;         /* вордмарк-заголовок */
+  --fs-name: 1.75rem;        /* імʼя профілю */
+  --fs-heading: 1.375rem;    /* назва картки, заголовок стану, вторинний хедер */
+  --fs-price: 1.3125rem;     /* ціна */
+  --fs-sheet: 1.125rem;      /* заголовок шита */
+  --w-reg: 400;
+  --w-med: 500;
+  --w-semi: 600;
+  --w-bold: 700;
+  --w-black: 800;
+
+  /* ── Скруглення (родина «мʼяких кутів») ── */
+  --r-field: 12px;    /* поля, прямокутні кнопки */
+  --r-popover: 14px;  /* поповер пошуку */
+  --r-msg: 18px;      /* бульбашка чату */
+  --r-sheet: 22px;    /* боттом-шит */
+  --r-photo: 26px;    /* фото картки, скелетон */
+  --r-block: 30px;    /* аватар, мʼякий квадрат іконки стану */
+  --r-pill: 999px;    /* усе інтерактивне / піґулки */
+
+  /* ── Рамка, фокус, рух ── */
+  --bd: 1.5px;               /* товщина рамки полів */
+  --hair: 1px;               /* розділювач */
+  --focus-w: 2px;
+  --dur: .15s;
+  --ease: ease;
+}
+
+/* Мінімальний ресет для елементів, які споживає кіт (не універсальний clobber) */
+.app, .app *, .kit-demo, .kit-demo * { box-sizing: border-box; }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   ОБОЛОНКА / КАНВАС  (замість .device — без рамки #ccc і без .wf-*)
+   ══════════════════════════════════════════════════════════════════════════ */
+.app {
+  width: 100%;
+  max-width: 400px;
+  min-height: 100vh;
+  margin: 0 auto;
+  background: var(--paper);
+  background-image: var(--grain);
+  color: var(--ink);
+  font-family: var(--font-body);
+  line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+}
+.app a { color: inherit; text-decoration: none; }
+.app main { flex: 1 1 auto; }  /* навбар і FAB завжди внизу */
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   НАВІГАЦІЯ
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Хедер · варіант A: видавничий вордмарк (первинні таби) ── (listings 1:1) */
+.app-head {
+  position: sticky; top: 0; z-index: 5;
+  background: var(--paper); background-image: var(--grain);
+  padding: 20px 18px 12px;
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+}
+.head-brand {
+  font-size: var(--fs-caption); font-weight: var(--w-bold);
+  text-transform: uppercase; letter-spacing: .14em; color: var(--ink-muted);
+  margin-bottom: 5px;
+}
+.head-word {
+  font-family: var(--font-display); font-weight: var(--w-bold);
+  font-size: var(--fs-word); line-height: .95; letter-spacing: -.03em; color: var(--olive);
+}
+.head-sub { margin-top: 8px; font-size: var(--fs-secondary); color: var(--ink-muted); }
+.head-btn {
+  flex-shrink: 0; width: 40px; height: 40px; margin-top: 2px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: var(--bd) solid var(--olive); border-radius: var(--r-pill);
+  background: transparent; color: var(--olive); cursor: pointer;
+}
+.head-btn svg { width: 18px; height: 18px; }
+.head-btn:hover { background: var(--olive); color: var(--on-olive); }
+.head-btn:focus-visible { outline: var(--focus-w) solid var(--cobalt); outline-offset: 2px; }
+
+/* ── Хедер · варіант B: назад + заголовок (вторинні екрани) ──
+   структура зі сірих вайрфреймів (backlink + screen-title), вигляд із мови */
+.app-head--back { align-items: center; gap: 10px; padding: 16px 18px 12px; }
+.head-back {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: var(--fs-secondary); font-weight: var(--w-semi); color: var(--ink-muted);
+}
+.head-back:hover { color: var(--ink); }
+.head-title {
+  font-family: var(--font-display); font-weight: var(--w-bold);
+  font-size: var(--fs-heading); letter-spacing: -.02em; color: var(--ink);
+}
+
+/* ── Поповер пошуку ── (listings 1:1) */
+.search-popover {
+  width: min(320px, calc(100vw - 32px));
+  border: var(--hair) solid var(--line); border-radius: var(--r-popover);
+  background: var(--paper-2); padding: 10px;
+}
+.search-form {
+  display: flex; align-items: center; gap: 8px;
+  border: var(--bd) solid var(--line); background: var(--paper);
+  border-radius: 10px; padding: 9px 12px;
+}
+.search-form svg { width: 16px; height: 16px; color: var(--ink-muted); flex-shrink: 0; }
+.search-form input {
+  flex: 1; min-width: 0; border: none; background: transparent; outline: none;
+  font: inherit; font-size: var(--fs-body); color: var(--ink);
+}
+.search-form input::placeholder { color: var(--ink-muted); }
+
+/* ── Таб-бар ── (listings 1:1) */
+.tabbar {
+  position: sticky; bottom: calc(8px + env(safe-area-inset-bottom));
+  margin: auto 8px calc(8px + env(safe-area-inset-bottom));
+  background: var(--olive); background-image: var(--grain-light);
+  display: flex; gap: 2px; border-radius: var(--r-pill); padding: 6px;
+}
+.tabbar a {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
+  padding: 8px 4px 7px; position: relative; color: var(--tab-idle); border-radius: var(--r-pill);
+}
+.tabbar a.active { background: var(--on-olive); color: var(--olive); font-weight: var(--w-bold); }
+.tabbar a.active .tab-ico { color: var(--olive); }
+.tabbar a:focus-visible { outline: var(--focus-w) solid var(--on-olive); outline-offset: -3px; }
+.tab-ico { position: relative; width: 22px; height: 22px; }
+.tab-ico svg { width: 100%; height: 100%; display: block; }
+.tab-txt { font-size: var(--fs-caption); }
+.tab-dot {
+  position: absolute; top: -4px; right: -8px; min-width: 15px; height: 15px; padding: 0 4px;
+  background: var(--paper-2); color: var(--orange);
+  font-size: .625rem; font-weight: var(--w-bold); line-height: 15px; text-align: center; border-radius: var(--r-pill);
+}
+
+/* ── Список-меню налаштувань ── (my-profile-seeker 1:1) */
+.menu-list { padding: 6px 22px 26px; }
+.menu-row {
+  display: flex; align-items: center; gap: 13px; padding: 15px 0;
+  border-bottom: var(--hair) solid var(--line); color: var(--ink); text-decoration: none;
+}
+.menu-row:last-child { border-bottom: none; }
+.menu-row:hover { background: var(--ink-03); }
+.menu-ic { width: 22px; height: 22px; color: var(--olive); flex-shrink: 0; }
+.menu-ic svg { width: 100%; height: 100%; display: block; }
+.menu-txt { flex: 1; font-size: var(--fs-body); }
+.menu-chev {
+  width: 8px; height: 8px; border-top: var(--bd) solid var(--ink-muted);
+  border-right: var(--bd) solid var(--ink-muted); transform: rotate(45deg); flex-shrink: 0;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   КАРТКИ Й СПИСКИ
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Каталог-картка оголошення ── (listings 1:1) */
+.card { display: block; }
+.card:focus-visible { outline: var(--focus-w) solid var(--cobalt); outline-offset: 3px; border-radius: 20px; }
+.card-photo {
+  position: relative; width: 100%; aspect-ratio: 4 / 3;
+  border-radius: var(--r-photo); overflow: hidden; background: var(--paper-2);
+}
+.card-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.card:active .card-photo { filter: brightness(.97); }
+.card-body { padding: 13px 2px 0; display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
+.card-main { min-width: 0; }
+.card-title {
+  font-weight: var(--w-black); letter-spacing: -.02em;
+  font-size: var(--fs-heading); line-height: 1.12; color: var(--ink); max-width: 12ch;
+}
+.card-price { text-align: right; flex-shrink: 0; }
+.card-price .amount {
+  display: block; font-size: var(--fs-price); font-weight: var(--w-black); letter-spacing: -.02em;
+  color: var(--cobalt); font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.card-price .per { display: block; font-size: var(--fs-caption); color: var(--ink-muted); margin-top: 1px; }
+
+/* Оверлеї на фото: район (зліва) + бейдж (справа) */
+.place {
+  position: absolute; left: 12px; bottom: 12px;
+  display: inline-flex; align-items: center; gap: 5px; max-width: 55%;
+  background: var(--paper-2); border-radius: var(--r-pill);
+  padding: 5px 11px 5px 9px; font-size: var(--fs-caption); font-weight: var(--w-semi); color: var(--ink);
+}
+.place svg { width: 13px; height: 13px; flex-shrink: 0; }
+.place .t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ── Бейдж верифікації ── (один API; консолідує .verified/.profile-badge/.badge) */
+.badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--paper-2); border-radius: var(--r-pill);
+  padding: 5px 13px 5px 6px; font-size: var(--fs-caption); font-weight: var(--w-semi); color: var(--ink);
+}
+.badge--on-photo { position: absolute; right: 12px; bottom: 12px; padding: 4px 12px 4px 5px; }
+.badge-check {
+  width: 19px; height: 19px; border-radius: var(--r-pill); flex-shrink: 0;
+  background: var(--olive); color: var(--paper-2);
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.badge-check svg { width: 10px; height: 10px; }
+
+/* ── Аватар / фото-плейсхолдер ── */
+.avatar {
+  width: 106px; height: 106px; border-radius: var(--r-block);
+  object-fit: cover; display: block; background: var(--paper-2);
+}
+.avatar--md { width: 64px; height: 64px; }
+.avatar--sm { width: 44px; height: 44px; }
+.thumb {
+  width: 100%; aspect-ratio: 4 / 3; border-radius: var(--r-photo);
+  object-fit: cover; display: block; background: var(--paper-2);
+}
+/* текстовий плейсхолдер (сірі вайрфрейми) */
+.ph {
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ink-muted); font-size: var(--fs-caption); background: var(--paper-2);
+}
+
+/* ── Рядок списку (медіа-рядок) ── структура з dialogs/candidates, вигляд із мови */
+.row {
+  display: flex; align-items: center; gap: 12px; padding: 14px 0;
+  border-bottom: var(--hair) solid var(--line); color: var(--ink); text-decoration: none;
+}
+.row:last-child { border-bottom: none; }
+.row-body { flex: 1; min-width: 0; display: block; }
+.row-title { display: block; font-size: var(--fs-body); font-weight: var(--w-bold); color: var(--ink); }
+.row-meta { display: block; font-size: var(--fs-secondary); color: var(--ink-muted); margin-top: 2px; }
+.row-preview { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.row-side { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; flex-shrink: 0; }
+.row-time { font-size: var(--fs-caption); color: var(--ink-muted); }
+.row-unread {
+  min-width: 18px; height: 18px; padding: 0 5px; border-radius: var(--r-pill);
+  background: var(--cobalt); color: var(--on-cobalt);
+  font-size: .625rem; font-weight: var(--w-bold); line-height: 18px; text-align: center;
+}
+.row-actions { display: flex; gap: 8px; margin-top: 10px; }
+
+/* ── Рядок людини (співрозмовник / господар) ── host-row/chat-peer */
+.person-row { display: flex; align-items: center; gap: 10px; }
+.person-name { display: block; font-size: var(--fs-body); font-weight: var(--w-semi); color: var(--ink); }
+.person-sub { display: block; font-size: var(--fs-secondary); color: var(--ink-muted); margin-top: 2px; }
+
+/* ── Факти / чипи ── */
+.chips { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
+.chips li {
+  background: var(--paper-2); border-radius: var(--r-pill);
+  padding: 8px 14px; font-size: var(--fs-secondary); font-weight: var(--w-semi); color: var(--ink);
+}
+.facts { list-style: none; }
+.facts li {
+  position: relative; padding: 6px 0 6px 16px; font-size: var(--fs-body); color: var(--ink);
+}
+.facts li::before {
+  content: ""; position: absolute; left: 0; top: 13px;
+  width: 6px; height: 6px; border-radius: var(--r-pill); background: var(--olive);
+}
+
+/* ── Метр повноти профілю ── (my-profile-seeker 1:1) */
+.meter-block { width: 100%; max-width: 300px; }
+.meter-label { display: flex; justify-content: space-between; font-size: var(--fs-secondary); color: var(--ink-muted); margin-bottom: 7px; }
+.meter-label b { color: var(--cobalt); font-weight: var(--w-black); font-variant-numeric: tabular-nums; }
+.meter { height: 8px; border-radius: var(--r-pill); background: var(--ink-08); overflow: hidden; }
+.meter-fill { height: 100%; background: var(--cobalt); border-radius: var(--r-pill); }
+.meter-hint { font-size: var(--fs-caption); color: var(--ink-muted); margin-top: 8px; line-height: 1.4; }
+
+/* ── Лічильник результатів ── */
+.counter { font-size: var(--fs-secondary); color: var(--ink-muted); }
+.counter b { color: var(--ink); font-weight: var(--w-bold); font-variant-numeric: tabular-nums; }
+
+/* ── Оверлайн секції ── */
+.overline {
+  font-size: var(--fs-caption); text-transform: uppercase; letter-spacing: .08em;
+  color: var(--ink-muted); font-weight: var(--w-bold);
+}
+.muted-note { font-size: var(--fs-body); color: var(--ink-muted); line-height: 1.5; }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   ФОРМИ
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Кнопки ── (один API; консолідує .btn/.primary/.ghost/sheet-apply/edit-link) */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  padding: 12px 18px; border-radius: var(--r-field);
+  border: var(--bd) solid var(--line); background: transparent; color: var(--ink);
+  font: inherit; font-size: var(--fs-body); font-weight: var(--w-semi);
+  cursor: pointer; text-decoration: none;
+}
+.btn:hover { background: var(--ink-04); }
+.btn:focus-visible { outline: var(--focus-w) solid var(--cobalt); outline-offset: 2px; }
+.btn--primary { border: none; background: var(--cobalt); color: var(--on-cobalt); font-weight: var(--w-bold); }
+.btn--primary:hover { background: var(--cobalt); filter: brightness(1.08); }
+.btn--primary:focus-visible { outline-color: var(--ink); }
+.btn--ghost { border: var(--bd) solid var(--line); background: transparent; color: var(--ink); }
+.btn--sm { padding: 8px 14px; font-size: var(--fs-secondary); }
+.btn--block { width: 100%; }
+.btn[disabled], .btn[aria-disabled="true"] { opacity: .55; cursor: default; pointer-events: none; }
+
+/* ── Поле форми ── input / textarea / select (структура сірих форм, вигляд із мови) */
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field > label, .field .cap {
+  font-size: var(--fs-caption); text-transform: uppercase; letter-spacing: .07em; color: var(--ink-muted);
+}
+.field input, .field textarea, .field select {
+  width: 100%; border: var(--bd) solid var(--line); background: var(--paper);
+  border-radius: var(--r-field); padding: 12px 13px;
+  font: inherit; font-size: var(--fs-body); color: var(--ink);
+}
+.field textarea { min-height: 96px; resize: vertical; line-height: 1.45; }
+.field input::placeholder, .field textarea::placeholder { color: var(--ink-muted); }
+.field input:focus, .field textarea:focus, .field select:focus { outline: var(--focus-w) solid var(--cobalt); outline-offset: 1px; }
+
+/* ── Кастомний select ── (listings .fsel 1:1) */
+.fsel {
+  position: relative; display: flex; align-items: center; min-width: 0; width: 100%;
+  border: var(--bd) solid var(--line); background: var(--paper);
+  border-radius: var(--r-field); padding: 0 30px 0 13px; height: 46px;
+}
+.fsel select {
+  appearance: none; -webkit-appearance: none; -moz-appearance: none;
+  border: none; background: transparent; font: inherit;
+  font-size: var(--fs-body); font-weight: var(--w-semi); color: var(--ink); cursor: pointer;
+  flex: 1; min-width: 0; padding: 0;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.fsel::after {
+  content: ""; position: absolute; right: 14px; top: 50%; margin-top: -5px;
+  width: 8px; height: 8px;
+  border-right: var(--bd) solid var(--ink-muted); border-bottom: var(--bd) solid var(--ink-muted);
+  transform: rotate(45deg); pointer-events: none;
+}
+.fsel:focus-within { outline: var(--focus-w) solid var(--cobalt); outline-offset: 1px; }
+
+/* ── Чекбокс ── структура з consent, вигляд із мови */
+.chk-line { display: flex; align-items: flex-start; gap: 11px; font-size: var(--fs-body); color: var(--ink); line-height: 1.45; cursor: pointer; }
+.chk-line input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.chk-box {
+  flex-shrink: 0; width: 22px; height: 22px; margin-top: 1px;
+  border: var(--bd) solid var(--line); border-radius: 7px; background: var(--paper);
+  display: inline-flex; align-items: center; justify-content: center; color: transparent;
+}
+.chk-box svg { width: 13px; height: 13px; }
+.chk-line input:checked + .chk-box { background: var(--cobalt); border-color: var(--cobalt); color: var(--on-cobalt); }
+.chk-line input:focus-visible + .chk-box { outline: var(--focus-w) solid var(--cobalt); outline-offset: 2px; }
+
+/* ── Радіо-список ── структура з report/privacy, вигляд із мови */
+.radio-option { display: flex; align-items: flex-start; gap: 11px; padding: 11px 0; font-size: var(--fs-body); color: var(--ink); line-height: 1.4; cursor: pointer; }
+.radio-option input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.radio-dot {
+  flex-shrink: 0; width: 22px; height: 22px; margin-top: 1px;
+  border: var(--bd) solid var(--line); border-radius: var(--r-pill); background: var(--paper);
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.radio-dot::after { content: ""; width: 10px; height: 10px; border-radius: var(--r-pill); background: transparent; }
+.radio-option input:checked + .radio-dot { border-color: var(--cobalt); }
+.radio-option input:checked + .radio-dot::after { background: var(--cobalt); }
+.radio-option input:focus-visible + .radio-dot { outline: var(--focus-w) solid var(--cobalt); outline-offset: 2px; }
+
+/* ── Ряд завантаження фото ── структура з room-create/profile-create, вигляд із мови */
+.photo-row { display: flex; flex-wrap: wrap; gap: 10px; }
+.photo-slot {
+  width: 84px; height: 84px; border-radius: var(--r-block);
+  border: var(--bd) solid var(--line); background: var(--paper-2);
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--olive); cursor: pointer; overflow: hidden;
+}
+.photo-slot svg { width: 26px; height: 26px; }
+.photo-slot img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ── Сегмент типу ── (listings 1:1) */
+.seg { display: flex; gap: 3px; padding: 4px; background: var(--ink-04); border: none; border-radius: var(--r-pill); }
+.seg label {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 9px 8px; border-radius: var(--r-pill);
+  font-size: var(--fs-secondary); color: var(--ink-muted); cursor: pointer;
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.seg input { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); }
+.seg label:has(input:checked) { background: var(--paper-2); color: var(--cobalt); font-weight: var(--w-bold); }
+.seg label:has(input:focus-visible) { outline: var(--focus-w) solid var(--cobalt); outline-offset: 2px; }
+.seg-count {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 17px; height: 17px; padding: 0 5px; border-radius: var(--r-pill);
+  background: var(--white-50); color: var(--ink-muted);
+  font-size: .625rem; font-weight: var(--w-bold); line-height: 1; font-variant-numeric: tabular-nums;
+}
+.seg label:has(input:checked) .seg-count { background: var(--cobalt); color: var(--on-cobalt); }
+
+/* ── FAB фільтра ── (listings 1:1) */
+.fab {
+  width: 54px; height: 54px; border-radius: var(--r-pill); border: none;
+  background: var(--cobalt); color: var(--on-cobalt); cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.fab svg { width: 24px; height: 24px; }
+.fab:hover { filter: brightness(1.08); }
+.fab:focus-visible { outline: var(--focus-w) solid var(--ink); outline-offset: 2px; }
+
+/* ── Боттом-шит фільтра ── (listings 1:1, як статичний блок) */
+.sheet {
+  border: var(--hair) solid var(--line); border-bottom: none;
+  border-radius: var(--r-sheet) var(--r-sheet) 0 0;
+  background: var(--paper-2); background-image: var(--grain);
+  padding: 16px 18px calc(20px + env(safe-area-inset-bottom));
+}
+.sheet-grip { width: 40px; height: 4px; border-radius: var(--r-pill); background: var(--line); margin: 0 auto 14px; }
+.sheet-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.sheet-title { font-weight: var(--w-black); font-size: var(--fs-sheet); letter-spacing: -.01em; color: var(--ink); }
+.sheet-close {
+  width: 34px; height: 34px; border-radius: var(--r-pill); border: var(--bd) solid var(--line);
+  background: transparent; color: var(--ink-muted); cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.sheet-close svg { width: 15px; height: 15px; }
+.sheet-close:hover { color: var(--ink); border-color: var(--ink-muted); }
+.sheet-form { display: flex; flex-direction: column; gap: 13px; }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   ЗВОРОТНИЙ ЗВʼЯЗОК
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Порожній стан ── (стани listings 1:1) */
+.state-block { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 32px 28px; }
+.state-icon {
+  width: 88px; height: 88px; border-radius: 28px; background: var(--ink-05);
+  display: flex; align-items: center; justify-content: center; color: var(--olive); margin-bottom: 22px;
+}
+.state-icon svg { width: 44px; height: 44px; }
+.state-title { font-family: var(--font-display); font-weight: var(--w-bold); font-size: var(--fs-heading); letter-spacing: -.02em; line-height: 1.1; color: var(--ink); margin-bottom: 9px; }
+.state-text { font-size: var(--fs-body); color: var(--ink-muted); max-width: 32ch; line-height: 1.5; margin-bottom: 24px; }
+.state-actions { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 300px; }
+
+/* ── Банер ── структура сірих банерів, вигляд із мови (без тіней, папір + рамка) */
+.banner {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 13px 14px; border-radius: var(--r-field);
+  border: var(--bd) solid var(--line); background: var(--paper-2);
+  font-size: var(--fs-secondary); color: var(--ink); line-height: 1.4;
+}
+.banner-ic { flex-shrink: 0; width: 20px; height: 20px; color: var(--ink-muted); margin-top: 1px; }
+.banner-ic svg { width: 100%; height: 100%; display: block; }
+.banner--error .banner-ic { color: var(--orange); }
+.banner--success .banner-ic { color: var(--olive); }
+.banner--info .banner-ic { color: var(--cobalt); }
+
+/* ── Скелетон завантаження ── (listings-loading 1:1) */
+@keyframes sk-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .45; } }
+.sk { background: var(--ink-07); animation: sk-pulse 1.4s ease-in-out infinite; }
+.sk-photo { width: 100%; aspect-ratio: 4 / 3; border-radius: var(--r-photo); }
+.sk-body { padding: 13px 2px 0; display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
+.sk-title { width: 62%; height: 26px; border-radius: 8px; }
+.sk-price { width: 26%; height: 26px; border-radius: 8px; }
+
+/* ── Пояснювальний текст ── */
+.hint { font-size: var(--fs-secondary); color: var(--ink-muted); line-height: 1.45; }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   ЧАТ
+   ══════════════════════════════════════════════════════════════════════════ */
+.chat-thread { display: flex; flex-direction: column; gap: 8px; padding: 14px 16px; }
+.msg { max-width: 78%; padding: 10px 13px; border-radius: var(--r-msg); font-size: var(--fs-body); line-height: 1.4; }
+.msg--in { align-self: flex-start; background: var(--paper-2); color: var(--ink); border-bottom-left-radius: 6px; }
+.msg--out { align-self: flex-end; background: var(--cobalt); color: var(--on-cobalt); border-bottom-right-radius: 6px; }
+.composer {
+  display: flex; align-items: center; gap: 8px; padding: 10px 12px;
+  border-top: var(--hair) solid var(--line); background: var(--paper); background-image: var(--grain);
+}
+.composer input {
+  flex: 1; min-width: 0; border: var(--bd) solid var(--line); background: var(--paper);
+  border-radius: var(--r-pill); padding: 10px 14px; font: inherit; font-size: var(--fs-body); color: var(--ink);
+}
+.composer input::placeholder { color: var(--ink-muted); }
+.composer input:focus { outline: var(--focus-w) solid var(--cobalt); outline-offset: 1px; }
+.composer .send {
+  flex-shrink: 0; width: 44px; height: 44px; border-radius: var(--r-pill); border: none;
+  background: var(--cobalt); color: var(--on-cobalt); cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.composer .send svg { width: 20px; height: 20px; }
+.composer .send:hover { filter: brightness(1.08); }
