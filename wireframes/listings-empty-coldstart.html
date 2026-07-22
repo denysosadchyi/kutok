@@ -261,10 +261,10 @@
     position: fixed;
     inset: auto;
     bottom: 0;
-    /* прив'язка до .device (anchor-name: --device): шит ніколи не виходить за макет */
-    position-anchor: --device;
-    left: anchor(left);
-    width: anchor-size(width);
+    /* Fallback (усі рушії): центрувати в в'юпорті. На реальному мобільному центр = центр екрана. */
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(400px, 100vw);
     margin: 0;
     max-height: 82vh;
     overflow-y: auto;
@@ -409,6 +409,11 @@
   .sk-body { padding: 13px 2px 0; display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
   .sk-title { width: 62%; height: 26px; border-radius: 8px; }
   .sk-price { width: 26%; height: 26px; border-radius: 8px; }
+  /* Chromium 125+: точна прив'язка шита до .device (не виходить за макет навіть у вайрфрейм-сцені).
+     Інші рушії лишаються на fallback-центруванні вище. */
+  @supports (left: anchor(left)) {
+    #filter-sheet { position-anchor: --device; left: anchor(left); width: anchor-size(width); transform: none; }
+  }
 </style>
 </head>
 <body>
