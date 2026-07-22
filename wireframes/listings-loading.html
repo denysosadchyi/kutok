@@ -43,7 +43,7 @@
 
   /* ── Каркас вайрфрейму: дерево-навігація зліва + сцена з макетом ── */
   .wf-shell { display: flex; align-items: flex-start; min-height: 100vh; }
-  .wf-stage { flex: 1 1 auto; display: flex; justify-content: center; background: #e9e9e9; }
+  .wf-stage { flex: 1 1 auto; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 24px 0; background: #e9e9e9; }
 
   /* ── Дерево сторінок (сіре, без кольору). Однакове на кожній сторінці вайрфрейму. ── */
   .wf-nav {
@@ -119,7 +119,9 @@
     anchor-name: --device;
     width: 100%;
     max-width: 400px;
-    min-height: 100vh;
+    height: 844px;            /* висота як у мобілки (фіксована рамка телефона) */
+    overflow-y: auto;
+    overflow-x: hidden;
     background: var(--paper);
     background-image: var(--grain);
     color: var(--ink);
@@ -414,7 +416,7 @@
   /* Chromium 125+: точна прив'язка шита до .device (не виходить за макет навіть у вайрфрейм-сцені).
      Інші рушії лишаються на fallback-центруванні вище. */
   @supports (left: anchor(left)) {
-    #filter-sheet { position-anchor: --device; left: anchor(left); width: anchor-size(width); transform: none; }
+    #filter-sheet { position-anchor: --device; left: anchor(left); width: anchor-size(width); bottom: anchor(bottom); transform: none; }
   }
 </style>
 </head>
