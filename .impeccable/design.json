@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-07-22",
+  "title": "Design System: Куток",
+  "extensions": {
+    "colorMeta": {
+      "paper":     { "role": "neutral",   "displayName": "Каталожний папір", "canonical": "oklch(93.5% 0.024 88)",  "tonalRamp": ["oklch(20% 0.02 88)","oklch(32% 0.024 88)","oklch(44% 0.026 88)","oklch(56% 0.026 88)","oklch(68% 0.026 88)","oklch(80% 0.026 88)","oklch(90% 0.025 88)","oklch(96% 0.02 88)"] },
+      "paper-2":   { "role": "neutral",   "displayName": "Виступ", "canonical": "oklch(97.5% 0.016 86)", "tonalRamp": ["oklch(22% 0.016 86)","oklch(34% 0.016 86)","oklch(46% 0.016 86)","oklch(58% 0.016 86)","oklch(70% 0.016 86)","oklch(82% 0.015 86)","oklch(92% 0.014 86)","oklch(98% 0.012 86)"] },
+      "ink":       { "role": "neutral",   "displayName": "Чорнило", "canonical": "oklch(21% 0.012 66)", "tonalRamp": ["oklch(15% 0.012 66)","oklch(21% 0.012 66)","oklch(30% 0.012 66)","oklch(40% 0.012 66)","oklch(52% 0.012 66)","oklch(66% 0.011 66)","oklch(80% 0.01 66)","oklch(92% 0.008 66)"] },
+      "ink-muted": { "role": "neutral",   "displayName": "Бліде чорнило", "canonical": "oklch(48% 0.02 78)", "tonalRamp": ["oklch(20% 0.02 78)","oklch(30% 0.02 78)","oklch(40% 0.02 78)","oklch(48% 0.02 78)","oklch(60% 0.02 78)","oklch(72% 0.018 78)","oklch(84% 0.015 78)","oklch(93% 0.012 78)"] },
+      "olive":     { "role": "primary",   "displayName": "Олива друкарки", "canonical": "oklch(52% 0.11 118)", "tonalRamp": ["oklch(18% 0.05 118)","oklch(28% 0.07 118)","oklch(38% 0.09 118)","oklch(52% 0.11 118)","oklch(63% 0.11 118)","oklch(74% 0.09 118)","oklch(85% 0.06 118)","oklch(93% 0.03 118)"] },
+      "on-olive":  { "role": "neutral",   "displayName": "Крем на оливі", "canonical": "oklch(94% 0.025 88)", "tonalRamp": ["oklch(30% 0.025 88)","oklch(42% 0.025 88)","oklch(54% 0.025 88)","oklch(66% 0.025 88)","oklch(78% 0.024 88)","oklch(86% 0.022 88)","oklch(91% 0.02 88)","oklch(96% 0.016 88)"] },
+      "cobalt":    { "role": "secondary", "displayName": "Кобальт дії", "canonical": "oklch(45% 0.13 255)", "tonalRamp": ["oklch(20% 0.07 255)","oklch(30% 0.10 255)","oklch(38% 0.12 255)","oklch(45% 0.13 255)","oklch(56% 0.13 255)","oklch(68% 0.11 255)","oklch(80% 0.07 255)","oklch(91% 0.03 255)"] },
+      "on-cobalt": { "role": "neutral",   "displayName": "Крем на кобальті", "canonical": "oklch(95% 0.02 86)", "tonalRamp": ["oklch(32% 0.02 86)","oklch(44% 0.02 86)","oklch(56% 0.02 86)","oklch(68% 0.02 86)","oklch(80% 0.018 86)","oklch(88% 0.016 86)","oklch(93% 0.014 86)","oklch(97% 0.012 86)"] },
+      "orange":    { "role": "tertiary",  "displayName": "Сигнальний помаранч", "canonical": "oklch(62% 0.16 42)", "tonalRamp": ["oklch(24% 0.09 42)","oklch(34% 0.12 42)","oklch(45% 0.15 42)","oklch(55% 0.16 42)","oklch(62% 0.16 42)","oklch(73% 0.13 42)","oklch(84% 0.08 42)","oklch(92% 0.04 42)"] },
+      "line":      { "role": "neutral",   "displayName": "Лінія паперу", "canonical": "oklch(88% 0.03 86)", "tonalRamp": ["oklch(24% 0.03 86)","oklch(36% 0.03 86)","oklch(48% 0.03 86)","oklch(60% 0.03 86)","oklch(72% 0.03 86)","oklch(82% 0.028 86)","oklch(88% 0.025 86)","oklch(95% 0.018 86)"] }
+    },
+    "typographyMeta": {
+      "display":  { "displayName": "Display · Unbounded", "purpose": "Вордмарк-заголовок у шапці = назва активного таба. Один на екран." },
+      "headline": { "displayName": "Headline · Unbounded", "purpose": "Ім'я у профілі, заголовки станів." },
+      "title":    { "displayName": "Title · Inter 800", "purpose": "Назва картки (max-width 12ch, ламається на 2 рядки) і ціна кобальтом." },
+      "body":     { "displayName": "Body · Inter", "purpose": "Біо, тексти, поля, меню, кнопки. Поля ≥16px проти iOS-зуму." },
+      "label":    { "displayName": "Label · Inter 700 UPPERCASE", "purpose": "Оверлайни секцій, бренд-мітка, лейбли полів, підписи табів, бейджі." }
+    },
+    "shadows": [
+      { "name": "none", "value": "none", "purpose": "Система пласка за принципом. box-shadow заборонено; глибина — тоном паперу, площиною і зерном." }
+    ],
+    "grain": [
+      { "name": "grain-ink", "value": "feTurbulence fractalNoise baseFrequency 0.35, 3 octaves, tile 300px, alpha slope 0.13", "purpose": "Чорнильний шум ~13% на світлих поверхнях (канвас, шапка, шит)." },
+      { "name": "grain-light", "value": "той самий feTurbulence, білий, alpha slope 0.10", "purpose": "Білий шум ~10% на темних поверхнях (оливковий навбар)." }
+    ],
+    "motion": [
+      { "name": "state", "value": "background .15s ease, color .15s ease", "purpose": "Перемикання сегмента й ховери. Без choreography — тільки зміна стану." }
+    ],
+    "breakpoints": [
+      { "name": "device", "value": "400px", "purpose": "Ширина мобільного макета (mobile-first)." }
+    ]
+  },
+  "components": [
+    {
+      "name": "Verified Badge",
+      "kind": "custom",
+      "refersTo": "verified-badge",
+      "description": "Сигнатурний бейдж довіри: оливкова галочка + текст того, що саме перевірено. Ніколи німий.",
+      "html": "<span class=\"ds-verified\"><span class=\"ds-vcheck\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4.5 12.5l5 5L19.5 7\"/></svg></span>телефон, фото</span>",
+      "css": ".ds-verified { display:inline-flex; align-items:center; gap:6px; background:#FDF9F0; border-radius:999px; padding:4px 12px 4px 5px; font-family:Inter,system-ui,sans-serif; font-size:.6875rem; font-weight:600; color:#1B1712; } .ds-vcheck { width:19px; height:19px; border-radius:999px; background:#6E7B2E; color:#FDF9F0; display:inline-flex; align-items:center; justify-content:center; } .ds-vcheck svg { width:10px; height:10px; }"
+    },
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Кобальтова дія: «Застосувати», основна кнопка станів. Hover світлішає тим самим кольором.",
+      "html": "<button class=\"ds-btn-primary\">Показати 24 оголошення</button>",
+      "css": ".ds-btn-primary { border:none; background:#1E59A3; color:#F6F1E4; font-family:Inter,system-ui,sans-serif; font-size:1rem; font-weight:700; padding:13px 18px; border-radius:12px; cursor:pointer; transition:filter .15s ease; } .ds-btn-primary:hover { filter:brightness(1.08); } .ds-btn-primary:focus-visible { outline:2px solid #1B1712; outline-offset:2px; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Тиха вторинна дія: «Редагувати профіль», кнопки станів. Рамка на папері, без заливки.",
+      "html": "<a class=\"ds-btn-ghost\">Редагувати профіль</a>",
+      "css": ".ds-btn-ghost { display:inline-flex; align-items:center; gap:7px; border:1.5px solid #E4D8BF; background:transparent; color:#1B1712; font-family:Inter,system-ui,sans-serif; font-size:.8125rem; font-weight:600; padding:12px 18px; border-radius:12px; text-decoration:none; cursor:pointer; } .ds-btn-ghost:hover { background:rgba(27,23,18,.04); }"
+    },
+    {
+      "name": "Search Button",
+      "kind": "button",
+      "refersTo": "search-button",
+      "description": "Оливкове кільце в шапці; hover інвертується в оливкову заливку.",
+      "html": "<button class=\"ds-search-btn\" aria-label=\"Пошук\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"><circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"M16.8 16.8L21 21\"/></svg></button>",
+      "css": ".ds-search-btn { width:40px; height:40px; display:inline-flex; align-items:center; justify-content:center; border:1.5px solid #6E7B2E; border-radius:999px; background:transparent; color:#6E7B2E; cursor:pointer; } .ds-search-btn svg { width:18px; height:18px; } .ds-search-btn:hover { background:#6E7B2E; color:#F3EED9; } .ds-search-btn:focus-visible { outline:2px solid #1E59A3; outline-offset:2px; }"
+    },
+    {
+      "name": "Type Segment",
+      "kind": "chip",
+      "refersTo": "segment-active",
+      "description": "Сегмент типу оголошень: трек без рамки, активний пункт — біла піґулка з кобальтом і лічильником.",
+      "html": "<div class=\"ds-seg\"><span class=\"ds-seg-item active\">Кімнати <b class=\"ds-seg-count\">18</b></span><span class=\"ds-seg-item\">Люди <b class=\"ds-seg-count\">6</b></span><span class=\"ds-seg-item\">Усі <b class=\"ds-seg-count\">24</b></span></div>",
+      "css": ".ds-seg { display:flex; gap:3px; padding:4px; background:rgba(27,23,18,.04); border-radius:999px; font-family:Inter,system-ui,sans-serif; } .ds-seg-item { flex:1; display:flex; align-items:center; justify-content:center; gap:6px; padding:9px 8px; border-radius:999px; font-size:.8125rem; color:#6F6553; cursor:pointer; } .ds-seg-item.active { background:#FDF9F0; color:#1E59A3; font-weight:700; } .ds-seg-count { display:inline-flex; align-items:center; justify-content:center; min-width:17px; height:17px; padding:0 5px; border-radius:999px; background:rgba(255,255,255,.5); color:#6F6553; font-size:.625rem; font-weight:700; } .ds-seg-item.active .ds-seg-count { background:#1E59A3; color:#F6F1E4; }"
+    },
+    {
+      "name": "Tab Bar",
+      "kind": "nav",
+      "refersTo": "tabbar",
+      "description": "Плаваюча оливкова піґулка; активний таб — світла внутрішня піґулка, лічильники — помаранчеві.",
+      "html": "<nav class=\"ds-tabbar\"><a class=\"ds-tab active\"><span class=\"ds-tab-ico\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"><circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"M16.8 16.8L21 21\"/></svg></span><span class=\"ds-tab-txt\">Пошук</span></a><a class=\"ds-tab\"><span class=\"ds-tab-ico\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"4\" y=\"3\" width=\"16\" height=\"18\" rx=\"3\"/><path d=\"M8.5 8.5h7M8.5 12.5h7M8.5 16.5h4\"/></svg><span class=\"ds-tab-dot\">2</span></span><span class=\"ds-tab-txt\">Заявки</span></a></nav>",
+      "css": ".ds-tabbar { display:flex; gap:2px; background:#6E7B2E; border-radius:999px; padding:6px; font-family:Inter,system-ui,sans-serif; } .ds-tab { flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; padding:8px 4px 7px; position:relative; color:rgba(243,238,217,.58); border-radius:999px; text-decoration:none; } .ds-tab.active { background:#F3EED9; color:#6E7B2E; font-weight:700; } .ds-tab-ico { position:relative; width:22px; height:22px; } .ds-tab-ico svg { width:100%; height:100%; } .ds-tab-txt { font-size:.6875rem; } .ds-tab-dot { position:absolute; top:-4px; right:-8px; min-width:15px; height:15px; padding:0 4px; background:#FDF9F0; color:#DC5A2A; font-size:.625rem; font-weight:700; line-height:15px; text-align:center; border-radius:999px; }"
+    },
+    {
+      "name": "Fact Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Факт-піґулка «Звички та умови» у профілі. Не інтерактивна, тому не кобальтова.",
+      "html": "<ul class=\"ds-chips\"><li>Не палю</li><li>Без тварин</li><li>Бюджет до 8 000 ₴/міс</li></ul>",
+      "css": ".ds-chips { list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:8px; font-family:Inter,system-ui,sans-serif; } .ds-chips li { background:#FDF9F0; border-radius:999px; padding:8px 14px; font-size:.8125rem; font-weight:600; color:#1B1712; }"
+    },
+    {
+      "name": "Select Field",
+      "kind": "input",
+      "refersTo": "select-field",
+      "description": "Поле фільтра в шиті — єдине місце з навмисними рамками. Кастомна SVG-стрілка.",
+      "html": "<label class=\"ds-fsel\"><select><option>Поділ</option><option>Оболонь</option></select></label>",
+      "css": ".ds-fsel { position:relative; display:flex; align-items:center; width:100%; border:1.5px solid #E4D8BF; background:#F5EEDF; border-radius:12px; padding:0 30px 0 13px; height:46px; } .ds-fsel select { appearance:none; -webkit-appearance:none; border:none; background:transparent; font-family:Inter,system-ui,sans-serif; font-size:1rem; font-weight:600; color:#1B1712; cursor:pointer; flex:1; min-width:0; } .ds-fsel::after { content:\"\"; position:absolute; right:14px; top:50%; margin-top:-5px; width:8px; height:8px; border-right:1.5px solid #6F6553; border-bottom:1.5px solid #6F6553; transform:rotate(45deg); pointer-events:none; } .ds-fsel:focus-within { outline:2px solid #1E59A3; outline-offset:1px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Каталог 73",
+    "overview": "Куток виглядає як гарно зроблена шведська друкована брошура для дому 1973-го (IKEA / FÄRGKARTA för inredning): теплий кремовий папір, важкий геометричний гротеск у заголовках, суцільні функціональні кольорові площини і зерно паперу замість тіней. Система свідомо full-palette, а не мінімалістично-акцентна: три названі кольори (олива, кобальт, помаранч), кожен зі своєю роллю і ніколи як прикраса. Це продукт, де дизайн служить довірі: кожен сигнал названий і розшифрований, фото несе екран, керування зведене до піґулок. Вона відкидає базарний шум класифайдів, хаос Facebook-груп, свайп-гейміфікацію дейтингу і градієнтно-скляні кліше SaaS-дашбордів.",
+    "keyCharacteristics": [
+      "Кремовий папір із зерном як канвас; нуль тіней у всій системі.",
+      "Три функціональні кольори з жорсткими ролями: олива=бренд, кобальт=дія, помаранч=сигнал.",
+      "Дві типографічні сім'ї: Unbounded тільки для видавничих заголовків, Inter для всього UI.",
+      "Скруглення трьома родинами: піґулки 999px, фото 26px, контейнери 22px.",
+      "Кожен сигнал довіри — з розшифровкою; нічого німого."
+    ],
+    "rules": [
+      { "name": "The Three-Voice Rule", "body": "Кольорів рівно три, і кожен говорить лише про своє: олива = бренд, кобальт = дія, помаранч = сигнал. Колір ніколи не декор.", "section": "colors" },
+      { "name": "The Print-Not-Pixel Rule", "body": "Матеріальність дає зерно паперу (feTurbulence), а не тінь. box-shadow заборонено.", "section": "colors" },
+      { "name": "The Two-Family Rule", "body": "Unbounded — виключно видавничі заголовки; усе інше Inter. Serif прибрано остаточно.", "section": "typography" },
+      { "name": "The No-Shadow Rule", "body": "Якщо тягнешся написати box-shadow — виріши глибину тоном паперу, площиною або зерном. Виняток єдиний — ::backdrop модального шита.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do тримай зерно паперу як спосіб дати матеріальність; глибину став тоном і площиною, не тінню.",
+      "Do давай кожному сигналу довіри розшифровку: «телефон, фото», а не «перевірено».",
+      "Do тримай три кольори в їхніх ролях: олива=бренд, кобальт=дія, помаранч=сигнал.",
+      "Do веди картку фотографією — фото несе екран.",
+      "Do став заголовки в Unbounded і тільки заголовки; решту в Inter."
+    ],
+    "donts": [
+      "Don't пиши box-shadow ніде (виняток — ::backdrop модального шита).",
+      "Don't відтворюй базарний шум класифайдів (OLX): конкуруючі CTA, банери, urgency.",
+      "Don't сповзай у хаос Facebook-груп / Telegram без ієрархії.",
+      "Don't застосовуй дейтинг-гейміфікацію: свайп, неон, бейджі-цукерки.",
+      "Don't будуй generic SaaS dashboard: hero-метрики з градієнтами, сітки однакових карток, glassmorphism, gradient text."
+    ]
+  }
+}
