@@ -3,27 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Мій профіль · шукач · Куток</title>
+<title>Мій профіль · Куток</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
-  /* ── Мова «Денна кімната» — світла тема тієї ж мови «Нічна лампа» (concept.md):
-     той самий теплий бурштин, Newsreader (прямий) + Inter, Solar Bold. Навігатор
-     вайрфреймів зліва (.wf-nav) лишається нейтральним інструментом — тема
-     застосована лише до .device. ── */
+  /* ===== Мова «Каталог 73» — north-star: шведський друкований модерн-каталог 1970-х
+     (IKEA / FÄRGKARTA för inredning). Екран зібрано З НУЛЯ під борд: видавничий тип-хедер,
+     стрічка каталог-карток (фото зі скругленням → бейдж «перевірено» знизу-справа →
+     назва+ціна у рядок → локація з піном → деталь), суцільний оливковий навбар.
+     Full-palette / функціональні ролі: папір+чорнило + олива(бренд) / кобальт(дія) / помаранч(сигнал).
+     Навігатор вайрфреймів зліва (.wf-nav) — нейтральний інструмент, теми не має. ===== */
   :root {
-    --canvas: #F5F1EB;
-    --surface: #F5F1EB;
-    --surface-2: #FFFEFC;
-    --text: #2A241C;
-    --text-muted: #75695A;
-    --accent: #E55636;         /* акцент з лого (колір даху) — тінти, ореоли */
-    --on-accent: #FFF9F0;      /* текст на глибокій бурштиновій заливці */
-    --line: #E8E2D8;
-    /* Типографічна драбина (product: фіксований rem-скейл, крок ~1.15–1.25):
-       11 → 13 → 16 → 18 → 20. Роль ваги: 400 текст, 500 заголовки-serif, 600 акцент. */
-    --fs-caption: 0.6875rem;   /* 11px: лейбли, оверлайни, таби, бейдж */
-    --fs-secondary: 0.8125rem; /* 13px: мета, лічильник, сегменти */
-    --fs-body: 1rem;           /* 16px: поля, кнопки */
-    --fs-display: 1.25rem;     /* 20px: назва застосунку */
+    --paper: #F5EEDF;          /* теплий кремовий папір каталогу — канвас (освітлений) */
+    --paper-2: #FDF9F0;        /* що «виступає»: картки, поля, бейдж */
+    /* Зерно паперу: SVG feTurbulence, чорнильний шум ~4% поверх канвасу */
+    --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.35' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='0.13'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    /* Світле зерно для темних поверхонь (оливкове меню) */
+    --grain-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.35' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='0' intercept='1'/%3E%3CfeFuncG type='linear' slope='0' intercept='1'/%3E%3CfeFuncB type='linear' slope='0' intercept='1'/%3E%3CfeFuncA type='linear' slope='0.10'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    --ink: #1B1712;            /* чорнило — тепле майже-чорне */
+    --ink-muted: #6F6553;      /* другорядний текст */
+    --olive: #6E7B2E;          /* ОЛИВА — бренд: вордмарк, навбар */
+    --on-olive: #F3EED9;       /* кремові іконки/лейбли на оливі */
+    --cobalt: #1E59A3;         /* КОБАЛЬТ — дія: ціна, CTA, актив, фокус */
+    --on-cobalt: #F6F1E4;      /* текст на кобальті */
+    --orange: #DC5A2A;         /* ПОМАРАНЧ — сигнальні лічильники */
+    --line: #E4D8BF;           /* розділювачі, рамки на папері */
+    --fs-caption: 0.6875rem;   /* 11px */
+    --fs-secondary: 0.8125rem; /* 13px */
+    --fs-body: 1rem;           /* 16px */
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -35,43 +43,59 @@
 
   /* ── Каркас вайрфрейму: дерево-навігація зліва + сцена з макетом ── */
   .wf-shell { display: flex; align-items: flex-start; min-height: 100vh; }
-  .wf-stage { flex: 1 1 auto; display: flex; justify-content: center; background: #e9e9e9; }
+  .wf-stage { flex: 1 1 auto; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; padding: 28px 0; background: #e9e9e9; }
 
   /* ── Дерево сторінок (сіре, без кольору). Однакове на кожній сторінці вайрфрейму. ── */
+  /* ── Бокова панель-навігатор: «покажчик каталогу» у мові Каталог 73 (темна chrome) ── */
   .wf-nav {
     position: sticky; top: 0; align-self: flex-start;
-    flex: 0 0 240px; width: 240px; height: 100vh; overflow-y: auto;
-    background: #f3f3f3; border-right: 1px solid #ccc;
-    padding: 16px 14px; color: #555;
+    flex: 0 0 258px; width: 258px; height: 100vh; overflow-y: auto;
+    background: #221E18; background-image: var(--grain-light);
+    border-right: 1px solid #14110C;
+    padding: 20px 15px 28px; color: #C7BCA6;
+    font-family: Inter, system-ui, sans-serif;
   }
-  .wf-nav-title { font-weight: bold; font-size: 12px; color: #444; letter-spacing: .04em; margin-bottom: 10px; }
+  .wf-nav-title { font-family: "Unbounded", Inter, system-ui, sans-serif; font-weight: 700; font-size: 13px; letter-spacing: -.01em; color: #F3EED9; margin-bottom: 4px; }
+  .wf-nav-hint { font-size: 10.5px; line-height: 1.45; color: #8B816C; margin-bottom: 12px; }
   .wf-nav ul { list-style: none; margin: 0; padding: 0; }
-  .wf-nav li.sec {
-    font-size: 10px; text-transform: uppercase; letter-spacing: .07em;
-    color: #888; font-weight: bold; margin-top: 14px;
-  }
-  .wf-nav li.screen {
-    font-size: 12px; color: #444; font-weight: bold;
-    text-transform: none; letter-spacing: 0; margin-top: 5px; padding-left: 10px;
-  }
-  .wf-nav li.screen > ul {
-    margin: 2px 0 0; padding-left: 8px; border-left: 1px solid #d2d2d2;
-  }
-  .wf-nav li.screen > ul > li { padding-left: 8px; }
-  .wf-nav a {
-    display: block; font-size: 11.5px; font-weight: 400; color: #666;
-    text-decoration: none; padding: 2px 6px;
-  }
-  .wf-nav a:hover { background: #e6e6e6; color: #333; }
-  .wf-nav a.active { background: #d8d8d8; color: #222; font-weight: bold; }
-  .wf-nav a.active::before { content: "\25B8  "; }
+  .wf-nav .tree { margin-top: 4px; }
+  .wf-nav-tools { margin-bottom: 12px; }
+  .wf-nav-filter { width: 100%; box-sizing: border-box; font-size: 12px; padding: 8px 10px; border: 1px solid #3A342B; border-radius: 9px; margin-bottom: 6px; background: #191510; color: #E7DECB; font-family: inherit; }
+  .wf-nav-filter::placeholder { color: #7C7361; }
+  .wf-nav-filter:focus { outline: none; border-color: #6E7B2E; }
+  .wf-nav-toggle-all { display: flex; gap: 6px; }
+  .wf-nav-toggle-all button { flex: 1; font-size: 10.5px; padding: 6px 4px; border-radius: 8px; border: 1px solid #3A342B; background: #191510; color: #B3A992; cursor: pointer; font-family: inherit; }
+  .wf-nav-toggle-all button:hover { background: #2C271F; color: #E7DECB; }
+  .wf-nav details.role { margin-top: 6px; border-top: 1px solid #332E26; padding-top: 8px; }
+  .wf-nav details.role:first-of-type { margin-top: 0; border-top: none; padding-top: 0; }
+  .wf-nav details.role > summary { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; color: #9A9078; font-weight: 700; cursor: pointer; padding: 5px 5px; list-style: none; border-radius: 7px; }
+  .wf-nav details.role > summary:hover { color: #F3EED9; background: rgba(255, 255, 255, .05); }
+  .wf-nav summary { list-style: none; cursor: pointer; }
+  .wf-nav summary::-webkit-details-marker { display: none; }
+  .wf-nav summary::before { content: "\25B8"; display: inline-block; width: 10px; margin-right: 5px; font-size: 8px; color: #6E6555; transition: transform .15s ease; vertical-align: middle; }
+  .wf-nav details[open] > summary::before { transform: rotate(90deg); }
+  .wf-nav li.screen { margin-top: 2px; }
+  .wf-nav li.screen > details { padding-left: 6px; }
+  .wf-nav li.screen > details > summary { font-size: 12px; color: #E2D9C6; font-weight: 600; padding: 5px 6px; border-radius: 7px; display: flex; align-items: center; gap: 6px; }
+  .wf-nav li.screen > details > summary:hover { background: rgba(255, 255, 255, .05); }
+  .wf-nav li.screen > details > ul { list-style: none; margin: 2px 0 6px 6px; padding-left: 10px; border-left: 1px solid #332E26; }
+  .wf-nav li.screen > details > ul > li { padding-left: 6px; }
+  .wf-nav a, .wf-nav li.screen a { display: block; font-size: 11.5px; font-weight: 400; color: #A79C86; text-decoration: none; padding: 4px 8px; border-radius: 7px; }
+  .wf-nav a:hover, .wf-nav li.screen a:hover { background: rgba(255, 255, 255, .06); color: #F3EED9; }
+  .wf-nav a.active, .wf-nav li.screen a.active { background: #6E7B2E; color: #F3EED9; font-weight: 700; }
+  .wf-nav a.active::before { content: ""; }
+  .job-tag { font-size: 9px; font-weight: 600; color: #B3A992; border: 1px solid #3A342B; background: #191510; padding: 1px 5px; border-radius: 5px; text-decoration: none; flex-shrink: 0; margin-left: auto; }
+  .job-tag:hover { color: #F3EED9; border-color: #6E7B2E; }
 
+  /* ════════════ Застосунок «Куток» — мова «Каталог 73» ════════════ */
   .device {
+    anchor-name: --device;
     width: 100%;
     max-width: 400px;
-    min-height: 100vh;
-    background: var(--canvas);
-    color: var(--text);
+    min-height: 844px;        /* висота як у мобілки (мінімум); довший контент подовжує сторінку, скрол — справа вікна */
+    background: var(--paper);
+    background-image: var(--grain);
+    color: var(--ink);
     font-family: Inter, system-ui, sans-serif;
     line-height: 1.5;
     border-left: 1px solid #ccc;
@@ -79,462 +103,302 @@
     display: flex;
     flex-direction: column;
   }
+  .device a { color: inherit; text-decoration: none; }
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+  }
 
-  /* ── Загальні кістякові елементи ── */
-  /* Хедер: два шари однакового розміру, накладені один на одного.
-     .header-shell — нижній шар, БІЛИЙ, без падингів (жодного зазору від верху екрана).
-     header.app — верхній шар, кольору ЗАГАЛЬНОГО фону сторінки (--surface), скруглений
-     знизу ЗАВЖДИ. Оскільки нижній (білий) у спокої НЕ скруглений, у кутках, де дуга
-     зрізає бежевий, проступає білий — це і є «білі області, що просвічуються».
-     При скролі (.is-stuck, клас ставить scroll-слухач внизу файлу) білий шар
-     доскруглюється так само → бежевий накриває його рівно один в один → білий зникає,
-     кутки чисті. */
-  .header-shell {
+  main { flex: 1 1 auto; } /* заповнює вільну висоту: навбар і FAB завжди внизу */
+
+  /* ── Видавничий хедер: тільки тип, без лого-мітки (як на north-star) ── */
+  .app-head {
     position: sticky;
     top: 0;
     z-index: 5;
-    background: var(--surface-2);
-    will-change: transform;
-    transform: translateZ(0);
-    -webkit-transform: translateZ(0);
-  }
-  .header-shell.is-stuck {
-    border-radius: 0 0 32px 32px;
-  }
-  header.app {
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-top: none;
-    border-radius: 0 0 32px 32px;
-    padding: 10px 12px;
+    background: var(--paper);
+    background-image: var(--grain);
+    padding: 20px 18px 12px;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
-    gap: 6px;
+    gap: 12px;
   }
-  /* Лого: наданий растровий знак (фон вирізано, кроп впритул) + вордмарк геометричним
-     гротеском Space Grotesk — навмисно не Newsreader і не Inter, окрема марка,
-     використовується лише тут, один раз */
-  .logo { display: flex; align-items: center; gap: 8px; min-width: 0; flex: 1 1 auto; }
-  .logo-mark { height: 26px; width: auto; flex-shrink: 0; display: block; }
-  .logo-word {
-    font-family: "Space Grotesk", Inter, system-ui, sans-serif;
-    font-size: var(--fs-display);
-    font-weight: 600;
-    letter-spacing: -.01em;
-    line-height: 1.2;
-    color: var(--text);
-    flex-shrink: 0;
-  }
-  .logo-tagline {
+  .head-brand {
     font-size: var(--fs-caption);
-    color: var(--text-muted);
-    line-height: 1.25;
-    padding-left: 8px;
-    margin-left: 1px;
-    border-left: 1px solid var(--line);
-    min-width: 0;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .14em;
+    color: var(--ink-muted);
+    margin-bottom: 5px;
   }
-
-  /* Значок пошуку в шапці + поповер із полем пошуку (нативний Popover API + anchor positioning) */
-  .icon-btn {
-    position: relative;
+  .head-word {
+    font-family: "Unbounded", Inter, system-ui, sans-serif;
+    font-weight: 700;
+    font-size: 2.5rem;
+    line-height: .95;
+    letter-spacing: -.03em;
+    color: var(--olive);
+  }
+  .head-sub {
+    margin-top: 8px;
+    font-size: var(--fs-secondary);
+    color: var(--ink-muted);
+  }
+  .head-btn {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    margin-top: 2px;
+    anchor-name: --search-anchor;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 34px;
-    height: 34px;
-    flex-shrink: 0;
-    border: none;
+    border: 1.5px solid var(--olive);
+    border-radius: 999px;
     background: transparent;
-    padding: 0;
-    border-radius: 9px;
-    color: var(--text-muted);
+    color: var(--olive);
     cursor: pointer;
   }
-  .icon-btn svg { width: 18px; height: 18px; }
-  .icon-btn:hover { background: var(--line); color: var(--text); }
-  .icon-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-  .search-trigger { anchor-name: --search-anchor; }
+  .head-btn svg { width: 18px; height: 18px; }
+  .head-btn:hover { background: var(--olive); color: var(--on-olive); }
+  .head-btn:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
+
+  /* Пошук — нативний popover, прив'язаний до кнопки (anchor positioning) */
   #search-popover {
     position: fixed;
     position-anchor: --search-anchor;
     position-area: bottom span-left;
     margin: 8px 0 0;
-    width: min(376px, calc(100vw - 24px)); /* ширина контенту хедера (400px девайс − 2×12px падинг) */
+    width: min(320px, calc(100vw - 32px));
     border: 1px solid var(--line);
     border-radius: 14px;
-    background: var(--surface-2);
-    box-shadow: 0 8px 24px rgba(42, 36, 28, .16), 0 2px 6px rgba(42, 36, 28, .08);
-    padding: 8px;
+    background: var(--paper-2);
+    padding: 10px;
   }
-  .search-popover-form {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    border: 1px solid var(--line);
-    background: var(--surface);
-    border-radius: 10px;
-    padding: 8px 10px;
+  .search-form {
+    display: flex; align-items: center; gap: 8px;
+    border: 1.5px solid var(--line); background: var(--paper);
+    border-radius: 10px; padding: 9px 12px;
   }
-  .search-popover-form svg { width: 16px; height: 16px; color: var(--text-muted); flex-shrink: 0; }
-  .search-popover-form input {
-    flex: 1;
-    min-width: 0;
-    border: none;
-    background: transparent;
-    outline: none;
-    font-size: var(--fs-body);
-    font-family: inherit;
-    color: var(--text);
+  .search-form svg { width: 16px; height: 16px; color: var(--ink-muted); flex-shrink: 0; }
+  .search-form input {
+    flex: 1; min-width: 0; border: none; background: transparent; outline: none;
+    font: inherit; font-size: var(--fs-body); color: var(--ink);
   }
-  .search-popover-form input::placeholder { color: var(--text-muted); }
+  .search-form input::placeholder { color: var(--ink-muted); }
 
-  section { border-bottom: 1px solid var(--line); }
-  .pad { padding: 10px 12px; }
-
-  /* Фільтри: та сама картка, що й у кімнати/людини, але злита з хедером —
-     без бокових/верхніх відступів, кутки зверху не скруглені (лист, що
-     висувається з-під хедера), скруглення й тінь знизу вдвічі більші */
-  section.filters-section {
-    border-bottom: none;
-    padding: 0;
-  }
-  form.filters {
+  /* ── Фільтр: сегмент типу + компактні теги-чипи (не важка картка-форма) ── */
+  .filterbar {
+    padding: 14px 16px 8px;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    background: var(--surface-2);
-    border-radius: 0 0 32px 32px;
-    padding: 14px;
-    box-shadow: 0 1px 3px rgba(42, 36, 28, .06);
   }
-  .field { display: flex; flex-direction: column; gap: 2px; }
-  .field label { font-size: var(--fs-caption); color: var(--text-muted); }
-  .field select, .field input {
-    border: 1px solid var(--line);
-    background: var(--surface-2);
-    color: var(--text);
-    padding: 8px 14px;
-    font-size: var(--fs-body); /* <16px змушує iOS Safari зумити екран при фокусі */
-    font-family: inherit;
-    border-radius: 999px;
+  .seg {
+    display: flex; gap: 3px; padding: 4px;
+    background: rgba(27, 23, 18, .04); border: none; border-radius: 999px;
   }
-  /* Власна стрілка замість нативної (та була притиснута до краю) + відступ під неї */
-  .field select {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    padding-right: 34px;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2375695A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-    background-size: 13px;
-    color-scheme: light;
+  .seg label {
+    flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 9px 8px; border-radius: 999px;
+    font-size: var(--fs-secondary); color: var(--ink-muted); cursor: pointer;
+    transition: background .15s ease, color .15s ease;
   }
-  .field select option { background-color: var(--surface-2); color: var(--text); }
-  .field select:focus, .field input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
-  .filters-row { display: flex; gap: 8px; }
-  .filters-row .field { flex: 1; min-width: 0; } /* без цього select не стискається і вилазить за картку */
-  fieldset.seg-switch { border: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 2px; }
-  /* Легенда лишається для читалок екрана (доступна назва групи radio), візуально прибрана — контекст і так зрозумілий */
-  fieldset.seg-switch legend {
-    position: absolute; width: 1px; height: 1px; overflow: hidden;
-    clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+  .seg input { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); }
+  .seg label:has(input:checked) {
+    background: var(--paper-2); color: var(--cobalt); font-weight: 700;
   }
-  /* iOS-стиль сегментованого контролю: нейтральний трек, вибраний пункт — інсетна
-     плаваюча піґулка з тінню, а не заливка на всю комірку від краю до краю */
-  .seg-options {
-    display: flex;
-    gap: 2px;
-    padding: 2px;
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: 999px;
-  }
-  .seg-options label {
-    flex: 1;
-    display: flex; align-items: center; justify-content: center; gap: 4px;
-    padding: 7px 10px;
-    font-size: var(--fs-secondary);
-    color: var(--text-muted);
-    border-radius: 999px;
-    transition: background .15s ease-out, color .15s ease-out, box-shadow .15s ease-out;
-  }
-  .seg-options input {
-    position: absolute; width: 1px; height: 1px; overflow: hidden;
-    clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
-  }
-  .seg-options label:has(input:checked) {
-    background: var(--surface-2);
-    color: var(--accent);
-    font-weight: 600;
-    box-shadow: 0 1px 3px rgba(42, 36, 28, .16), 0 1px 1px rgba(42, 36, 28, .08);
-  }
-  .seg-options label:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
-  /* Лічильник у сегменті — та сама кругла піґулка, що й на табах навбара знизу;
-     у невибраному сегменті приглушена, гучний акцентний фон лишається тільки за вибраним */
+  .seg label:has(input:focus-visible) { outline: 2px solid var(--cobalt); outline-offset: 2px; }
   .seg-count {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 16px;
-    height: 16px;
-    padding: 0 4px;
-    border-radius: 999px;
-    background: var(--line);
-    color: var(--text-muted);
-    font-size: 0.625rem;
-    font-weight: 700;
-    line-height: 1;
-    font-variant-numeric: tabular-nums;
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 17px; height: 17px; padding: 0 5px; border-radius: 999px;
+    background: rgba(255, 255, 255, .5); color: var(--ink-muted);
+    font-size: .625rem; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums;
   }
-  .seg-options label:has(input:checked) .seg-count {
-    background: var(--accent);
-    color: var(--on-accent);
-  }
-  button {
-    border: 1px solid var(--line);
-    background: var(--surface-2);
-    color: var(--text);
-    padding: 10px 14px;
-    font-size: var(--fs-body);
-    font-family: inherit;
-    border-radius: 999px;
-    cursor: pointer;
-  }
-  /* Горизонтальний градієнт бурштин → оранж (обидва одної світлості, ≥4.5:1 зі світлим
-     текстом по всій ширині) + світіння зверху для легкого об'єму */
-  button.primary {
-    border: none;
-    background: var(--accent);
-    color: var(--on-accent);
-    font-weight: 600;
-  }
-  button.primary:hover { filter: brightness(1.08); }
-  button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .seg label:has(input:checked) .seg-count { background: var(--cobalt); color: var(--on-cobalt); }
 
-  /* Список карток: білі блоки на канвасі, велике горизонтальне фото зверху, дані знизу */
-  ul.feed { list-style: none; padding: 12px; display: flex; flex-direction: column; gap: 12px; }
-  article.card {
-    background: var(--surface-2);
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(42, 36, 28, .06);
+  /* Фільтри живуть у боттом-шиті (нативний popover); угорі — тільки сегмент типу.
+     Відкриває шит кобальтовий FAB над таб-баром. */
+  .fab {
+    position: sticky; bottom: 88px; z-index: 4;
+    align-self: flex-end;
+    margin: 0 14px 12px auto; /* притиснутий до низу над навбаром (main заповнює висоту) */
+    width: 54px; height: 54px; border-radius: 999px; border: none;
+    background: var(--cobalt); color: var(--on-cobalt); cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
   }
-  article.card:active { background: var(--surface); }
-  .thumb {
-    position: relative;
-    width: 100%;
-    height: 180px;
-    background: var(--surface);
-  }
-  .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .card-body { padding: 12px 14px 14px; }
-  .card-kind { font-size: 0.5625rem; text-transform: uppercase; letter-spacing: .08em; color: var(--text-muted); }
-  .card-title {
-    font-family: Newsreader, serif;
-    font-weight: 500;
-    font-size: 1.375rem;
-    line-height: 1.25;
-    color: var(--text);
-    margin: 3px 0;
-    text-decoration: underline dotted;
-    text-decoration-color: rgba(229, 86, 54, .5);
-    text-decoration-thickness: 1px;
-    text-underline-offset: 3px;
-  }
-  .card-meta { font-size: var(--fs-secondary); line-height: 1.45; color: var(--text-muted); }
-  .card-price { font-size: var(--fs-body); font-weight: 600; font-variant-numeric: tabular-nums; color: var(--text); margin-top: 4px; }
-  .badge {
-    position: absolute;
-    left: 10px;
-    bottom: 10px;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: var(--fs-caption);
-    font-weight: 600;
-    color: #FFF8E9; /* теплий білий, не чистий #fff */
-    border: 1px solid rgba(255, 249, 240, .18);
-    background: rgba(23, 17, 10, .52);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    border-radius: 999px;
-    padding: 3px 9px;
-  }
-  .badge svg { width: 12px; height: 12px; flex-shrink: 0; color: #5FA873; } /* щит — окремий, фіксовано зелений */
-  .card a.cardlink { display: block; text-decoration: none; color: inherit; }
-  .card a.cardlink:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: 16px; }
+  .fab svg { width: 24px; height: 24px; }
+  .fab:hover { filter: brightness(1.08); }
+  .fab:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 
-  /* Таб-бар: плаваюча пігулка з відступом 8px від країв */
-  footer.tabbar {
-    background: var(--surface-2);
-    border-radius: 999px;
-    overflow: hidden;
-    display: flex;
-    margin: auto 8px calc(8px + env(safe-area-inset-bottom));
-    position: sticky;
-    bottom: calc(8px + env(safe-area-inset-bottom));
-    box-shadow: 0 6px 20px rgba(42, 36, 28, .12), 0 1px 3px rgba(42, 36, 28, .08);
+  #filter-sheet {
+    position: fixed;
+    inset: auto;
+    bottom: 0;
+    /* Fallback (усі рушії): центрувати в в'юпорті. На реальному мобільному центр = центр екрана. */
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(400px, 100vw);
+    margin: 0;
+    max-height: 82vh;
+    overflow-y: auto;
+    border: 1px solid var(--line); border-bottom: none;
+    border-radius: 22px 22px 0 0;
+    background: var(--paper-2);
+    background-image: var(--grain);
+    padding: 16px 18px calc(20px + env(safe-area-inset-bottom));
   }
-  footer.tabbar a {
-    flex: 1;
-    text-align: center;
-    padding: 10px 4px;
-    font-size: var(--fs-caption);
-    color: var(--text-muted);
-    text-decoration: none;
+  #filter-sheet::backdrop { background: rgba(27, 23, 18, .38); }
+  .sheet-grip { width: 40px; height: 4px; border-radius: 999px; background: var(--line); margin: 0 auto 14px; }
+  .sheet-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .sheet-title { font-weight: 800; font-size: 1.125rem; letter-spacing: -.01em; color: var(--ink); }
+  .sheet-close {
+    width: 34px; height: 34px; border-radius: 999px; border: 1.5px solid var(--line);
+    background: transparent; color: var(--ink-muted); cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
   }
-  footer.tabbar a.active { color: var(--accent); font-weight: 600; background: var(--surface); }
-  footer.tabbar a:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+  .sheet-close svg { width: 15px; height: 15px; }
+  .sheet-close:hover { color: var(--ink); border-color: var(--ink-muted); }
+  .sheet-close:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
+  .sheet-form { display: flex; flex-direction: column; gap: 13px; }
+  .sheet-field { display: flex; flex-direction: column; gap: 6px; }
+  .sheet-field .cap { font-size: var(--fs-caption); text-transform: uppercase; letter-spacing: .07em; color: var(--ink-muted); }
+  .fsel {
+    position: relative; display: flex; align-items: center; min-width: 0; width: 100%;
+    border: 1.5px solid var(--line); background: var(--paper);
+    border-radius: 12px; padding: 0 30px 0 13px; height: 46px;
+  }
+  .fsel select {
+    appearance: none; -webkit-appearance: none; -moz-appearance: none;
+    border: none; background: transparent; font: inherit;
+    font-size: var(--fs-body); font-weight: 600; color: var(--ink); cursor: pointer;
+    flex: 1; min-width: 0; padding: 0;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .fsel::after {
+    content: ""; position: absolute; right: 14px; top: 50%; margin-top: -5px;
+    width: 8px; height: 8px; border-right: 1.5px solid var(--ink-muted); border-bottom: 1.5px solid var(--ink-muted);
+    transform: rotate(45deg); pointer-events: none;
+  }
+  .fsel:focus-within { outline: 2px solid var(--cobalt); outline-offset: 1px; }
+  .sheet-apply {
+    margin-top: 5px; border: none; background: var(--cobalt); color: var(--on-cobalt);
+    font: inherit; font-size: var(--fs-body); font-weight: 700;
+    padding: 13px; border-radius: 12px; cursor: pointer;
+  }
+  .sheet-apply:hover { filter: brightness(1.08); }
+  .sheet-apply:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 
-  .wf-nav-hint { font-size: 10px; color: #999; margin-bottom: 8px; font-style: italic; }
-  .wf-nav .tree { margin-top: 2px; }
-  .wf-nav details.role { margin-top: 10px; border-top: 1px solid #ddd; padding-top: 8px; }
-  .wf-nav details.role:first-of-type { margin-top: 0; border-top: none; padding-top: 0; }
-  .wf-nav details.role > summary {
-    font-size: 10px; text-transform: uppercase; letter-spacing: .06em;
-    color: #888; font-weight: bold; cursor: pointer; padding: 3px 4px; list-style: none;
-  }
-  .wf-nav details.role > summary:hover { color: #444; background: #ececec; }
-  .wf-nav summary { list-style: none; cursor: pointer; }
-  .wf-nav summary::-webkit-details-marker { display: none; }
-  .wf-nav summary::before {
-    content: "\25B8"; display: inline-block; width: 9px; margin-right: 4px; font-size: 9px; color: #999;
-    transition: transform .15s ease;
-  }
-  .wf-nav details[open] > summary::before { transform: rotate(90deg); }
-  .wf-nav li.screen { margin-top: 3px; }
-  .wf-nav li.screen > details { padding-left: 10px; }
-  .wf-nav li.screen > details > summary {
-    font-size: 12px; color: #444; font-weight: bold; padding: 3px 6px 3px 4px;
-    display: flex; align-items: center; gap: 6px;
-  }
-  .wf-nav li.screen > details > summary:hover { background: #e6e6e6; }
-  .wf-nav li.screen > details > ul {
-    list-style: none; margin: 2px 0 4px; padding-left: 8px; border-left: 1px solid #d2d2d2;
-  }
-  .wf-nav li.screen > details > ul > li { padding-left: 8px; }
-  .wf-nav li.screen a { display: block; font-size: 11.5px; font-weight: 400; color: #666; text-decoration: none; padding: 2px 6px; }
-  .wf-nav li.screen a:hover { background: #e6e6e6; color: #333; }
-  .wf-nav li.screen a.active { background: #d8d8d8; color: #222; font-weight: bold; }
-  .job-tag {
-    font-size: 9px; font-weight: normal; color: #888; border: 1px solid #ccc; background: #f0f0f0;
-    padding: 0 4px; text-decoration: none; flex-shrink: 0; margin-left: auto;
-  }
-  .job-tag:hover { color: #222; border-color: #999; background: #e6e6e6; }
-
-  footer.tabbar a { display: flex; flex-direction: column; align-items: center; gap: 3px; position: relative; padding: 7px 4px 6px; margin: 4px 3px; border-radius: 999px; }
-  .tab-icon { position: relative; width: 18px; height: 18px; color: var(--text-muted); }
-  .tab-icon svg { width: 100%; height: 100%; display: block; }
-  footer.tabbar a.active .tab-icon { color: var(--accent); }
-  .tab-label { font-size: var(--fs-caption); }
-  /* Лічильник висить на самій іконці, у її правому верхньому куті */
-  .tab-badge {
-    position: absolute; top: -5px; right: -7px; min-width: 14px; height: 14px; padding: 0 3px;
-    background: #5FA873; color: var(--on-accent); font-size: 0.625rem; font-weight: 700; line-height: 14px; text-align: center;
-    border-radius: 999px;
-  }
-  .icon-ph { display: inline-block; background: #d6d6d6; border: 1px solid #b0b0b0; vertical-align: middle; }
-  .menu-row { display: flex; align-items: center; gap: 10px; padding: 11px 12px; text-decoration: none; color: #333; }
-  .menu-row:hover { background: #f2f2f2; }
-  .menu-row .icon-ph { width: 20px; height: 20px; flex-shrink: 0; }
-  .menu-row .menu-label { flex: 1; font-size: 13px; }
-  .menu-row .chevron { width: 7px; height: 7px; border-top: 1px solid #999; border-right: 1px solid #999; transform: rotate(45deg); flex-shrink: 0; background: none; }
-
-  .wf-nav-tools { margin-bottom: 8px; }
-  .wf-nav-filter { width: 100%; box-sizing: border-box; font-size: 11px; padding: 5px 6px; border: 1px solid #bbb; margin-bottom: 5px; font-family: inherit; }
-  .wf-nav-toggle-all { display: flex; gap: 4px; }
-  .wf-nav-toggle-all button { flex: 1; font-size: 10px; padding: 4px 2px; border: 1px solid #ccc; background: #eee; color: #555; cursor: pointer; }
-  .wf-nav-toggle-all button:hover { background: #e0e0e0; }
-
-  /* ── Профіль шукача ── */
-  main.profile { display: flex; flex-direction: column; }
-  /* Тіло профілю — плаваючі картки (як стрічка на listings) */
-  .profile-body { display: flex; flex-direction: column; gap: 12px; padding: 12px; }
-  .profile-body .card {
-    background: var(--surface-2);
-    border-radius: 16px;
-    box-shadow: 0 1px 3px rgba(42, 36, 28, .06);
-    padding: 16px;
-  }
-  /* Картка ідентичності — flush-герой, звисає з-під хедера (як картка фільтрів) */
-  .profile-card {
-    background: var(--surface-2);
-    border-radius: 0 0 32px 32px;
-    box-shadow: 0 1px 3px rgba(42, 36, 28, .06);
-    padding: 20px 16px 18px;
-    text-align: center;
-  }
-  .avatar-link { display: inline-block; border-radius: 24px; }
-  .avatar-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-  .avatar {
-    width: 96px; height: 96px; border-radius: 24px;
-    object-fit: cover; display: block; margin: 0 auto 12px;
-    background: var(--surface);
-  }
-  .profile-name {
-    font-family: Newsreader, serif; font-weight: 500; font-size: 1.5rem;
-    line-height: 1.2; color: var(--text); margin: 0 0 6px;
-  }
-  .profile-bio {
-    font-size: var(--fs-secondary); line-height: 1.5; color: var(--text-muted);
-    max-width: 32ch; margin: 0 auto 12px;
-  }
-  .verify-badge {
-    display: inline-flex; align-items: center; gap: 5px;
-    font-size: var(--fs-caption); font-weight: 600; color: var(--text);
-    background: rgba(95, 168, 115, .12); border: 1px solid rgba(95, 168, 115, .35);
-    border-radius: 999px; padding: 4px 11px;
-  }
-  .verify-badge svg { width: 13px; height: 13px; color: #5FA873; flex-shrink: 0; }
-  /* Метр повноти профілю */
-  .meter-block { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line); text-align: left; }
-  .meter-label { font-size: var(--fs-secondary); color: var(--text-muted); margin: 0 0 6px; }
-  .meter-label b { color: var(--text); font-weight: 600; font-variant-numeric: tabular-nums; }
-  .meter { height: 8px; background: var(--line); border-radius: 999px; overflow: hidden; }
-  .meter-fill { height: 100%; background: var(--accent); border-radius: 999px; }
-  .meter-hint { font-size: var(--fs-caption); color: var(--text-muted); margin: 8px 0 0; }
-  /* Секційний оверлайн */
-  .card-overline {
-    font-size: var(--fs-caption); text-transform: uppercase; letter-spacing: .06em;
-    color: var(--text-muted); font-weight: 600; margin: 0 0 10px;
-  }
-  .muted-note { font-size: var(--fs-secondary); line-height: 1.5; color: var(--text-muted); margin: 0; }
-  /* Чипи фактів */
-  ul.chips { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; }
-  ul.chips li {
-    font-size: var(--fs-secondary); color: var(--text);
-    background: var(--surface); border-radius: 999px; padding: 6px 12px;
-  }
-  /* Кнопка редагування — маленька, неакцентна, у блоці користувача */
-  .edit-link {
+  /* ── Стрічка каталог-карток ── */
+  .feed { list-style: none; padding: 12px 16px 22px; display: flex; flex-direction: column; gap: 24px; }
+  /* Картка = фото зі скругленням + текст під ним прямо на папері (без коробки-контейнера),
+     як на north-star: тільки назва + ціна + локація. Жодного оверлайну й рядка деталей. */
+  .card { display: block; }
+  .card:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 3px; border-radius: 20px; }
+  .card-photo { position: relative; width: 100%; aspect-ratio: 4 / 3; border-radius: 26px; overflow: hidden; background: var(--paper-2); }
+  .card-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .card:active .card-photo { filter: brightness(.97); }
+  /* Бейдж «перевірено» — як на референсі: кремова піґулка знизу-справа,
+     чорнильний кружечок з галочкою + текст. Текст показує ЩО саме перевірено
+     (телефон/фото) — принцип «нічого німого» з PRODUCT.md. */
+  .verified {
+    position: absolute; right: 12px; bottom: 12px;
     display: inline-flex; align-items: center; gap: 6px;
-    margin-top: 12px;
-    font-size: var(--fs-secondary); font-weight: 500;
-    color: var(--text); text-decoration: none;
-    background: var(--surface); border: 1px solid var(--line);
-    border-radius: 999px; padding: 6px 14px;
+    background: var(--paper-2); border-radius: 999px;
+    padding: 4px 12px 4px 5px; font-size: var(--fs-caption); font-weight: 600; color: var(--ink);
   }
-  .edit-link svg { width: 14px; height: 14px; color: var(--text-muted); }
-  .edit-link:hover { background: var(--line); }
-  .edit-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-  /* Меню налаштувань */
-  main.profile .menu-card { padding: 4px 0; }
-  main.profile .menu-row {
-    display: flex; align-items: center; gap: 12px;
-    padding: 13px 16px; text-decoration: none; color: var(--text);
-    border-bottom: 1px solid var(--line);
+  .vcheck {
+    width: 19px; height: 19px; border-radius: 999px; flex-shrink: 0;
+    background: var(--olive); color: var(--paper-2);
+    display: inline-flex; align-items: center; justify-content: center;
   }
-  main.profile .menu-row:last-child { border-bottom: none; }
-  main.profile .menu-row:hover { background: var(--surface); }
-  main.profile .menu-row:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
-  .menu-ic { width: 22px; height: 22px; color: var(--text-muted); flex-shrink: 0; }
+  .vcheck svg { width: 10px; height: 10px; }
+  /* Район — кремова піґулка з піном знизу-зліва на фото (дзеркало бейджа) */
+  .place {
+    position: absolute; left: 12px; bottom: 12px;
+    display: inline-flex; align-items: center; gap: 5px;
+    max-width: 55%;
+    background: var(--paper-2); border-radius: 999px;
+    padding: 5px 11px 5px 9px; font-size: var(--fs-caption); font-weight: 600; color: var(--ink);
+  }
+  .place svg { width: 13px; height: 13px; flex-shrink: 0; }
+  .place span.t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  /* Дві колонки, як на борді: зліва назва → одразу під нею локація; справа ціна → «/місяць» */
+  .card-body { padding: 13px 2px 0; display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
+  .card-main { min-width: 0; }
+  .card-title {
+    font-weight: 800; letter-spacing: -.02em;
+    font-size: 1.375rem; line-height: 1.12; color: var(--ink);
+    max-width: 12ch; /* назва ламається на два рядки, як на борді, а не тягнеться до ціни */
+  }
+  .card-price { text-align: right; flex-shrink: 0; }
+  .card-price .amount {
+    display: block; font-size: 1.3125rem; font-weight: 800; letter-spacing: -.02em;
+    color: var(--cobalt); font-variant-numeric: tabular-nums; white-space: nowrap;
+  }
+  .card-price .per { display: block; font-size: var(--fs-caption); color: var(--ink-muted); margin-top: 1px; }
+
+  /* ── Навбар: плаваюча оливкова піґулка (відступи 8px), активний пункт —
+     світла внутрішня піґулка з оливковим текстом ── */
+  .tabbar {
+    position: sticky; bottom: calc(8px + env(safe-area-inset-bottom)); margin: auto 8px calc(8px + env(safe-area-inset-bottom));
+    background: var(--olive); background-image: var(--grain-light); display: flex; gap: 2px;
+    border-radius: 999px; padding: 6px;
+  }
+  .tabbar a {
+    flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
+    padding: 8px 4px 7px; position: relative; color: rgba(243, 238, 217, .58);
+    border-radius: 999px;
+  }
+  .tabbar a.active { background: var(--on-olive); color: var(--olive); font-weight: 700; }
+  .tabbar a.active .tab-ico { color: var(--olive); }
+  .tabbar a:focus-visible { outline: 2px solid var(--on-olive); outline-offset: -3px; }
+  .tab-ico { position: relative; width: 22px; height: 22px; }
+  .tab-ico svg { width: 100%; height: 100%; display: block; }
+  .tab-txt { font-size: var(--fs-caption); }
+  .tab-dot {
+    position: absolute; top: -4px; right: -8px; min-width: 15px; height: 15px; padding: 0 4px;
+    background: var(--paper-2); color: var(--orange);
+    font-size: .625rem; font-weight: 700; line-height: 15px; text-align: center; border-radius: 999px;
+  }
+  /* Chromium 125+: точна прив'язка шита до .device (не виходить за макет навіть у вайрфрейм-сцені).
+     Інші рушії лишаються на fallback-центруванні вище. */
+  @supports (left: anchor(left)) {
+    #filter-sheet { position-anchor: --device; left: anchor(left); width: anchor-size(width); transform: none; }
+  }
+
+  /* ── Профіль шукача (Каталог 73) ── */
+  main.profile { display: block; }
+  .profile-hero { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 6px 22px 24px; border-bottom: 1px solid var(--line); }
+  .avatar-link { display: block; }
+  .avatar { width: 106px; height: 106px; border-radius: 30px; object-fit: cover; display: block; }
+  .profile-name { font-family: "Unbounded", Inter, system-ui, sans-serif; font-weight: 700; font-size: 1.75rem; letter-spacing: -.03em; color: var(--ink); margin-top: 14px; }
+  .profile-bio { font-size: var(--fs-body); color: var(--ink-muted); line-height: 1.5; max-width: 32ch; margin-top: 8px; }
+  .profile-badge { display: inline-flex; align-items: center; gap: 6px; margin-top: 15px; background: var(--paper-2); border-radius: 999px; padding: 5px 13px 5px 6px; font-size: var(--fs-caption); font-weight: 600; color: var(--ink); }
+  .edit-link { display: inline-flex; align-items: center; gap: 7px; margin-top: 12px; border: 1.5px solid var(--line); background: transparent; border-radius: 999px; padding: 8px 15px; font-size: var(--fs-secondary); font-weight: 600; color: var(--ink); text-decoration: none; }
+  .edit-link svg { width: 14px; height: 14px; }
+  .edit-link:hover { background: rgba(27, 23, 18, .04); }
+  .meter-block { width: 100%; max-width: 300px; margin-top: 22px; }
+  .meter-label { display: flex; justify-content: space-between; font-size: var(--fs-secondary); color: var(--ink-muted); margin-bottom: 7px; }
+  .meter-label b { color: var(--cobalt); font-weight: 800; font-variant-numeric: tabular-nums; }
+  .meter { height: 8px; border-radius: 999px; background: rgba(27, 23, 18, .08); overflow: hidden; }
+  .meter-fill { height: 100%; background: var(--cobalt); border-radius: 999px; }
+  .meter-hint { font-size: var(--fs-caption); color: var(--ink-muted); margin-top: 8px; line-height: 1.4; }
+  .profile-section { padding: 20px 22px; border-bottom: 1px solid var(--line); }
+  .section-overline { font-size: var(--fs-caption); text-transform: uppercase; letter-spacing: .08em; color: var(--ink-muted); font-weight: 700; margin-bottom: 13px; }
+  .pchips { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
+  .pchips li { background: var(--paper-2); border-radius: 999px; padding: 8px 14px; font-size: var(--fs-secondary); font-weight: 600; color: var(--ink); }
+  .muted-note { font-size: var(--fs-body); color: var(--ink-muted); line-height: 1.5; }
+  .menu-list { padding: 6px 22px 26px; }
+  .menu-row { display: flex; align-items: center; gap: 13px; padding: 15px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: var(--ink); }
+  .menu-row:last-child { border-bottom: none; }
+  .menu-ic { width: 22px; height: 22px; color: var(--olive); flex-shrink: 0; }
   .menu-ic svg { width: 100%; height: 100%; display: block; }
-  .menu-txt { flex: 1; font-size: var(--fs-secondary); }
-  .menu-chev { width: 15px; height: 15px; color: var(--text-muted); flex-shrink: 0; }
-  .menu-chev svg { width: 100%; height: 100%; display: block; }
+  .menu-txt { flex: 1; font-size: var(--fs-body); }
+  .menu-chev { width: 8px; height: 8px; border-top: 1.5px solid var(--ink-muted); border-right: 1.5px solid var(--ink-muted); transform: rotate(45deg); flex-shrink: 0; }
+  .menu-row:hover { background: rgba(27, 23, 18, .03); }
 </style>
 </head>
 <body>
@@ -676,7 +540,7 @@
         <summary>Шукач · Аня</summary>
         <ul>
           <li class="screen">
-            <details>
+            <details open>
               <summary>Стрічка / каталог <a class="job-tag" href="../research/jtbd.html#related" title="RJ1 — знайти серед багатьох тих, хто базово підходить">RJ1</a></summary>
               <ul>
                 <li><a href="listings.html">успіх</a></li>
@@ -709,7 +573,7 @@
             </details>
           </li>
           <li class="screen">
-            <details open>
+            <details>
               <summary>Мій профіль · шукач <a class="job-tag" href="../research/jtbd.html#related" title="RJ4 — прийти на зустріч підготовленим">RJ4</a></summary>
               <ul>
                 <li><a class="active" href="my-profile-seeker.html">успіх</a></li>
@@ -846,38 +710,35 @@
   <div class="wf-stage">
 <div class="device">
 
-  <div class="header-shell">
-    <header class="app">
-      <div class="logo">
-        <img class="logo-mark" src="assets/logo-mark.png" alt="" width="601" height="562">
-        <span class="logo-word">Куток</span>
-        <span class="logo-tagline">безпечний пошук<br>кімнат і сусідів</span>
-      </div>
-      <button type="button" class="icon-btn search-trigger" popovertarget="search-popover" aria-label="Відкрити пошук">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M21.788 21.788a.723.723 0 0 0 0-1.022L18.122 17.1a9.157 9.157 0 1 0-1.022 1.022l3.666 3.666a.723.723 0 0 0 1.022 0" clip-rule="evenodd"/></svg>
-      </button>
-    </header>
-  </div>
+  <header class="app-head">
+    <div>
+      <div class="head-brand">Куток</div>
+      <h1 class="head-word">Профіль</h1>
+      <p class="head-sub">Так тебе бачать господарі</p>
+    </div>
+    <button type="button" class="head-btn" popovertarget="search-popover" aria-label="Відкрити пошук">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg>
+    </button>
+  </header>
 
-  <div id="search-popover" popover class="search-popover">
-    <form class="search-popover-form" role="search" action="listings.html" method="get">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M21.788 21.788a.723.723 0 0 0 0-1.022L18.122 17.1a9.157 9.157 0 1 0-1.022 1.022l3.666 3.666a.723.723 0 0 0 1.022 0" clip-rule="evenodd"/></svg>
+  <div id="search-popover" popover>
+    <form class="search-form" role="search" action="listings.html" method="get">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg>
       <input type="search" name="q" placeholder="Пошук за назвою, районом…" aria-label="Пошук оголошень">
     </form>
   </div>
 
-  <main class="profile">
 
-    <section class="profile-card">
+
+  <main class="profile">
+    <section class="profile-hero">
       <a class="avatar-link" href="photo-viewer.html">
         <img class="avatar" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=320&h=320&fit=crop&auto=format&q=70" alt="Фото профілю — Аня, 23">
       </a>
-      <h1 class="profile-name">Аня, 23</h1>
+      <h2 class="profile-name">Аня, 23</h2>
       <p class="profile-bio">Переїхала до Києва місяць тому, працюю в кафе на Подолі. Шукаю спокійну кімнату й адекватних сусідів.</p>
-      <span class="verify-badge"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M3.378 5.082C3 5.62 3 7.22 3 10.417v1.574c0 5.638 4.239 8.375 6.899 9.536c.721.315 1.082.473 2.101.473c1.02 0 1.38-.158 2.101-.473C16.761 20.365 21 17.63 21 11.991v-1.574c0-3.198 0-4.797-.378-5.335c-.377-.537-1.88-1.052-4.887-2.081l-.573-.196C13.595 2.268 12.812 2 12 2s-1.595.268-3.162.805L8.265 3c-3.007 1.03-4.51 1.545-4.887 2.082M15.06 10.5a.75.75 0 0 0-1.12-.999l-3.011 3.374l-.87-.974a.75.75 0 0 0-1.118 1l1.428 1.6a.75.75 0 0 0 1.119 0z" clip-rule="evenodd"/></svg> телефон, фото</span>
-      <br>
-      <a class="edit-link" href="my-profile-seeker-edit.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M13.5 6.5 17.5 10.5 8 20H4v-4zM19.4 4.6a2 2 0 0 0-2.8 0L15 6.2 18.8 10l1.6-1.6a2 2 0 0 0 0-2.8z"/></svg>Редагувати профіль</a>
-
+      <span class="profile-badge"><span class="vcheck"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>телефон, фото</span>
+      <a class="edit-link" href="my-profile-seeker-edit.html"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L18.5 9.5a2.1 2.1 0 0 0-3-3L5 17v3z"/><path d="M13.5 7.5l3 3"/></svg>Редагувати профіль</a>
       <div class="meter-block">
         <p class="meter-label">Повнота профілю <b>90%</b></p>
         <div class="meter"><div class="meter-fill" style="width:90%"></div></div>
@@ -885,65 +746,73 @@
       </div>
     </section>
 
-    <div class="profile-body">
-
-    <section class="card">
-      <h2 class="card-overline">Звички та умови</h2>
-      <ul class="chips">
+    <section class="profile-section">
+      <h2 class="section-overline">Звички та умови</h2>
+      <ul class="pchips">
         <li>Не палю</li>
         <li>Без тварин</li>
         <li>Бюджет до 8 000 ₴/міс</li>
-        <li>Шукає: Поділ</li>
+        <li>Шукаю: Поділ</li>
       </ul>
     </section>
 
-    <section class="card">
-      <h2 class="card-overline">Відгуки про мене</h2>
-      <p class="muted-note">Ще немає відгуків — з'являться після першого спільного проживання.</p>
+    <section class="profile-section">
+      <h2 class="section-overline">Відгуки про мене</h2>
+      <p class="muted-note">Ще немає відгуків — зʼявляться після першого спільного проживання.</p>
     </section>
 
-    <nav class="card menu-card" aria-label="Налаштування профілю">
+    <nav class="menu-list" aria-label="Налаштування профілю">
       <a class="menu-row" href="profile-create-host.html">
-        <span class="menu-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M11.3 2.62a1 1 0 0 1 1.4 0l8 7.7A1 1 0 0 1 21 11.05V20a1 1 0 0 1-1 1h-4.5a1 1 0 0 1-1-1v-4a1 1 0 0 0-1-1h-3a1 1 0 0 0-1 1v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-8.95a1 1 0 0 1 .3-.72z"/></svg></span>
+        <span class="menu-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V9.5L12 4l8 5.5V21"/><path d="M9.5 21v-6h5v6"/></svg></span>
         <span class="menu-txt">Здаєте кімнату? Стати господарем</span>
-        <span class="menu-chev"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="m9 6 6 6-6 6"/></svg></span>
+        <span class="menu-chev" aria-hidden="true"></span>
       </a>
       <a class="menu-row" href="privacy-settings.html">
-        <span class="menu-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2c-.3 0-.6.07-.9.2L5 4.8C4 5.2 3.5 6 3.5 7v4.5c0 4.6 3.2 7.5 7.6 9.2c.5.2 1.3.2 1.8 0c4.4-1.7 7.6-4.6 7.6-9.2V7c0-1-.5-1.8-1.5-2.2L12.9 2.2A2.3 2.3 0 0 0 12 2m3.2 7.3-3.8 4.2-1.5-1.6a1 1 0 0 0-1.5 1.3l2.2 2.5a1 1 0 0 0 1.5 0l4.6-5a1 1 0 1 0-1.5-1.3"/></svg></span>
+        <span class="menu-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg></span>
         <span class="menu-txt">Налаштування приватності</span>
-        <span class="menu-chev"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="m9 6 6 6-6 6"/></svg></span>
+        <span class="menu-chev" aria-hidden="true"></span>
       </a>
       <a class="menu-row" href="blocked.html">
-        <span class="menu-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M12 2a10 10 0 1 0 0 20a10 10 0 0 0 0-20M4 12a8 8 0 0 1 12.9-6.3L5.7 16.9A7.97 7.97 0 0 1 4 12m4.1 6.3L19.3 7.1a8 8 0 0 1-11.2 11.2" clip-rule="evenodd"/></svg></span>
+        <span class="menu-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M6 6l12 12"/></svg></span>
         <span class="menu-txt">Заблоковані</span>
-        <span class="menu-chev"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="m9 6 6 6-6 6"/></svg></span>
+        <span class="menu-chev" aria-hidden="true"></span>
       </a>
       <a class="menu-row" href="account.html">
-        <span class="menu-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 8.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7m8.1 2.2-.8-.2c-.1-.4-.3-.8-.5-1.1l.4-.7a1 1 0 0 0-.1-1.2l-1.1-1.1a1 1 0 0 0-1.2-.1l-.7.4c-.3-.2-.7-.4-1.1-.5l-.2-.8A1 1 0 0 0 13 4.5h-2a1 1 0 0 0-1 .8l-.2.8c-.4.1-.8.3-1.1.5l-.7-.4a1 1 0 0 0-1.2.1L5.7 7.4a1 1 0 0 0-.1 1.2l.4.7c-.2.3-.4.7-.5 1.1l-.8.2a1 1 0 0 0-.8 1v1.6a1 1 0 0 0 .8 1l.8.2c.1.4.3.8.5 1.1l-.4.7a1 1 0 0 0 .1 1.2l1.1 1.1a1 1 0 0 0 1.2.1l.7-.4c.3.2.7.4 1.1.5l.2.8a1 1 0 0 0 1 .8h2a1 1 0 0 0 1-.8l.2-.8c.4-.1.8-.3 1.1-.5l.7.4a1 1 0 0 0 1.2-.1l1.1-1.1a1 1 0 0 0 .1-1.2l-.4-.7c.2-.3.4-.7.5-1.1l.8-.2a1 1 0 0 0 .8-1v-1.6a1 1 0 0 0-.8-1"/></svg></span>
+        <span class="menu-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v2.6M12 18.9v2.6M21.5 12h-2.6M5.1 12H2.5M18.4 5.6l-1.9 1.9M7.5 16.5l-1.9 1.9M18.4 18.4l-1.9-1.9M7.5 7.5 5.6 5.6"/></svg></span>
         <span class="menu-txt">Керування акаунтом</span>
-        <span class="menu-chev"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="m9 6 6 6-6 6"/></svg></span>
+        <span class="menu-chev" aria-hidden="true"></span>
       </a>
       <a class="menu-row" href="support.html">
-        <span class="menu-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20a10 10 0 0 0 0-20m0 15.5a1.2 1.2 0 1 1 0-2.4a1.2 1.2 0 0 1 0 2.4m1.6-5.7c-.6.4-.7.6-.7 1v.2a1 1 0 1 1-2 0v-.2c0-1.3.7-2 1.5-2.5c.6-.4.9-.7.9-1.2c0-.6-.5-1.1-1.3-1.1c-.6 0-1 .3-1.3.8a1 1 0 0 1-1.7-1a3.2 3.2 0 0 1 3-1.8c1.8 0 3.3 1.2 3.3 3c0 1.4-.9 2.1-1.7 2.6"/></svg></span>
+        <span class="menu-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M9.6 9.4a2.5 2.5 0 1 1 3.4 2.4c-.7.4-1 .8-1 1.6"/><path d="M12 16.4h.01"/></svg></span>
         <span class="menu-txt">Підтримка</span>
-        <span class="menu-chev"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="m9 6 6 6-6 6"/></svg></span>
+        <span class="menu-chev" aria-hidden="true"></span>
       </a>
       <a class="menu-row" href="legal.html">
-        <span class="menu-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8.8a2 2 0 0 0-.6-1.4l-4.8-4.8A2 2 0 0 0 13.2 2zm2 11h8a1 1 0 1 1 0 2H8a1 1 0 1 1 0-2m0 4h6a1 1 0 1 1 0 2H8a1 1 0 1 1 0-2m0-8h4a1 1 0 1 1 0 2H8a1 1 0 1 1 0-2"/></svg></span>
+        <span class="menu-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12.5h6M9 16h6"/></svg></span>
         <span class="menu-txt">Умови використання · Політика приватності</span>
-        <span class="menu-chev"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="m9 6 6 6-6 6"/></svg></span>
+        <span class="menu-chev" aria-hidden="true"></span>
       </a>
     </nav>
-
-    </div>
-
   </main>
 
+
   <footer class="tabbar">
-    <a href="listings.html"><span class="tab-icon" aria-label="іконка: Пошук"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M21.788 21.788a.723.723 0 0 0 0-1.022L18.122 17.1a9.157 9.157 0 1 0-1.022 1.022l3.666 3.666a.723.723 0 0 0 1.022 0" clip-rule="evenodd"/></svg></span><span class="tab-label">Пошук</span></a>
-    <a href="applications.html"><span class="tab-icon" aria-label="іконка: Заявки"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M4.172 3.172C3 4.343 3 6.229 3 10v4c0 3.771 0 5.657 1.172 6.828S7.229 22 11 22h2c3.771 0 5.657 0 6.828-1.172S21 17.771 21 14v-4c0-3.771 0-5.657-1.172-6.828S16.761 2 13 2h-2C7.229 2 5.343 2 4.172 3.172M7.25 8A.75.75 0 0 1 8 7.25h8a.75.75 0 0 1 0 1.5H8A.75.75 0 0 1 7.25 8m0 4a.75.75 0 0 1 .75-.75h8a.75.75 0 0 1 0 1.5H8a.75.75 0 0 1-.75-.75M8 15.25a.75.75 0 0 0 0 1.5h5a.75.75 0 0 0 0-1.5z" clip-rule="evenodd"/></svg><span class="tab-badge" aria-label="2 нових">2</span></span><span class="tab-label">Заявки</span></a>
-    <a href="dialogs.html"><span class="tab-icon" aria-label="іконка: Чати"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><defs><mask id="tabChatMask"><g fill="none"><path fill="#fff" d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2S2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.63 1.63 0 0 1 1.149.133A9.96 9.96 0 0 0 12 22"/><path fill="#000" d="M15 12a1 1 0 1 0 2 0a1 1 0 0 0-2 0m-4 0a1 1 0 1 0 2 0a1 1 0 0 0-2 0m-4 0a1 1 0 1 0 2 0a1 1 0 0 0-2 0"/></g></mask></defs><path fill="currentColor" d="M0 0h24v24H0z" mask="url(#tabChatMask)"/></svg><span class="tab-badge" aria-label="1 нових">1</span></span><span class="tab-label">Чати</span></a>
-    <a class="active" href="my-profile-seeker.html"><span class="tab-icon" aria-label="іконка: Профіль"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="6" r="4" fill="currentColor"/><ellipse cx="12" cy="17" fill="currentColor" rx="7" ry="4"/></svg></span><span class="tab-label">Профіль</span></a>
+    <a href="listings.html">
+      <span class="tab-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg></span>
+      <span class="tab-txt">Пошук</span>
+    </a>
+    <a href="applications.html">
+      <span class="tab-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8.5 8.5h7M8.5 12.5h7M8.5 16.5h4"/></svg><span class="tab-dot" aria-label="2 нових">2</span></span>
+      <span class="tab-txt">Заявки</span>
+    </a>
+    <a href="dialogs.html">
+      <span class="tab-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.6a8.6 8.6 0 1 0-7.5-4.4L3.4 20.6l4.5-1.1a8.56 8.56 0 0 0 4.1 1.1z"/></svg><span class="tab-dot" aria-label="1 нових">1</span></span>
+      <span class="tab-txt">Чати</span>
+    </a>
+    <a class="active" href="my-profile-seeker.html">
+      <span class="tab-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.7"/><path d="M5 20.2c1.3-3.5 3.9-5.2 7-5.2s5.7 1.7 7 5.2"/></svg></span>
+      <span class="tab-txt">Профіль</span>
+    </a>
   </footer>
 
 </div>
@@ -967,16 +836,6 @@
       }
     });
   }
-  (function () {
-    var shell = document.querySelector('.header-shell');
-    if (!shell) return;
-    // .device починається з самого верху сторінки, тому scrollY > 0 — це рівно
-    // момент, коли шапка прилипає. Без сентінел-елемента: будь-який дів у потоці
-    // (навіть 1px) зсував би шапку на свою висоту.
-    function sync() { shell.classList.toggle('is-stuck', window.scrollY > 0); }
-    window.addEventListener('scroll', sync, { passive: true });
-    sync();
-  })();
 </script>
 </body>
 </html>
