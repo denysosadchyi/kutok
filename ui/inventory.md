@@ -24,13 +24,13 @@
 | Компонент | Екрани | Стани | Фото? |
 |---|---|---|---|
 | **Картка оголошення (каталог-картка)** | `listings` (+ стани), `listings-desktop` | Успіх; у `-loading` замінюється скелетоном; у `-empty` відсутня | **Так** (фото кімнати / людини) |
-| **Рядок списку (медіа-рядок)** | `dialogs`, `candidates`, `applications`, `my-listings`, `blocked`, `listings-desktop` | З прев'ю та лічильником непрочитаних (dialogs); з діями «Прийняти/Відхилити» (candidates); зі статусом життєвого циклу (my-listings); скелетон у `-loading`; відсутній у `-empty` | **Так** (аватар/мініатюра) |
+| **Рядок списку (медіа-рядок)** | `dialogs`, `candidates`, `applications`, `my-listings`, `blocked` | З прев'ю та лічильником непрочитаних (dialogs); з діями «Прийняти/Відхилити» (candidates); зі статусом життєвого циклу (my-listings); «Розблокувати» (blocked); скелетон у `-loading`; відсутній у `-empty` | **Так** (аватар/мініатюра) |
 | **Аватар / фото-плейсхолдер** (`thumb`, `avatar`, `room-photo`) | `profile`, `room`, `chat`, `candidates`, `dialogs`, `applications`, `my-profile-*`, `profile-create-*`, `*-edit`, `verify-selfie`, `photo-viewer`, `listings-desktop` | Розміри: `sm` / кругла аватарка / велике фото кімнати; плейсхолдер-текст «фото» у сірих | **Так** |
-| **Бейдж верифікації** | `candidates`, `room`, `chat`, `profile`, `applications`, `listings*`, `listings-desktop`, `my-profile-seeker`, `my-profile-host`, `account`, `verify` | Комбінації «телефон / фото / документ» (`✓` або `—`); пофарбований варіант (олива-галочка `.verified`) vs сірий текстовий (`.badge`) | Ні |
+| **Бейдж верифікації** | `listings*`, `my-profile-seeker` (пофарбовані: `.verified` / `.profile-badge`); `applications`, `candidates`, `listings-desktop`, `my-profile-host`, `profile` (+`-empty`/`-error`), `room` (+`-error`), `verify` (сірий `.badge`) | Комбінації «телефон / фото / документ» (`✓` або `—`); олива-галочка (пофарбований) vs текстовий (сірий). У `chat` і в блоці господаря `room` та сама інформація йде текстом у «рядку людини» (`host-name`), не цим компонентом | Ні |
 | **Факти / чипи** (`facts`, `pchips`) | `room`, `profile`, `account`, `my-profile-host`, `my-profile-seeker` | Список умов співжиття / чипи-звички | Ні |
 | **Рядок людини (співрозмовник / господар)** | `chat` (шапка-peer), `room` (рядок господині) | Співрозмовник у чат-шапці / господар у картці кімнати | **Так** (мала аватарка) |
 | **Метр повноти профілю** | `my-profile-seeker`, `my-profile-host` (+ `-loading`) | Відсоток заповнення; скелетон у `-loading` | Ні |
-| **Лічильник результатів** (`counter`) | `candidates`, `dialogs`, `my-listings`, `my-profile-host`, `listings-desktop`, `photo-viewer` | «N кандидатів» / «i з N фото» | Ні |
+| **Лічильник результатів** (`counter`) | `candidates`, `listings-desktop`, `my-profile-host`, `photo-viewer` (+ у станах завантаження `dialogs-loading`, `my-listings-loading`) | «N кандидатів» / «i з N фото» | Ні |
 
 ---
 
@@ -38,8 +38,8 @@
 
 | Компонент | Екрани | Стани | Фото? |
 |---|---|---|---|
-| **Кнопка дії (первинна)** | `room`, `candidates`, `verify*`, `consent`, `login`, `report`, `room-create`, `profile-create-*`, `listings-empty/-error`, `my-listings`, `photo-viewer`, `*-edit`, `recovery`, `role-select` | Звичайна / `sm` | Ні |
-| **Вторинна кнопка (ghost)** | `room`, `profile`, `chat`, `verify-code` («ще раз»), `account`, `*-edit`, `report-sent`, `profile-create-*`, `login-error`, `photo-viewer`, `verify-error` | `ghost` / `sm ghost` | Ні |
+| **Кнопка дії (первинна)** | Майже всі екрани з дією (~55): `room`, `candidates`, `chat` (Надіслати), `consent`, `login*`, `report*`, `room-create*`, `profile-create-*`, `verify*`, `listings-empty`/`-error`, `my-listings*`, `*-edit`, `recovery`, `role-select` | Звичайна / `sm` | Ні |
+| **Вторинна кнопка (ghost)** | `room`, `room-create`, `profile` (+`-empty`/`-error`), `profile-create-*`, `chat`, `verify-code` («ще раз»), `verify`, `account`, `photo-viewer`, `report-sent`, `login-error`, `my-profile-*-edit` | `ghost` / `sm ghost` | Ні |
 | **Поле форми** (input / textarea / select + `label`) | `login*`, `verify-phone*`, `verify-code*`, `room-create*`, `report*`, `support*`, `profile-create-*`, `*-edit`, `listings-desktop`; випадні списки — фільтр `listings*` (`fsel`) | Порожнє / заповнене / поряд банер помилки; select із кастомною стрілкою | Ні |
 | **Чекбокс** (`chk` / `chk-line`) | `consent`, `room-create*`, `profile-create-seeker*`, `verify`, `my-profile-seeker-edit` | Увімкнений / вимкнений | Ні |
 | **Радіо-список** (`radio-option`) | `report*`, `privacy-settings` | Один вибраний з переліку | Ні |
@@ -77,7 +77,7 @@
 - **FAB фільтра + боттом-шит фільтра** (`fab`, `sheet-*`) — тільки `listings*`.
 - **Крок-чекліст верифікації** (`step`) — екрани верифікаційного флоу (`verify*`, `verify-selfie-error`); одна послідовність, тому не окремий компонент.
 - **Стрічка мініатюр кімнати** (`thumb-strip`) — тільки `room*`.
-- **Картки вибору ролі** — тільки `role-select`.
+- **Опції вибору ролі** (`role-option`) — тільки `role-select` (кнопки-опції, не картки).
 - **Повноекранний фото-в'юер** — тільки `photo-viewer`.
 - **Блок згоди + чек-лінії** (`consent-block`) — тільки `consent`.
 - **Легал-лінки** (`legal-links`) — тільки `consent`.
