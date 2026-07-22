@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Оболонка · Куток kit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kit.css">
+<!--
+  ОБОЛОНКА як РОЗМІТКА. Кіт-лише-CSS не вдягне того, що не має скелета — тому
+  двошарова шапка (вордмарк-варіант + «назад»-варіант) і таб-бар живуть тут.
+  Сірий екран: копіює .app, лишає ОДИН хедер, вставляє свій вміст у <main>,
+  лишає <footer class="tabbar"> з активним потрібним табом.
+  Вигляд повністю з kit.css — тут нуль інлайн-стилів.
+-->
+</head>
+<body style="background:#e9e9e9; margin:0; min-height:100vh; display:flex; gap:32px; justify-content:center; align-items:flex-start; padding:28px 16px;">
+
+<!-- ═══════════ Оболонка А · первинний таб (вордмарк-хедер) ═══════════ -->
+<div class="app">
+
+  <!-- Шапка · шар 1: видавничий вордмарк (для Пошук / Заявки / Чати / Профіль) -->
+  <header class="app-head">
+    <div>
+      <div class="head-brand">Куток</div>
+      <h1 class="head-word">Пошук</h1>
+      <p class="head-sub">Кімнати й сусіди в Києві, між своїми</p>
+    </div>
+    <button type="button" class="head-btn" aria-label="Відкрити пошук">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg>
+    </button>
+  </header>
+
+  <main>
+    <!-- ▼▼▼ ЕКРАН ВСТАВЛЯЄ СВІЙ ВМІСТ СЮДИ ▼▼▼ -->
+    <div style="padding:24px 18px; color:var(--ink-muted); font-family:var(--font-body); font-size:var(--fs-secondary);">
+      &lt;main&gt; — сюди екран кладе свій контент (стрічку, форму, профіль…)
+    </div>
+    <!-- ▲▲▲ /вміст ▲▲▲ -->
+  </main>
+
+  <footer class="tabbar">
+    <a class="active" href="#">
+      <span class="tab-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg></span>
+      <span class="tab-txt">Пошук</span>
+    </a>
+    <a href="#">
+      <span class="tab-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8.5 8.5h7M8.5 12.5h7M8.5 16.5h4"/></svg><span class="tab-dot" aria-label="2 нових">2</span></span>
+      <span class="tab-txt">Заявки</span>
+    </a>
+    <a href="#">
+      <span class="tab-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.6a8.6 8.6 0 1 0-7.5-4.4L3.4 20.6l4.5-1.1a8.56 8.56 0 0 0 4.1 1.1z"/></svg><span class="tab-dot" aria-label="1 нових">1</span></span>
+      <span class="tab-txt">Чати</span>
+    </a>
+    <a href="#">
+      <span class="tab-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.7"/><path d="M5 20.2c1.3-3.5 3.9-5.2 7-5.2s5.7 1.7 7 5.2"/></svg></span>
+      <span class="tab-txt">Профіль</span>
+    </a>
+  </footer>
+
+</div>
+
+<!-- ═══════════ Оболонка Б · вторинний екран («назад»-хедер) ═══════════ -->
+<div class="app">
+
+  <!-- Шапка · шар 2: назад + заголовок (для room / chat / verify / report …) -->
+  <header class="app-head app-head--back">
+    <a class="head-back" href="#">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M15 5l-7 7 7 7"/></svg>
+      До списку
+    </a>
+    <h1 class="head-title">Оголошення кімнати</h1>
+  </header>
+
+  <main>
+    <div style="padding:24px 18px; color:var(--ink-muted); font-family:var(--font-body); font-size:var(--fs-secondary);">
+      &lt;main&gt; — вторинний екран (оголошення, чат, форма верифікації…)
+    </div>
+  </main>
+
+  <footer class="tabbar">
+    <a class="active" href="#">
+      <span class="tab-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg></span>
+      <span class="tab-txt">Пошук</span>
+    </a>
+    <a href="#">
+      <span class="tab-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8.5 8.5h7M8.5 12.5h7M8.5 16.5h4"/></svg><span class="tab-dot" aria-label="2 нових">2</span></span>
+      <span class="tab-txt">Заявки</span>
+    </a>
+    <a href="#">
+      <span class="tab-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.6a8.6 8.6 0 1 0-7.5-4.4L3.4 20.6l4.5-1.1a8.56 8.56 0 0 0 4.1 1.1z"/></svg><span class="tab-dot" aria-label="1 нових">1</span></span>
+      <span class="tab-txt">Чати</span>
+    </a>
+    <a href="#">
+      <span class="tab-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.7"/><path d="M5 20.2c1.3-3.5 3.9-5.2 7-5.2s5.7 1.7 7 5.2"/></svg></span>
+      <span class="tab-txt">Профіль</span>
+    </a>
+  </footer>
+
+</div>
+
+</body>
+</html>
