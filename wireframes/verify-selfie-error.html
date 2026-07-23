@@ -163,6 +163,8 @@
   .steps li { padding: 3px 0; }
 
   .wf-nav-hint { font-size: 10px; color: #999; margin-bottom: 8px; font-style: italic; }
+  .wf-nav-kit-link { display: block; text-align: center; margin-bottom: 8px; padding: 6px 8px; border: 1px solid #999; border-radius: 4px; background: #ddd; color: #333; font-size: 11px; font-weight: bold; text-decoration: none; }
+  .wf-nav-kit-link:hover { background: #ccc; }
   .wf-nav .tree { margin-top: 2px; }
   .wf-nav details.role { margin-top: 10px; border-top: 1px solid #ddd; padding-top: 8px; }
   .wf-nav details.role:first-of-type { margin-top: 0; border-top: none; padding-top: 0; }
@@ -229,6 +231,7 @@
   <nav class="wf-nav" aria-label="Карта вайрфреймів: роль → екран → стан">
     <div class="wf-nav-title">Куток · вайрфрейми</div>
     <div class="wf-nav-hint">Клікни на розділ або екран, щоб згорнути/розгорнути</div>
+    <a class="wf-nav-kit-link" href="kit.html">Кіт компонентів →</a>
     <div class="wf-nav-tools">
       <input type="text" class="wf-nav-filter" placeholder="Фільтр за назвою…" oninput="wfNavFilter(this.value)">
       <div class="wf-nav-toggle-all">
