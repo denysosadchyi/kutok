@@ -111,6 +111,12 @@
   padding: 20px 18px 12px;
   display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
 }
+/* Знак бренду — квадрат-«зразок» зі загнутим кутом (дослівно «куток» + дог-ір
+   каталожної сторінки). Пласкі два тони, без градієнта й тіні: олива = лице
+   картки, paper-2 = зворотний бік паперу, що показався в згині. */
+.brand-mark { width: 15px; height: 15px; flex-shrink: 0; display: block; }
+.head-brand-row { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; }
+.head-brand-row .head-brand { margin-bottom: 0; }
 .head-brand {
   font-size: var(--fs-caption); font-weight: var(--w-bold);
   text-transform: uppercase; letter-spacing: .14em; color: var(--ink-muted);
@@ -135,7 +141,7 @@
    структура зі сірих вайрфреймів (backlink + screen-title), вигляд із мови */
 .app-head--back { align-items: center; gap: 10px; padding: 16px 18px 12px; }
 .head-back {
-  display: inline-flex; align-items: center; gap: 4px;
+  display: inline-flex; align-items: center; gap: 4px; margin-bottom: 10px;
   font-size: var(--fs-secondary); font-weight: var(--w-semi); color: var(--ink-muted);
 }
 .head-back:hover { color: var(--ink); }
