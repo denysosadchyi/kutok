@@ -7,46 +7,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../ui/kit.css">
 <style>
-  /* ===== Мова «Каталог 73» — north-star: шведський друкований модерн-каталог 1970-х
-     (IKEA / FÄRGKARTA för inredning). Екран зібрано З НУЛЯ під борд: видавничий тип-хедер,
-     стрічка каталог-карток (фото зі скругленням → бейдж «перевірено» знизу-справа →
-     назва+ціна у рядок → локація з піном → деталь), суцільний оливковий навбар.
-     Full-palette / функціональні ролі: папір+чорнило + олива(бренд) / кобальт(дія) / помаранч(сигнал).
-     Навігатор вайрфреймів зліва (.wf-nav) — нейтральний інструмент, теми не має. ===== */
-  :root {
-    --paper: #F5EEDF;          /* теплий кремовий папір каталогу — канвас (освітлений) */
-    --paper-2: #FDF9F0;        /* що «виступає»: картки, поля, бейдж */
-    /* Зерно паперу: SVG feTurbulence, чорнильний шум ~4% поверх канвасу */
-    --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.35' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='0.13'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    /* Світле зерно для темних поверхонь (оливкове меню) */
-    --grain-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.35' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='0' intercept='1'/%3E%3CfeFuncG type='linear' slope='0' intercept='1'/%3E%3CfeFuncB type='linear' slope='0' intercept='1'/%3E%3CfeFuncA type='linear' slope='0.10'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    --ink: #1B1712;            /* чорнило — тепле майже-чорне */
-    --ink-muted: #6F6553;      /* другорядний текст */
-    --olive: #6E7B2E;          /* ОЛИВА — бренд: вордмарк, навбар */
-    --on-olive: #F3EED9;       /* кремові іконки/лейбли на оливі */
-    --cobalt: #1E59A3;         /* КОБАЛЬТ — дія: ціна, CTA, актив, фокус */
-    --on-cobalt: #F6F1E4;      /* текст на кобальті */
-    --orange: #DC5A2A;         /* ПОМАРАНЧ — сигнальні лічильники */
-    --line: #E4D8BF;           /* розділювачі, рамки на папері */
-    --fs-caption: 0.6875rem;   /* 11px */
-    --fs-secondary: 0.8125rem; /* 13px */
-    --fs-body: 1rem;           /* 16px */
-  }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: sans-serif;
-    background: #e9e9e9;
-    color: #333;
-    line-height: 1.4;
-  }
+  body { font-family: sans-serif; background: #e9e9e9; color: #333; line-height: 1.4; }
 
-  /* ── Каркас вайрфрейму: дерево-навігація зліва + сцена з макетом ── */
   .wf-shell { display: flex; align-items: flex-start; min-height: 100vh; }
   .wf-stage { flex: 1 1 auto; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; padding: 28px 0; background: #e9e9e9; }
 
-  /* ── Дерево сторінок (сіре, без кольору). Однакове на кожній сторінці вайрфрейму. ── */
-  /* ── Бокова панель-навігатор: «покажчик каталогу» у мові Каталог 73 (темна chrome) ── */
   .wf-nav {
     position: sticky; top: 0; align-self: flex-start;
     flex: 0 0 258px; width: 258px; height: 100vh; overflow-y: auto;
@@ -87,306 +55,9 @@
   .job-tag { font-size: 9px; font-weight: 600; color: #B3A992; border: 1px solid #3A342B; background: #191510; padding: 1px 5px; border-radius: 5px; text-decoration: none; flex-shrink: 0; margin-left: auto; }
   .job-tag:hover { color: #F3EED9; border-color: #6E7B2E; }
 
-  /* ════════════ Застосунок «Куток» — мова «Каталог 73» ════════════ */
-  .device {
-    anchor-name: --device;
-    width: 100%;
-    max-width: 400px;
-    min-height: 844px;        /* висота як у мобілки (мінімум); довший контент подовжує сторінку, скрол — справа вікна */
-    background: var(--paper);
-    background-image: var(--grain);
-    color: var(--ink);
-    font-family: Inter, system-ui, sans-serif;
-    line-height: 1.5;
-    border-left: 1px solid #ccc;
-    border-right: 1px solid #ccc;
-    display: flex;
-    flex-direction: column;
-  }
-  .device a { color: inherit; text-decoration: none; }
-  .sr-only {
-    position: absolute; width: 1px; height: 1px; overflow: hidden;
-    clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
-  }
-
-  main { flex: 1 1 auto; } /* заповнює вільну висоту: навбар і FAB завжди внизу */
-
-  /* ── Видавничий хедер: тільки тип, без лого-мітки (як на north-star) ── */
-  .app-head {
-    position: sticky;
-    top: 0;
-    z-index: 5;
-    background: var(--paper);
-    background-image: var(--grain);
-    padding: 20px 18px 12px;
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 12px;
-  }
-  .head-brand {
-    font-size: var(--fs-caption);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: .14em;
-    color: var(--ink-muted);
-    margin-bottom: 5px;
-  }
-  .head-word {
-    font-family: "Unbounded", Inter, system-ui, sans-serif;
-    font-weight: 700;
-    font-size: 2.5rem;
-    line-height: .95;
-    letter-spacing: -.03em;
-    color: var(--olive);
-  }
-  .head-sub {
-    margin-top: 8px;
-    font-size: var(--fs-secondary);
-    color: var(--ink-muted);
-  }
-  .head-btn {
-    flex-shrink: 0;
-    width: 40px;
-    height: 40px;
-    margin-top: 2px;
-    anchor-name: --search-anchor;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border: 1.5px solid var(--olive);
-    border-radius: 999px;
-    background: transparent;
-    color: var(--olive);
-    cursor: pointer;
-  }
-  .head-btn svg { width: 18px; height: 18px; }
-  .head-btn:hover { background: var(--olive); color: var(--on-olive); }
-  .head-btn:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
-
-  /* Пошук — нативний popover, прив'язаний до кнопки (anchor positioning) */
-  #search-popover {
-    position: fixed;
-    position-anchor: --search-anchor;
-    position-area: bottom span-left;
-    margin: 8px 0 0;
-    width: min(320px, calc(100vw - 32px));
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    background: var(--paper-2);
-    padding: 10px;
-  }
-  .search-form {
-    display: flex; align-items: center; gap: 8px;
-    border: 1.5px solid var(--line); background: var(--paper);
-    border-radius: 10px; padding: 9px 12px;
-  }
-  .search-form svg { width: 16px; height: 16px; color: var(--ink-muted); flex-shrink: 0; }
-  .search-form input {
-    flex: 1; min-width: 0; border: none; background: transparent; outline: none;
-    font: inherit; font-size: var(--fs-body); color: var(--ink);
-  }
-  .search-form input::placeholder { color: var(--ink-muted); }
-
-  /* ── Фільтр: сегмент типу + компактні теги-чипи (не важка картка-форма) ── */
-  .filterbar {
-    padding: 14px 16px 8px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  .seg {
-    display: flex; gap: 3px; padding: 4px;
-    background: rgba(27, 23, 18, .04); border: none; border-radius: 999px;
-  }
-  .seg label {
-    flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px;
-    padding: 9px 8px; border-radius: 999px;
-    font-size: var(--fs-secondary); color: var(--ink-muted); cursor: pointer;
-    transition: background .15s ease, color .15s ease;
-  }
-  .seg input { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); }
-  .seg label:has(input:checked) {
-    background: var(--paper-2); color: var(--cobalt); font-weight: 700;
-  }
-  .seg label:has(input:focus-visible) { outline: 2px solid var(--cobalt); outline-offset: 2px; }
-  .seg-count {
-    display: inline-flex; align-items: center; justify-content: center;
-    min-width: 17px; height: 17px; padding: 0 5px; border-radius: 999px;
-    background: rgba(255, 255, 255, .5); color: var(--ink-muted);
-    font-size: .625rem; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums;
-  }
-  .seg label:has(input:checked) .seg-count { background: var(--cobalt); color: var(--on-cobalt); }
-
-  /* Фільтри живуть у боттом-шиті (нативний popover); угорі — тільки сегмент типу.
-     Відкриває шит кобальтовий FAB над таб-баром. */
-  .fab {
-    position: sticky; bottom: 88px; z-index: 4;
-    align-self: flex-end;
-    margin: 0 14px 12px auto; /* притиснутий до низу над навбаром (main заповнює висоту) */
-    width: 54px; height: 54px; border-radius: 999px; border: none;
-    background: var(--cobalt); color: var(--on-cobalt); cursor: pointer;
-    display: inline-flex; align-items: center; justify-content: center;
-  }
-  .fab svg { width: 24px; height: 24px; }
-  .fab:hover { filter: brightness(1.08); }
-  .fab:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
-
-  #filter-sheet {
-    position: fixed;
-    inset: auto;
-    bottom: 0;
-    /* Fallback (усі рушії): центрувати в в'юпорті. На реальному мобільному центр = центр екрана. */
-    left: 50%;
-    transform: translateX(-50%);
-    width: min(400px, 100vw);
-    margin: 0;
-    max-height: 82vh;
-    overflow-y: auto;
-    border: 1px solid var(--line); border-bottom: none;
-    border-radius: 22px 22px 0 0;
-    background: var(--paper-2);
-    background-image: var(--grain);
-    padding: 16px 18px calc(20px + env(safe-area-inset-bottom));
-  }
-  #filter-sheet::backdrop { background: rgba(27, 23, 18, .38); }
-  .sheet-grip { width: 40px; height: 4px; border-radius: 999px; background: var(--line); margin: 0 auto 14px; }
-  .sheet-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-  .sheet-title { font-weight: 800; font-size: 1.125rem; letter-spacing: -.01em; color: var(--ink); }
-  .sheet-close {
-    width: 34px; height: 34px; border-radius: 999px; border: 1.5px solid var(--line);
-    background: transparent; color: var(--ink-muted); cursor: pointer;
-    display: inline-flex; align-items: center; justify-content: center;
-  }
-  .sheet-close svg { width: 15px; height: 15px; }
-  .sheet-close:hover { color: var(--ink); border-color: var(--ink-muted); }
-  .sheet-close:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
-  .sheet-form { display: flex; flex-direction: column; gap: 13px; }
-  .sheet-field { display: flex; flex-direction: column; gap: 6px; }
-  .sheet-field .cap { font-size: var(--fs-caption); text-transform: uppercase; letter-spacing: .07em; color: var(--ink-muted); }
-  .fsel {
-    position: relative; display: flex; align-items: center; min-width: 0; width: 100%;
-    border: 1.5px solid var(--line); background: var(--paper);
-    border-radius: 12px; padding: 0 30px 0 13px; height: 46px;
-  }
-  .fsel select {
-    appearance: none; -webkit-appearance: none; -moz-appearance: none;
-    border: none; background: transparent; font: inherit;
-    font-size: var(--fs-body); font-weight: 600; color: var(--ink); cursor: pointer;
-    flex: 1; min-width: 0; padding: 0;
-    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-  }
-  .fsel::after {
-    content: ""; position: absolute; right: 14px; top: 50%; margin-top: -5px;
-    width: 8px; height: 8px; border-right: 1.5px solid var(--ink-muted); border-bottom: 1.5px solid var(--ink-muted);
-    transform: rotate(45deg); pointer-events: none;
-  }
-  .fsel:focus-within { outline: 2px solid var(--cobalt); outline-offset: 1px; }
-  .sheet-apply {
-    margin-top: 5px; border: none; background: var(--cobalt); color: var(--on-cobalt);
-    font: inherit; font-size: var(--fs-body); font-weight: 700;
-    padding: 13px; border-radius: 12px; cursor: pointer;
-  }
-  .sheet-apply:hover { filter: brightness(1.08); }
-  .sheet-apply:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
-
-  /* ── Стрічка каталог-карток ── */
-  .feed { list-style: none; padding: 12px 16px 22px; display: flex; flex-direction: column; gap: 24px; }
-  /* Картка = фото зі скругленням + текст під ним прямо на папері (без коробки-контейнера),
-     як на north-star: тільки назва + ціна + локація. Жодного оверлайну й рядка деталей. */
-  .card { display: block; }
-  .card:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 3px; border-radius: 20px; }
-  .card-photo { position: relative; width: 100%; aspect-ratio: 4 / 3; border-radius: 26px; overflow: hidden; background: var(--paper-2); }
-  .card-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .card:active .card-photo { filter: brightness(.97); }
-  /* Бейдж «перевірено» — як на референсі: кремова піґулка знизу-справа,
-     чорнильний кружечок з галочкою + текст. Текст показує ЩО саме перевірено
-     (телефон/фото) — принцип «нічого німого» з PRODUCT.md. */
-  .verified {
-    position: absolute; right: 12px; bottom: 12px;
-    display: inline-flex; align-items: center; gap: 6px;
-    background: var(--paper-2); border-radius: 999px;
-    padding: 4px 12px 4px 5px; font-size: var(--fs-caption); font-weight: 600; color: var(--ink);
-  }
-  .vcheck {
-    width: 19px; height: 19px; border-radius: 999px; flex-shrink: 0;
-    background: var(--olive); color: var(--paper-2);
-    display: inline-flex; align-items: center; justify-content: center;
-  }
-  .vcheck svg { width: 10px; height: 10px; }
-  /* Район — кремова піґулка з піном знизу-зліва на фото (дзеркало бейджа) */
-  .place {
-    position: absolute; left: 12px; bottom: 12px;
-    display: inline-flex; align-items: center; gap: 5px;
-    max-width: 55%;
-    background: var(--paper-2); border-radius: 999px;
-    padding: 5px 11px 5px 9px; font-size: var(--fs-caption); font-weight: 600; color: var(--ink);
-  }
-  .place svg { width: 13px; height: 13px; flex-shrink: 0; }
-  .place span.t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
-  /* Дві колонки, як на борді: зліва назва → одразу під нею локація; справа ціна → «/місяць» */
-  .card-body { padding: 13px 2px 0; display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
-  .card-main { min-width: 0; }
-  .card-title {
-    font-weight: 800; letter-spacing: -.02em;
-    font-size: 1.375rem; line-height: 1.12; color: var(--ink);
-    max-width: 12ch; /* назва ламається на два рядки, як на борді, а не тягнеться до ціни */
-  }
-  .card-price { text-align: right; flex-shrink: 0; }
-  .card-price .amount {
-    display: block; font-size: 1.3125rem; font-weight: 800; letter-spacing: -.02em;
-    color: var(--cobalt); font-variant-numeric: tabular-nums; white-space: nowrap;
-  }
-  .card-price .per { display: block; font-size: var(--fs-caption); color: var(--ink-muted); margin-top: 1px; }
-
-  /* ── Навбар: плаваюча оливкова піґулка (відступи 8px), активний пункт —
-     світла внутрішня піґулка з оливковим текстом ── */
-  .tabbar {
-    position: sticky; bottom: calc(8px + env(safe-area-inset-bottom)); margin: auto 8px calc(8px + env(safe-area-inset-bottom));
-    background: var(--olive); background-image: var(--grain-light); display: flex; gap: 2px;
-    border-radius: 999px; padding: 6px;
-  }
-  .tabbar a {
-    flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
-    padding: 8px 4px 7px; position: relative; color: rgba(243, 238, 217, .58);
-    border-radius: 999px;
-  }
-  .tabbar a.active { background: var(--on-olive); color: var(--olive); font-weight: 700; }
-  .tabbar a.active .tab-ico { color: var(--olive); }
-  .tabbar a:focus-visible { outline: 2px solid var(--on-olive); outline-offset: -3px; }
-  .tab-ico { position: relative; width: 22px; height: 22px; }
-  .tab-ico svg { width: 100%; height: 100%; display: block; }
-  .tab-txt { font-size: var(--fs-caption); }
-  .tab-dot {
-    position: absolute; top: -4px; right: -8px; min-width: 15px; height: 15px; padding: 0 4px;
-    background: var(--paper-2); color: var(--orange);
-    font-size: .625rem; font-weight: 700; line-height: 15px; text-align: center; border-radius: 999px;
-  }
-
-  /* ── Порожні / помилкові стани ── */
-  .state-main { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: center; }
-  .state-block { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 32px 28px; }
-  .state-icon { width: 88px; height: 88px; border-radius: 28px; background: rgba(27, 23, 18, .05); display: flex; align-items: center; justify-content: center; color: var(--olive); margin-bottom: 22px; }
-  .state-icon svg { width: 44px; height: 44px; }
-  .state-title { font-family: "Unbounded", Inter, system-ui, sans-serif; font-weight: 700; font-size: 1.375rem; letter-spacing: -.02em; line-height: 1.1; color: var(--ink); margin-bottom: 9px; }
-  .state-text { font-size: var(--fs-body); color: var(--ink-muted); max-width: 32ch; line-height: 1.5; margin-bottom: 24px; }
-  .state-actions { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 300px; }
-  .btn { display: inline-flex; align-items: center; justify-content: center; padding: 12px 18px; border-radius: 12px; border: 1.5px solid var(--line); background: transparent; color: var(--ink); font: inherit; font-size: var(--fs-body); font-weight: 600; cursor: pointer; text-decoration: none; }
-  .btn:hover { background: rgba(27, 23, 18, .04); }
-  .btn.primary { border: none; background: var(--cobalt); color: var(--on-cobalt); font-weight: 700; }
-  .btn.primary:hover { filter: brightness(1.08); }
-  .btn:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
-
-  /* ── Скелетони завантаження — форма каталог-картки, без фарб ── */
-  @keyframes sk-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .45; } }
-  .sk { background: rgba(27, 23, 18, .07); animation: sk-pulse 1.4s ease-in-out infinite; }
-  .sk-photo { width: 100%; aspect-ratio: 4 / 3; border-radius: 26px; }
-  .sk-body { padding: 13px 2px 0; display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
-  .sk-title { width: 62%; height: 26px; border-radius: 8px; }
-  .sk-price { width: 26%; height: 26px; border-radius: 8px; }
-  /* Chromium 125+: точна прив'язка шита до .device (не виходить за макет навіть у вайрфрейм-сцені).
-     Інші рушії лишаються на fallback-центруванні вище. */
+  .app { anchor-name: --device; }
+  .head-btn { anchor-name: --search-anchor; }
+  #search-popover { position: fixed; position-anchor: --search-anchor; position-area: bottom span-left; margin: 8px 0 0; }
   @supports (left: anchor(left)) {
     #filter-sheet { position-anchor: --device; left: anchor(left); width: anchor-size(width); transform: none; }
   }
@@ -699,7 +370,7 @@
   </nav>
 
   <div class="wf-stage">
-<div class="device">
+<div class="app">
 
   <header class="app-head">
     <div>
@@ -712,7 +383,7 @@
     </button>
   </header>
 
-  <div id="search-popover" popover>
+  <div id="search-popover" class="search-popover" popover>
     <form class="search-form" role="search" action="listings.html" method="get">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg>
       <input type="search" name="q" placeholder="Пошук за назвою, районом…" aria-label="Пошук оголошень">
@@ -730,7 +401,7 @@
     </form>
   </section>
 
-  <div id="filter-sheet" popover>
+  <div id="filter-sheet" class="sheet sheet--popover" popover>
     <div class="sheet-grip" aria-hidden="true"></div>
     <div class="sheet-head">
       <h2 class="sheet-title">Фільтр</h2>
@@ -739,7 +410,7 @@
       </button>
     </div>
     <form class="sheet-form" action="listings.html" method="get">
-      <div class="sheet-field">
+      <div class="field">
         <span class="cap">Район Києва</span>
         <label class="fsel">
           <select name="district" aria-label="Район Києва">
@@ -754,7 +425,7 @@
           </select>
         </label>
       </div>
-      <div class="sheet-field">
+      <div class="field">
         <span class="cap">Ціна, ₴/міс</span>
         <label class="fsel">
           <select name="price" aria-label="Ціна за місяць">
@@ -765,7 +436,7 @@
           </select>
         </label>
       </div>
-      <div class="sheet-field">
+      <div class="field">
         <span class="cap">Стать сусіда</span>
         <label class="fsel">
           <select name="gender" aria-label="Стать сусіда">
@@ -775,7 +446,7 @@
           </select>
         </label>
       </div>
-      <button type="submit" class="sheet-apply">Застосувати фільтр</button>
+      <button type="submit" class="btn btn--primary btn--block">Застосувати фільтр</button>
     </form>
   </div>
 
@@ -785,7 +456,7 @@
       <h2 class="state-title">Не вдалося завантажити</h2>
       <p class="state-text">Перевір зʼєднання і спробуй ще раз.</p>
       <div class="state-actions">
-        <a class="btn primary" href="listings.html">Спробувати ще</a>
+        <a class="btn btn--primary" href="listings.html">Спробувати ще</a>
       </div>
     </div>
   </main>
