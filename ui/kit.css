@@ -9,7 +9,7 @@
 
 :root {
   /* ── Колір (DESIGN.md) ── */
-  --paper: #F5EEDF;          /* канвас — теплий кремовий папір */
+  --paper: #F0E6D2;          /* канвас — теплий кремовий папір (2026-07-23: трохи затемнено проти #F5EEDF — з paper-2 було 1.1:1, не читалось як «виступ») */
   --paper-2: #FDF9F0;        /* що «виступає»: піґулки, поля, бейджі */
   --ink: #1B1712;            /* чорнило — основний текст */
   --ink-muted: #6F6553;      /* другорядний текст */
@@ -18,7 +18,7 @@
   --cobalt: #1E59A3;         /* дія */
   --on-cobalt: #F6F1E4;      /* на кобальті */
   --orange: #DC5A2A;         /* сигнал */
-  --line: #E4D8BF;           /* рамки полів, розділювачі */
+  --line: rgba(27, 23, 18, .16); /* рамки полів, розділювачі (було фіксований #E4D8BF — ink-тінт читається на обох поверхнях, paper і paper-2) */
 
   /* Тонування ink/on-olive (щоб не було сирих rgba у компонентах) */
   --ink-03: rgba(27, 23, 18, .03);   /* hover меню */
@@ -59,6 +59,9 @@
   --r-photo: 26px;    /* фото картки, скелетон */
   --r-block: 30px;    /* аватар, мʼякий квадрат іконки стану */
   --r-pill: 999px;    /* усе інтерактивне / піґулки */
+  --r-focus: 20px;    /* контур фокуса картки — навмисно менший за r-photo (26px), бо offset 3px компенсує різницю */
+  --r-chip: 7px;       /* чекбокс */
+  --r-skeleton: 8px;   /* прямокутні бари скелетону */
 
   /* ── Рамка, фокус, рух ── */
   --bd: 1.5px;               /* товщина рамки полів */
@@ -71,6 +74,7 @@
   --gutter: 16px;    /* горизонтальний край сторінки: .pad, .feed, .list */
   --section: 22px;   /* горизонтальний край секції: .section, .profile-hero, .menu-list */
   --feed-gap: 24px;  /* вертикальний зазор між картками стрічки */
+  --field-gap: 13px; /* зазор між полями форми, одне під одним */
 }
 
 /* Мінімальний ресет для елементів, які споживає кіт (не універсальний clobber) */
@@ -135,6 +139,7 @@
 }
 .head-btn svg { width: 18px; height: 18px; }
 .head-btn:hover { background: var(--olive); color: var(--on-olive); }
+.head-btn:active { filter: brightness(.92); }
 .head-btn:focus-visible { outline: var(--focus-w) solid var(--cobalt); outline-offset: 2px; }
 
 /* ── Хедер · варіант B: назад + заголовок (вторинні екрани) ──
@@ -159,7 +164,7 @@
 .search-form {
   display: flex; align-items: center; gap: 8px;
   border: var(--bd) solid var(--line); background: var(--paper);
-  border-radius: 10px; padding: 9px 12px;
+  border-radius: var(--r-field); padding: 9px 12px;
 }
 .search-form svg { width: 16px; height: 16px; color: var(--ink-muted); flex-shrink: 0; }
 .search-form input {
@@ -192,7 +197,7 @@
 }
 
 /* ── Список-меню налаштувань ── (my-profile-seeker 1:1) */
-.menu-list { padding: 6px 22px 26px; }
+.menu-list { padding: 6px var(--section) 26px; }
 .menu-row {
   display: flex; align-items: center; gap: 13px; padding: 15px 0;
   border-bottom: var(--hair) solid var(--line); color: var(--ink); text-decoration: none;
@@ -216,7 +221,7 @@
 
 /* ── Каталог-картка оголошення ── (listings 1:1) */
 .card { display: block; }
-.card:focus-visible { outline: var(--focus-w) solid var(--cobalt); outline-offset: 3px; border-radius: 20px; }
+.card:focus-visible { outline: var(--focus-w) solid var(--cobalt); outline-offset: 3px; border-radius: var(--r-focus); }
 .card-photo {
   position: relative; width: 100%; aspect-ratio: 4 / 3;
   border-radius: var(--r-photo); overflow: hidden; background: var(--paper-2);
@@ -276,15 +281,19 @@
 .ph {
   display: flex; align-items: center; justify-content: center;
   color: var(--ink-muted); font-size: var(--fs-caption); background: var(--paper-2);
+  outline: var(--hair) solid var(--ink-08); outline-offset: -1px; /* межа для плейсхолдера — не border (щоб не зʼїдало розмір), не shadow */
 }
 
 /* ── Статус-піґулка ── (заявки/оголошення: «очікує», «відхилено», «активне»…) */
 .status-pill {
-  display: inline-flex; align-items: center; flex-shrink: 0;
+  display: inline-flex; align-items: center; gap: 4px; flex-shrink: 0;
   padding: 3px 10px; border-radius: var(--r-pill);
   background: var(--ink-04); color: var(--ink-muted);
   font-size: var(--fs-caption); font-weight: var(--w-semi); white-space: nowrap;
 }
+.status-pill svg { width: 10px; height: 10px; }
+.status-pill--success { color: var(--cobalt); font-weight: var(--w-bold); } /* кобальт = дія/результат, той самий голос що ціна й CTA */
+.status-pill--rejected { color: var(--ink-muted); text-decoration: line-through; text-decoration-color: var(--line); text-decoration-thickness: 1.5px; }
 
 /* ── Список рядків (обгортка; на відміну від .feed — без зазору, роздільники несуть самі .row) ── */
 .list { list-style: none; padding: 0 var(--gutter); }
@@ -295,6 +304,9 @@
   border-bottom: var(--hair) solid var(--line); color: var(--ink); text-decoration: none;
 }
 .row:last-child { border-bottom: none; }
+.row:hover { background: var(--ink-03); }
+.row:focus-visible { outline: var(--focus-w) solid var(--cobalt); outline-offset: -2px; }
+.row--muted .row-title, .row--muted .row-meta { color: var(--ink-muted); } /* стан «завершено/неактивне» — семантика, не сирий opacity */
 .row-body { flex: 1; min-width: 0; display: block; }
 .row-title { display: block; font-size: var(--fs-body); font-weight: var(--w-bold); color: var(--ink); }
 .row-meta { display: block; font-size: var(--fs-secondary); color: var(--ink-muted); margin-top: 2px; }
@@ -307,6 +319,7 @@
   font-size: .625rem; font-weight: var(--w-bold); line-height: 18px; text-align: center;
 }
 .row-actions { display: flex; gap: 8px; margin-top: 10px; }
+.row-body .badge { margin-top: 6px; }
 
 /* ── Рядок людини (співрозмовник / господар) ── host-row/chat-peer */
 .person-row { display: flex; align-items: center; gap: 10px; }
@@ -380,9 +393,11 @@
   cursor: pointer; text-decoration: none;
 }
 .btn:hover { background: var(--ink-04); }
+.btn:active { background: var(--ink-07); }
 .btn:focus-visible { outline: var(--focus-w) solid var(--cobalt); outline-offset: 2px; }
 .btn--primary { border: none; background: var(--cobalt); color: var(--on-cobalt); font-weight: var(--w-bold); }
 .btn--primary:hover { background: var(--cobalt); filter: brightness(1.08); }
+.btn--primary:active { filter: brightness(.92); }
 .btn--primary:focus-visible { outline-color: var(--ink); }
 .btn--ghost { border: var(--bd) solid var(--line); background: transparent; color: var(--ink); }
 .btn--sm { padding: 8px 14px; font-size: var(--fs-secondary); }
@@ -392,6 +407,7 @@
 
 /* ── Поле форми ── input / textarea / select (структура сірих форм, вигляд із мови) */
 .field { display: flex; flex-direction: column; gap: 6px; }
+.field + .field { margin-top: var(--field-gap); }
 .field > label, .field .cap {
   font-size: var(--fs-caption); text-transform: uppercase; letter-spacing: .07em; color: var(--ink-muted);
 }
@@ -430,7 +446,7 @@
 .chk-line input { position: absolute; opacity: 0; width: 1px; height: 1px; }
 .chk-box {
   flex-shrink: 0; width: 22px; height: 22px; margin-top: 1px;
-  border: var(--bd) solid var(--line); border-radius: 7px; background: var(--paper);
+  border: var(--bd) solid var(--line); border-radius: var(--r-chip); background: var(--paper);
   display: inline-flex; align-items: center; justify-content: center; color: transparent;
 }
 .chk-box svg { width: 13px; height: 13px; }
@@ -494,6 +510,7 @@
 }
 .fab svg { width: 24px; height: 24px; }
 .fab:hover { filter: brightness(1.08); }
+.fab:active { filter: brightness(.9); }
 .fab:focus-visible { outline: var(--focus-w) solid var(--ink); outline-offset: 2px; }
 
 /* ── Боттом-шит фільтра ── (listings 1:1, як статичний блок) */
@@ -520,6 +537,7 @@
 }
 .sheet-close svg { width: 15px; height: 15px; }
 .sheet-close:hover { color: var(--ink); border-color: var(--ink-muted); }
+.sheet-close:active { background: var(--ink-04); }
 .sheet-form { display: flex; flex-direction: column; gap: 13px; }
 
 /* ══════════════════════════════════════════════════════════════════════════
@@ -530,7 +548,7 @@
 .state-main { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: center; } /* вертикальне центрування .state-block у main */
 .state-block { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 32px 28px; }
 .state-icon {
-  width: 88px; height: 88px; border-radius: 28px; background: var(--ink-05);
+  width: 88px; height: 88px; border-radius: var(--r-block); background: var(--ink-05);
   display: flex; align-items: center; justify-content: center; color: var(--olive); margin-bottom: 22px;
 }
 .state-icon svg { width: 44px; height: 44px; }
@@ -556,8 +574,8 @@
 .sk { background: var(--ink-07); animation: sk-pulse 1.4s ease-in-out infinite; }
 .sk-photo { width: 100%; aspect-ratio: 4 / 3; border-radius: var(--r-photo); }
 .sk-body { padding: 13px 2px 0; display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
-.sk-title { width: 62%; height: 26px; border-radius: 8px; }
-.sk-price { width: 26%; height: 26px; border-radius: 8px; }
+.sk-title { width: 62%; height: 26px; border-radius: var(--r-skeleton); }
+.sk-price { width: 26%; height: 26px; border-radius: var(--r-skeleton); }
 .sk-line { display: block; height: 12px; border-radius: 6px; margin: 6px 0; } /* рядок тексту, що вантажиться; ширина — inline per-instance */
 
 /* ── Пояснювальний текст ── */
@@ -587,3 +605,4 @@
 }
 .composer .send svg { width: 20px; height: 20px; }
 .composer .send:hover { filter: brightness(1.08); }
+.composer .send:active { filter: brightness(.9); }
