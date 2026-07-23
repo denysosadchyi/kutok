@@ -77,7 +77,7 @@
 .app {
   width: 100%;
   max-width: 400px;
-  min-height: 100vh;
+  min-height: 844px; /* висота як у мобілки (мінімум), НЕ 100vh — інакше макет розтягується під висоту вікна браузера */
   margin: 0 auto;
   background: var(--paper);
   background-image: var(--grain);
