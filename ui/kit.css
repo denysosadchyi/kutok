@@ -200,6 +200,9 @@
    КАРТКИ Й СПИСКИ
    ══════════════════════════════════════════════════════════════════════════ */
 
+/* ── Стрічка (список карток/рядків, вертикальний) ── */
+.feed { list-style: none; padding: 12px var(--gutter) 22px; display: flex; flex-direction: column; gap: var(--feed-gap); }
+
 /* ── Каталог-картка оголошення ── (listings 1:1) */
 .card { display: block; }
 .card:focus-visible { outline: var(--focus-w) solid var(--cobalt); outline-offset: 3px; border-radius: 20px; }
@@ -247,6 +250,7 @@
 .badge-check svg { width: 10px; height: 10px; }
 
 /* ── Аватар / фото-плейсхолдер ── */
+.avatar-link { display: block; } /* лінк-обгортка аватара → фото-в'юер */
 .avatar {
   width: 106px; height: 106px; border-radius: var(--r-block);
   object-fit: cover; display: block; background: var(--paper-2);
@@ -262,6 +266,17 @@
   display: flex; align-items: center; justify-content: center;
   color: var(--ink-muted); font-size: var(--fs-caption); background: var(--paper-2);
 }
+
+/* ── Статус-піґулка ── (заявки/оголошення: «очікує», «відхилено», «активне»…) */
+.status-pill {
+  display: inline-flex; align-items: center; flex-shrink: 0;
+  padding: 3px 10px; border-radius: var(--r-pill);
+  background: var(--ink-04); color: var(--ink-muted);
+  font-size: var(--fs-caption); font-weight: var(--w-semi); white-space: nowrap;
+}
+
+/* ── Список рядків (обгортка; на відміну від .feed — без зазору, роздільники несуть самі .row) ── */
+.list { list-style: none; padding: 0 var(--gutter); }
 
 /* ── Рядок списку (медіа-рядок) ── структура з dialogs/candidates, вигляд із мови */
 .row {
@@ -316,10 +331,30 @@
 
 /* ── Оверлайн секції ── */
 .overline {
+  display: block; margin-bottom: 12px;
   font-size: var(--fs-caption); text-transform: uppercase; letter-spacing: .08em;
   color: var(--ink-muted); font-weight: var(--w-bold);
 }
 .muted-note { font-size: var(--fs-body); color: var(--ink-muted); line-height: 1.5; }
+
+/* ── Загальні обгортки контенту ── */
+.pad { padding: 14px var(--gutter); }
+.section { padding: 20px var(--section); border-bottom: var(--hair) solid var(--line); }
+.section:last-child { border-bottom: none; }
+
+/* ── Профіль-герой (аватар + ім'я + біо + бейдж + edit-link + метр, центровано) ── */
+.profile-hero {
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  padding: 6px var(--section) 24px; border-bottom: var(--hair) solid var(--line);
+}
+.profile-name {
+  font-family: var(--font-display); font-weight: var(--w-bold);
+  font-size: var(--fs-name); letter-spacing: -.03em; color: var(--ink); margin-top: 14px;
+}
+.profile-bio { font-size: var(--fs-body); color: var(--ink-muted); line-height: 1.5; max-width: 32ch; margin-top: 8px; }
+.profile-hero .badge { margin-top: 15px; }
+.profile-hero .btn { margin-top: 12px; }
+.profile-hero .meter-block { margin-top: 22px; }
 
 /* ══════════════════════════════════════════════════════════════════════════
    ФОРМИ
@@ -341,6 +376,7 @@
 .btn--ghost { border: var(--bd) solid var(--line); background: transparent; color: var(--ink); }
 .btn--sm { padding: 8px 14px; font-size: var(--fs-secondary); }
 .btn--block { width: 100%; }
+.btn--pill { border-radius: var(--r-pill); }
 .btn[disabled], .btn[aria-disabled="true"] { opacity: .55; cursor: default; pointer-events: none; }
 
 /* ── Поле форми ── input / textarea / select (структура сірих форм, вигляд із мови) */
@@ -403,8 +439,10 @@
 .radio-option input:checked + .radio-dot::after { background: var(--cobalt); }
 .radio-option input:focus-visible + .radio-dot { outline: var(--focus-w) solid var(--cobalt); outline-offset: 2px; }
 
-/* ── Ряд завантаження фото ── структура з room-create/profile-create, вигляд із мови */
-.photo-row { display: flex; flex-wrap: wrap; gap: 10px; }
+/* ── Ряд завантаження фото ── структура з room-create/profile-create, вигляд із мови.
+   Дві форми того самого компонента: сітка порожніх слотів (room, кілька фото) АБО
+   один avatar-прев'ю + ghost-кнопка дії (профіль, одне фото) — обидві всередині .photo-row. */
+.photo-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
 .photo-slot {
   width: 84px; height: 84px; border-radius: var(--r-block);
   border: var(--bd) solid var(--line); background: var(--paper-2);
@@ -413,6 +451,9 @@
 }
 .photo-slot svg { width: 26px; height: 26px; }
 .photo-slot img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ── Панель фільтра над стрічкою (сегмент живе тут) ── (listings 1:1) */
+.filterbar { padding: 14px 16px 8px; display: flex; flex-direction: column; gap: 10px; }
 
 /* ── Сегмент типу ── (listings 1:1) */
 .seg { display: flex; gap: 3px; padding: 4px; background: var(--ink-04); border: none; border-radius: var(--r-pill); }
@@ -435,6 +476,7 @@
 
 /* ── FAB фільтра ── (listings 1:1) */
 .fab {
+  position: sticky; bottom: 88px; z-index: 4; align-self: flex-end; margin: 0 14px 12px auto;
   width: 54px; height: 54px; border-radius: var(--r-pill); border: none;
   background: var(--cobalt); color: var(--on-cobalt); cursor: pointer;
   display: inline-flex; align-items: center; justify-content: center;
@@ -450,6 +492,13 @@
   background: var(--paper-2); background-image: var(--grain);
   padding: 16px 18px calc(20px + env(safe-area-inset-bottom));
 }
+/* Фіксація до низу в'юпорта (нативний popover) — та сама щоразу, коли шит використовується.
+   Прив'язку до конкретного anchor-name сторінка задає сама (унікальний ідентифікатор). */
+.sheet--popover {
+  position: fixed; inset: auto; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: min(400px, 100vw); margin: 0; max-height: 82vh; overflow-y: auto;
+}
+.sheet--popover::backdrop { background: var(--scrim); }
 .sheet-grip { width: 40px; height: 4px; border-radius: var(--r-pill); background: var(--line); margin: 0 auto 14px; }
 .sheet-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
 .sheet-title { font-weight: var(--w-black); font-size: var(--fs-sheet); letter-spacing: -.01em; color: var(--ink); }
@@ -467,6 +516,7 @@
    ══════════════════════════════════════════════════════════════════════════ */
 
 /* ── Порожній стан ── (стани listings 1:1) */
+.state-main { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: center; } /* вертикальне центрування .state-block у main */
 .state-block { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 32px 28px; }
 .state-icon {
   width: 88px; height: 88px; border-radius: 28px; background: var(--ink-05);
@@ -497,6 +547,7 @@
 .sk-body { padding: 13px 2px 0; display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
 .sk-title { width: 62%; height: 26px; border-radius: 8px; }
 .sk-price { width: 26%; height: 26px; border-radius: 8px; }
+.sk-line { display: block; height: 12px; border-radius: 6px; margin: 6px 0; } /* рядок тексту, що вантажиться; ширина — inline per-instance */
 
 /* ── Пояснювальний текст ── */
 .hint { font-size: var(--fs-secondary); color: var(--ink-muted); line-height: 1.45; }
