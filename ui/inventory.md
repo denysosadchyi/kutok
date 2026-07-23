@@ -50,9 +50,10 @@
 |---|---|---|---|
 | **Кнопка дії (первинна)** | Майже всі екрани з дією (~55): `room`, `candidates`, `chat` (Надіслати), `consent`, `login*`, `report*`, `room-create*`, `profile-create-*`, `verify*`, `listings-empty`/`-error`, `my-listings*`, `*-edit`, `recovery`, `role-select` | Звичайна / `sm` | Ні |
 | **Вторинна кнопка (ghost)** | `room`, `room-create`, `profile` (+`-empty`/`-error`), `profile-create-*`, `chat`, `verify-code` («ще раз»), `verify`, `account`, `photo-viewer`, `report-sent`, `login-error`, `my-profile-*-edit` | `ghost` / `sm ghost` | Ні |
+| **Стек кнопок** (`btn-stack`) | `login-error`, `verify-code*`, `verify-error`, `room` (+`-error`), `profile` (+`-empty`/`-error`), `report-sent` | Вертикальний стек 2 повноширинних кнопок (primary+ghost) поза `.state-block`; той самий ритм 10px, що й `.state-actions`, без центрування/max-width | Ні |
 | **Поле форми** (input / textarea / select + `label`) | `login*`, `verify-phone*`, `verify-code*`, `room-create*`, `report*`, `support*`, `profile-create-*`, `*-edit`, `listings-desktop`; випадні списки — фільтр `listings*` (`fsel`) | Порожнє / заповнене / поряд банер помилки; select із кастомною стрілкою | Ні |
 | **Чекбокс** (`chk` / `chk-line`) | `consent`, `room-create*`, `profile-create-seeker*`, `verify`, `my-profile-seeker-edit` | Увімкнений / вимкнений | Ні |
-| **Радіо-список** (`radio-option`) | `report*`, `privacy-settings` | Один вибраний з переліку | Ні |
+| **Радіо-список** (`radio-option`) | `report*`, `privacy-settings` | Один вибраний з переліку; `privacy-settings` — варіант із двома рядками (`opt-text` > `opt-title` + `opt-hint`) для заголовка опції й пояснення | Ні |
 | **Ряд завантаження фото** (`photo-row`) | `room-create*`, `profile-create-seeker*`, `profile-create-host*`, `my-profile-*-edit` | Порожній слот / з прев'ю завантаженого | **Так** (прев'ю фото) |
 
 ---
@@ -72,7 +73,7 @@
 
 | Компонент | Екрани | Стани | Фото? |
 |---|---|---|---|
-| **Бульбашка чату** (`msg`) | `chat` (+ `-loading`) | Вхідне (`in`) / вихідне (`out`); скелетон-бульбашки у `-loading` | Ні |
+| **Бульбашка чату** (`msg`) | `chat` (+ `-loading`) | Вхідне (`in`) / вихідне (`out`); скелетон-бульбашки у `-loading` — той самий обрис/вирівнювання без кольору (`sk-msg`) | Ні |
 | **Поле вводу повідомлення** (`composer`) | `chat`, `chat-empty`, `chat-loading` | Активне; присутнє навіть у порожньому чаті | Ні |
 
 *(Шапку співрозмовника винесено вище, у «Картки й списки» → «Рядок людини», бо той самий компонент стоїть і в `room`.)*

@@ -405,6 +405,11 @@
 .btn--pill { border-radius: var(--r-pill); }
 .btn[disabled], .btn[aria-disabled="true"] { opacity: .55; cursor: default; pointer-events: none; }
 
+/* ── Стек кнопок ── кілька повноширинних дій одна під одною поза .state-block
+   (login/verify retry-пари, verify-error результат): вертикальний flex, той самий
+   ритм (10px), що й .state-actions, але без центрування й max-width. */
+.btn-stack { display: flex; flex-direction: column; gap: 10px; }
+
 /* ── Поле форми ── input / textarea / select (структура сірих форм, вигляд із мови) */
 .field { display: flex; flex-direction: column; gap: 6px; }
 .field + .field { margin-top: var(--field-gap); }
@@ -465,6 +470,10 @@
 .radio-option input:checked + .radio-dot { border-color: var(--cobalt); }
 .radio-option input:checked + .radio-dot::after { background: var(--cobalt); }
 .radio-option input:focus-visible + .radio-dot { outline: var(--focus-w) solid var(--cobalt); outline-offset: 2px; }
+/* Варіант із двох рядків (заголовок опції + пояснення) — privacy-settings */
+.radio-option .opt-text { display: flex; flex-direction: column; gap: 2px; }
+.radio-option .opt-title { color: var(--ink); font-weight: var(--w-semi); }
+.radio-option .opt-hint { font-size: var(--fs-caption); color: var(--ink-muted); line-height: 1.4; }
 
 /* ── Ряд завантаження фото ── структура з room-create/profile-create, вигляд із мови.
    Дві форми того самого компонента: сітка порожніх слотів (room, кілька фото) АБО
@@ -606,3 +615,7 @@
 .composer .send svg { width: 20px; height: 20px; }
 .composer .send:hover { filter: brightness(1.08); }
 .composer .send:active { filter: brightness(.9); }
+
+/* ── Скелетон-бульбашка (chat-loading) ── реальна форма/вирівнювання msg--in/msg--out,
+   нейтральний пульс замість кольору (та сама умова, що й .sk-line: ширина/висота — inline per-instance) */
+.sk-msg { align-self: flex-start; max-width: 78%; height: 38px; border-radius: var(--r-msg); }
