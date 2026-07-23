@@ -28,7 +28,7 @@
   --ink-08: rgba(27, 23, 18, .08);   /* трек метра */
   --scrim: rgba(27, 23, 18, .38);    /* бекдроп шита */
   --white-50: rgba(255, 255, 255, .5);      /* неактивний лічильник сегмента */
-  --tab-idle: rgba(243, 238, 217, .58);     /* неактивний таб */
+  --tab-idle: var(--on-olive);              /* неактивний таб */
 
   /* Зерно паперу (feTurbulence) — 13% на світлому, 10% на темному */
   --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.35' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='0.13'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -96,7 +96,7 @@
   display: flex;
   flex-direction: column;
 }
-.app a:not(.btn) { color: inherit; text-decoration: none; }
+.app a:not(:where(.btn)) { color: inherit; text-decoration: none; }
 .app main { flex: 1 1 auto; }  /* навбар і FAB завжди внизу */
 
 .sr-only {
