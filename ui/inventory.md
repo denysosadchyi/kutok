@@ -32,6 +32,7 @@
 | **Метр повноти профілю** | `my-profile-seeker`, `my-profile-host` (+ `-loading`) | Відсоток заповнення; скелетон у `-loading` | Ні |
 | **Лічильник результатів** (`counter`) | `candidates`, `listings-desktop`, `my-profile-host`, `photo-viewer` (+ у станах завантаження `dialogs-loading`, `my-listings-loading`) | «N кандидатів» / «i з N фото» | Ні |
 | **Статус-піґулка** (`status`) | `applications`, `my-listings` | «очікує» / «відхилено» / «→ перенесено в чат» (applications); «Активне» / «Зайнято» (my-listings) | Ні |
+| **Відгук** (`review`) | `profile` (+ `-error`, скелетон у `-loading`) | Автор + дата (`review-meta`) над текстом відгуку (`review-text`); розділювач зверху, крім першого | Ні |
 
 > **Доповнення кіту при перенесенні ролі «Шукач» на `ui/kit.css`** (бракували компоненти → спершу сюди, потім у сірі екрани):
 > - `.status-pill` — статус-піґулка (рядок вище).

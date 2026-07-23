@@ -326,6 +326,12 @@
 .person-name { display: block; font-size: var(--fs-body); font-weight: var(--w-semi); color: var(--ink); }
 .person-sub { display: block; font-size: var(--fs-secondary); color: var(--ink-muted); margin-top: 2px; }
 
+/* ── Відгук (карточка відгуку в профілі) ── структура з profile.html, вигляд із мови */
+.review { padding: 12px 0; border-top: var(--hair) solid var(--line); }
+.review:first-child { border-top: none; }
+.review-meta { font-size: var(--fs-caption); color: var(--ink-muted); margin-bottom: 4px; }
+.review-text { font-size: var(--fs-body); color: var(--ink); line-height: 1.5; }
+
 /* ── Факти / чипи ── */
 .chips { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
 .chips li {
