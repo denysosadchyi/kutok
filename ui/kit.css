@@ -143,10 +143,13 @@
 .head-btn:focus-visible { outline: var(--focus-w) solid var(--cobalt); outline-offset: 2px; }
 
 /* ── Хедер · варіант B: назад + заголовок (вторинні екрани) ──
-   структура зі сірих вайрфреймів (backlink + screen-title), вигляд із мови */
-.app-head--back { align-items: center; gap: 10px; padding: 16px 18px 12px; }
+   структура зі сірих вайрфреймів (backlink + screen-title), вигляд із мови.
+   Колонкою, не рядком: назад-лінк і заголовок — кожен на всю ширину і в
+   один рядок, інакше при вузькому екрані вони тиснуть одне на одного і
+   переносяться нерівно (рядковий флекс ламав вирівнювання на мобільній ширині). */
+.app-head--back { flex-direction: column; align-items: flex-start; gap: 6px; padding: 16px 18px 12px; }
 .head-back {
-  display: inline-flex; align-items: center; gap: 4px; margin-bottom: 10px;
+  display: inline-flex; align-items: center; gap: 4px;
   font-size: var(--fs-secondary); font-weight: var(--w-semi); color: var(--ink-muted);
 }
 .head-back:hover { color: var(--ink); }
