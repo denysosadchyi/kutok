@@ -28,14 +28,68 @@
   .sh-onphoto img { width: 100%; height: 100%; object-fit: cover; display: block; }
   /* хедери/таб-бар у вітрині показуємо статично (без sticky), щоб не липли */
   .sh-item .app-head, .sh-item .tabbar, .sh-item .composer { position: static; margin-left: 0; margin-right: 0; }
+
+  /* ===== Навігатор вайрфреймів (.wf-*) — той самий, що на всіх екранах ===== */
+  .wf-shell { display: flex; align-items: flex-start; min-height: 100vh; }
+  .wf-stage { flex: 1 1 auto; }
+
+  .wf-nav {
+    position: sticky; top: 0; align-self: flex-start;
+    flex: 0 0 258px; width: 258px; height: 100vh; overflow-y: auto;
+    background: #221E18; background-image: var(--grain-light);
+    border-right: 1px solid #14110C;
+    padding: 20px 15px 28px; color: #C7BCA6;
+    font-family: Inter, system-ui, sans-serif;
+  }
+  .wf-nav-title { font-family: "Unbounded", Inter, system-ui, sans-serif; font-weight: 700; font-size: 13px; letter-spacing: -.01em; color: #F3EED9; margin-bottom: 4px; }
+  .wf-nav-hint { font-size: 10.5px; line-height: 1.45; color: #8B816C; margin-bottom: 12px; }
+  .wf-nav-kit-link { display: block; text-align: center; margin-bottom: 12px; padding: 8px 10px; border-radius: 8px; background: #6E7B2E; color: #F3EED9; font-size: 11.5px; font-weight: 700; text-decoration: none; }
+  .wf-nav-kit-link:hover { filter: brightness(1.1); }
+  .wf-nav ul { list-style: none; margin: 0; padding: 0; }
+  .wf-nav .tree { margin-top: 4px; }
+  .wf-nav-tools { margin-bottom: 12px; }
+  .wf-nav-filter { width: 100%; box-sizing: border-box; font-size: 12px; padding: 8px 10px; border: 1px solid #3A342B; border-radius: 9px; margin-bottom: 6px; background: #191510; color: #E7DECB; font-family: inherit; }
+  .wf-nav-filter::placeholder { color: #7C7361; }
+  .wf-nav-filter:focus { outline: none; border-color: #6E7B2E; }
+  .wf-nav-toggle-all { display: flex; gap: 6px; }
+  .wf-nav-toggle-all button { flex: 1; font-size: 10.5px; padding: 6px 4px; border-radius: 8px; border: 1px solid #3A342B; background: #191510; color: #B3A992; cursor: pointer; font-family: inherit; }
+  .wf-nav-toggle-all button:hover { background: #2C271F; color: #E7DECB; }
+  .wf-nav details.role { margin-top: 6px; border-top: 1px solid #332E26; padding-top: 8px; }
+  .wf-nav details.role:first-of-type { margin-top: 0; border-top: none; padding-top: 0; }
+  .wf-nav details.role > summary { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; color: #9A9078; font-weight: 700; cursor: pointer; padding: 5px 5px; list-style: none; border-radius: 7px; }
+  .wf-nav details.role > summary:hover { color: #F3EED9; background: rgba(255, 255, 255, .05); }
+  .wf-nav summary { list-style: none; cursor: pointer; }
+  .wf-nav summary::-webkit-details-marker { display: none; }
+  .wf-nav summary::before { content: "\25B8"; display: inline-block; width: 10px; margin-right: 5px; font-size: 8px; color: #6E6555; transition: transform .15s ease; vertical-align: middle; }
+  .wf-nav details[open] > summary::before { transform: rotate(90deg); }
+  .wf-nav li.screen { margin-top: 2px; }
+  .wf-nav li.screen > details { padding-left: 6px; }
+  .wf-nav li.screen > details > summary { font-size: 12px; color: #E2D9C6; font-weight: 600; padding: 5px 6px; border-radius: 7px; display: flex; align-items: center; gap: 6px; }
+  .wf-nav li.screen > details > summary:hover { background: rgba(255, 255, 255, .05); }
+  .wf-nav li.screen > details > ul { list-style: none; margin: 2px 0 6px 6px; padding-left: 10px; border-left: 1px solid #332E26; }
+  .wf-nav li.screen > details > ul > li { padding-left: 6px; }
+  .wf-nav a, .wf-nav li.screen a { display: block; font-size: 11.5px; font-weight: 400; color: #A79C86; text-decoration: none; padding: 4px 8px; border-radius: 7px; }
+  .wf-nav a:hover, .wf-nav li.screen a:hover { background: rgba(255, 255, 255, .06); color: #F3EED9; }
+  .wf-nav a.active, .wf-nav li.screen a.active { background: #6E7B2E; color: #F3EED9; font-weight: 700; }
+  .wf-nav a.active::before { content: ""; }
+  .job-tag { font-size: 9px; font-weight: 600; color: #B3A992; border: 1px solid #3A342B; background: #191510; padding: 1px 5px; border-radius: 5px; text-decoration: none; flex-shrink: 0; margin-left: auto; }
+  .job-tag:hover { color: #F3EED9; border-color: #6E7B2E; }
 </style>
 </head>
 <body>
+<div class="wf-shell">
 
-<div class="sh-head">
-  <h1>Кіт компонентів — «Каталог 73»</h1>
-  <p>Витрина <code>ui/kit.css</code>. Кожен компонент — зі станами; тексти з <code>wireframes/microcopy.md</code>. Пофарбовані компоненти (картка, бейдж, сегмент, шит, таб-бар, метр, меню, стани) — 1:1 з еталонів <code>listings.html</code> / <code>my-profile-seeker.html</code>; сірі (рядок списку, банер, чекбокс, радіо, чат, поле, «назад»-хедер) — структура зі свого вайрфрейма, вигляд із мови. Каркас вайрфреймів (<code>.wf-*</code>, рамка <code>.device</code>) не тягнеться.</p>
-</div>
+  <nav class="wf-nav" aria-label="Карта вайрфреймів: роль → екран → стан">
+    <div class="wf-nav-title">Куток · вайрфрейми</div>
+    <div class="wf-nav-hint">Клікни на розділ або екран, щоб згорнути/розгорнути</div>
+    <div class="wf-nav-tools">
+      <input type="text" class="wf-nav-filter" placeholder="Фільтр за назвою…" oninput="wfNavFilter(this.value)">
+      <div class="wf-nav-toggle-all">
+        <button type="button" onclick="wfNavToggleAll(true)">Розгорнути все</button>
+        <button type="button" onclick="wfNavToggleAll(false)">Згорнути все</button>
+      </div>
+    </div>
+    <div class="tree">
 
 <div class="sh-col">
 <div class="app">
