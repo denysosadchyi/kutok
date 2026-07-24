@@ -67,14 +67,20 @@
   </div>
 
   <div class="sh-item">
-    <div class="sh-label">Шапка · шар 2 — назад + заголовок (вторинний екран)</div>
+    <div class="sh-label">Шапка · шар 2 — назад + заголовок (вторинний екран, зі змістом → з пошуком)</div>
     <header class="app-head app-head--back">
-    <div class="head-brand-row"><svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--olive)"/><path d="M18 3L21 3L21 6Z" fill="var(--paper-2)"/></svg><div class="head-brand">Куток</div></div>
-    <div class="head-back-row">
-      <a class="head-back" href="#" aria-label="До списку"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a>
-      <h1 class="head-title">Оголошення кімнати</h1>
-    </div>
-  </header>
+      <div class="head-back-wrap">
+        <div class="head-brand-row"><svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--olive)"/><path d="M18 3L21 3L21 6Z" fill="var(--paper-2)"/></svg><div class="head-brand">Куток</div></div>
+        <div class="head-back-row">
+          <a class="head-back" href="#" aria-label="До списку"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a>
+          <h1 class="head-title">Оголошення кімнати</h1>
+        </div>
+      </div>
+      <button type="button" class="head-btn" aria-label="Відкрити пошук">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg>
+      </button>
+    </header>
+    <p class="sh-note">Пошук доступний з усіх змістовних екранів (не лише первинних табів) — кнопка справа та сама, що й у варіанті А. Утилітарні екрани без пошуку (форми, підтримка, акаунт, юридичне) лишають шапку без кнопки — <code>ui/shell.html</code> «Оболонка Б» показує саме цей, простіший варіант.</p>
   </div>
 
   <div class="sh-item">
