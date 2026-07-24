@@ -144,18 +144,24 @@
 
 /* ── Хедер · варіант B: назад + заголовок (вторинні екрани) ──
    структура зі сірих вайрфреймів (backlink + screen-title), вигляд із мови.
-   Колонкою, не рядком: назад-лінк і заголовок — кожен на всю ширину і в
-   один рядок, інакше при вузькому екрані вони тиснуть одне на одного і
-   переносяться нерівно (рядковий флекс ламав вирівнювання на мобільній ширині). */
-.app-head--back { flex-direction: column; align-items: flex-start; gap: 6px; padding: 16px 18px 12px; }
+   Кнопка-іконка зліва (та сама мова, що й .head-btn пошуку), заголовок — в
+   один рядок поруч: текстовий backlink-лейбл раніше боровся за ширину з
+   заголовком і на мобільній ширині обидва переносились нерівно. */
+.app-head--back { align-items: center; gap: 12px; padding: 16px 18px 12px; }
 .head-back {
-  display: inline-flex; align-items: center; gap: 4px;
-  font-size: var(--fs-secondary); font-weight: var(--w-semi); color: var(--ink-muted);
+  flex-shrink: 0; width: 40px; height: 40px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: var(--bd) solid var(--olive); border-radius: var(--r-pill);
+  background: transparent; color: var(--olive);
 }
-.head-back:hover { color: var(--ink); }
+.head-back svg { width: 16px; height: 16px; }
+.head-back:hover { background: var(--olive); color: var(--on-olive); }
+.head-back:active { filter: brightness(.92); }
+.head-back:focus-visible { outline: var(--focus-w) solid var(--cobalt); outline-offset: 2px; }
 .head-title {
+  flex: 1 1 auto; min-width: 0;
   font-family: var(--font-display); font-weight: var(--w-bold);
-  font-size: var(--fs-heading); letter-spacing: -.02em; color: var(--ink);
+  font-size: var(--fs-heading); line-height: 1.15; letter-spacing: -.02em; color: var(--ink);
 }
 
 /* ── Поповер пошуку ── (listings 1:1) */
