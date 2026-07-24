@@ -1,0 +1,64 @@
+/* ── Хедер · варіант A: видавничий вордмарк (первинні таби) ── (listings 1:1) */
+.app-head {
+  position: sticky; top: 0; z-index: 5;
+  background: var(--bg-page); background-image: var(--grain-1);
+  padding: 20px 18px 12px;
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+}
+/* Знак бренду — квадрат-«зразок» зі загнутим кутом (дослівно «куток» + дог-ір
+   каталожної сторінки). Пласкі два тони, без градієнта й тіні: олива = лице
+   картки, --bg-surface = зворотний бік паперу, що показався в згині. */
+.brand-mark { width: 15px; height: 15px; flex-shrink: 0; display: block; }
+.head-brand-row { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; }
+.head-brand-row .head-brand { margin-bottom: 0; }
+.head-brand {
+  font-size: var(--font-size-11); font-weight: var(--font-weight-700);
+  text-transform: uppercase; letter-spacing: .14em; color: var(--text-muted);
+  margin-bottom: 5px;
+}
+.head-word {
+  font-family: var(--font-family-1); font-weight: var(--font-weight-700);
+  font-size: var(--font-size-40); line-height: .95; letter-spacing: -.03em; color: var(--color-brand);
+}
+.head-sub { margin-top: 8px; font-size: var(--font-size-13); color: var(--text-muted); }
+.head-btn {
+  flex-shrink: 0; width: var(--size-44); height: var(--size-44); margin-top: 2px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: var(--border-1-5) solid var(--color-brand); border-radius: var(--radius-999);
+  background: transparent; color: var(--color-brand); cursor: pointer;
+}
+.head-btn svg { width: 18px; height: 18px; }
+.head-btn:hover { background: var(--color-brand); color: var(--on-brand); }
+.head-btn:active { filter: brightness(.92); }
+.head-btn:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: 2px; }
+
+/* ── Хедер · варіант B: назад + заголовок (вторинні екрани) ──
+   структура зі сірих вайрфреймів (backlink + screen-title), вигляд із мови.
+   Колонка з двох рядків: (1) бренд-рядок — той самий, що й у варіанті А,
+   логотип має бути присутній в обох варіантах шапки; (2) кнопка-іконка назад
+   (мова .head-btn пошуку) + заголовок в один рядок поруч, з переносом на два
+   рядки без обрізання при довгому тексті — назад-лейбл текстом раніше боровся
+   за ширину з заголовком і на мобільній ширині обидва переносились нерівно. */
+.app-head--back { flex-direction: column; align-items: stretch; gap: 10px; padding: 16px 18px 12px; }
+/* Пошук доступний з усіх змістовних екранів (не лише первинних табів) — коли
+   в шапці є кнопка пошуку, повертаємось до рядкової композиції варіанта А
+   (лівий стовпець тексту + кнопка справа), а бренд-рядок і назад-рядок
+   стають внутрішньою колонкою всередині лівого стовпця. */
+.app-head--back:has(> .head-btn) { flex-direction: row; align-items: flex-start; justify-content: space-between; }
+.app-head--back:has(> .head-btn) > .head-back-wrap { display: flex; flex-direction: column; gap: 10px; min-width: 0; flex: 1 1 auto; }
+.head-back-row { display: flex; align-items: center; gap: 12px; }
+.head-back {
+  flex-shrink: 0; width: var(--size-44); height: var(--size-44);
+  display: inline-flex; align-items: center; justify-content: center;
+  border: var(--border-1-5) solid var(--color-brand); border-radius: var(--radius-999);
+  background: transparent; color: var(--color-brand);
+}
+.head-back svg { width: 16px; height: 16px; }
+.head-back:hover { background: var(--color-brand); color: var(--on-brand); }
+.head-back:active { filter: brightness(.92); }
+.head-back:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: 2px; }
+.head-title {
+  flex: 1 1 auto; min-width: 0; text-align: center;
+  font-family: var(--font-family-1); font-weight: var(--font-weight-700);
+  font-size: var(--font-size-18); line-height: 1.2; letter-spacing: -.01em; color: var(--text-primary);
+}

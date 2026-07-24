@@ -1,0 +1,29 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   ЧАТ
+   ══════════════════════════════════════════════════════════════════════════ */
+.chat-thread { display: flex; flex-direction: column; gap: 8px; padding: 14px 16px; }
+.msg { max-width: 78%; padding: 10px 13px; border-radius: var(--radius-18); font-size: var(--font-size-16); line-height: 1.4; }
+.msg--in { align-self: flex-start; background: var(--bg-surface); color: var(--text-primary); border-bottom-left-radius: 6px; }
+.msg--out { align-self: flex-end; background: var(--color-action); color: var(--on-action); border-bottom-right-radius: 6px; }
+.composer {
+  display: flex; align-items: center; gap: 8px; padding: 10px 12px;
+  border-top: var(--border-1) solid var(--border-default); background: var(--bg-page); background-image: var(--grain-1);
+}
+.composer input {
+  flex: 1; min-width: 0; border: none; background: var(--bg-surface);
+  border-radius: var(--radius-999); padding: 10px 14px; font: inherit; font-size: var(--font-size-16); color: var(--text-primary);
+}
+.composer input::placeholder { color: var(--text-muted); }
+.composer input:focus { outline: var(--border-2) solid var(--color-action); outline-offset: 1px; }
+.composer .send {
+  flex-shrink: 0; width: var(--size-44); height: var(--size-44); border-radius: var(--radius-999); border: none;
+  background: var(--color-action); color: var(--on-action); cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.composer .send svg { width: 20px; height: 20px; }
+.composer .send:hover { filter: brightness(1.08); }
+.composer .send:active { filter: brightness(.9); }
+
+/* ── Скелетон-бульбашка (chat-loading) ── реальна форма/вирівнювання msg--in/msg--out,
+   нейтральний пульс замість кольору (та сама умова, що й .sk-line: ширина/висота — inline per-instance) */
+.sk-msg { align-self: flex-start; max-width: 78%; height: 38px; border-radius: var(--radius-18); }

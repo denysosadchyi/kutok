@@ -1,0 +1,11 @@
+/* ── Порожній стан ── (стани listings 1:1) */
+.state-main { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: center; } /* вертикальне центрування .state-block у main */
+.state-block { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 32px 28px; }
+.state-icon {
+  width: 88px; height: 88px; border-radius: var(--radius-30); background: var(--bg-empty-icon);
+  display: flex; align-items: center; justify-content: center; color: var(--color-brand); margin-bottom: 22px;
+}
+.state-icon svg { width: 44px; height: 44px; }
+.state-title { font-family: var(--font-family-1); font-weight: var(--font-weight-700); font-size: var(--font-size-22); letter-spacing: -.02em; line-height: 1.1; color: var(--text-primary); margin-bottom: 9px; }
+.state-text { font-size: var(--font-size-16); color: var(--text-muted); max-width: 32ch; line-height: 1.5; margin-bottom: 24px; }
+.state-actions { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 300px; }

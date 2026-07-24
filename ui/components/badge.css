@@ -1,0 +1,18 @@
+/* ── Бейдж верифікації ── (один API; консолідує .verified/.profile-badge/.badge) */
+.badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--bg-surface); border-radius: var(--radius-999);
+  padding: 5px 13px 5px 6px; font-size: var(--font-size-11); font-weight: var(--font-weight-600); color: var(--text-primary);
+}
+.badge--on-photo { position: absolute; right: 12px; bottom: 12px; padding: 4px 12px 4px 5px; }
+.badge-check {
+  width: 19px; height: 19px; border-radius: var(--radius-999); flex-shrink: 0;
+  background: var(--color-brand);
+  /* color: --bg-surface, не --on-brand — kit.css вживав тут --paper-2, інше
+     значення, ніж --on-olive (tokens.css §«Критика», --bg-surface). Крок 3 не
+     редизайн: пиксель лишається точним, навіть якщо роль «поверхня» для
+     кольору іконки на оливі звучить дивно. */
+  color: var(--bg-surface);
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.badge-check svg { width: 10px; height: 10px; }

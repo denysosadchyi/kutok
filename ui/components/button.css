@@ -1,0 +1,25 @@
+/* ── Кнопки ── (один API; консолідує .btn/.primary/.ghost/sheet-apply/edit-link) */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  height: var(--size-48); padding: 0 18px; border-radius: var(--radius-12);
+  border: var(--border-1-5) solid var(--border-default); background: transparent; color: var(--text-primary);
+  font: inherit; font-size: var(--font-size-16); font-weight: var(--font-weight-600);
+  cursor: pointer; text-decoration: none;
+}
+.btn:hover { background: var(--bg-neutral); }
+.btn:active { background: var(--bg-pressed); }
+.btn:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: 2px; }
+.btn--primary { border: none; background: var(--color-action); color: var(--on-action); font-weight: var(--font-weight-700); }
+.btn--primary:hover { background: var(--color-action); filter: brightness(1.08); }
+.btn--primary:active { filter: brightness(.92); }
+.btn--primary:focus-visible { outline-color: var(--text-primary); }
+.btn--ghost { border: var(--border-1-5) solid var(--border-default); background: transparent; color: var(--text-primary); }
+.btn--sm { height: var(--size-40); padding: 0 14px; font-size: var(--font-size-13); }
+.btn--block { width: 100%; }
+.btn--pill { border-radius: var(--radius-999); }
+.btn[disabled], .btn[aria-disabled="true"] { opacity: .55; cursor: default; pointer-events: none; }
+
+/* ── Стек кнопок ── кілька повноширинних дій одна під одною поза .state-block
+   (login/verify retry-пари, verify-error результат): вертикальний flex, той самий
+   ритм (10px), що й .state-actions, але без центрування й max-width. */
+.btn-stack { display: flex; flex-direction: column; gap: 10px; }

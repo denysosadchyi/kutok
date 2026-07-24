@@ -1,0 +1,12 @@
+/* ── Ряд завантаження фото ── структура з room-create/profile-create, вигляд із мови.
+   Дві форми того самого компонента: сітка порожніх слотів (room, кілька фото) АБО
+   один avatar-прев'ю + ghost-кнопка дії (профіль, одне фото) — обидві всередині .photo-row. */
+.photo-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.photo-slot {
+  width: 84px; height: 84px; border-radius: var(--radius-30);
+  border: var(--border-1-5) solid var(--border-default); background: var(--bg-surface);
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--color-brand); cursor: pointer; overflow: hidden;
+}
+.photo-slot svg { width: 26px; height: 26px; }
+.photo-slot img { width: 100%; height: 100%; object-fit: cover; }

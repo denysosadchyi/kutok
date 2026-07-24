@@ -1,0 +1,14 @@
+/* ── Факти / чипи ── */
+.chips { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
+.chips li {
+  background: var(--bg-surface); border-radius: var(--radius-999);
+  padding: 8px 14px; font-size: var(--font-size-13); font-weight: var(--font-weight-600); color: var(--text-primary);
+}
+.facts { list-style: none; }
+.facts li {
+  position: relative; padding: 6px 0 6px 16px; font-size: var(--font-size-16); color: var(--text-primary);
+}
+.facts li::before {
+  content: ""; position: absolute; left: 0; top: 13px;
+  width: 6px; height: 6px; border-radius: var(--radius-999); background: var(--color-brand);
+}

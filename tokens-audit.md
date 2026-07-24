@@ -40,7 +40,7 @@
 | `--on-cobalt` | `#F6F1E4` | kit.css: `.btn--primary`, `.chk-box:checked`, `.seg-count:checked`, `.fab`, `.msg--out`, `.composer .send`, `.row-unread` color | текст/іконка на кобальті (інверсний до cobalt) |
 | `--line` | `rgba(27,23,18,.16)` | kit.css: ~14 місць — рамки полів/кнопок-гостей/чекбокса/радіо/photo-slot/banner/sheet/sheet-close, розділювачі `.row`/`.menu-row`/`.section`/`.review`/`.profile-hero`/`.composer`, `.sheet-grip` bg, `.status-pill--rejected` text-decoration-color | **2 ролі**: (домінантна) колір рамки/розділювача; (побічна) `.sheet-grip` використовує його як **заливку**, а не рамку — суцільна форма пофарбована «лінійним» кольором |
 | `--scrim` | `rgba(27,23,18,.38)` | kit.css: `.sheet--popover::backdrop` | бекдроп модального шита (єдине вживання) |
-| `--white-50` | `rgba(255,255,255,.5)` | kit.css: `.seg-count` color (неактивний) | лічильник у неактивному сегменті (єдине вживання) |
+| `--white-50` | `rgba(255,255,255,.5)` | kit.css: `.seg-count` background (неактивний) | фон лічильника у неактивному сегменті (єдине вживання) — *виправлення 2026-07-24 (крок 3, components/): тут помилково стояло «color», насправді фон; текст того самого лічильника — `--ink-muted`* |
 | `--tab-idle` | `var(--on-olive)` | kit.css: `.tabbar a` color | аліас-змінна на іншу змінну — рівень непрямої індирекції всупереч «пласкій системі», задекларованій у шапці файлу |
 | `--font-display` | `"Unbounded", Inter…` | kit.css: `.head-word`, `.head-title`, `.profile-name`, `.state-title`, `.sheet-title`... (4 прямих) + role-select.html `.role-option-title` (локально) | шрифт заголовків/акцентних написів |
 | `--font-body` | `Inter, system-ui…` | kit.css: `.app` | шрифт усього іншого UI (успадковується, тому 1 пряме вживання) |

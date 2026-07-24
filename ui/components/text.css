@@ -1,0 +1,14 @@
+/* ── Лічильник результатів ── */
+.counter { font-size: var(--font-size-13); color: var(--text-muted); }
+.counter b { color: var(--text-primary); font-weight: var(--font-weight-700); font-variant-numeric: tabular-nums; }
+
+/* ── Оверлайн секції ── */
+.overline {
+  display: block; margin-bottom: 12px;
+  font-size: var(--font-size-11); text-transform: uppercase; letter-spacing: .08em;
+  color: var(--text-muted); font-weight: var(--font-weight-700);
+}
+.muted-note { font-size: var(--font-size-16); color: var(--text-muted); line-height: 1.5; }
+
+/* ── Пояснювальний текст ── */
+.hint { font-size: var(--font-size-13); color: var(--text-muted); line-height: 1.45; }

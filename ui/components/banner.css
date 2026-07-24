@@ -1,0 +1,12 @@
+/* ── Банер ── структура сірих банерів, вигляд із мови (без тіней, папір + рамка) */
+.banner {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 13px 14px; border-radius: var(--radius-12);
+  border: var(--border-1-5) solid var(--border-default); background: var(--bg-surface);
+  font-size: var(--font-size-13); color: var(--text-primary); line-height: 1.4;
+}
+.banner-ic { flex-shrink: 0; width: 20px; height: 20px; color: var(--text-muted); margin-top: 1px; }
+.banner-ic svg { width: 100%; height: 100%; display: block; }
+.banner--error .banner-ic { color: var(--color-danger); }
+.banner--success .banner-ic { color: var(--color-brand); }
+.banner--info .banner-ic { color: var(--color-action); }

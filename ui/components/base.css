@@ -1,0 +1,23 @@
+/* ── Оболонка / канвас ── */
+.app, .app *, .kit-demo, .kit-demo * { box-sizing: border-box; }
+
+.app {
+  width: 100%;
+  max-width: 400px;
+  min-height: 844px; /* висота як у мобілки (мінімум), НЕ 100vh — інакше макет розтягується під висоту вікна браузера */
+  margin: 0 auto;
+  background: var(--bg-page);
+  background-image: var(--grain-1);
+  color: var(--text-primary);
+  font-family: var(--font-family-2);
+  line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+}
+.app a:not(:where(.btn)) { color: inherit; text-decoration: none; }
+.app main { flex: 1 1 auto; }  /* навбар і FAB завжди внизу */
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+}

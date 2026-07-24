@@ -1,0 +1,18 @@
+/* ── Аватар / фото-плейсхолдер ── */
+.avatar-link { display: block; } /* лінк-обгортка аватара → фото-в'юер */
+.avatar {
+  width: 106px; height: 106px; border-radius: var(--radius-30);
+  object-fit: cover; display: block; background: var(--bg-surface);
+}
+.avatar--md { width: 64px; height: 64px; }
+.avatar--sm { width: 44px; height: 44px; }
+.thumb {
+  width: 100%; aspect-ratio: 4 / 3; border-radius: var(--radius-26);
+  object-fit: cover; display: block; background: var(--bg-surface);
+}
+/* текстовий плейсхолдер (сірі вайрфрейми) */
+.ph {
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted); font-size: var(--font-size-11); background: var(--bg-surface);
+  outline: var(--border-1) solid var(--bg-track); outline-offset: -1px; /* межа для плейсхолдера — не border (щоб не зʼїдало розмір), не shadow */
+}

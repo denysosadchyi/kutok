@@ -1,0 +1,47 @@
+/* ============================================================================
+   Куток — components/index.css
+   Класи компонентів, перенесені з ui/kit.css (крок 3, урок 8): один файл на
+   компонент, кожен читає колір лише через semantic-токени tokens.css і
+   геометрію/типографіку — напряму з primitive. Підключати разом із
+   ../../tokens.css (порядок значення не має — конфліктів селекторів немає).
+   ============================================================================ */
+
+@import url("base.css");
+
+/* Навігація */
+@import url("header.css");
+@import url("search.css");
+@import url("tabbar.css");
+@import url("menu.css");
+
+/* Картки й списки */
+@import url("feed.css");
+@import url("card.css");
+@import url("badge.css");
+@import url("avatar.css");
+@import url("status-pill.css");
+@import url("list.css");
+@import url("review.css");
+@import url("chips.css");
+@import url("meter.css");
+@import url("text.css");
+@import url("layout.css");
+@import url("profile-hero.css");
+
+/* Форми */
+@import url("button.css");
+@import url("field.css");
+@import url("checkbox.css");
+@import url("radio.css");
+@import url("photo-upload.css");
+@import url("segment.css");
+@import url("fab.css");
+@import url("sheet.css");
+
+/* Зворотний зв'язок */
+@import url("state.css");
+@import url("banner.css");
+@import url("skeleton.css");
+
+/* Чат */
+@import url("chat.css");

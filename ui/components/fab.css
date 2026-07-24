@@ -1,0 +1,11 @@
+/* ── FAB фільтра ── (listings 1:1) */
+.fab {
+  position: sticky; bottom: 88px; z-index: 4; align-self: flex-end; margin: 0 14px 12px auto;
+  width: var(--size-56); height: var(--size-56); border-radius: var(--radius-999); border: none;
+  background: var(--color-action); color: var(--on-action); cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.fab svg { width: 24px; height: 24px; }
+.fab:hover { filter: brightness(1.08); }
+.fab:active { filter: brightness(.9); }
+.fab:focus-visible { outline: var(--border-2) solid var(--text-primary); outline-offset: 2px; }

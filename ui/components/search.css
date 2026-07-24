@@ -1,0 +1,17 @@
+/* ── Поповер пошуку ── (listings 1:1) */
+.search-popover {
+  width: min(320px, calc(100vw - 32px));
+  border: var(--border-1) solid var(--border-default); border-radius: var(--radius-14);
+  background: var(--bg-surface); padding: 10px;
+}
+.search-form {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--bg-surface);
+  border-radius: var(--radius-12); padding: 9px 12px;
+}
+.search-form svg { width: 16px; height: 16px; color: var(--text-muted); flex-shrink: 0; }
+.search-form input {
+  flex: 1; min-width: 0; border: none; background: transparent; outline: none;
+  font: inherit; font-size: var(--font-size-16); color: var(--text-primary);
+}
+.search-form input::placeholder { color: var(--text-muted); }

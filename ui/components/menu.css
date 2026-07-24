@@ -1,0 +1,15 @@
+/* ── Список-меню налаштувань ── (my-profile-seeker 1:1) */
+.menu-list { padding: 6px var(--space-22) 26px; }
+.menu-row {
+  display: flex; align-items: center; gap: 13px; padding: 15px 0;
+  border-bottom: var(--border-1) solid var(--border-default); color: var(--text-primary); text-decoration: none;
+}
+.menu-row:last-child { border-bottom: none; }
+.menu-row:hover { background: var(--bg-neutral); }
+.menu-ic { width: 22px; height: 22px; color: var(--color-brand); flex-shrink: 0; }
+.menu-ic svg { width: 100%; height: 100%; display: block; }
+.menu-txt { flex: 1; font-size: var(--font-size-16); }
+.menu-chev {
+  width: 8px; height: 8px; border-top: var(--border-1-5) solid var(--text-muted);
+  border-right: var(--border-1-5) solid var(--text-muted); transform: rotate(45deg); flex-shrink: 0;
+}
