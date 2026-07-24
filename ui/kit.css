@@ -75,6 +75,18 @@
   --section: 22px;   /* горизонтальний край секції: .section, .profile-hero, .menu-list */
   --feed-gap: 24px;  /* вертикальний зазор між картками стрічки */
   --field-gap: 13px; /* зазор між полями форми, одне під одним */
+
+  /* ── Висота контролів (кнопки, поля, кнопки-іконки) ──
+     Раніше висота кнопок бралась з padding+line-height (нестабільно, «пливла»
+     від вмісту), а кнопки-іконки мали чотири різні розміри (34/40/44/54) без
+     жодної логіки. Тепер два явні рівні для прямокутних контролів і один
+     спільний розмір для всіх кнопок-іконок (роль різнить колір/рамка, не
+     масштаб — той самий принцип, що й The Three-Voice Rule для кольору). FAB —
+     єдиний навмисний виняток, за задумом найбільша й «плаваюча» дія. */
+  --h-control: 48px;     /* .btn, .fsel, .field input/select — прямокутні контролі за замовчуванням */
+  --h-control-sm: 40px;  /* .btn--sm — компактні парні дії в рядку картки */
+  --h-icon: 44px;        /* .head-btn, .head-back, .sheet-close, .composer .send — мінімальний touch-target ≥44px (PRODUCT.md) */
+  --h-fab: 56px;         /* .fab — єдиний виняток розміру, плаваюча дія */
 }
 
 /* Мінімальний ресет для елементів, які споживає кіт (не універсальний clobber) */
@@ -132,7 +144,7 @@
 }
 .head-sub { margin-top: 8px; font-size: var(--fs-secondary); color: var(--ink-muted); }
 .head-btn {
-  flex-shrink: 0; width: 40px; height: 40px; margin-top: 2px;
+  flex-shrink: 0; width: var(--h-icon); height: var(--h-icon); margin-top: 2px;
   display: inline-flex; align-items: center; justify-content: center;
   border: var(--bd) solid var(--olive); border-radius: var(--r-pill);
   background: transparent; color: var(--olive); cursor: pointer;
@@ -158,7 +170,7 @@
 .app-head--back:has(> .head-btn) > .head-back-wrap { display: flex; flex-direction: column; gap: 10px; min-width: 0; flex: 1 1 auto; }
 .head-back-row { display: flex; align-items: center; gap: 12px; }
 .head-back {
-  flex-shrink: 0; width: 40px; height: 40px;
+  flex-shrink: 0; width: var(--h-icon); height: var(--h-icon);
   display: inline-flex; align-items: center; justify-content: center;
   border: var(--bd) solid var(--olive); border-radius: var(--r-pill);
   background: transparent; color: var(--olive);
@@ -411,7 +423,7 @@
 /* ── Кнопки ── (один API; консолідує .btn/.primary/.ghost/sheet-apply/edit-link) */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 7px;
-  padding: 12px 18px; border-radius: var(--r-field);
+  height: var(--h-control); padding: 0 18px; border-radius: var(--r-field);
   border: var(--bd) solid var(--line); background: transparent; color: var(--ink);
   font: inherit; font-size: var(--fs-body); font-weight: var(--w-semi);
   cursor: pointer; text-decoration: none;
@@ -424,7 +436,7 @@
 .btn--primary:active { filter: brightness(.92); }
 .btn--primary:focus-visible { outline-color: var(--ink); }
 .btn--ghost { border: var(--bd) solid var(--line); background: transparent; color: var(--ink); }
-.btn--sm { padding: 8px 14px; font-size: var(--fs-secondary); }
+.btn--sm { height: var(--h-control-sm); padding: 0 14px; font-size: var(--fs-secondary); }
 .btn--block { width: 100%; }
 .btn--pill { border-radius: var(--r-pill); }
 .btn[disabled], .btn[aria-disabled="true"] { opacity: .55; cursor: default; pointer-events: none; }
@@ -445,6 +457,7 @@
   border-radius: var(--r-field); padding: 12px 13px;
   font: inherit; font-size: var(--fs-body); color: var(--ink);
 }
+.field input, .field select { height: var(--h-control); padding: 0 13px; }
 .field textarea { min-height: 96px; resize: vertical; line-height: 1.45; }
 .field input::placeholder, .field textarea::placeholder { color: var(--ink-muted); }
 .field input:focus, .field textarea:focus, .field select:focus { outline: var(--focus-w) solid var(--cobalt); outline-offset: 1px; }
@@ -453,7 +466,7 @@
 .fsel {
   position: relative; display: flex; align-items: center; min-width: 0; width: 100%;
   background: var(--paper-2);
-  border-radius: var(--r-field); padding: 0 30px 0 13px; height: 46px;
+  border-radius: var(--r-field); padding: 0 30px 0 13px; height: var(--h-control);
 }
 .fsel select {
   appearance: none; -webkit-appearance: none; -moz-appearance: none;
@@ -537,7 +550,7 @@
 /* ── FAB фільтра ── (listings 1:1) */
 .fab {
   position: sticky; bottom: 88px; z-index: 4; align-self: flex-end; margin: 0 14px 12px auto;
-  width: 54px; height: 54px; border-radius: var(--r-pill); border: none;
+  width: var(--h-fab); height: var(--h-fab); border-radius: var(--r-pill); border: none;
   background: var(--cobalt); color: var(--on-cobalt); cursor: pointer;
   display: inline-flex; align-items: center; justify-content: center;
 }
@@ -564,7 +577,7 @@
 .sheet-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
 .sheet-title { font-weight: var(--w-black); font-size: var(--fs-sheet); letter-spacing: -.01em; color: var(--ink); }
 .sheet-close {
-  width: 34px; height: 34px; border-radius: var(--r-pill); border: var(--bd) solid var(--line);
+  width: var(--h-icon); height: var(--h-icon); border-radius: var(--r-pill); border: var(--bd) solid var(--line);
   background: transparent; color: var(--ink-muted); cursor: pointer;
   display: inline-flex; align-items: center; justify-content: center;
 }
@@ -632,7 +645,7 @@
 .composer input::placeholder { color: var(--ink-muted); }
 .composer input:focus { outline: var(--focus-w) solid var(--cobalt); outline-offset: 1px; }
 .composer .send {
-  flex-shrink: 0; width: 44px; height: 44px; border-radius: var(--r-pill); border: none;
+  flex-shrink: 0; width: var(--h-icon); height: var(--h-icon); border-radius: var(--r-pill); border: none;
   background: var(--cobalt); color: var(--on-cobalt); cursor: pointer;
   display: inline-flex; align-items: center; justify-content: center;
 }
