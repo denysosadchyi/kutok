@@ -58,6 +58,10 @@
   .wf-nav a.active::before { content: ""; }
   .job-tag { font-size: 9px; font-weight: 600; color: #B3A992; border: 1px solid #3A342B; background: #191510; padding: 1px 5px; border-radius: 5px; text-decoration: none; flex-shrink: 0; margin-left: auto; }
   .job-tag:hover { color: #F3EED9; border-color: #6E7B2E; }
+  /* ── Адресація popover/anchor цієї сторінки (не «вигляд») ── */
+  .app { anchor-name: --device; }
+  .head-btn { anchor-name: --search-anchor; }
+  #search-popover { position: fixed; position-anchor: --search-anchor; position-area: bottom span-left; margin: 8px 0 0; }
 </style>
 </head>
 <body>
@@ -371,12 +375,25 @@
 <div class="app">
 
   <header class="app-head app-head--back">
-    <div class="head-brand-row"><svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--olive)"/><path d="M18 3L21 3L21 6Z" fill="var(--paper-2)"/></svg><div class="head-brand">Куток</div></div>
-    <div class="head-back-row">
+    <div class="head-back-wrap">
+      <div class="head-brand-row"><svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--olive)"/><path d="M18 3L21 3L21 6Z" fill="var(--paper-2)"/></svg><div class="head-brand">Куток</div></div>
+      <div class="head-back-row">
       <a class="head-back" href="my-profile-host.html" aria-label="До мого профілю"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M15 5l-7 7 7 7"/></svg></a>
       <h1 class="head-title">Мої оголошення</h1>
     </div>
+    </div>
+    <button type="button" class="head-btn" popovertarget="search-popover" aria-label="Відкрити пошук">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg>
+    </button>
   </header>
+
+  <div id="search-popover" class="search-popover" popover>
+    <form class="search-form" role="search" action="listings.html" method="get">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg>
+      <input type="search" name="q" placeholder="Пошук за назвою, районом…" aria-label="Пошук оголошень">
+    </form>
+  </div>
+
 
   <main>
     <div class="pad">

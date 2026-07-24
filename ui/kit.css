@@ -150,6 +150,12 @@
    рядки без обрізання при довгому тексті — назад-лейбл текстом раніше боровся
    за ширину з заголовком і на мобільній ширині обидва переносились нерівно. */
 .app-head--back { flex-direction: column; align-items: stretch; gap: 10px; padding: 16px 18px 12px; }
+/* Пошук доступний з усіх змістовних екранів (не лише первинних табів) — коли
+   в шапці є кнопка пошуку, повертаємось до рядкової композиції варіанта А
+   (лівий стовпець тексту + кнопка справа), а бренд-рядок і назад-рядок
+   стають внутрішньою колонкою всередині лівого стовпця. */
+.app-head--back:has(> .head-btn) { flex-direction: row; align-items: flex-start; justify-content: space-between; }
+.app-head--back:has(> .head-btn) > .head-back-wrap { display: flex; flex-direction: column; gap: 10px; min-width: 0; flex: 1 1 auto; }
 .head-back-row { display: flex; align-items: center; gap: 12px; }
 .head-back {
   flex-shrink: 0; width: 40px; height: 40px;
@@ -162,9 +168,9 @@
 .head-back:active { filter: brightness(.92); }
 .head-back:focus-visible { outline: var(--focus-w) solid var(--cobalt); outline-offset: 2px; }
 .head-title {
-  flex: 1 1 auto; min-width: 0;
+  flex: 1 1 auto; min-width: 0; text-align: center;
   font-family: var(--font-display); font-weight: var(--w-bold);
-  font-size: var(--fs-heading); line-height: 1.15; letter-spacing: -.02em; color: var(--ink);
+  font-size: var(--fs-sheet); line-height: 1.2; letter-spacing: -.01em; color: var(--ink);
 }
 
 /* ── Поповер пошуку ── (listings 1:1) */
@@ -435,7 +441,7 @@
   font-size: var(--fs-caption); text-transform: uppercase; letter-spacing: .07em; color: var(--ink-muted);
 }
 .field input, .field textarea, .field select {
-  width: 100%; background: var(--paper-2);
+  width: 100%; border: none; background: var(--paper-2);
   border-radius: var(--r-field); padding: 12px 13px;
   font: inherit; font-size: var(--fs-body); color: var(--ink);
 }
@@ -443,10 +449,10 @@
 .field input::placeholder, .field textarea::placeholder { color: var(--ink-muted); }
 .field input:focus, .field textarea:focus, .field select:focus { outline: var(--focus-w) solid var(--cobalt); outline-offset: 1px; }
 
-/* ── Кастомний select ── (listings .fsel 1:1) */
+/* ── Кастомний select ── (listings .fsel, борт прибрано 2026-07-24) */
 .fsel {
   position: relative; display: flex; align-items: center; min-width: 0; width: 100%;
-  border: var(--bd) solid var(--line); background: var(--paper);
+  background: var(--paper-2);
   border-radius: var(--r-field); padding: 0 30px 0 13px; height: 46px;
 }
 .fsel select {
@@ -544,7 +550,7 @@
 .sheet {
   border: var(--hair) solid var(--line); border-bottom: none;
   border-radius: var(--r-sheet) var(--r-sheet) 0 0;
-  background: var(--paper-2); background-image: var(--grain);
+  background: var(--paper); background-image: var(--grain);
   padding: 16px 18px calc(20px + env(safe-area-inset-bottom));
 }
 /* Фіксація до низу в'юпорта (нативний popover) — та сама щоразу, коли шит використовується.
@@ -620,7 +626,7 @@
   border-top: var(--hair) solid var(--line); background: var(--paper); background-image: var(--grain);
 }
 .composer input {
-  flex: 1; min-width: 0; border: var(--bd) solid var(--line); background: var(--paper);
+  flex: 1; min-width: 0; border: none; background: var(--paper-2);
   border-radius: var(--r-pill); padding: 10px 14px; font: inherit; font-size: var(--fs-body); color: var(--ink);
 }
 .composer input::placeholder { color: var(--ink-muted); }
