@@ -470,6 +470,62 @@
     </nav>
   </div>
 
+  <!-- ═══════════ КНОПКИ ═══════════ -->
+  <div class="sh-group">Кнопки</div>
+
+  <div class="sh-item">
+    <div class="sh-label">Типи — Primary / Ghost</div>
+    <div class="sh-inline">
+      <button type="button" class="btn btn--primary">Застосувати</button>
+      <button type="button" class="btn btn--ghost">Скасувати</button>
+    </div>
+    <p class="sh-note">Primary (<code>.btn.btn--primary</code>) — кобальтова заливка, текст <code>--on-cobalt</code>, вага 700; для головної дії екрана чи форми. Ghost (<code>.btn.btn--ghost</code>) — прозоре тло, рамка <code>--line</code> 1.5px, текст чорнило, вага 600; для другорядної дії поруч. Голий <code>.btn</code> без модифікатора вже виглядає як ghost.</p>
+  </div>
+
+  <div class="sh-item">
+    <div class="sh-label">Розміри — Default (44px) / Small (36px)</div>
+    <div class="sh-inline" style="align-items: center;">
+      <button type="button" class="btn btn--primary">Розмістити кімнату</button>
+      <button type="button" class="btn btn--primary btn--sm">Прийняти</button>
+      <button type="button" class="btn btn--ghost btn--sm">Відхилити</button>
+    </div>
+    <p class="sh-note">Default (<code>.btn</code>) — падинг 12×18px, текст <code>--fs-body</code> (16px), для одиночної дії. Small (<code>.btn--sm</code>) — падинг 8×14px, текст <code>--fs-secondary</code> (13px), для парних дій у рядку картки («Прийняти» / «Відхилити»).</p>
+  </div>
+
+  <div class="sh-item">
+    <div class="sh-label">Форма — Block (на всю ширину) / Pill (радіус 999px)</div>
+    <button type="button" class="btn btn--primary btn--block" style="margin-bottom: 10px;">Показати 24 оголошення</button>
+    <a class="btn btn--ghost btn--pill btn--sm" href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L18.5 9.5a2.1 2.1 0 0 0-3-3L5 17v3z"/><path d="M13.5 7.5l3 3"/></svg>Редагувати профіль</a>
+    <p class="sh-note">Block (<code>.btn--block</code>) — розтягує кнопку на всю ширину контейнера, для головної дії стану чи форми (радіус лишається <code>field</code>, 12px). Pill (<code>.btn--pill</code>) — замінює радіус на 999px поверх будь-якого типу й розміру, для тихих утилітарних дій («Редагувати профіль»).</p>
+  </div>
+
+  <div class="sh-item">
+    <div class="sh-label">Стани</div>
+    <div class="sh-inline">
+      <button type="button" class="btn btn--primary" disabled>Зберігаємо…</button>
+    </div>
+    <p class="sh-note">Hover — <code>brightness(1.08)</code> на primary, заливка <code>rgba(27,23,18,.04)</code> на ghost (інтерактивне, не видно на статичній вітрині — перевіряй у самому вайрфреймі). Focus — <code>outline: 2px solid var(--cobalt)</code> скрізь (на primary — контур чорнилом). Disabled — <code>opacity: .55</code>, <code>pointer-events: none</code>.</p>
+  </div>
+
+  <div class="sh-item">
+    <div class="sh-label">Кнопки-іконки — три розміри, три ролі</div>
+    <div class="sh-inline" style="align-items: flex-end; gap: 28px;">
+      <div style="text-align: center;">
+        <button type="button" class="head-btn" aria-label="Пошук" style="margin: 0;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg></button>
+        <p class="sh-note" style="margin-top: 8px;">40×40<br><code>.head-btn</code> / <code>.head-back</code></p>
+      </div>
+      <div style="text-align: center;">
+        <button type="button" class="sheet-close" aria-label="Закрити"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
+        <p class="sh-note" style="margin-top: 8px;">34×34<br><code>.sheet-close</code></p>
+      </div>
+      <div style="text-align: center;">
+        <button type="button" class="fab" aria-label="Фільтри" style="position: static; margin: 0;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h7M17.5 7H20M4 12h2.5M13 12h7M4 17h7M17.5 17H20"/><circle cx="14.5" cy="7" r="2.4"/><circle cx="9.5" cy="12" r="2.4"/><circle cx="14.5" cy="17" r="2.4"/></svg></button>
+        <p class="sh-note" style="margin-top: 8px;">54×54<br><code>.fab</code></p>
+      </div>
+    </div>
+    <p class="sh-note">Кільце 40px (<code>.head-btn</code> пошук, <code>.head-back</code> назад) — рамка оливи 1.5px, інверсія в суцільну оливу на hover. Закрити 34px (<code>.sheet-close</code>) — приглушена рамка <code>--line</code>, тихіша дія. FAB 54px (<code>.fab</code>) — єдина суцільно-кобальтова плаваюча кнопка системи, для головної дії поверх контенту (фільтр стрічки).</p>
+  </div>
+
   <!-- ═══════════ КАРТКИ Й СПИСКИ ═══════════ -->
   <div class="sh-group">Картки й списки</div>
 
