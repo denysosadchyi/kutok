@@ -144,10 +144,13 @@
 
 /* ── Хедер · варіант B: назад + заголовок (вторинні екрани) ──
    структура зі сірих вайрфреймів (backlink + screen-title), вигляд із мови.
-   Кнопка-іконка зліва (та сама мова, що й .head-btn пошуку), заголовок — в
-   один рядок поруч: текстовий backlink-лейбл раніше боровся за ширину з
-   заголовком і на мобільній ширині обидва переносились нерівно. */
-.app-head--back { align-items: center; gap: 12px; padding: 16px 18px 12px; }
+   Колонка з двох рядків: (1) бренд-рядок — той самий, що й у варіанті А,
+   логотип має бути присутній в обох варіантах шапки; (2) кнопка-іконка назад
+   (мова .head-btn пошуку) + заголовок в один рядок поруч, з переносом на два
+   рядки без обрізання при довгому тексті — назад-лейбл текстом раніше боровся
+   за ширину з заголовком і на мобільній ширині обидва переносились нерівно. */
+.app-head--back { flex-direction: column; align-items: stretch; gap: 10px; padding: 16px 18px 12px; }
+.head-back-row { display: flex; align-items: center; gap: 12px; }
 .head-back {
   flex-shrink: 0; width: 40px; height: 40px;
   display: inline-flex; align-items: center; justify-content: center;
@@ -172,7 +175,7 @@
 }
 .search-form {
   display: flex; align-items: center; gap: 8px;
-  border: var(--bd) solid var(--line); background: var(--paper);
+  background: var(--paper-2);
   border-radius: var(--r-field); padding: 9px 12px;
 }
 .search-form svg { width: 16px; height: 16px; color: var(--ink-muted); flex-shrink: 0; }
@@ -432,7 +435,7 @@
   font-size: var(--fs-caption); text-transform: uppercase; letter-spacing: .07em; color: var(--ink-muted);
 }
 .field input, .field textarea, .field select {
-  width: 100%; border: var(--bd) solid var(--line); background: var(--paper);
+  width: 100%; background: var(--paper-2);
   border-radius: var(--r-field); padding: 12px 13px;
   font: inherit; font-size: var(--fs-body); color: var(--ink);
 }
