@@ -285,6 +285,20 @@
     main { height: 55dvh; }
   }
 </style>
+<script>
+// Тема — до першого паінту, інакше блимне світлим. Перший запуск бере
+// системну і одразу її записує: екрани читають саме localStorage.
+(function () {
+  try {
+    var t = localStorage.getItem('kutok-theme');
+    if (t !== 'dark' && t !== 'light') {
+      t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      localStorage.setItem('kutok-theme', t);
+    }
+    document.documentElement.setAttribute('data-theme', t);
+  } catch (e) {}
+})();
+</script>
 </head>
 <body>
 
