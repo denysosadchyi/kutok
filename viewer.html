@@ -210,8 +210,9 @@ function link(href) {
   if (/^[a-z]+:/i.test(href) || href.startsWith('#')) return href;
   const r = resolve(href);
   const [p, h] = r.split('#');
+  // шлях у ?f= лишаємо як є: оболонка звіряє адресу з деревом по точному збігу
   if (/\.(md|css|txt)$/i.test(p.split('?')[0]))
-    return 'viewer.html?f=' + encodeURIComponent(p) + (h ? '#' + h : '');
+    return 'viewer.html?f=' + p + (h ? '#' + h : '');
   return r;
 }
 
