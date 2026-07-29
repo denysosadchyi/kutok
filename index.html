@@ -837,11 +837,17 @@ function buildNav() {
   frag.appendChild(brand);
 
   const fwrap = el('div', 'fwrap');
+  const field = el('div', 'field',
+    '<svg class="glass" viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="4.6"/><path d="M10.4 10.4 14 14"/></svg>');
   filterEl = el('input', 'filter');
   filterEl.type = 'search';
-  filterEl.placeholder = 'Фільтр сторінок…  ( / )';
-  filterEl.setAttribute('aria-label', 'Фільтр сторінок');
-  fwrap.appendChild(filterEl);
+  filterEl.placeholder = 'Фільтр по дереву…';
+  filterEl.setAttribute('aria-label', 'Фільтр по дереву');
+  field.appendChild(filterEl);
+  const kbd = document.createElement('kbd');
+  kbd.textContent = '/';
+  field.appendChild(kbd);
+  fwrap.appendChild(field);
 
   const tools = el('div', 'tools');
   const modeBox = el('div', 'mode');
