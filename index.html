@@ -855,7 +855,7 @@ function toggleAll() {
 
 function syncAllBtn() {
   if (!allBtn) return;
-  allBtn.textContent = branchIds().some(k => !isOpen(k)) ? 'розгорнути все' : 'згорнути все';
+  allBtn.textContent = branchIds().some(k => !isOpen(k)) ? 'розгорнути' : 'згорнути';
 }
 
 function setMode(next) {
