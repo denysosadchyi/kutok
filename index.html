@@ -727,7 +727,8 @@ function buildNav() {
   if (mode === 'stage') {
     for (const s of SECTIONS) {
       const gs = GROUPS.filter(g => g.sec === s.id);
-      if (gs.length) frag.appendChild(renderSection(s.id, s.t, gs, false));
+      // дерево з однієї однойменної групи не подвоюємо заголовком
+      if (gs.length) frag.appendChild(renderSection(s.id, s.t, gs, gs.length === 1 && gs[0].t === s.t));
     }
   } else {
     const start = GROUPS.filter(g => !g.lesson);
