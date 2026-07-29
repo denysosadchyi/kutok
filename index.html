@@ -1103,6 +1103,13 @@ frame.addEventListener('load', () => {
   frame.classList.add('ready');
 });
 
+// в'юер будує зміст асинхронно (fetch), тобто вже після load — перечитуємо
+window.addEventListener('message', e => {
+  if (e.data !== 'kutok:toc' || e.source !== frame.contentWindow) return;
+  const f = currentFile();
+  if (f) buildSecs(frame.contentDocument, f);
+});
+
 // ── старт: hash або головна (тільки файли з дерева — жодних javascript:/зовнішніх URL) ──
 buildNav();
 const ALL_FILES = new Set([...nav.querySelectorAll('[data-f]')].map(e => e.dataset.f));
