@@ -171,8 +171,12 @@
     .pg, .st, .tag, .secs a, .sec-btn, .grp-btn, .role-btn, .tw, .all-btn { transition: color .15s ease, background .15s ease; }
   }
 
+  /* Ритм не рівномірний навмисне: між деревами — пауза, всередині групи —
+     щільно. Так око читає межі раніше, ніж встигає прочитати підписи. */
+
   /* ── Рівень 1: дерево (Проєктування / Дизайн) ── */
-  .sec { margin-top: 26px; }
+  .sec { margin-top: 30px; }
+  .sec:first-of-type { margin-top: 20px; }
   .sec-btn {
     width: calc(100% + 6px); display: flex; align-items: center; gap: 7px;
     font-size: 12px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase;
@@ -180,64 +184,68 @@
     padding: 5px 6px; margin-left: -6px; border-radius: 6px;
   }
   .sec-btn:hover { background: var(--line-soft); }
+  /* лічильник дерева — шум у спокої, сенс у пошуку: показуємо лише під фільтром */
   .sec-btn .cnt {
     margin-left: auto; font-family: var(--mono); font-size: 9px;
     font-weight: 400; color: var(--faint); letter-spacing: 0;
+    opacity: 0; transition: opacity .15s ease;
   }
-  .sec-rule { height: 1px; background: var(--line); margin: 7px 0 4px; }
+  nav[data-filtering] .sec-btn .cnt { opacity: 1; }
+  .sec-rule { height: 1px; background: var(--line); margin: 6px 0 4px; }
   .sec-body { margin-left: 3px; }
 
   /* ── Рівень 2: група етапу (Ресерч, Люди, Екрани…) ── */
-  .grp { margin-top: 13px; }
+  .grp { margin-top: 15px; }
   .grp-btn {
-    width: calc(100% + 6px); display: flex; align-items: center; gap: 7px;
+    width: calc(100% + 6px); display: flex; align-items: baseline; gap: 7px;
     font-family: var(--mono); font-size: 9.5px; font-weight: 600;
     letter-spacing: .13em; text-transform: uppercase; color: var(--muted);
     padding: 4px 6px; margin-left: -6px; border-radius: 6px; text-align: left;
   }
+  .grp-btn .chev { align-self: center; }
   .grp-btn:hover { color: var(--ink); background: var(--line-soft); }
+  .grp-btn.on { color: var(--ink); }
+  /* номер уроку — метадані групи, не клікабельний тег: без рамки, щоб
+     не читався як .tag поруч в тому самому дереві */
   .les {
     margin-left: auto; flex: none;
-    font-family: var(--mono); font-size: 8.5px; letter-spacing: .06em;
-    color: var(--faint); border: 1px solid var(--line);
-    border-radius: 4px; padding: 1px 4px;
+    font-family: var(--mono); font-size: 8.5px; letter-spacing: .08em;
+    color: var(--faint);
   }
-  .grp-btn:hover .les { border-color: oklch(84% 0.01 70); }
-  .grp-body { margin-top: 4px; margin-left: 8px; }
+  .grp-btn.on .les, .grp-btn:hover .les { color: var(--muted); }
+  .grp-body { margin-top: 3px; margin-left: 8px; }
 
-  /* ── Рядок сторінки ── */
+  /* ── Рядок сторінки. Один вертикальний ритм на всі типи рядків ── */
   .pg {
     display: flex; align-items: baseline; gap: 6px;
     font-size: 12.5px; font-weight: 600; color: var(--ink);
-    padding: 4px 8px; border-radius: 6px; line-height: 1.4;
+    padding: 4px 8px; border-radius: 6px; line-height: 1.35;
   }
   .pg:hover { background: var(--line-soft); }
   .pg.active { color: var(--clay); background: var(--clay-soft); }
 
   /* пункт без артефакта — видно, що етап є, а роботи ще немає */
   .ph {
-    display: flex; align-items: baseline; gap: 7px;
-    font-size: 12px; font-weight: 500; color: var(--faint);
-    padding: 4px 8px; line-height: 1.4; cursor: default;
+    display: block; font-size: 12px; font-weight: 500; color: var(--faint);
+    padding: 4px 8px; line-height: 1.35; cursor: default; font-style: italic;
   }
-  .ph::after { content: '—'; font-family: var(--mono); font-size: 10px; margin-left: auto; }
 
-  /* секції активної сторінки: направляюча під початком її тексту */
+  /* секції активної сторінки — направляюча під початком її тексту */
   .secs {
     display: flex; flex-direction: column; gap: 1px;
     margin: 2px 0 8px 19px; padding-left: 9px;
-    border-left: 1px solid var(--line);
+    border-left: 1px solid var(--rail-on);
   }
   .secs a {
     font-size: 11.5px; font-weight: 500; color: var(--muted);
-    padding: 2.5px 7px; border-radius: 5px; line-height: 1.4;
+    padding: 4px 7px; border-radius: 5px; line-height: 1.35;
   }
   .secs a:hover { color: var(--ink); background: var(--line-soft); }
   .secs a.active { color: var(--clay); background: var(--clay-soft); }
   .secs .n { font-family: var(--mono); font-size: 9px; margin-right: 6px; opacity: .55; }
 
   /* ── Рівень 3: роль (усередині «Екрани») ── */
-  .role { margin-top: 10px; }
+  .role { margin-top: 8px; }
   .role-btn {
     width: calc(100% + 6px); display: flex; align-items: center; gap: 7px;
     font-size: 11px; font-weight: 700; letter-spacing: .05em;
@@ -245,11 +253,18 @@
     padding: 5px 6px; margin-left: -6px; border-radius: 6px; text-align: left;
   }
   .role-btn:hover { color: var(--ink); background: var(--line-soft); }
+  .role-btn.on { color: var(--ink); }
   .role-btn .cnt {
     margin-left: auto; font-family: var(--mono); font-size: 9px;
     font-weight: 400; color: var(--faint); letter-spacing: 0;
   }
-  .role-body { margin: 2px 0 6px; }
+  /* Направляюча є там, де глибина справжня: 13 екранів × стани — єдине місце,
+     де без неї губиш, у чиїй гілці стоїш. Гілка активної сторінки підсвічена. */
+  .role-body {
+    margin: 2px 0 4px 3px; padding-left: 7px;
+    border-left: 1px solid var(--line);
+  }
+  .role-body.on { border-left-color: var(--rail-on); }
 
   /* ── Рівень 4: екран (шеврон + назва + job-тег) ── */
   .screen { margin: 0; }
