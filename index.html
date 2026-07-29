@@ -1080,6 +1080,20 @@ function revealActive(scroll = true) {
 function markActive(file) {
   for (const e of nav.querySelectorAll('[data-f]'))
     e.classList.toggle('active', e.dataset.f === file && e !== brand && !e.classList.contains('tag'));
+
+  // гілка, у якій стоїть активна сторінка: заголовки предків темніють,
+  // їхня направляюча підсвічується. У чотирирівневому дереві це єдиний
+  // спосіб бачити «де я» не розгортаючи все.
+  for (const c of collapsibles.values()) {
+    c.btn.classList.remove('on');
+    c.body.classList.remove('on');
+  }
+  const item = navItems.get(file);
+  if (!item) return;
+  for (const id of item.ancestors) {
+    const c = collapsibles.get(id);
+    if (c) { c.btn.classList.add('on'); c.body.classList.add('on'); }
+  }
 }
 
 // підпис у шапці: де ми в дереві
