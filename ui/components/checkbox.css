@@ -1,13 +1,13 @@
 /* ── Чекбокс ── структура з consent, вигляд із мови */
-.chk-line { display: flex; align-items: flex-start; gap: 11px; font-size: var(--font-size-16); color: var(--text-primary); line-height: 1.45; cursor: pointer; }
+.chk-line { display: flex; align-items: flex-start; gap: var(--space-11); font-size: var(--font-size-16); color: var(--text-primary); line-height: 1.45; cursor: pointer; }
 .chk-line input { position: absolute; opacity: 0; width: 1px; height: 1px; }
 .chk-box {
-  flex-shrink: 0; width: 22px; height: 22px; margin-top: 1px;
+  flex-shrink: 0; width: var(--size-22); height: var(--size-22); margin-top: var(--space-1);
   /* --border-control, не --border-default: порожній квадратик — єдиний носій
      контролу, тож його межа підпадає під WCAG 1.4.11 (3:1). Див. tokens.css. */
   border: var(--border-1-5) solid var(--border-control); border-radius: var(--radius-7); background: var(--bg-page);
   display: inline-flex; align-items: center; justify-content: center; color: transparent;
 }
-.chk-box svg { width: 13px; height: 13px; }
+.chk-box svg { width: var(--size-13); height: var(--size-13); }
 .chk-line input:checked + .chk-box { background: var(--color-action); border-color: var(--color-action); color: var(--on-action); }
-.chk-line input:focus-visible + .chk-box { outline: var(--border-2) solid var(--color-action); outline-offset: 2px; }
+.chk-line input:focus-visible + .chk-box { outline: var(--border-2) solid var(--color-action); outline-offset: var(--space-2); }

@@ -12,6 +12,21 @@ colors:
   on-cobalt: "#F6F1E4"
   orange: "#C45025"
   line: "rgba(27,23,18,.16)"
+  line-control: "rgba(27,23,18,.47)"
+  faint: "rgba(255,255,255,.5)"
+colorsDark:
+  page: "#17130E"
+  surface: "#2E2820"
+  navbar: "#262019"
+  selected: "#423A2E"
+  text: "#F3EED9"
+  text-muted: "#B5A98F"
+  olive: "#9DAB4A"
+  cobalt: "#7FB0E8"
+  on-cobalt: "#10161C"
+  orange: "#F0946A"
+  line: "rgba(243,238,217,.18)"
+  line-control: "rgba(243,238,217,.42)"
 typography:
   display:
     fontFamily: "Unbounded, Inter, system-ui, sans-serif"
@@ -43,9 +58,23 @@ typography:
     fontWeight: 700
     lineHeight: 1
     letterSpacing: "0.08em"
+typeRamp:
+  - "0.625rem / 10px — лічильники (.seg-count, .tab-dot, .row-unread), тільки цифри"
+  - "0.6875rem / 11px — лейбли, бейджі, підписи табів"
+  - "0.8125rem / 13px — мета, підзаголовки, .btn--sm"
+  - "1rem / 16px — базовий текст, поля, кнопки"
+  - "1.125rem / 18px — заголовок вторинної шапки й шита"
+  - "1.3125rem / 21px — ціна"
+  - "1.375rem / 22px — назва картки, заголовок стану"
+  - "1.75rem / 28px — ім'я в профілі"
+  - "2.5rem / 40px — вордмарк"
 rounded:
+  chip: "7px"
+  skeleton: "8px"
   field: "12px"
   popover: "14px"
+  msg: "18px"
+  focus: "20px"
   sheet: "22px"
   photo: "26px"
   block: "30px"

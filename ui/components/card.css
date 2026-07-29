@@ -1,13 +1,13 @@
 /* ── Каталог-картка оголошення ── (listings 1:1) */
 .card { display: block; }
-.card:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: 3px; border-radius: var(--radius-20); }
+.card:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: var(--space-3); border-radius: var(--radius-20); }
 .card-photo {
   position: relative; width: 100%; aspect-ratio: 4 / 3;
   border-radius: var(--radius-26); overflow: hidden; background: var(--bg-surface);
 }
 .card-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .card:active .card-photo { filter: brightness(.97); }
-.card-body { padding: 13px 2px 0; display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
+.card-body { padding: var(--space-13) var(--space-2) 0; display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-14); }
 .card-main { min-width: 0; }
 .card-title {
   font-weight: var(--font-weight-800); letter-spacing: -.02em;
@@ -22,14 +22,14 @@
   display: block; font-size: var(--font-size-21); font-weight: var(--font-weight-800); letter-spacing: -.02em;
   color: var(--color-action); font-variant-numeric: tabular-nums; white-space: nowrap;
 }
-.card-price .per { display: block; font-size: var(--font-size-11); color: var(--text-muted); margin-top: 1px; }
+.card-price .per { display: block; font-size: var(--font-size-11); color: var(--text-muted); margin-top: var(--space-1); }
 
 /* Оверлей на фото: район (зліва); дзеркальний бейдж (справа) — components/badge.css */
 .place {
-  position: absolute; left: 12px; bottom: 12px;
-  display: inline-flex; align-items: center; gap: 5px; max-width: 55%;
+  position: absolute; left: var(--space-12); bottom: var(--space-12);
+  display: inline-flex; align-items: center; gap: var(--space-5); max-width: 55%;
   background: var(--bg-surface); border-radius: var(--radius-999);
-  padding: 5px 11px 5px 9px; font-size: var(--font-size-11); font-weight: var(--font-weight-600); color: var(--text-primary);
+  padding: var(--space-5) var(--space-11) var(--space-5) var(--space-9); font-size: var(--font-size-11); font-weight: var(--font-weight-600); color: var(--text-primary);
 }
-.place svg { width: 13px; height: 13px; flex-shrink: 0; }
+.place svg { width: var(--size-13); height: var(--size-13); flex-shrink: 0; }
 .place .t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

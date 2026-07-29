@@ -9,7 +9,7 @@
 
 /* ── Рядок списку (медіа-рядок) ── структура з dialogs/candidates, вигляд із мови */
 .row {
-  display: flex; align-items: center; gap: 12px; padding: 14px 0;
+  display: flex; align-items: center; gap: var(--space-12); padding: var(--space-14) 0;
   color: var(--text-primary); text-decoration: none;
 }
 .row:hover { background: var(--bg-neutral); }
@@ -17,19 +17,19 @@
 .row--muted .row-title, .row--muted .row-meta { color: var(--text-muted); } /* стан «завершено/неактивне» — семантика, не сирий opacity */
 .row-body { flex: 1; min-width: 0; display: block; }
 .row-title { display: block; font-size: var(--font-size-16); font-weight: var(--font-weight-700); color: var(--text-primary); }
-.row-meta { display: block; font-size: var(--font-size-13); color: var(--text-muted); margin-top: 2px; }
+.row-meta { display: block; font-size: var(--font-size-13); color: var(--text-muted); margin-top: var(--space-2); }
 .row-preview { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.row-side { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; flex-shrink: 0; }
+.row-side { display: flex; flex-direction: column; align-items: flex-end; gap: var(--space-5); flex-shrink: 0; }
 .row-time { font-size: var(--font-size-11); color: var(--text-muted); }
 .row-unread {
-  min-width: 18px; height: 18px; padding: 0 5px; border-radius: var(--radius-999);
+  min-width: var(--size-18); height: var(--size-18); padding: 0 var(--space-5); border-radius: var(--radius-999);
   background: var(--color-action); color: var(--on-action);
-  font-size: var(--font-size-10); font-weight: var(--font-weight-700); line-height: 18px; text-align: center;
+  font-size: var(--font-size-10); font-weight: var(--font-weight-700); line-height: var(--size-18); text-align: center;
 }
-.row-actions { display: flex; gap: 8px; margin-top: 10px; padding-bottom: 14px; }
-.row-body .badge { margin-top: 6px; }
+.row-actions { display: flex; gap: var(--space-8); margin-top: var(--space-10); padding-bottom: var(--space-14); }
+.row-body .badge { margin-top: var(--space-6); }
 
 /* ── Рядок людини (співрозмовник / господар) ── host-row/chat-peer */
-.person-row { display: flex; align-items: center; gap: 10px; }
+.person-row { display: flex; align-items: center; gap: var(--space-10); }
 .person-name { display: block; font-size: var(--font-size-16); font-weight: var(--font-weight-600); color: var(--text-primary); }
-.person-sub { display: block; font-size: var(--font-size-13); color: var(--text-muted); margin-top: 2px; }
+.person-sub { display: block; font-size: var(--font-size-13); color: var(--text-muted); margin-top: var(--space-2); }

@@ -2,35 +2,35 @@
 .app-head {
   position: sticky; top: 0; z-index: 5;
   background: var(--bg-page); background-image: var(--grain-1);
-  padding: 20px 18px 12px;
-  display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+  padding: var(--space-20) var(--space-18) var(--space-12);
+  display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-12);
 }
 /* Знак бренду — квадрат-«зразок» зі загнутим кутом (дослівно «куток» + дог-ір
    каталожної сторінки). Пласкі два тони, без градієнта й тіні: олива = лице
    картки, --bg-surface = зворотний бік паперу, що показався в згині. */
-.brand-mark { width: 15px; height: 15px; flex-shrink: 0; display: block; }
-.head-brand-row { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; }
+.brand-mark { width: var(--size-15); height: var(--size-15); flex-shrink: 0; display: block; }
+.head-brand-row { display: flex; align-items: center; gap: var(--space-6); margin-bottom: var(--space-5); }
 .head-brand-row .head-brand { margin-bottom: 0; }
 .head-brand {
   font-size: var(--font-size-11); font-weight: var(--font-weight-700);
   text-transform: uppercase; letter-spacing: .14em; color: var(--text-muted);
-  margin-bottom: 5px;
+  margin-bottom: var(--space-5);
 }
 .head-word {
   font-family: var(--font-family-1); font-weight: var(--font-weight-700);
   font-size: var(--font-size-40); line-height: .95; letter-spacing: -.03em; color: var(--color-brand);
 }
-.head-sub { margin-top: 8px; font-size: var(--font-size-13); color: var(--text-muted); }
+.head-sub { margin-top: var(--space-8); font-size: var(--font-size-13); color: var(--text-muted); }
 .head-btn {
-  flex-shrink: 0; width: var(--size-44); height: var(--size-44); margin-top: 2px;
+  flex-shrink: 0; width: var(--size-44); height: var(--size-44); margin-top: var(--space-2);
   display: inline-flex; align-items: center; justify-content: center;
   border: var(--border-1-5) solid var(--color-brand); border-radius: var(--radius-999);
   background: transparent; color: var(--color-brand); cursor: pointer;
 }
-.head-btn svg { width: 18px; height: 18px; }
+.head-btn svg { width: var(--size-18); height: var(--size-18); }
 .head-btn:hover { background: var(--bg-brand-solid); color: var(--on-brand-solid); }
 .head-btn:active { filter: brightness(.92); }
-.head-btn:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: 2px; }
+.head-btn:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: var(--space-2); }
 
 /* ── Хедер · варіант B: назад + заголовок (вторинні екрани) ──
    структура зі сірих вайрфреймів (backlink + screen-title), вигляд із мови.
@@ -39,24 +39,24 @@
    (мова .head-btn пошуку) + заголовок в один рядок поруч, з переносом на два
    рядки без обрізання при довгому тексті — назад-лейбл текстом раніше боровся
    за ширину з заголовком і на мобільній ширині обидва переносились нерівно. */
-.app-head--back { flex-direction: column; align-items: stretch; gap: 10px; padding: 16px 18px 12px; }
+.app-head--back { flex-direction: column; align-items: stretch; gap: var(--space-10); padding: var(--space-16) var(--space-18) var(--space-12); }
 /* Пошук доступний з усіх змістовних екранів (не лише первинних табів) — коли
    в шапці є кнопка пошуку, повертаємось до рядкової композиції варіанта А
    (лівий стовпець тексту + кнопка справа), а бренд-рядок і назад-рядок
    стають внутрішньою колонкою всередині лівого стовпця. */
 .app-head--back:has(> .head-btn) { flex-direction: row; align-items: flex-start; justify-content: space-between; }
-.app-head--back:has(> .head-btn) > .head-back-wrap { display: flex; flex-direction: column; gap: 10px; min-width: 0; flex: 1 1 auto; }
-.head-back-row { display: flex; align-items: center; gap: 12px; }
+.app-head--back:has(> .head-btn) > .head-back-wrap { display: flex; flex-direction: column; gap: var(--space-10); min-width: 0; flex: 1 1 auto; }
+.head-back-row { display: flex; align-items: center; gap: var(--space-12); }
 .head-back {
   flex-shrink: 0; width: var(--size-44); height: var(--size-44);
   display: inline-flex; align-items: center; justify-content: center;
   border: var(--border-1-5) solid var(--color-brand); border-radius: var(--radius-999);
   background: transparent; color: var(--color-brand);
 }
-.head-back svg { width: 16px; height: 16px; }
+.head-back svg { width: var(--size-16); height: var(--size-16); }
 .head-back:hover { background: var(--bg-brand-solid); color: var(--on-brand-solid); }
 .head-back:active { filter: brightness(.92); }
-.head-back:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: 2px; }
+.head-back:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: var(--space-2); }
 .head-title {
   flex: 1 1 auto; min-width: 0; text-align: center;
   font-family: var(--font-family-1); font-weight: var(--font-weight-700);

@@ -1,14 +1,14 @@
 /* ── Повноекранний фото-в'юер ── винесено з photo-viewer.html (аудит 2026-07-29) */
-.gallery-bar { display: flex; align-items: center; justify-content: space-between; padding: 16px var(--space-16) 10px; }
+.gallery-bar { display: flex; align-items: center; justify-content: space-between; padding: var(--space-16) var(--space-16) var(--space-10); }
 .gallery-close {
-    width: 38px; height: 38px; border-radius: var(--radius-999); border: var(--border-1-5) solid var(--border-default);
+    width: var(--size-38); height: var(--size-38); border-radius: var(--radius-999); border: var(--border-1-5) solid var(--border-default);
     background: transparent; color: var(--text-primary); display: inline-flex; align-items: center; justify-content: center;
   }
 .gallery-close:hover { background: var(--bg-neutral); }
-.gallery-close svg { width: 15px; height: 15px; }
-.gallery-viewer { padding: 6px var(--space-16) 0; }
+.gallery-close svg { width: var(--size-15); height: var(--size-15); }
+.gallery-viewer { padding: var(--space-6) var(--space-16) 0; }
 .gallery-photo { width: 100%; aspect-ratio: 4 / 5; border-radius: var(--radius-26); object-fit: cover; display: block; background: var(--bg-surface); }
-.gallery-strip { list-style: none; display: flex; gap: 8px; padding: 14px var(--space-16) 22px; }
+.gallery-strip { list-style: none; display: flex; gap: var(--space-8); padding: var(--space-14) var(--space-16) var(--space-22); }
 .gallery-strip li { flex: 0 0 auto; }
-.gallery-thumb { width: 60px; height: 60px; border-radius: var(--radius-8); object-fit: cover; display: block; border: var(--border-1-5) solid transparent; }
+.gallery-thumb { width: var(--size-60); height: var(--size-60); border-radius: var(--radius-8); object-fit: cover; display: block; border: var(--border-1-5) solid transparent; }
 .gallery-thumb--current { border-color: var(--color-action); }

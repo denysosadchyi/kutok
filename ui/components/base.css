@@ -3,8 +3,8 @@
 
 .app {
   width: 100%;
-  max-width: 400px;
-  min-height: 844px; /* висота як у мобілки (мінімум), НЕ 100vh — інакше макет розтягується під висоту вікна браузера */
+  max-width: var(--size-400);
+  min-height: var(--size-844); /* висота як у мобілки (мінімум), НЕ 100vh — інакше макет розтягується під висоту вікна браузера */
   margin: 0 auto;
   background: var(--bg-page);
   background-image: var(--grain-1);
@@ -17,6 +17,10 @@
 .app a:not(:where(.btn)) { color: inherit; text-decoration: none; }
 .app main { flex: 1 1 auto; }  /* навбар і FAB завжди внизу */
 
+/* 1px тут — частина канонічної ідіоми приховування для скрін-рідерів
+   (розмір + clip), а не дизайнерське значення: його не тюнять темою чи
+   ребрендом, тому свідомо лишається числом. Те саме в .chk-line input,
+   .radio-option input, .seg input. */
 .sr-only {
   position: absolute; width: 1px; height: 1px; overflow: hidden;
   clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;

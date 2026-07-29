@@ -1,5 +1,5 @@
 /* ── Стрічка мініатюр кімнати ── винесено з room*.html, де дублювалась у 3 файлах */
-.thumb-strip { display: flex; gap: 8px; margin-top: 8px; }
+.thumb-strip { display: flex; gap: var(--space-8); margin-top: var(--space-8); }
 .thumb-strip a { display: block; flex: 0 0 auto; }
-.thumb-strip img { width: 64px; height: 48px; border-radius: var(--radius-8); object-fit: cover; display: block; background: var(--bg-surface); }
-.thumb-strip .sk { width: 64px; height: 48px; border-radius: var(--radius-8); }
+.thumb-strip img { width: var(--size-64); height: var(--size-48); border-radius: var(--radius-8); object-fit: cover; display: block; background: var(--bg-surface); }
+.thumb-strip .sk { width: var(--size-64); height: var(--size-48); border-radius: var(--radius-8); }

@@ -1,6 +1,6 @@
 /* ── Блок згоди + юридичні лінки ── винесено з consent.html (аудит 2026-07-29) */
-.consent-block { margin-bottom: 18px; }
+.consent-block { margin-bottom: var(--space-18); }
 .consent-block:last-child { margin-bottom: 0; }
-.legal-links { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: var(--font-size-13); }
+.legal-links { display: flex; align-items: center; gap: var(--space-8); margin-top: var(--space-8); font-size: var(--font-size-13); }
 .legal-links a { color: var(--color-action); text-decoration: underline; }
 .legal-links span { color: var(--text-muted); }

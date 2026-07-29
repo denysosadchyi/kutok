@@ -3,27 +3,27 @@
   border: var(--border-1) solid var(--border-default); border-bottom: none;
   border-radius: var(--radius-22) var(--radius-22) 0 0;
   background: var(--bg-page); background-image: var(--grain-1);
-  padding: 16px 18px calc(20px + env(safe-area-inset-bottom));
+  padding: var(--space-16) var(--space-18) calc(var(--space-20) + env(safe-area-inset-bottom));
 }
 /* Фіксація до низу в'юпорта (нативний popover) — та сама щоразу, коли шит використовується.
    Прив'язку до конкретного anchor-name сторінка задає сама (унікальний ідентифікатор). */
 .sheet--popover {
   position: fixed; inset: auto; bottom: 0; left: 50%; transform: translateX(-50%);
-  width: min(400px, 100vw); margin: 0; max-height: 82vh; overflow-y: auto;
+  width: min(var(--size-400), 100vw); margin: 0; max-height: 82vh; overflow-y: auto;
 }
 .sheet--popover::backdrop { background: var(--bg-backdrop); }
-.sheet-grip { width: 40px; height: 4px; border-radius: var(--radius-999); background: var(--border-default); margin: 0 auto 14px; }
-.sheet-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.sheet-grip { width: var(--size-40); height: var(--size-4); border-radius: var(--radius-999); background: var(--border-default); margin: 0 auto var(--space-14); }
+.sheet-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-14); }
 .sheet-title { font-weight: var(--font-weight-800); font-size: var(--font-size-18); letter-spacing: -.01em; color: var(--text-primary); }
 .sheet-close {
   width: var(--size-44); height: var(--size-44); border-radius: var(--radius-999); border: var(--border-1-5) solid var(--border-default);
   background: transparent; color: var(--text-muted); cursor: pointer;
   display: inline-flex; align-items: center; justify-content: center;
 }
-.sheet-close svg { width: 15px; height: 15px; }
+.sheet-close svg { width: var(--size-15); height: var(--size-15); }
 .sheet-close:hover { color: var(--text-primary); border-color: var(--text-muted); }
 .sheet-close:active { background: var(--bg-neutral); }
 /* Те саме кільце, що й у решти кнопок-іконок (.head-btn, .head-back) — раніше
    покладалась на дефолт браузера (аудит /impeccable, 2026-07-29). */
-.sheet-close:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: 2px; }
-.sheet-form { display: flex; flex-direction: column; gap: 13px; }
+.sheet-close:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: var(--space-2); }
+.sheet-form { display: flex; flex-direction: column; gap: var(--space-13); }

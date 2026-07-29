@@ -1,15 +1,15 @@
 /* ── Поповер пошуку ── (listings 1:1) */
 .search-popover {
-  width: min(320px, calc(100vw - 32px));
+  width: min(var(--size-320), calc(100vw - var(--space-32)));
   border: var(--border-1) solid var(--border-default); border-radius: var(--radius-14);
-  background: var(--bg-surface); padding: 10px;
+  background: var(--bg-surface); padding: var(--space-10);
 }
 .search-form {
-  display: flex; align-items: center; gap: 8px;
+  display: flex; align-items: center; gap: var(--space-8);
   background: var(--bg-surface);
-  border-radius: var(--radius-12); padding: 9px 12px;
+  border-radius: var(--radius-12); padding: var(--space-9) var(--space-12);
 }
-.search-form svg { width: 16px; height: 16px; color: var(--text-muted); flex-shrink: 0; }
+.search-form svg { width: var(--size-16); height: var(--size-16); color: var(--text-muted); flex-shrink: 0; }
 .search-form input {
   flex: 1; min-width: 0; border: none; background: transparent;
   font: inherit; font-size: var(--font-size-16); color: var(--text-primary);
@@ -19,5 +19,5 @@
    контрол (та сама мова, що й .fsel:focus-within). Раніше тут стояло
    outline:none на інпуті без жодної заміни: з клавіатури не було видно, де ти —
    порушення WCAG 2.4.7 (аудит /impeccable, 2026-07-29). */
-.search-form:focus-within { outline: var(--border-2) solid var(--color-action); outline-offset: 1px; }
+.search-form:focus-within { outline: var(--border-2) solid var(--color-action); outline-offset: var(--space-1); }
 .search-form input:focus { outline: none; }

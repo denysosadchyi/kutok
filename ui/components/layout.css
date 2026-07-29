@@ -1,4 +1,4 @@
 /* ── Загальні обгортки контенту ── */
-.pad { padding: 14px var(--space-16); }
-.section { padding: 20px var(--space-22); border-bottom: var(--border-1) solid var(--border-default); }
+.pad { padding: var(--space-14) var(--space-16); }
+.section { padding: var(--space-20) var(--space-22); border-bottom: var(--border-1) solid var(--border-default); }
 .section:last-child { border-bottom: none; }

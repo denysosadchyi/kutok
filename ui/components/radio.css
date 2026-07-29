@@ -1,18 +1,18 @@
 /* ── Радіо-список ── структура з report/privacy, вигляд із мови */
-.radio-option { display: flex; align-items: flex-start; gap: 11px; padding: 11px 0; font-size: var(--font-size-16); color: var(--text-primary); line-height: 1.4; cursor: pointer; }
+.radio-option { display: flex; align-items: flex-start; gap: var(--space-11); padding: var(--space-11) 0; font-size: var(--font-size-16); color: var(--text-primary); line-height: 1.4; cursor: pointer; }
 .radio-option input { position: absolute; opacity: 0; width: 1px; height: 1px; }
 .radio-dot {
-  flex-shrink: 0; width: 22px; height: 22px; margin-top: 1px;
+  flex-shrink: 0; width: var(--size-22); height: var(--size-22); margin-top: var(--space-1);
   /* --border-control, не --border-default: те саме, що й у .chk-box — порожнє
      кільце є весь контрол, WCAG 1.4.11 (3:1). Див. tokens.css. */
   border: var(--border-1-5) solid var(--border-control); border-radius: var(--radius-999); background: var(--bg-page);
   display: inline-flex; align-items: center; justify-content: center;
 }
-.radio-dot::after { content: ""; width: 10px; height: 10px; border-radius: var(--radius-999); background: transparent; }
+.radio-dot::after { content: ""; width: var(--size-10); height: var(--size-10); border-radius: var(--radius-999); background: transparent; }
 .radio-option input:checked + .radio-dot { border-color: var(--color-action); }
 .radio-option input:checked + .radio-dot::after { background: var(--color-action); }
-.radio-option input:focus-visible + .radio-dot { outline: var(--border-2) solid var(--color-action); outline-offset: 2px; }
+.radio-option input:focus-visible + .radio-dot { outline: var(--border-2) solid var(--color-action); outline-offset: var(--space-2); }
 /* Варіант із двох рядків (заголовок опції + пояснення) — privacy-settings */
-.radio-option .opt-text { display: flex; flex-direction: column; gap: 2px; }
+.radio-option .opt-text { display: flex; flex-direction: column; gap: var(--space-2); }
 .radio-option .opt-title { color: var(--text-primary); font-weight: var(--font-weight-600); }
 .radio-option .opt-hint { font-size: var(--font-size-11); color: var(--text-muted); line-height: 1.4; }

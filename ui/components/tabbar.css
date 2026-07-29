@@ -4,25 +4,25 @@
    поверхнею замість того, щоб інвертуватись у найяскравішу площину екрана
    (критика теми 2026-07-29). */
 .tabbar {
-  position: sticky; bottom: calc(8px + env(safe-area-inset-bottom));
-  margin: auto 8px calc(8px + env(safe-area-inset-bottom));
+  position: sticky; bottom: calc(var(--space-8) + env(safe-area-inset-bottom));
+  margin: auto var(--space-8) calc(var(--space-8) + env(safe-area-inset-bottom));
   background: var(--bg-navbar); background-image: var(--grain-2);
-  display: flex; gap: 2px; border-radius: var(--radius-999); padding: 6px;
+  display: flex; gap: var(--space-2); border-radius: var(--radius-999); padding: var(--space-6);
 }
 .tabbar a {
-  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
-  padding: 8px 4px 7px; position: relative; color: var(--on-navbar); border-radius: var(--radius-999);
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: var(--space-3);
+  padding: var(--space-8) var(--space-4) var(--space-7); position: relative; color: var(--on-navbar); border-radius: var(--radius-999);
 }
 .tabbar a.active { background: var(--bg-navbar-active); color: var(--on-navbar-active); font-weight: var(--font-weight-700); }
 .tabbar a.active .tab-ico { color: var(--on-navbar-active); }
 .tabbar a:focus-visible { outline: var(--border-2) solid var(--on-navbar); outline-offset: -3px; }
-.tab-ico { position: relative; width: 22px; height: 22px; }
+.tab-ico { position: relative; width: var(--size-22); height: var(--size-22); }
 .tab-ico svg { width: 100%; height: 100%; display: block; }
 .tab-txt { font-size: var(--font-size-11); }
 .tab-dot {
-  position: absolute; top: -4px; right: -8px; min-width: 15px; height: 15px; padding: 0 4px;
+  position: absolute; top: -4px; right: -8px; min-width: var(--size-15); height: var(--size-15); padding: 0 var(--space-4);
   /* Власні ролі навбару, не --bg-surface / --color-danger: бейдж лежить на
      темній смузі в обох темах і тому не перевертається разом зі сторінкою. */
   background: var(--bg-navbar-badge); color: var(--on-navbar-badge);
-  font-size: var(--font-size-10); font-weight: var(--font-weight-700); line-height: 15px; text-align: center; border-radius: var(--radius-999);
+  font-size: var(--font-size-10); font-weight: var(--font-weight-700); line-height: var(--size-15); text-align: center; border-radius: var(--radius-999);
 }

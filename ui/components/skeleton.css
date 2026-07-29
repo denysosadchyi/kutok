@@ -2,7 +2,7 @@
 @keyframes sk-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .45; } }
 .sk { background: var(--bg-pressed); animation: sk-pulse 1.4s ease-in-out infinite; }
 .sk-photo { width: 100%; aspect-ratio: 4 / 3; border-radius: var(--radius-26); }
-.sk-body { padding: 13px 2px 0; display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
-.sk-title { width: 62%; height: 26px; border-radius: var(--radius-8); }
-.sk-price { width: 26%; height: 26px; border-radius: var(--radius-8); }
-.sk-line { display: block; height: 12px; border-radius: 6px; margin: 6px 0; } /* рядок тексту, що вантажиться; ширина — inline per-instance */
+.sk-body { padding: var(--space-13) var(--space-2) 0; display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-14); }
+.sk-title { width: 62%; height: var(--size-26); border-radius: var(--radius-8); }
+.sk-price { width: 26%; height: var(--size-26); border-radius: var(--radius-8); }
+.sk-line { display: block; height: var(--size-12); border-radius: var(--radius-6); margin: var(--space-6) 0; } /* рядок тексту, що вантажиться; ширина — inline per-instance */

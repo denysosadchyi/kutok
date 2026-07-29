@@ -96,6 +96,7 @@
   --font-weight-800: 800; /* було --w-black */
 
   /* ── Радіус (назва = значення в px) ── */
+  --radius-6:   6px;   /* кут скелетон-рядка й «хвостик» бульбашки чату */
   --radius-7:   7px;   /* було --r-chip */
   --radius-8:   8px;   /* було --r-skeleton */
   --radius-12: 12px;   /* було --r-field */
@@ -112,17 +113,67 @@
   --border-1-5: 1.5px; /* було --bd */
   --border-2:   2px;   /* було --focus-w */
 
-  /* ── Відступи ── */
-  --space-13: 13px; /* було --field-gap */
-  --space-16: 16px; /* було --gutter */
-  --space-22: 22px; /* було --section */
-  --space-24: 24px; /* було --feed-gap */
+  /* ── Відступи ── повна шкала: назва = значення.
+     До аудиту 2026-07-29 тут було лише 4 токени, а 241 геометричне значення
+     стояло в компонентах сирими числами. Тепер кожен відступ, зазор і зсув
+     береться звідси; семантичного рівня для геометрії немає й не заводимо. */
+  --space-1: 1px;
+  --space-2: 2px;
+  --space-3: 3px;
+  --space-4: 4px;
+  --space-5: 5px;
+  --space-6: 6px;
+  --space-7: 7px;
+  --space-8: 8px;
+  --space-9: 9px;
+  --space-10: 10px;
+  --space-11: 11px;
+  --space-12: 12px;
+  --space-13: 13px;
+  --space-14: 14px;
+  --space-15: 15px;
+  --space-16: 16px;
+  --space-18: 18px;
+  --space-20: 20px;
+  --space-22: 22px;
+  --space-24: 24px;
+  --space-26: 26px;
+  --space-28: 28px;
+  --space-30: 30px;
+  --space-32: 32px;
+  --space-88: 88px;
 
-  /* ── Розміри контролів ── */
-  --size-40: 40px; /* було --h-control-sm */
-  --size-44: 44px; /* було --h-icon */
-  --size-48: 48px; /* було --h-control */
-  --size-56: 56px; /* було --h-fab */
+  /* ── Розміри ── назва = значення. Те саме, що зі відступами. */
+  --size-4: 4px;
+  --size-6: 6px;
+  --size-8: 8px;
+  --size-10: 10px;
+  --size-12: 12px;
+  --size-13: 13px;
+  --size-15: 15px;
+  --size-16: 16px;
+  --size-17: 17px;
+  --size-18: 18px;
+  --size-19: 19px;
+  --size-20: 20px;
+  --size-22: 22px;
+  --size-24: 24px;
+  --size-26: 26px;
+  --size-38: 38px;
+  --size-40: 40px;
+  --size-44: 44px;
+  --size-48: 48px;
+  --size-56: 56px;
+  --size-60: 60px;
+  --size-64: 64px;
+  --size-84: 84px;
+  --size-88: 88px;
+  --size-96: 96px;
+  --size-106: 106px;
+  --size-300: 300px;
+  --size-320: 320px;
+  --size-400: 400px;
+  --size-844: 844px;
 
   /* ── Рух ── */
   --duration-1: .15s; /* було --dur */
@@ -249,7 +300,9 @@
      пробита дірка. Заливка лишається темною оливою, гліф світлим — однаково
      скрізь, 4.57:1. */
   --bg-brand-solid: var(--olive-600);
-  --on-brand-solid: var(--cream-150);
+  --on-brand-solid: var(--cream-50);   /* саме cream-50: так було в світлій темі
+                                          до правки, і контраст вищий — 5.18:1
+                                          проти 4.57:1 у cream-150 */
 
   /* tokens-audit.md §1 «--on-cobalt»: 7 місць, увесь текст/іконка на
      кобальтовому тлі — .btn--primary, .chk-box:checked, .seg-count:checked,
