@@ -1137,6 +1137,7 @@ frame.addEventListener('load', () => {
   targetFile = file;                       // реальність перемогла (back/forward, програна гонка)
   const doc = frame.contentDocument;
   lastDoc = doc; lastFile = file;
+  paintFrame(doc);
 
   // ховаємо власний сайдбар сторінки — панель у проєкті одна
   if (doc && doc.querySelector('.sidenav, .wf-nav') && !doc.getElementById('shell-css')) {
