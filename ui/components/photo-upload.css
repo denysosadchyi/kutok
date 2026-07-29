@@ -10,3 +10,6 @@
 }
 .photo-slot svg { width: 26px; height: 26px; }
 .photo-slot img { width: 100%; height: 100%; object-fit: cover; }
+/* Слот — це <button>; кільце фокуса було відсутнє
+   (аудит /impeccable, 2026-07-29). */
+.photo-slot:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: 2px; }

@@ -23,4 +23,7 @@
 .sheet-close svg { width: 15px; height: 15px; }
 .sheet-close:hover { color: var(--text-primary); border-color: var(--text-muted); }
 .sheet-close:active { background: var(--bg-neutral); }
+/* Те саме кільце, що й у решти кнопок-іконок (.head-btn, .head-back) — раніше
+   покладалась на дефолт браузера (аудит /impeccable, 2026-07-29). */
+.sheet-close:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: 2px; }
 .sheet-form { display: flex; flex-direction: column; gap: 13px; }

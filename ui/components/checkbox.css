@@ -3,7 +3,9 @@
 .chk-line input { position: absolute; opacity: 0; width: 1px; height: 1px; }
 .chk-box {
   flex-shrink: 0; width: 22px; height: 22px; margin-top: 1px;
-  border: var(--border-1-5) solid var(--border-default); border-radius: var(--radius-7); background: var(--bg-page);
+  /* --border-control, не --border-default: порожній квадратик — єдиний носій
+     контролу, тож його межа підпадає під WCAG 1.4.11 (3:1). Див. tokens.css. */
+  border: var(--border-1-5) solid var(--border-control); border-radius: var(--radius-7); background: var(--bg-page);
   display: inline-flex; align-items: center; justify-content: center; color: transparent;
 }
 .chk-box svg { width: 13px; height: 13px; }

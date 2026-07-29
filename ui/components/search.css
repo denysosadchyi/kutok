@@ -11,7 +11,13 @@
 }
 .search-form svg { width: 16px; height: 16px; color: var(--text-muted); flex-shrink: 0; }
 .search-form input {
-  flex: 1; min-width: 0; border: none; background: transparent; outline: none;
+  flex: 1; min-width: 0; border: none; background: transparent;
   font: inherit; font-size: var(--font-size-16); color: var(--text-primary);
 }
 .search-form input::placeholder { color: var(--text-muted); }
+/* Фокус несе вся форма, а не сам інпут — кільце обводить лупу+поле як один
+   контрол (та сама мова, що й .fsel:focus-within). Раніше тут стояло
+   outline:none на інпуті без жодної заміни: з клавіатури не було видно, де ти —
+   порушення WCAG 2.4.7 (аудит /impeccable, 2026-07-29). */
+.search-form:focus-within { outline: var(--border-2) solid var(--color-action); outline-offset: 1px; }
+.search-form input:focus { outline: none; }

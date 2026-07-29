@@ -1,47 +1,609 @@
-/* ============================================================================
-   Куток — components/index.css
-   Класи компонентів, перенесені з ui/kit.css (крок 3, урок 8): один файл на
-   компонент, кожен читає колір лише через semantic-токени tokens.css і
-   геометрію/типографіку — напряму з primitive. Підключати разом із
-   ../../tokens.css (порядок значення не має — конфліктів селекторів немає).
-   ============================================================================ */
+/* ===========================================================================
+   Куток — components/index.css · ЗГЕНЕРОВАНО, НЕ РЕДАГУВАТИ
+   Джерело — окремі файли компонентів у цій теці; порядок — manifest.txt.
+   Перезібрати: bash ui/components/build.sh
+   =========================================================================== */
 
-@import url("base.css");
+/* ── base.css ────────────────────────────────────────────────────────────── */
+/* ── Оболонка / канвас ── */
+.app, .app *, .kit-demo, .kit-demo * { box-sizing: border-box; }
 
-/* Навігація */
-@import url("header.css");
-@import url("search.css");
-@import url("tabbar.css");
-@import url("menu.css");
+.app {
+  width: 100%;
+  max-width: 400px;
+  min-height: 844px; /* висота як у мобілки (мінімум), НЕ 100vh — інакше макет розтягується під висоту вікна браузера */
+  margin: 0 auto;
+  background: var(--bg-page);
+  background-image: var(--grain-1);
+  color: var(--text-primary);
+  font-family: var(--font-family-2);
+  line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+}
+.app a:not(:where(.btn)) { color: inherit; text-decoration: none; }
+.app main { flex: 1 1 auto; }  /* навбар і FAB завжди внизу */
 
-/* Картки й списки */
-@import url("feed.css");
-@import url("card.css");
-@import url("badge.css");
-@import url("avatar.css");
-@import url("status-pill.css");
-@import url("list.css");
-@import url("review.css");
-@import url("chips.css");
-@import url("meter.css");
-@import url("text.css");
-@import url("layout.css");
-@import url("profile-hero.css");
+.sr-only {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+}
 
-/* Форми */
-@import url("button.css");
-@import url("field.css");
-@import url("checkbox.css");
-@import url("radio.css");
-@import url("photo-upload.css");
-@import url("segment.css");
-@import url("fab.css");
-@import url("sheet.css");
+/* ── header.css ────────────────────────────────────────────────────────────── */
+/* ── Хедер · варіант A: видавничий вордмарк (первинні таби) ── (listings 1:1) */
+.app-head {
+  position: sticky; top: 0; z-index: 5;
+  background: var(--bg-page); background-image: var(--grain-1);
+  padding: 20px 18px 12px;
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+}
+/* Знак бренду — квадрат-«зразок» зі загнутим кутом (дослівно «куток» + дог-ір
+   каталожної сторінки). Пласкі два тони, без градієнта й тіні: олива = лице
+   картки, --bg-surface = зворотний бік паперу, що показався в згині. */
+.brand-mark { width: 15px; height: 15px; flex-shrink: 0; display: block; }
+.head-brand-row { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; }
+.head-brand-row .head-brand { margin-bottom: 0; }
+.head-brand {
+  font-size: var(--font-size-11); font-weight: var(--font-weight-700);
+  text-transform: uppercase; letter-spacing: .14em; color: var(--text-muted);
+  margin-bottom: 5px;
+}
+.head-word {
+  font-family: var(--font-family-1); font-weight: var(--font-weight-700);
+  font-size: var(--font-size-40); line-height: .95; letter-spacing: -.03em; color: var(--color-brand);
+}
+.head-sub { margin-top: 8px; font-size: var(--font-size-13); color: var(--text-muted); }
+.head-btn {
+  flex-shrink: 0; width: var(--size-44); height: var(--size-44); margin-top: 2px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: var(--border-1-5) solid var(--color-brand); border-radius: var(--radius-999);
+  background: transparent; color: var(--color-brand); cursor: pointer;
+}
+.head-btn svg { width: 18px; height: 18px; }
+.head-btn:hover { background: var(--color-brand); color: var(--on-brand); }
+.head-btn:active { filter: brightness(.92); }
+.head-btn:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: 2px; }
 
-/* Зворотний зв'язок */
-@import url("state.css");
-@import url("banner.css");
-@import url("skeleton.css");
+/* ── Хедер · варіант B: назад + заголовок (вторинні екрани) ──
+   структура зі сірих вайрфреймів (backlink + screen-title), вигляд із мови.
+   Колонка з двох рядків: (1) бренд-рядок — той самий, що й у варіанті А,
+   логотип має бути присутній в обох варіантах шапки; (2) кнопка-іконка назад
+   (мова .head-btn пошуку) + заголовок в один рядок поруч, з переносом на два
+   рядки без обрізання при довгому тексті — назад-лейбл текстом раніше боровся
+   за ширину з заголовком і на мобільній ширині обидва переносились нерівно. */
+.app-head--back { flex-direction: column; align-items: stretch; gap: 10px; padding: 16px 18px 12px; }
+/* Пошук доступний з усіх змістовних екранів (не лише первинних табів) — коли
+   в шапці є кнопка пошуку, повертаємось до рядкової композиції варіанта А
+   (лівий стовпець тексту + кнопка справа), а бренд-рядок і назад-рядок
+   стають внутрішньою колонкою всередині лівого стовпця. */
+.app-head--back:has(> .head-btn) { flex-direction: row; align-items: flex-start; justify-content: space-between; }
+.app-head--back:has(> .head-btn) > .head-back-wrap { display: flex; flex-direction: column; gap: 10px; min-width: 0; flex: 1 1 auto; }
+.head-back-row { display: flex; align-items: center; gap: 12px; }
+.head-back {
+  flex-shrink: 0; width: var(--size-44); height: var(--size-44);
+  display: inline-flex; align-items: center; justify-content: center;
+  border: var(--border-1-5) solid var(--color-brand); border-radius: var(--radius-999);
+  background: transparent; color: var(--color-brand);
+}
+.head-back svg { width: 16px; height: 16px; }
+.head-back:hover { background: var(--color-brand); color: var(--on-brand); }
+.head-back:active { filter: brightness(.92); }
+.head-back:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: 2px; }
+.head-title {
+  flex: 1 1 auto; min-width: 0; text-align: center;
+  font-family: var(--font-family-1); font-weight: var(--font-weight-700);
+  font-size: var(--font-size-18); line-height: 1.2; letter-spacing: -.01em; color: var(--text-primary);
+}
 
-/* Чат */
-@import url("chat.css");
+/* ── search.css ────────────────────────────────────────────────────────────── */
+/* ── Поповер пошуку ── (listings 1:1) */
+.search-popover {
+  width: min(320px, calc(100vw - 32px));
+  border: var(--border-1) solid var(--border-default); border-radius: var(--radius-14);
+  background: var(--bg-surface); padding: 10px;
+}
+.search-form {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--bg-surface);
+  border-radius: var(--radius-12); padding: 9px 12px;
+}
+.search-form svg { width: 16px; height: 16px; color: var(--text-muted); flex-shrink: 0; }
+.search-form input {
+  flex: 1; min-width: 0; border: none; background: transparent;
+  font: inherit; font-size: var(--font-size-16); color: var(--text-primary);
+}
+.search-form input::placeholder { color: var(--text-muted); }
+/* Фокус несе вся форма, а не сам інпут — кільце обводить лупу+поле як один
+   контрол (та сама мова, що й .fsel:focus-within). Раніше тут стояло
+   outline:none на інпуті без жодної заміни: з клавіатури не було видно, де ти —
+   порушення WCAG 2.4.7 (аудит /impeccable, 2026-07-29). */
+.search-form:focus-within { outline: var(--border-2) solid var(--color-action); outline-offset: 1px; }
+.search-form input:focus { outline: none; }
+
+/* ── tabbar.css ────────────────────────────────────────────────────────────── */
+/* ── Таб-бар ── (listings 1:1) */
+.tabbar {
+  position: sticky; bottom: calc(8px + env(safe-area-inset-bottom));
+  margin: auto 8px calc(8px + env(safe-area-inset-bottom));
+  background: var(--color-brand); background-image: var(--grain-2);
+  display: flex; gap: 2px; border-radius: var(--radius-999); padding: 6px;
+}
+.tabbar a {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
+  padding: 8px 4px 7px; position: relative; color: var(--on-brand); border-radius: var(--radius-999);
+}
+.tabbar a.active { background: var(--on-brand); color: var(--color-brand); font-weight: var(--font-weight-700); }
+.tabbar a.active .tab-ico { color: var(--color-brand); }
+.tabbar a:focus-visible { outline: var(--border-2) solid var(--on-brand); outline-offset: -3px; }
+.tab-ico { position: relative; width: 22px; height: 22px; }
+.tab-ico svg { width: 100%; height: 100%; display: block; }
+.tab-txt { font-size: var(--font-size-11); }
+.tab-dot {
+  position: absolute; top: -4px; right: -8px; min-width: 15px; height: 15px; padding: 0 4px;
+  background: var(--bg-surface); color: var(--color-danger);
+  font-size: var(--font-size-10); font-weight: var(--font-weight-700); line-height: 15px; text-align: center; border-radius: var(--radius-999);
+}
+
+/* ── menu.css ────────────────────────────────────────────────────────────── */
+/* ── Список-меню налаштувань ── (my-profile-seeker 1:1) */
+.menu-list { padding: 6px var(--space-22) 26px; }
+.menu-row {
+  display: flex; align-items: center; gap: 13px; padding: 15px 0;
+  border-bottom: var(--border-1) solid var(--border-default); color: var(--text-primary); text-decoration: none;
+}
+.menu-row:last-child { border-bottom: none; }
+.menu-row:hover { background: var(--bg-neutral); }
+/* Фірмове кільце фокуса — до цього рядок покладався на дефолт браузера й був
+   єдиним інтерактивним елементом системи без спільної мови фокуса
+   (аудит /impeccable, 2026-07-29). Offset усередину, як у .row. */
+.menu-row:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: -2px; }
+.menu-ic { width: 22px; height: 22px; color: var(--color-brand); flex-shrink: 0; }
+.menu-ic svg { width: 100%; height: 100%; display: block; }
+.menu-txt { flex: 1; font-size: var(--font-size-16); }
+.menu-chev {
+  width: 8px; height: 8px; border-top: var(--border-1-5) solid var(--text-muted);
+  border-right: var(--border-1-5) solid var(--text-muted); transform: rotate(45deg); flex-shrink: 0;
+}
+
+/* ── feed.css ────────────────────────────────────────────────────────────── */
+/* ── Стрічка (список карток/рядків, вертикальний) ── */
+.feed { list-style: none; padding: 12px var(--space-16) 22px; display: flex; flex-direction: column; gap: var(--space-24); }
+
+/* ── card.css ────────────────────────────────────────────────────────────── */
+/* ── Каталог-картка оголошення ── (listings 1:1) */
+.card { display: block; }
+.card:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: 3px; border-radius: var(--radius-20); }
+.card-photo {
+  position: relative; width: 100%; aspect-ratio: 4 / 3;
+  border-radius: var(--radius-26); overflow: hidden; background: var(--bg-surface);
+}
+.card-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.card:active .card-photo { filter: brightness(.97); }
+.card-body { padding: 13px 2px 0; display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
+.card-main { min-width: 0; }
+.card-title {
+  font-weight: var(--font-weight-800); letter-spacing: -.02em;
+  font-size: var(--font-size-22); line-height: 1.12; color: var(--text-primary); max-width: 12ch;
+}
+.card-price { text-align: right; flex-shrink: 0; }
+.card-price .amount {
+  display: block; font-size: var(--font-size-21); font-weight: var(--font-weight-800); letter-spacing: -.02em;
+  color: var(--color-action); font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.card-price .per { display: block; font-size: var(--font-size-11); color: var(--text-muted); margin-top: 1px; }
+
+/* Оверлей на фото: район (зліва); дзеркальний бейдж (справа) — components/badge.css */
+.place {
+  position: absolute; left: 12px; bottom: 12px;
+  display: inline-flex; align-items: center; gap: 5px; max-width: 55%;
+  background: var(--bg-surface); border-radius: var(--radius-999);
+  padding: 5px 11px 5px 9px; font-size: var(--font-size-11); font-weight: var(--font-weight-600); color: var(--text-primary);
+}
+.place svg { width: 13px; height: 13px; flex-shrink: 0; }
+.place .t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ── badge.css ────────────────────────────────────────────────────────────── */
+/* ── Бейдж верифікації ── (один API; консолідує .verified/.profile-badge/.badge) */
+.badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--bg-surface); border-radius: var(--radius-999);
+  padding: 5px 13px 5px 6px; font-size: var(--font-size-11); font-weight: var(--font-weight-600); color: var(--text-primary);
+}
+.badge--on-photo { position: absolute; right: 12px; bottom: 12px; padding: 4px 12px 4px 5px; }
+.badge-check {
+  width: 19px; height: 19px; border-radius: var(--radius-999); flex-shrink: 0;
+  background: var(--color-brand);
+  /* color: --bg-surface, не --on-brand — kit.css вживав тут --paper-2, інше
+     значення, ніж --on-olive (tokens.css §«Критика», --bg-surface). Крок 3 не
+     редизайн: пиксель лишається точним, навіть якщо роль «поверхня» для
+     кольору іконки на оливі звучить дивно. */
+  color: var(--bg-surface);
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.badge-check svg { width: 10px; height: 10px; }
+
+/* ── avatar.css ────────────────────────────────────────────────────────────── */
+/* ── Аватар / фото-плейсхолдер ── */
+.avatar-link { display: block; } /* лінк-обгортка аватара → фото-в'юер */
+.avatar {
+  width: 106px; height: 106px; border-radius: var(--radius-30);
+  object-fit: cover; display: block; background: var(--bg-surface);
+}
+.avatar--md { width: 64px; height: 64px; }
+.avatar--sm { width: 44px; height: 44px; }
+.thumb {
+  width: 100%; aspect-ratio: 4 / 3; border-radius: var(--radius-26);
+  object-fit: cover; display: block; background: var(--bg-surface);
+}
+/* текстовий плейсхолдер (сірі вайрфрейми) */
+.ph {
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted); font-size: var(--font-size-11); background: var(--bg-surface);
+  outline: var(--border-1) solid var(--bg-track); outline-offset: -1px; /* межа для плейсхолдера — не border (щоб не зʼїдало розмір), не shadow */
+}
+
+/* ── status-pill.css ────────────────────────────────────────────────────────────── */
+/* ── Статус-піґулка ── (заявки/оголошення: «очікує», «відхилено», «активне»…) */
+.status-pill {
+  display: inline-flex; align-items: center; gap: 4px; flex-shrink: 0;
+  padding: 3px 10px; border-radius: var(--radius-999);
+  background: var(--bg-neutral); color: var(--text-muted);
+  font-size: var(--font-size-11); font-weight: var(--font-weight-600); white-space: nowrap;
+}
+.status-pill svg { width: 10px; height: 10px; }
+.status-pill--success { color: var(--color-action); font-weight: var(--font-weight-700); } /* кобальт = дія/результат, той самий голос що ціна й CTA */
+.status-pill--rejected { color: var(--text-muted); text-decoration: line-through; text-decoration-color: var(--border-default); text-decoration-thickness: 1.5px; }
+
+/* ── list.css ────────────────────────────────────────────────────────────── */
+/* ── Список рядків (обгортка; на відміну від .feed — без зазору, роздільники несуть самі .row) ── */
+.list { list-style: none; padding: 0 var(--space-16); }
+
+/* ── Рядок списку (медіа-рядок) ── структура з dialogs/candidates, вигляд із мови */
+.row {
+  display: flex; align-items: center; gap: 12px; padding: 14px 0;
+  border-bottom: var(--border-1) solid var(--border-default); color: var(--text-primary); text-decoration: none;
+}
+.row:last-child { border-bottom: none; }
+.row:hover { background: var(--bg-neutral); }
+.row:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: -2px; }
+.row--muted .row-title, .row--muted .row-meta { color: var(--text-muted); } /* стан «завершено/неактивне» — семантика, не сирий opacity */
+.row-body { flex: 1; min-width: 0; display: block; }
+.row-title { display: block; font-size: var(--font-size-16); font-weight: var(--font-weight-700); color: var(--text-primary); }
+.row-meta { display: block; font-size: var(--font-size-13); color: var(--text-muted); margin-top: 2px; }
+.row-preview { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.row-side { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; flex-shrink: 0; }
+.row-time { font-size: var(--font-size-11); color: var(--text-muted); }
+.row-unread {
+  min-width: 18px; height: 18px; padding: 0 5px; border-radius: var(--radius-999);
+  background: var(--color-action); color: var(--on-action);
+  font-size: var(--font-size-10); font-weight: var(--font-weight-700); line-height: 18px; text-align: center;
+}
+.row-actions { display: flex; gap: 8px; margin-top: 10px; }
+.row-body .badge { margin-top: 6px; }
+
+/* ── Рядок людини (співрозмовник / господар) ── host-row/chat-peer */
+.person-row { display: flex; align-items: center; gap: 10px; }
+.person-name { display: block; font-size: var(--font-size-16); font-weight: var(--font-weight-600); color: var(--text-primary); }
+.person-sub { display: block; font-size: var(--font-size-13); color: var(--text-muted); margin-top: 2px; }
+
+/* ── review.css ────────────────────────────────────────────────────────────── */
+/* ── Відгук (карточка відгуку в профілі) ── структура з profile.html, вигляд із мови */
+.review { padding: 12px 0; border-top: var(--border-1) solid var(--border-default); }
+.review:first-child { border-top: none; }
+.review-meta { font-size: var(--font-size-11); color: var(--text-muted); margin-bottom: 4px; }
+.review-text { font-size: var(--font-size-16); color: var(--text-primary); line-height: 1.5; }
+
+/* ── chips.css ────────────────────────────────────────────────────────────── */
+/* ── Факти / чипи ── */
+.chips { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
+.chips li {
+  background: var(--bg-surface); border-radius: var(--radius-999);
+  padding: 8px 14px; font-size: var(--font-size-13); font-weight: var(--font-weight-600); color: var(--text-primary);
+}
+.facts { list-style: none; }
+.facts li {
+  position: relative; padding: 6px 0 6px 16px; font-size: var(--font-size-16); color: var(--text-primary);
+}
+.facts li::before {
+  content: ""; position: absolute; left: 0; top: 13px;
+  width: 6px; height: 6px; border-radius: var(--radius-999); background: var(--color-brand);
+}
+
+/* ── meter.css ────────────────────────────────────────────────────────────── */
+/* ── Метр повноти профілю ── (my-profile-seeker 1:1) */
+.meter-block { width: 100%; max-width: 300px; }
+.meter-label { display: flex; justify-content: space-between; font-size: var(--font-size-13); color: var(--text-muted); margin-bottom: 7px; }
+.meter-label b { color: var(--color-action); font-weight: var(--font-weight-800); font-variant-numeric: tabular-nums; }
+.meter { height: 8px; border-radius: var(--radius-999); background: var(--bg-track); overflow: hidden; }
+.meter-fill { height: 100%; background: var(--color-action); border-radius: var(--radius-999); }
+.meter-hint { font-size: var(--font-size-11); color: var(--text-muted); margin-top: 8px; line-height: 1.4; }
+
+/* ── text.css ────────────────────────────────────────────────────────────── */
+/* ── Лічильник результатів ── */
+.counter { font-size: var(--font-size-13); color: var(--text-muted); }
+.counter b { color: var(--text-primary); font-weight: var(--font-weight-700); font-variant-numeric: tabular-nums; }
+
+/* ── Оверлайн секції ── */
+.overline {
+  display: block; margin-bottom: 12px;
+  font-size: var(--font-size-11); text-transform: uppercase; letter-spacing: .08em;
+  color: var(--text-muted); font-weight: var(--font-weight-700);
+}
+.muted-note { font-size: var(--font-size-16); color: var(--text-muted); line-height: 1.5; }
+
+/* ── Пояснювальний текст ── */
+.hint { font-size: var(--font-size-13); color: var(--text-muted); line-height: 1.45; }
+
+/* ── layout.css ────────────────────────────────────────────────────────────── */
+/* ── Загальні обгортки контенту ── */
+.pad { padding: 14px var(--space-16); }
+.section { padding: 20px var(--space-22); border-bottom: var(--border-1) solid var(--border-default); }
+.section:last-child { border-bottom: none; }
+
+/* ── profile-hero.css ────────────────────────────────────────────────────────────── */
+/* ── Профіль-герой (аватар + ім'я + біо + бейдж + edit-link + метр, центровано) ── */
+.profile-hero {
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  padding: 6px var(--space-22) 24px; border-bottom: var(--border-1) solid var(--border-default);
+}
+.profile-name {
+  font-family: var(--font-family-1); font-weight: var(--font-weight-700);
+  font-size: var(--font-size-28); letter-spacing: -.03em; color: var(--text-primary); margin-top: 14px;
+}
+.profile-bio { font-size: var(--font-size-16); color: var(--text-muted); line-height: 1.5; max-width: 32ch; margin-top: 8px; }
+.profile-hero .badge { margin-top: 15px; }
+.profile-hero .btn { margin-top: 12px; }
+.profile-hero .meter-block { margin-top: 22px; }
+
+/* ── button.css ────────────────────────────────────────────────────────────── */
+/* ── Кнопки ── (один API; консолідує .btn/.primary/.ghost/sheet-apply/edit-link) */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  height: var(--size-48); padding: 0 18px; border-radius: var(--radius-12);
+  border: var(--border-1-5) solid var(--border-default); background: transparent; color: var(--text-primary);
+  font: inherit; font-size: var(--font-size-16); font-weight: var(--font-weight-600);
+  cursor: pointer; text-decoration: none;
+}
+.btn:hover { background: var(--bg-neutral); }
+.btn:active { background: var(--bg-pressed); }
+.btn:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: 2px; }
+.btn--primary { border: none; background: var(--color-action); color: var(--on-action); font-weight: var(--font-weight-700); }
+.btn--primary:hover { background: var(--color-action); filter: brightness(1.08); }
+.btn--primary:active { filter: brightness(.92); }
+.btn--primary:focus-visible { outline-color: var(--text-primary); }
+.btn--ghost { border: var(--border-1-5) solid var(--border-default); background: transparent; color: var(--text-primary); }
+.btn--sm { height: var(--size-40); padding: 0 14px; font-size: var(--font-size-13); }
+.btn--block { width: 100%; }
+.btn--pill { border-radius: var(--radius-999); }
+.btn[disabled], .btn[aria-disabled="true"] { opacity: .55; cursor: default; pointer-events: none; }
+
+/* ── Стек кнопок ── кілька повноширинних дій одна під одною поза .state-block
+   (login/verify retry-пари, verify-error результат): вертикальний flex, той самий
+   ритм (10px), що й .state-actions, але без центрування й max-width. */
+.btn-stack { display: flex; flex-direction: column; gap: 10px; }
+
+/* ── field.css ────────────────────────────────────────────────────────────── */
+/* ── Поле форми ── input / textarea / select (структура сірих форм, вигляд із мови) */
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field + .field { margin-top: var(--space-13); }
+.field > label, .field .cap {
+  font-size: var(--font-size-11); text-transform: uppercase; letter-spacing: .07em; color: var(--text-muted);
+}
+.field input, .field textarea, .field select {
+  width: 100%; border: none; background: var(--bg-surface);
+  border-radius: var(--radius-12); padding: 12px 13px;
+  font: inherit; font-size: var(--font-size-16); color: var(--text-primary);
+}
+.field input, .field select { height: var(--size-48); padding: 0 13px; }
+.field textarea { min-height: 96px; resize: vertical; line-height: 1.45; }
+.field input::placeholder, .field textarea::placeholder { color: var(--text-muted); }
+.field input:focus, .field textarea:focus, .field select:focus { outline: var(--border-2) solid var(--color-action); outline-offset: 1px; }
+
+/* ── Кастомний select ── (listings .fsel, борт прибрано 2026-07-24) */
+.fsel {
+  position: relative; display: flex; align-items: center; min-width: 0; width: 100%;
+  background: var(--bg-surface);
+  border-radius: var(--radius-12); padding: 0 30px 0 13px; height: var(--size-48);
+}
+.fsel select {
+  appearance: none; -webkit-appearance: none; -moz-appearance: none;
+  border: none; background: transparent; font: inherit;
+  font-size: var(--font-size-16); font-weight: var(--font-weight-600); color: var(--text-primary); cursor: pointer;
+  flex: 1; min-width: 0; padding: 0;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.fsel::after {
+  content: ""; position: absolute; right: 14px; top: 50%; margin-top: -5px;
+  width: 8px; height: 8px;
+  border-right: var(--border-1-5) solid var(--text-muted); border-bottom: var(--border-1-5) solid var(--text-muted);
+  transform: rotate(45deg); pointer-events: none;
+}
+.fsel:focus-within { outline: var(--border-2) solid var(--color-action); outline-offset: 1px; }
+
+/* ── checkbox.css ────────────────────────────────────────────────────────────── */
+/* ── Чекбокс ── структура з consent, вигляд із мови */
+.chk-line { display: flex; align-items: flex-start; gap: 11px; font-size: var(--font-size-16); color: var(--text-primary); line-height: 1.45; cursor: pointer; }
+.chk-line input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.chk-box {
+  flex-shrink: 0; width: 22px; height: 22px; margin-top: 1px;
+  /* --border-control, не --border-default: порожній квадратик — єдиний носій
+     контролу, тож його межа підпадає під WCAG 1.4.11 (3:1). Див. tokens.css. */
+  border: var(--border-1-5) solid var(--border-control); border-radius: var(--radius-7); background: var(--bg-page);
+  display: inline-flex; align-items: center; justify-content: center; color: transparent;
+}
+.chk-box svg { width: 13px; height: 13px; }
+.chk-line input:checked + .chk-box { background: var(--color-action); border-color: var(--color-action); color: var(--on-action); }
+.chk-line input:focus-visible + .chk-box { outline: var(--border-2) solid var(--color-action); outline-offset: 2px; }
+
+/* ── radio.css ────────────────────────────────────────────────────────────── */
+/* ── Радіо-список ── структура з report/privacy, вигляд із мови */
+.radio-option { display: flex; align-items: flex-start; gap: 11px; padding: 11px 0; font-size: var(--font-size-16); color: var(--text-primary); line-height: 1.4; cursor: pointer; }
+.radio-option input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.radio-dot {
+  flex-shrink: 0; width: 22px; height: 22px; margin-top: 1px;
+  /* --border-control, не --border-default: те саме, що й у .chk-box — порожнє
+     кільце є весь контрол, WCAG 1.4.11 (3:1). Див. tokens.css. */
+  border: var(--border-1-5) solid var(--border-control); border-radius: var(--radius-999); background: var(--bg-page);
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.radio-dot::after { content: ""; width: 10px; height: 10px; border-radius: var(--radius-999); background: transparent; }
+.radio-option input:checked + .radio-dot { border-color: var(--color-action); }
+.radio-option input:checked + .radio-dot::after { background: var(--color-action); }
+.radio-option input:focus-visible + .radio-dot { outline: var(--border-2) solid var(--color-action); outline-offset: 2px; }
+/* Варіант із двох рядків (заголовок опції + пояснення) — privacy-settings */
+.radio-option .opt-text { display: flex; flex-direction: column; gap: 2px; }
+.radio-option .opt-title { color: var(--text-primary); font-weight: var(--font-weight-600); }
+.radio-option .opt-hint { font-size: var(--font-size-11); color: var(--text-muted); line-height: 1.4; }
+
+/* ── photo-upload.css ────────────────────────────────────────────────────────────── */
+/* ── Ряд завантаження фото ── структура з room-create/profile-create, вигляд із мови.
+   Дві форми того самого компонента: сітка порожніх слотів (room, кілька фото) АБО
+   один avatar-прев'ю + ghost-кнопка дії (профіль, одне фото) — обидві всередині .photo-row. */
+.photo-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.photo-slot {
+  width: 84px; height: 84px; border-radius: var(--radius-30);
+  border: var(--border-1-5) solid var(--border-default); background: var(--bg-surface);
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--color-brand); cursor: pointer; overflow: hidden;
+}
+.photo-slot svg { width: 26px; height: 26px; }
+.photo-slot img { width: 100%; height: 100%; object-fit: cover; }
+/* Слот — це <button>; кільце фокуса було відсутнє
+   (аудит /impeccable, 2026-07-29). */
+.photo-slot:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: 2px; }
+
+/* ── segment.css ────────────────────────────────────────────────────────────── */
+/* ── Панель фільтра над стрічкою (сегмент живе тут) ── (listings 1:1) */
+.filterbar { padding: 14px 16px 8px; display: flex; flex-direction: column; gap: 10px; }
+
+/* ── Сегмент типу ── (listings 1:1) */
+.seg { display: flex; gap: 3px; padding: 4px; background: var(--bg-neutral); border: none; border-radius: var(--radius-999); }
+.seg label {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 9px 8px; border-radius: var(--radius-999);
+  font-size: var(--font-size-13); color: var(--text-muted); cursor: pointer;
+  transition: background var(--duration-1) var(--easing-1), color var(--duration-1) var(--easing-1);
+}
+.seg input { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); }
+.seg label:has(input:checked) { background: var(--bg-surface); color: var(--color-action); font-weight: var(--font-weight-700); }
+.seg label:has(input:focus-visible) { outline: var(--border-2) solid var(--color-action); outline-offset: 2px; }
+.seg-count {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 17px; height: 17px; padding: 0 5px; border-radius: var(--radius-999);
+  background: var(--bg-faint); color: var(--text-muted);
+  font-size: var(--font-size-10); font-weight: var(--font-weight-700); line-height: 1; font-variant-numeric: tabular-nums;
+}
+.seg label:has(input:checked) .seg-count { background: var(--color-action); color: var(--on-action); }
+
+/* ── fab.css ────────────────────────────────────────────────────────────── */
+/* ── FAB фільтра ── (listings 1:1) */
+.fab {
+  position: sticky; bottom: 88px; z-index: 4; align-self: flex-end; margin: 0 14px 12px auto;
+  width: var(--size-56); height: var(--size-56); border-radius: var(--radius-999); border: none;
+  background: var(--color-action); color: var(--on-action); cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.fab svg { width: 24px; height: 24px; }
+.fab:hover { filter: brightness(1.08); }
+.fab:active { filter: brightness(.9); }
+.fab:focus-visible { outline: var(--border-2) solid var(--text-primary); outline-offset: 2px; }
+
+/* ── sheet.css ────────────────────────────────────────────────────────────── */
+/* ── Боттом-шит фільтра ── (listings 1:1, як статичний блок) */
+.sheet {
+  border: var(--border-1) solid var(--border-default); border-bottom: none;
+  border-radius: var(--radius-22) var(--radius-22) 0 0;
+  background: var(--bg-page); background-image: var(--grain-1);
+  padding: 16px 18px calc(20px + env(safe-area-inset-bottom));
+}
+/* Фіксація до низу в'юпорта (нативний popover) — та сама щоразу, коли шит використовується.
+   Прив'язку до конкретного anchor-name сторінка задає сама (унікальний ідентифікатор). */
+.sheet--popover {
+  position: fixed; inset: auto; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: min(400px, 100vw); margin: 0; max-height: 82vh; overflow-y: auto;
+}
+.sheet--popover::backdrop { background: var(--bg-backdrop); }
+.sheet-grip { width: 40px; height: 4px; border-radius: var(--radius-999); background: var(--border-default); margin: 0 auto 14px; }
+.sheet-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.sheet-title { font-weight: var(--font-weight-800); font-size: var(--font-size-18); letter-spacing: -.01em; color: var(--text-primary); }
+.sheet-close {
+  width: var(--size-44); height: var(--size-44); border-radius: var(--radius-999); border: var(--border-1-5) solid var(--border-default);
+  background: transparent; color: var(--text-muted); cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.sheet-close svg { width: 15px; height: 15px; }
+.sheet-close:hover { color: var(--text-primary); border-color: var(--text-muted); }
+.sheet-close:active { background: var(--bg-neutral); }
+/* Те саме кільце, що й у решти кнопок-іконок (.head-btn, .head-back) — раніше
+   покладалась на дефолт браузера (аудит /impeccable, 2026-07-29). */
+.sheet-close:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: 2px; }
+.sheet-form { display: flex; flex-direction: column; gap: 13px; }
+
+/* ── state.css ────────────────────────────────────────────────────────────── */
+/* ── Порожній стан ── (стани listings 1:1) */
+.state-main { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: center; } /* вертикальне центрування .state-block у main */
+.state-block { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 32px 28px; }
+.state-icon {
+  width: 88px; height: 88px; border-radius: var(--radius-30); background: var(--bg-empty-icon);
+  display: flex; align-items: center; justify-content: center; color: var(--color-brand); margin-bottom: 22px;
+}
+.state-icon svg { width: 44px; height: 44px; }
+.state-title { font-family: var(--font-family-1); font-weight: var(--font-weight-700); font-size: var(--font-size-22); letter-spacing: -.02em; line-height: 1.1; color: var(--text-primary); margin-bottom: 9px; }
+.state-text { font-size: var(--font-size-16); color: var(--text-muted); max-width: 32ch; line-height: 1.5; margin-bottom: 24px; }
+.state-actions { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 300px; }
+
+/* ── banner.css ────────────────────────────────────────────────────────────── */
+/* ── Банер ── структура сірих банерів, вигляд із мови (без тіней, папір + рамка) */
+.banner {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 13px 14px; border-radius: var(--radius-12);
+  border: var(--border-1-5) solid var(--border-default); background: var(--bg-surface);
+  font-size: var(--font-size-13); color: var(--text-primary); line-height: 1.4;
+}
+.banner-ic { flex-shrink: 0; width: 20px; height: 20px; color: var(--text-muted); margin-top: 1px; }
+.banner-ic svg { width: 100%; height: 100%; display: block; }
+.banner--error .banner-ic { color: var(--color-danger); }
+.banner--success .banner-ic { color: var(--color-brand); }
+.banner--info .banner-ic { color: var(--color-action); }
+
+/* ── skeleton.css ────────────────────────────────────────────────────────────── */
+/* ── Скелетон завантаження ── (listings-loading 1:1) */
+@keyframes sk-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .45; } }
+.sk { background: var(--bg-pressed); animation: sk-pulse 1.4s ease-in-out infinite; }
+.sk-photo { width: 100%; aspect-ratio: 4 / 3; border-radius: var(--radius-26); }
+.sk-body { padding: 13px 2px 0; display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
+.sk-title { width: 62%; height: 26px; border-radius: var(--radius-8); }
+.sk-price { width: 26%; height: 26px; border-radius: var(--radius-8); }
+.sk-line { display: block; height: 12px; border-radius: 6px; margin: 6px 0; } /* рядок тексту, що вантажиться; ширина — inline per-instance */
+
+/* ── chat.css ────────────────────────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════════════════════
+   ЧАТ
+   ══════════════════════════════════════════════════════════════════════════ */
+.chat-thread { display: flex; flex-direction: column; gap: 8px; padding: 14px 16px; }
+.msg { max-width: 78%; padding: 10px 13px; border-radius: var(--radius-18); font-size: var(--font-size-16); line-height: 1.4; }
+.msg--in { align-self: flex-start; background: var(--bg-surface); color: var(--text-primary); border-bottom-left-radius: 6px; }
+.msg--out { align-self: flex-end; background: var(--color-action); color: var(--on-action); border-bottom-right-radius: 6px; }
+.composer {
+  display: flex; align-items: center; gap: 8px; padding: 10px 12px;
+  border-top: var(--border-1) solid var(--border-default); background: var(--bg-page); background-image: var(--grain-1);
+}
+.composer input {
+  flex: 1; min-width: 0; border: none; background: var(--bg-surface);
+  border-radius: var(--radius-999); padding: 10px 14px; font: inherit; font-size: var(--font-size-16); color: var(--text-primary);
+}
+.composer input::placeholder { color: var(--text-muted); }
+.composer input:focus { outline: var(--border-2) solid var(--color-action); outline-offset: 1px; }
+.composer .send {
+  flex-shrink: 0; width: var(--size-44); height: var(--size-44); border-radius: var(--radius-999); border: none;
+  background: var(--color-action); color: var(--on-action); cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.composer .send svg { width: 20px; height: 20px; }
+.composer .send:hover { filter: brightness(1.08); }
+.composer .send:active { filter: brightness(.9); }
+
+/* ── Скелетон-бульбашка (chat-loading) ── реальна форма/вирівнювання msg--in/msg--out,
+   нейтральний пульс замість кольору (та сама умова, що й .sk-line: ширина/висота — inline per-instance) */
+.sk-msg { align-self: flex-start; max-width: 78%; height: 38px; border-radius: var(--radius-18); }
+
