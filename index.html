@@ -760,6 +760,14 @@ function buildNav() {
   }
   tools.appendChild(modeBox);
 
+  const themeBtn = el('button', 'theme-btn',
+    '<svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/>' +
+    '<path d="M12 2.6v2.2M12 19.2v2.2M4.2 12H2M22 12h-2.2M6.5 6.5 4.9 4.9M19.1 19.1l-1.6-1.6M17.5 6.5l1.6-1.6M4.9 19.1l1.6-1.6"/></svg>' +
+    '<svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.2A8.2 8.2 0 0 1 9.8 4a8.4 8.4 0 1 0 10.2 10.2z"/></svg>');
+  themeBtn.type = 'button';
+  themeBtn.addEventListener('click', () => setTheme(theme === 'dark' ? 'light' : 'dark'));
+  tools.appendChild(themeBtn);
+
   allBtn = el('button', 'all-btn', 'згорнути все');
   allBtn.type = 'button';
   allBtn.addEventListener('click', toggleAll);
