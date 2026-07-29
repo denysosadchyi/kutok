@@ -380,6 +380,9 @@ if (!ok) {
 
       buildToc();
       wireLinks();
+      // оболонка дзеркалить наш зміст у свою панель, а він зʼявляється
+      // вже після load — тож кажемо їй перечитати
+      try { if (parent !== window) parent.postMessage('kutok:toc', '*'); } catch (_) {}
     })
     .catch(e => {
       titleEl.textContent = 'Не відкрився';
