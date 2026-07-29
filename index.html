@@ -948,8 +948,9 @@ function show(file, push = true) {
   openEl.href = file;
   openEl.dataset.f = file;
   markActive(file);
+  // кнопка «назад» веде по історії перегляду; перший показ історію не засмічує
   if (push && location.hash !== '#' + file)
-    history.pushState(null, '', '#' + file);    // кнопка «назад» веде по історії перегляду
+    history[location.hash ? 'pushState' : 'replaceState'](null, '', '#' + file);
   revealActive();
   syncAllBtn();
 }
