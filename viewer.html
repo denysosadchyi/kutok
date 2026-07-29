@@ -222,7 +222,7 @@ function esc(s) {
 
 function inline(s) {
   const code = [];
-  s = s.replace(/`([^`]+)`/g, (m, c) => { code.push(c); return ' ' + (code.length - 1) + ' '; });
+  s = s.replace(/`([^`]+)`/g, (m, c) => { code.push(c); return '\u0000' + (code.length - 1) + '\u0000'; });
   s = esc(s);
   s = s.replace(/!\[([^\]]*)\]\(([^)\s]+)(?:\s+&quot;[^&]*&quot;)?\)/g,
     (m, alt, src) => `<img src="${esc(resolve(src))}" alt="${alt}" loading="lazy">`);
@@ -234,7 +234,7 @@ function inline(s) {
   s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
   s = s.replace(/(^|[^*\w])\*([^*\n]+)\*/g, '$1<em>$2</em>');
   s = s.replace(/~~([^~]+)~~/g, '<del>$1</del>');
-  s = s.replace(/ (\d+) /g, (m, i) => '<code>' + esc(code[+i]) + '</code>');
+  s = s.replace(/\u0000(\d+)\u0000/g, (m, i) => '<code>' + esc(code[+i]) + '</code>');
   return s;
 }
 
@@ -345,8 +345,9 @@ function md2html(src) {
       continue;
     }
 
-    // абзац
-    const buf = [];
+    // абзац. Перший рядок беремо безумовно: інакше рядок, що почався з «|»,
+    // але таблицею не є, не з'їдається жодною гілкою — і цикл зависає.
+    const buf = [lines[i++]];
     while (i < lines.length && lines[i].trim() &&
            !/^\s*(#{1,6}\s|```|>|\||([-*+]|\d+[.)])\s)/.test(lines[i])) buf.push(lines[i++]);
     out.push('<p>' + inline(buf.join('\n')) + '</p>');
