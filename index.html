@@ -220,8 +220,10 @@
   .grp-body { margin-top: 3px; margin-left: 8px; }
 
   /* ── Рядок сторінки. Один вертикальний ритм на всі типи рядків ── */
+  /* block, не flex: підсвітка збігу вставляє <mark> у середину назви,
+     а у flex-контейнері gap розриває слово навпіл */
   .pg {
-    display: flex; align-items: baseline; gap: 6px;
+    display: block;
     font-size: 12.5px; font-weight: 600; color: var(--ink);
     padding: 4px 8px; border-radius: 6px; line-height: 1.35;
   }
