@@ -1,0 +1,6 @@
+/* ── Опції вибору ролі ── винесено з role-select.html (аудит 2026-07-29) */
+.role-option { display: flex; flex-direction: column; gap: 4px; width: 100%; padding: 18px 20px; border: var(--border-1-5) solid var(--border-default); border-radius: var(--radius-12); background: var(--bg-surface); text-align: left; }
+.role-option:hover { background: var(--bg-neutral); }
+.role-option-title { font-family: var(--font-family-1); font-weight: var(--font-weight-700); font-size: 1.0625rem; letter-spacing: -.01em; color: var(--text-primary); }
+.role-option-sub { font-size: var(--font-size-13); color: var(--text-muted); }
+.role-note { margin-top: var(--space-16); text-align: center; }

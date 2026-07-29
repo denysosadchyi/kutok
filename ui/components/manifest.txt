@@ -27,3 +27,9 @@ state.css
 banner.css
 skeleton.css
 chat.css
+gallery.css
+thumb-strip.css
+role-option.css
+consent.css
+legal-copy.css
+privacy-group.css

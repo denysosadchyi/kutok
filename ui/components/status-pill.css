@@ -7,4 +7,6 @@
 }
 .status-pill svg { width: 10px; height: 10px; }
 .status-pill--success { color: var(--color-action); font-weight: var(--font-weight-700); } /* кобальт = дія/результат, той самий голос що ціна й CTA */
-.status-pill--rejected { color: var(--text-muted); text-decoration: line-through; text-decoration-color: var(--border-default); text-decoration-thickness: 1.5px; }
+.status-pill--rejected { color: var(--text-muted); text-decoration: line-through; text-decoration-color: var(--text-muted); text-decoration-thickness: var(--border-1-5); }
+/* Перекреслення тепер кольором тексту, а не рамки: --border-default у темній
+   темі невидимий, і «відхилено» не відрізнялось від «очікує» (аудит 2026-07-29). */

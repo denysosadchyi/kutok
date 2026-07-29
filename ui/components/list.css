@@ -1,12 +1,17 @@
 /* ── Список рядків (обгортка; на відміну від .feed — без зазору, роздільники несуть самі .row) ── */
 .list { list-style: none; padding: 0 var(--space-16); }
+/* Роздільник живе на <li>, а не на .row: у рядка можуть бути власні дії
+   (.row-actions — сусід .row усередині того самого li), і коли рамка стояла
+   на .row, кнопка «Відкликати заявку» опинялась ПІД лінією, тобто візуально
+   прилипала до наступного запису (аудит 2026-07-29). */
+.list > li { border-bottom: var(--border-1) solid var(--border-default); }
+.list > li:last-child { border-bottom: none; }
 
 /* ── Рядок списку (медіа-рядок) ── структура з dialogs/candidates, вигляд із мови */
 .row {
   display: flex; align-items: center; gap: 12px; padding: 14px 0;
-  border-bottom: var(--border-1) solid var(--border-default); color: var(--text-primary); text-decoration: none;
+  color: var(--text-primary); text-decoration: none;
 }
-.row:last-child { border-bottom: none; }
 .row:hover { background: var(--bg-neutral); }
 .row:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: -2px; }
 .row--muted .row-title, .row--muted .row-meta { color: var(--text-muted); } /* стан «завершено/неактивне» — семантика, не сирий opacity */
@@ -21,7 +26,7 @@
   background: var(--color-action); color: var(--on-action);
   font-size: var(--font-size-10); font-weight: var(--font-weight-700); line-height: 18px; text-align: center;
 }
-.row-actions { display: flex; gap: 8px; margin-top: 10px; }
+.row-actions { display: flex; gap: 8px; margin-top: 10px; padding-bottom: 14px; }
 .row-body .badge { margin-top: 6px; }
 
 /* ── Рядок людини (співрозмовник / господар) ── host-row/chat-peer */

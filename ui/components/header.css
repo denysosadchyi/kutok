@@ -28,7 +28,7 @@
   background: transparent; color: var(--color-brand); cursor: pointer;
 }
 .head-btn svg { width: 18px; height: 18px; }
-.head-btn:hover { background: var(--color-brand); color: var(--on-brand); }
+.head-btn:hover { background: var(--bg-brand-solid); color: var(--on-brand-solid); }
 .head-btn:active { filter: brightness(.92); }
 .head-btn:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: 2px; }
 
@@ -54,7 +54,7 @@
   background: transparent; color: var(--color-brand);
 }
 .head-back svg { width: 16px; height: 16px; }
-.head-back:hover { background: var(--color-brand); color: var(--on-brand); }
+.head-back:hover { background: var(--bg-brand-solid); color: var(--on-brand-solid); }
 .head-back:active { filter: brightness(.92); }
 .head-back:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: 2px; }
 .head-title {

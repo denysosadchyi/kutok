@@ -71,19 +71,6 @@
 
   /* ── Разове (тільки цей екран, див. ui/inventory.md → «Разове»): повноекранний
      фото-в'юер. Вигляд токенами tokens.css + ui/components/, у спільний кіт не тягнемо. ── */
-  .gallery-bar { display: flex; align-items: center; justify-content: space-between; padding: 16px var(--space-16) 10px; }
-  .gallery-close {
-    width: 38px; height: 38px; border-radius: var(--radius-999); border: var(--border-1-5) solid var(--border-default);
-    background: transparent; color: var(--text-primary); display: inline-flex; align-items: center; justify-content: center;
-  }
-  .gallery-close:hover { background: var(--bg-neutral); }
-  .gallery-close svg { width: 15px; height: 15px; }
-  .gallery-viewer { padding: 6px var(--space-16) 0; }
-  .gallery-photo { width: 100%; aspect-ratio: 4 / 5; border-radius: var(--radius-26); object-fit: cover; display: block; background: var(--bg-surface); }
-  .gallery-strip { list-style: none; display: flex; gap: 8px; padding: 14px var(--space-16) 22px; }
-  .gallery-strip li { flex: 0 0 auto; }
-  .gallery-thumb { width: 60px; height: 60px; border-radius: var(--radius-8); object-fit: cover; display: block; border: var(--border-1-5) solid transparent; }
-  .gallery-thumb--current { border-color: var(--color-action); }
 </style>
 <script>
 /* Тема застосовується ДО першого паінту, щоб не було спалаху світлої теми. */

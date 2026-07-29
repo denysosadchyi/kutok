@@ -60,7 +60,7 @@
   background: transparent; color: var(--color-brand); cursor: pointer;
 }
 .head-btn svg { width: 18px; height: 18px; }
-.head-btn:hover { background: var(--color-brand); color: var(--on-brand); }
+.head-btn:hover { background: var(--bg-brand-solid); color: var(--on-brand-solid); }
 .head-btn:active { filter: brightness(.92); }
 .head-btn:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: 2px; }
 
@@ -86,7 +86,7 @@
   background: transparent; color: var(--color-brand);
 }
 .head-back svg { width: 16px; height: 16px; }
-.head-back:hover { background: var(--color-brand); color: var(--on-brand); }
+.head-back:hover { background: var(--bg-brand-solid); color: var(--on-brand-solid); }
 .head-back:active { filter: brightness(.92); }
 .head-back:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: 2px; }
 .head-title {
@@ -136,8 +136,8 @@
   flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
   padding: 8px 4px 7px; position: relative; color: var(--on-navbar); border-radius: var(--radius-999);
 }
-.tabbar a.active { background: var(--on-navbar); color: var(--bg-navbar); font-weight: var(--font-weight-700); }
-.tabbar a.active .tab-ico { color: var(--bg-navbar); }
+.tabbar a.active { background: var(--bg-navbar-active); color: var(--on-navbar-active); font-weight: var(--font-weight-700); }
+.tabbar a.active .tab-ico { color: var(--on-navbar-active); }
 .tabbar a:focus-visible { outline: var(--border-2) solid var(--on-navbar); outline-offset: -3px; }
 .tab-ico { position: relative; width: 22px; height: 22px; }
 .tab-ico svg { width: 100%; height: 100%; display: block; }
@@ -192,7 +192,11 @@
   font-size: var(--font-size-22); line-height: 1.12; color: var(--text-primary); max-width: 12ch;
 }
 .card-price { text-align: right; flex-shrink: 0; }
-.card-price .amount {
+/* .amount самостійний, не лише всередині .card-price: на room.html ціна
+   стоїть окремим абзацом і при контекстному правилі втрачала кобальт, 21px,
+   вагу 800 і tabular-nums — тобто найважливіша цифра детальної сторінки
+   виглядала як звичайний текст (аудит 2026-07-29). */
+.amount {
   display: block; font-size: var(--font-size-21); font-weight: var(--font-weight-800); letter-spacing: -.02em;
   color: var(--color-action); font-variant-numeric: tabular-nums; white-space: nowrap;
 }
@@ -218,12 +222,12 @@
 .badge--on-photo { position: absolute; right: 12px; bottom: 12px; padding: 4px 12px 4px 5px; }
 .badge-check {
   width: 19px; height: 19px; border-radius: var(--radius-999); flex-shrink: 0;
-  background: var(--color-brand);
-  /* color: --bg-surface, не --on-brand — kit.css вживав тут --paper-2, інше
-     значення, ніж --on-olive (tokens.css §«Критика», --bg-surface). Крок 3 не
-     редизайн: пиксель лишається точним, навіть якщо роль «поверхня» для
-     кольору іконки на оливі звучить дивно. */
-  color: var(--bg-surface);
+  /* Пара «суцільний бренд + гліф», що НЕ перевертається темою: у світлій і
+     темній однаково — темна олива з світлою галочкою. Раніше колір галочки
+     читав --bg-surface, і в темній вона ставала темною на світлій оливі,
+     тобто діркою замість позначки (критика 2026-07-29). */
+  background: var(--bg-brand-solid);
+  color: var(--on-brand-solid);
   display: inline-flex; align-items: center; justify-content: center;
 }
 .badge-check svg { width: 10px; height: 10px; }
@@ -258,18 +262,25 @@
 }
 .status-pill svg { width: 10px; height: 10px; }
 .status-pill--success { color: var(--color-action); font-weight: var(--font-weight-700); } /* кобальт = дія/результат, той самий голос що ціна й CTA */
-.status-pill--rejected { color: var(--text-muted); text-decoration: line-through; text-decoration-color: var(--border-default); text-decoration-thickness: 1.5px; }
+.status-pill--rejected { color: var(--text-muted); text-decoration: line-through; text-decoration-color: var(--text-muted); text-decoration-thickness: var(--border-1-5); }
+/* Перекреслення тепер кольором тексту, а не рамки: --border-default у темній
+   темі невидимий, і «відхилено» не відрізнялось від «очікує» (аудит 2026-07-29). */
 
 /* ── list.css ────────────────────────────────────────────────────────────── */
 /* ── Список рядків (обгортка; на відміну від .feed — без зазору, роздільники несуть самі .row) ── */
 .list { list-style: none; padding: 0 var(--space-16); }
+/* Роздільник живе на <li>, а не на .row: у рядка можуть бути власні дії
+   (.row-actions — сусід .row усередині того самого li), і коли рамка стояла
+   на .row, кнопка «Відкликати заявку» опинялась ПІД лінією, тобто візуально
+   прилипала до наступного запису (аудит 2026-07-29). */
+.list > li { border-bottom: var(--border-1) solid var(--border-default); }
+.list > li:last-child { border-bottom: none; }
 
 /* ── Рядок списку (медіа-рядок) ── структура з dialogs/candidates, вигляд із мови */
 .row {
   display: flex; align-items: center; gap: 12px; padding: 14px 0;
-  border-bottom: var(--border-1) solid var(--border-default); color: var(--text-primary); text-decoration: none;
+  color: var(--text-primary); text-decoration: none;
 }
-.row:last-child { border-bottom: none; }
 .row:hover { background: var(--bg-neutral); }
 .row:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: -2px; }
 .row--muted .row-title, .row--muted .row-meta { color: var(--text-muted); } /* стан «завершено/неактивне» — семантика, не сирий opacity */
@@ -284,7 +295,7 @@
   background: var(--color-action); color: var(--on-action);
   font-size: var(--font-size-10); font-weight: var(--font-weight-700); line-height: 18px; text-align: center;
 }
-.row-actions { display: flex; gap: 8px; margin-top: 10px; }
+.row-actions { display: flex; gap: 8px; margin-top: 10px; padding-bottom: 14px; }
 .row-body .badge { margin-top: 6px; }
 
 /* ── Рядок людини (співрозмовник / господар) ── host-row/chat-peer */
@@ -491,7 +502,9 @@
   transition: background var(--duration-1) var(--easing-1), color var(--duration-1) var(--easing-1);
 }
 .seg input { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); }
-.seg label:has(input:checked) { background: var(--bg-surface); color: var(--color-action); font-weight: var(--font-weight-700); }
+/* --bg-selected, не --bg-surface: піґулка лежить не на канвасі, а на треку
+   --bg-neutral, і в темній темі елевація «поверхні» на ньому зникала (tokens.css). */
+.seg label:has(input:checked) { background: var(--bg-selected); color: var(--color-action); font-weight: var(--font-weight-700); }
 .seg label:has(input:focus-visible) { outline: var(--border-2) solid var(--color-action); outline-offset: 2px; }
 .seg-count {
   display: inline-flex; align-items: center; justify-content: center;
@@ -612,4 +625,52 @@
 /* ── Скелетон-бульбашка (chat-loading) ── реальна форма/вирівнювання msg--in/msg--out,
    нейтральний пульс замість кольору (та сама умова, що й .sk-line: ширина/висота — inline per-instance) */
 .sk-msg { align-self: flex-start; max-width: 78%; height: 38px; border-radius: var(--radius-18); }
+
+/* ── gallery.css ────────────────────────────────────────────────────────────── */
+/* ── Повноекранний фото-в'юер ── винесено з photo-viewer.html (аудит 2026-07-29) */
+.gallery-bar { display: flex; align-items: center; justify-content: space-between; padding: 16px var(--space-16) 10px; }
+.gallery-close {
+    width: 38px; height: 38px; border-radius: var(--radius-999); border: var(--border-1-5) solid var(--border-default);
+    background: transparent; color: var(--text-primary); display: inline-flex; align-items: center; justify-content: center;
+  }
+.gallery-close:hover { background: var(--bg-neutral); }
+.gallery-close svg { width: 15px; height: 15px; }
+.gallery-viewer { padding: 6px var(--space-16) 0; }
+.gallery-photo { width: 100%; aspect-ratio: 4 / 5; border-radius: var(--radius-26); object-fit: cover; display: block; background: var(--bg-surface); }
+.gallery-strip { list-style: none; display: flex; gap: 8px; padding: 14px var(--space-16) 22px; }
+.gallery-strip li { flex: 0 0 auto; }
+.gallery-thumb { width: 60px; height: 60px; border-radius: var(--radius-8); object-fit: cover; display: block; border: var(--border-1-5) solid transparent; }
+.gallery-thumb--current { border-color: var(--color-action); }
+
+/* ── thumb-strip.css ────────────────────────────────────────────────────────────── */
+/* ── Стрічка мініатюр кімнати ── винесено з room*.html, де дублювалась у 3 файлах */
+.thumb-strip { display: flex; gap: 8px; margin-top: 8px; }
+.thumb-strip a { display: block; flex: 0 0 auto; }
+.thumb-strip img { width: 64px; height: 48px; border-radius: var(--radius-8); object-fit: cover; display: block; background: var(--bg-surface); }
+.thumb-strip .sk { width: 64px; height: 48px; border-radius: var(--radius-8); }
+
+/* ── role-option.css ────────────────────────────────────────────────────────────── */
+/* ── Опції вибору ролі ── винесено з role-select.html (аудит 2026-07-29) */
+.role-option { display: flex; flex-direction: column; gap: 4px; width: 100%; padding: 18px 20px; border: var(--border-1-5) solid var(--border-default); border-radius: var(--radius-12); background: var(--bg-surface); text-align: left; }
+.role-option:hover { background: var(--bg-neutral); }
+.role-option-title { font-family: var(--font-family-1); font-weight: var(--font-weight-700); font-size: 1.0625rem; letter-spacing: -.01em; color: var(--text-primary); }
+.role-option-sub { font-size: var(--font-size-13); color: var(--text-muted); }
+.role-note { margin-top: var(--space-16); text-align: center; }
+
+/* ── consent.css ────────────────────────────────────────────────────────────── */
+/* ── Блок згоди + юридичні лінки ── винесено з consent.html (аудит 2026-07-29) */
+.consent-block { margin-bottom: 18px; }
+.consent-block:last-child { margin-bottom: 0; }
+.legal-links { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: var(--font-size-13); }
+.legal-links a { color: var(--color-action); text-decoration: underline; }
+.legal-links span { color: var(--text-muted); }
+
+/* ── legal-copy.css ────────────────────────────────────────────────────────────── */
+/* ── Юридичний текст ── винесено з legal.html (аудит 2026-07-29) */
+.legal-copy p + p { margin-top: var(--space-13); }
+.legal-copy p { line-height: 1.55; }
+
+/* ── privacy-group.css ────────────────────────────────────────────────────────────── */
+/* ── Група налаштувань приватності ── винесено з privacy-settings.html */
+.privacy-group { border: none; padding: 0; margin: 0; }
 

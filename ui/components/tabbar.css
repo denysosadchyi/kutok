@@ -13,8 +13,8 @@
   flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
   padding: 8px 4px 7px; position: relative; color: var(--on-navbar); border-radius: var(--radius-999);
 }
-.tabbar a.active { background: var(--on-navbar); color: var(--bg-navbar); font-weight: var(--font-weight-700); }
-.tabbar a.active .tab-ico { color: var(--bg-navbar); }
+.tabbar a.active { background: var(--bg-navbar-active); color: var(--on-navbar-active); font-weight: var(--font-weight-700); }
+.tabbar a.active .tab-ico { color: var(--on-navbar-active); }
 .tabbar a:focus-visible { outline: var(--border-2) solid var(--on-navbar); outline-offset: -3px; }
 .tab-ico { position: relative; width: 22px; height: 22px; }
 .tab-ico svg { width: 100%; height: 100%; display: block; }

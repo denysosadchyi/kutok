@@ -1,0 +1,3 @@
+/* ── Юридичний текст ── винесено з legal.html (аудит 2026-07-29) */
+.legal-copy p + p { margin-top: var(--space-13); }
+.legal-copy p { line-height: 1.55; }

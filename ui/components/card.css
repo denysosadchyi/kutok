@@ -14,7 +14,11 @@
   font-size: var(--font-size-22); line-height: 1.12; color: var(--text-primary); max-width: 12ch;
 }
 .card-price { text-align: right; flex-shrink: 0; }
-.card-price .amount {
+/* .amount самостійний, не лише всередині .card-price: на room.html ціна
+   стоїть окремим абзацом і при контекстному правилі втрачала кобальт, 21px,
+   вагу 800 і tabular-nums — тобто найважливіша цифра детальної сторінки
+   виглядала як звичайний текст (аудит 2026-07-29). */
+.amount {
   display: block; font-size: var(--font-size-21); font-weight: var(--font-weight-800); letter-spacing: -.02em;
   color: var(--color-action); font-variant-numeric: tabular-nums; white-space: nowrap;
 }

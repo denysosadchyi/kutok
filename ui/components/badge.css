@@ -7,12 +7,12 @@
 .badge--on-photo { position: absolute; right: 12px; bottom: 12px; padding: 4px 12px 4px 5px; }
 .badge-check {
   width: 19px; height: 19px; border-radius: var(--radius-999); flex-shrink: 0;
-  background: var(--color-brand);
-  /* color: --bg-surface, не --on-brand — kit.css вживав тут --paper-2, інше
-     значення, ніж --on-olive (tokens.css §«Критика», --bg-surface). Крок 3 не
-     редизайн: пиксель лишається точним, навіть якщо роль «поверхня» для
-     кольору іконки на оливі звучить дивно. */
-  color: var(--bg-surface);
+  /* Пара «суцільний бренд + гліф», що НЕ перевертається темою: у світлій і
+     темній однаково — темна олива з світлою галочкою. Раніше колір галочки
+     читав --bg-surface, і в темній вона ставала темною на світлій оливі,
+     тобто діркою замість позначки (критика 2026-07-29). */
+  background: var(--bg-brand-solid);
+  color: var(--on-brand-solid);
   display: inline-flex; align-items: center; justify-content: center;
 }
 .badge-check svg { width: 10px; height: 10px; }

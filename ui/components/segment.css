@@ -10,7 +10,9 @@
   transition: background var(--duration-1) var(--easing-1), color var(--duration-1) var(--easing-1);
 }
 .seg input { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); }
-.seg label:has(input:checked) { background: var(--bg-surface); color: var(--color-action); font-weight: var(--font-weight-700); }
+/* --bg-selected, не --bg-surface: піґулка лежить не на канвасі, а на треку
+   --bg-neutral, і в темній темі елевація «поверхні» на ньому зникала (tokens.css). */
+.seg label:has(input:checked) { background: var(--bg-selected); color: var(--color-action); font-weight: var(--font-weight-700); }
 .seg label:has(input:focus-visible) { outline: var(--border-2) solid var(--color-action); outline-offset: 2px; }
 .seg-count {
   display: inline-flex; align-items: center; justify-content: center;
