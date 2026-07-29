@@ -855,7 +855,9 @@ function applyFilter() {
   }
 
   for (const s of secMeta) {
-    const vis = s.body.querySelectorAll('a[data-f]:not([hidden])').length;
+    // рахуємо тільки те, що справді видно: сам рядок і жоден його предок не сховані
+    const vis = [...s.body.querySelectorAll('a[data-f]')]
+      .filter(a => !a.hidden && !a.closest('[hidden]')).length;
     s.cnt.textContent = vis === s.total ? s.total : vis + '/' + s.total;
     s.body.parentElement.hidden = ![...s.body.children].some(c => !c.hidden);
   }
