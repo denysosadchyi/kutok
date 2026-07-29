@@ -25,6 +25,22 @@
     --clay-soft: oklch(94% 0.022 50);
     --mono: 'JetBrains Mono', ui-monospace, monospace;
     --nav-w: 286px;
+    color-scheme: light;
+  }
+
+  /* Темна тема оболонки. Ключ той самий, що в екранів (`kutok-theme`),
+     тож перемикач один на весь проєкт — і панель, і вміст iframe. */
+  [data-theme="dark"] {
+    --paper:     oklch(18% 0.008 60);
+    --panel:     oklch(22% 0.008 60);
+    --ink:       oklch(93% 0.007 75);
+    --muted:     oklch(72% 0.011 70);
+    --faint:     oklch(57% 0.011 70);
+    --line:      oklch(30% 0.008 60);
+    --line-soft: oklch(25.5% 0.008 60);
+    --clay:      oklch(72% 0.10 42);
+    --clay-soft: oklch(30% 0.035 45);
+    color-scheme: dark;
   }
 
   html, body { height: 100%; }
