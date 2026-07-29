@@ -342,6 +342,7 @@
 
   /* мобільний фолбек: панель зверху, згорнута */
   @media (max-width: 760px) {
+    body::before { display: none; }
     body { flex-direction: column; overflow: auto; }
     nav { width: 100%; height: auto; max-height: 45dvh; border-right: 0; border-bottom: 1px solid var(--line); }
     main { height: 55dvh; }
