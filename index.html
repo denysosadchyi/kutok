@@ -872,7 +872,7 @@ function buildNav() {
   themeBtn.addEventListener('click', () => setTheme(theme === 'dark' ? 'light' : 'dark'));
   tools.appendChild(themeBtn);
 
-  allBtn = el('button', 'all-btn', 'згорнути');
+  allBtn = el('button', 'ghost all-btn', 'згорнути');
   allBtn.type = 'button';
   allBtn.addEventListener('click', toggleAll);
   tools.appendChild(allBtn);
