@@ -267,8 +267,7 @@ function renderList(lines) {
       out.push('</li></' + stack.pop().tag + '>');
     }
     if (!stack.length || indent > stack[stack.length - 1].indent) {
-      if (stack.length) out.push(`<${tag}>`);
-      else out.push(`<${tag}>`);
+      out.push(`<${tag}>`);              // вкладений список живе всередині відкритого <li>
       stack.push({ indent, tag });
     } else {
       out.push('</li>');
