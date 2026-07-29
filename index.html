@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <title>Куток — Проєкт</title>
-<meta name="description" content="Навігація по всіх матеріалах проєкту Куток: ресерч, вайрфрейми, документи.">
+<meta name="description" content="Навігація по всіх матеріалах проєкту Куток: проєктування, дизайн, документи, екрани.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -24,7 +24,7 @@
     --clay:      oklch(52% 0.115 40);
     --clay-soft: oklch(94% 0.022 50);
     --mono: 'JetBrains Mono', ui-monospace, monospace;
-    --nav-w: 272px;
+    --nav-w: 286px;
   }
 
   html, body { height: 100%; }
@@ -49,7 +49,7 @@
     background: var(--panel);
     border-right: 1px solid var(--line);
     padding: 0 18px 64px;
-    scroll-padding-top: 68px; /* активний пункт не пірнає під липкий фільтр */
+    scroll-padding-top: 108px; /* активний пункт не пірнає під липку шапку */
     scrollbar-width: thin;
     scrollbar-color: var(--line) transparent;
   }
@@ -60,10 +60,10 @@
     color: var(--muted); letter-spacing: .16em; margin-top: 4px;
   }
 
-  /* фільтр липне до верху панелі при скролі дерева */
+  /* фільтр + перемикач липнуть до верху панелі при скролі дерева */
   .fwrap {
     position: sticky; top: 0; z-index: 2;
-    margin: 14px -18px 0; padding: 10px 18px 12px;
+    margin: 14px -18px 0; padding: 10px 18px 10px;
     background: var(--panel);
     border-bottom: 1px solid var(--line);
     box-shadow: 0 6px 12px -10px oklch(25% 0.012 60 / .2);
@@ -79,6 +79,25 @@
   .filter:focus { outline: none; border-color: var(--clay); }
   .filter::placeholder { color: var(--faint); }
 
+  .tools { display: flex; align-items: center; gap: 6px; margin-top: 8px; }
+  .mode {
+    display: flex; flex: none; gap: 2px; padding: 2px;
+    border: 1px solid var(--line); border-radius: 7px; background: var(--paper);
+  }
+  .mode button {
+    font-family: var(--mono); font-size: 9px; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--muted); padding: 3px 7px; border-radius: 5px;
+  }
+  .mode button:hover { color: var(--ink); }
+  .mode button[aria-pressed="true"] { color: var(--clay); background: var(--clay-soft); }
+  .all-btn {
+    margin-left: auto; flex: none;
+    font-family: var(--mono); font-size: 9px; color: var(--faint);
+    text-transform: uppercase; letter-spacing: .06em;
+    padding: 4px 6px; border-radius: 5px;
+  }
+  .all-btn:hover { color: var(--clay); background: var(--clay-soft); }
+
   /* шеврон-індикатор згортання — спільний для всіх рівнів */
   .chev { flex: none; width: 12px; height: 12px; color: var(--faint); }
   .chev path { stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; fill: none; }
@@ -86,31 +105,44 @@
   [aria-expanded="false"] .chev { transform: rotate(-90deg); }
   @media (prefers-reduced-motion: no-preference) {
     .chev { transition: transform .2s cubic-bezier(.22, 1, .36, 1); }
-    .pg, .st, .tag, .secs a, .cap-btn, .role-btn, .tw, .all-btn { transition: color .15s ease, background .15s ease; }
+    .pg, .st, .tag, .secs a, .sec-btn, .grp-btn, .role-btn, .tw, .all-btn { transition: color .15s ease, background .15s ease; }
   }
 
-  /* ── Розділ (cap) ── */
-  .cap { margin-top: 28px; }
-  .cap-head { display: flex; align-items: center; gap: 6px; }
-  .cap-btn {
-    flex: 1 1 auto; display: flex; align-items: center; gap: 7px;
+  /* ── Рівень 1: дерево (Проєктування / Дизайн) ── */
+  .sec { margin-top: 26px; }
+  .sec-btn {
+    width: calc(100% + 6px); display: flex; align-items: center; gap: 7px;
+    font-size: 12px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase;
+    color: var(--ink); text-align: left;
+    padding: 5px 6px; margin-left: -6px; border-radius: 6px;
+  }
+  .sec-btn:hover { background: var(--line-soft); }
+  .sec-btn .cnt {
+    margin-left: auto; font-family: var(--mono); font-size: 9px;
+    font-weight: 400; color: var(--faint); letter-spacing: 0;
+  }
+  .sec-rule { height: 1px; background: var(--line); margin: 7px 0 4px; }
+  .sec-body { margin-left: 3px; }
+
+  /* ── Рівень 2: група етапу (Ресерч, Люди, Екрани…) ── */
+  .grp { margin-top: 13px; }
+  .grp-btn {
+    width: calc(100% + 6px); display: flex; align-items: center; gap: 7px;
     font-family: var(--mono); font-size: 9.5px; font-weight: 600;
     letter-spacing: .13em; text-transform: uppercase; color: var(--muted);
     padding: 4px 6px; margin-left: -6px; border-radius: 6px; text-align: left;
   }
-  .cap-btn:hover { color: var(--ink); background: var(--line-soft); }
-  .all-btn {
-    flex: none; font-family: var(--mono); font-size: 8.5px; color: var(--faint);
-    text-transform: uppercase; letter-spacing: .08em;
-    padding: 3px 6px; border-radius: 5px;
+  .grp-btn:hover { color: var(--ink); background: var(--line-soft); }
+  .les {
+    margin-left: auto; flex: none;
+    font-family: var(--mono); font-size: 8.5px; letter-spacing: .06em;
+    color: var(--faint); border: 1px solid var(--line);
+    border-radius: 4px; padding: 1px 4px;
   }
-  .all-btn:hover { color: var(--clay); background: var(--clay-soft); }
-  .cap-body { margin-top: 6px; }
-  .cap-body[hidden] { display: none; }
-  /* текст сторінок 1-го рівня вирівняний із текстом заголовка розділу (x = 19) */
-  .cap-body > .pg { margin-left: 11px; }
+  .grp-btn:hover .les { border-color: oklch(84% 0.01 70); }
+  .grp-body { margin-top: 4px; margin-left: 8px; }
 
-  /* ── Рядок сторінки (ресерч, огляди) ── */
+  /* ── Рядок сторінки ── */
   .pg {
     display: flex; align-items: baseline; gap: 6px;
     font-size: 12.5px; font-weight: 600; color: var(--ink);
@@ -119,7 +151,15 @@
   .pg:hover { background: var(--line-soft); }
   .pg.active { color: var(--clay); background: var(--clay-soft); }
 
-  /* секції активної research-сторінки: направляюча під початком тексту сторінки */
+  /* пункт без артефакта — видно, що етап є, а роботи ще немає */
+  .ph {
+    display: flex; align-items: baseline; gap: 7px;
+    font-size: 12px; font-weight: 500; color: var(--faint);
+    padding: 4px 8px; line-height: 1.4; cursor: default;
+  }
+  .ph::after { content: '—'; font-family: var(--mono); font-size: 10px; margin-left: auto; }
+
+  /* секції активної сторінки: направляюча під початком її тексту */
   .secs {
     display: flex; flex-direction: column; gap: 1px;
     margin: 2px 0 8px 19px; padding-left: 9px;
@@ -133,8 +173,8 @@
   .secs a.active { color: var(--clay); background: var(--clay-soft); }
   .secs .n { font-family: var(--mono); font-size: 9px; margin-right: 6px; opacity: .55; }
 
-  /* ── Група ролі ── */
-  .role { margin-top: 16px; }
+  /* ── Рівень 3: роль (усередині «Екрани») ── */
+  .role { margin-top: 10px; }
   .role-btn {
     width: calc(100% + 6px); display: flex; align-items: center; gap: 7px;
     font-size: 11px; font-weight: 700; letter-spacing: .05em;
@@ -147,9 +187,8 @@
     font-weight: 400; color: var(--faint); letter-spacing: 0;
   }
   .role-body { margin: 2px 0 6px; }
-  .role-body[hidden] { display: none; }
 
-  /* ── Екран: шеврон + назва + job-тег ── */
+  /* ── Рівень 4: екран (шеврон + назва + job-тег) ── */
   .screen { margin: 0; }
   .scr-row { display: flex; align-items: flex-start; }
   .tw {
@@ -168,13 +207,12 @@
   }
   .tag:hover { color: var(--clay); border-color: var(--clay-soft); background: var(--clay-soft); }
 
-  /* стани екрана: направляюча по осі тексту назви (x = 27), текст станів на +14px */
+  /* стани екрана: направляюча по осі тексту назви */
   .states {
     display: flex; flex-direction: column; gap: 1px;
     margin: 1px 0 6px 27px; padding-left: 7px;
     border-left: 1px solid var(--line);
   }
-  .states[hidden] { display: none; }
   .st {
     display: block; font-size: 11.5px; font-weight: 500; color: var(--muted);
     padding: 2.5px 7px; border-radius: 5px; line-height: 1.4;
@@ -201,6 +239,7 @@
     font-family: var(--mono); font-size: 11px; color: var(--muted);
   }
   .bar .path { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .bar .where { flex: none; color: var(--faint); }
   .bar a.open {
     margin-left: auto; flex: none; color: var(--clay); font-weight: 600;
     padding: 3px 8px; border-radius: 6px;
@@ -226,27 +265,43 @@
 
 <main>
   <div class="bar">
+    <span class="where" id="where"></span>
     <span class="path" id="path"></span>
-    <a class="open" id="open" href="research/index.html" target="_blank" rel="noopener">відкрити окремо ↗</a>
+    <a class="open" id="open" href="#" target="_blank" rel="noopener">відкрити окремо ↗</a>
   </div>
-  <iframe id="frame" src="research/index.html" title="Сторінка проєкту"></iframe>
+  <iframe id="frame" title="Сторінка проєкту"></iframe>
 </main>
 
 <script>
 // ─────────────────────────────────────────────────────────────
-// Джерело істини для навігації. Вайрфрейми — за деревом
-// «роль → екран → стан» з оригінального .wf-nav.
+// Джерело істини для навігації — GROUPS нижче.
+// Два дерева: ПРОЄКТУВАННЯ (рішення до візуалу) і ДИЗАЙН
+// (візуальна мова та її втілення). Той самий масив рендериться
+// у другому режимі — «за уроком» курсу.
+// .md і .css відкриваються через viewer.html: файл лишається
+// джерелом істини, HTML під нього не генеруємо.
 // ─────────────────────────────────────────────────────────────
-const RESEARCH = [
-  ['research/index.html',    'Ресерч (огляд)'],
-  ['research/personas.html', 'Персони'],
-  ['research/jtbd.html',     'Jobs to Be Done'],
-  ['research/critique.html', 'Критика'],
-  ['research/voice.html',    'Голос'],
-  ['research/sitemap.html',  'Sitemap'],
-  ['research/flows.html',    'User Flows'],
-  ['research/ia.html',       'Інформаційна архітектура'],
-  ['research/audit.html',    'Аудит мапи'],
+const md = p => 'viewer.html?f=' + p;
+
+const LESSONS = {
+  '01': 'Ресерч і бенчмарк',
+  '02': 'Персони і JTBD',
+  '03': 'Інформаційна архітектура',
+  '04': 'Прототипування і вайрфреймінг',
+  '05': 'Тон оф войс і мікрокопі',
+  '06': 'Концепт',
+  '07': 'Збірка UI',
+  '08': 'Design Tokens',
+  '09': 'Дизайн-система',
+  '10': 'Responsive',
+  '11': 'Анімація',
+  '12': 'Хендофф',
+};
+
+const SECTIONS = [
+  { id: 'start',  t: 'Старт' },
+  { id: 'proj',   t: 'Проєктування' },
+  { id: 'design', t: 'Дизайн' },
 ];
 
 const TAGS = {
@@ -257,6 +312,7 @@ const TAGS = {
   emo:     'research/jtbd.html#emotional',
 };
 
+// дерево «роль → екран → стан» — з оригінального .wf-nav вайрфреймів
 const ROLES = [
   { role: 'Спільне · обидві ролі', screens: [
     { t: 'Вхід (existing-user)', tag: ['G1', TAGS.infra, 'Інфраструктура — sitemap, рішення #8'], states: [
@@ -332,16 +388,91 @@ const ROLES = [
   ]},
 ];
 
-const HOME = 'research/index.html';
+const GROUPS = [
+  // ── Старт: про проєкт загалом, поза етапами ──
+  { id: 'start', sec: 'start', t: 'Старт', items: [
+    { t: 'Огляд проєкту',      f: md('README.md') },
+    { t: 'Продуктовий бриф',   f: md('CLAUDE.md') },
+    { t: 'Бренд і принципи',   f: md('PRODUCT.md') },
+  ]},
+
+  // ── ПРОЄКТУВАННЯ: рішення до візуалу ──
+  { id: 'research', sec: 'proj', lesson: '01', t: 'Ресерч', items: [
+    { t: 'Ресерч (огляд)',       f: 'research/index.html' },
+    { t: 'Конкуренти',           f: md('research/competitors.md') },
+    { t: 'Скріни конкурентів',   f: md('research/screens.md') },
+  ]},
+  { id: 'people', sec: 'proj', lesson: '02', t: 'Люди', items: [
+    { t: 'Персони',              f: 'research/personas.html' },
+    { t: 'Jobs to Be Done',      f: 'research/jtbd.html' },
+    { t: 'Критика',              f: 'research/critique.html' },
+    { t: 'Гайд інтерв’ю',        f: md('research/interviews.md') },
+    { t: 'План ресерчу',         f: md('research/plan.md') },
+  ]},
+  { id: 'structure', sec: 'proj', lesson: '03', t: 'Структура', items: [
+    { t: 'Sitemap',                     f: 'research/sitemap.html' },
+    { t: 'User Flows',                  f: 'research/flows.html' },
+    { t: 'Інформаційна архітектура',    f: 'research/ia.html' },
+    { t: 'Аудит мапи',                  f: 'research/audit.html' },
+  ]},
+  { id: 'words', sec: 'proj', lesson: '05', t: 'Слова', items: [
+    { t: 'Голос',              f: 'research/voice.html' },
+    { t: 'Мікрокопі екранів',  f: md('wireframes/microcopy.md') },
+  ]},
+
+  // ── ДИЗАЙН: візуальна мова та її втілення ──
+  { id: 'concept', sec: 'design', lesson: '06', t: 'Концепт', items: [
+    { t: 'Три напрями мови',  f: 'concept/directions.html' },
+    { t: 'Концепт (повний)',  f: md('concept.md') },
+    { t: 'Референси',         f: md('concept/references.md') },
+  ]},
+  { id: 'basics', sec: 'design', lesson: '08', t: 'Основи · токени', items: [
+    { t: 'Мова дизайну',              f: md('DESIGN.md') },
+    { t: 'Токени (значення)',         f: md('tokens.css') },
+    { t: 'Аудит токенів',             f: md('tokens-audit.md') },
+  ]},
+  { id: 'components', sec: 'design', lesson: '07', t: 'Компоненти', items: [
+    { t: 'Кіт компонентів',        f: 'ui/kit.html' },
+    { t: 'Інвентар компонентів',   f: md('ui/inventory.md') },
+    { t: 'Оболонка застосунку',    f: 'ui/shell.html' },
+    { t: 'Конвенції екранів',      f: md('wireframes/_conventions.md') },
+  ]},
+  { id: 'screens', sec: 'design', lesson: '04', t: 'Екрани', roles: ROLES, items: [
+    { t: 'Індекс екранів',   f: 'wireframes/index.html' },
+    { t: 'Реєстр екранів',   f: md('wireframes/_screens.md') },
+  ]},
+  { id: 'adaptive', sec: 'design', lesson: '10', t: 'Адаптив', items: [
+    { t: 'Стрічка · desktop', f: 'wireframes/listings-desktop.html' },
+  ]},
+  { id: 'motion', sec: 'design', lesson: '11', t: 'Анімація', items: [
+    { t: 'Ще не робили' },
+  ]},
+  { id: 'dsys', sec: 'design', lesson: '09', t: 'Дизайн-система', items: [
+    { t: 'Ще не робили' },
+  ]},
+  { id: 'handoff', sec: 'design', lesson: '12', t: 'Хендофф', items: [
+    { t: 'Артефакти дизайну', f: md('DESIGN-artifacts.md') },
+    { t: 'Пакет передачі' },
+  ]},
+];
+
+const HOME = md('README.md');
+
 const nav    = document.getElementById('nav');
 const frame  = document.getElementById('frame');
 const pathEl = document.getElementById('path');
+const whereEl = document.getElementById('where');
 const openEl = document.getElementById('open');
 
-// ── стан згортання: localStorage + дефолти ──
-const STORE_KEY = 'kutok-shell-nav';
+// ── стан: режим дерева + згортання ──
+const STORE_KEY  = 'kutok-shell-nav';
+const MODE_KEY   = 'kutok-shell-mode';
+let mode = 'stage';
+try { mode = localStorage.getItem(MODE_KEY) === 'lesson' ? 'lesson' : 'stage'; } catch (_) {}
+
 let stored = {};
 try { stored = JSON.parse(localStorage.getItem(STORE_KEY)) || {}; } catch (_) {}
+
 const collapsibles = new Map(); // id → { btn, body, def }
 const openState = {};           // намір користувача; фільтр і автопоказ його не чіпають
 
@@ -349,11 +480,14 @@ function saveStore() {
   const out = {};
   for (const [id, c] of collapsibles)
     if (openState[id] !== c.def) out[id] = openState[id];
-  try { localStorage.setItem(STORE_KEY, JSON.stringify(out)); } catch (_) {}
+  // стан закритих гілок іншого режиму не втрачаємо
+  const keep = { ...stored, ...out };
+  for (const [id, c] of collapsibles) if (openState[id] === c.def) delete keep[id];
+  stored = keep;
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(keep)); } catch (_) {}
 }
 
-// лише вигляд (DOM); намір лишається в openState
-function applyOpen(id, open) {
+function applyOpen(id, open) {      // лише вигляд; намір лишається в openState
   const c = collapsibles.get(id);
   if (!c) return;
   c.btn.setAttribute('aria-expanded', String(open));
@@ -371,12 +505,12 @@ function isOpen(id) { return !!openState[id]; }
 
 const CHEV = '<svg class="chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>';
 
-function makeCollapsible(id, btn, body) {
-  const def = !(id.startsWith('screen:')); // екрани типово згорнуті, решта — розгорнуті
+function makeCollapsible(id, btn, body, def) {
   const open = id in stored ? stored[id] : def;
   btn.setAttribute('aria-expanded', String(open));
-  btn.setAttribute('aria-controls', 'c-' + id.replace(/[^a-z0-9]+/gi, '-'));
-  body.id = 'c-' + id.replace(/[^a-z0-9]+/gi, '-');
+  const cid = 'c-' + id.replace(/[^a-z0-9]+/gi, '-');
+  btn.setAttribute('aria-controls', cid);
+  body.id = cid;
   body.hidden = !open;
   collapsibles.set(id, { btn, body, def });
   openState[id] = open;
@@ -384,206 +518,269 @@ function makeCollapsible(id, btn, body) {
 }
 
 // ── рендер панелі ──
-const navItems = new Map();   // file → { pg, ancestors: [ids] }
-const filterables = [];       // { el, text, kind, ids, statesEl? }
-const roleMeta = [];          // { cnt, body, total } — чесний лічильник при фільтрі
+const navItems   = new Map();  // file → { pg, ancestors: [ids] }
+const filterables = [];        // { el, text, ids, isGroup?, groupId?, isRole?, roleId? }
+const roleMeta   = [];         // { cnt, body, total } — чесний лічильник при фільтрі
+const secMeta    = [];         // те саме для верхніх дерев
 
-const frag = document.createDocumentFragment();
+let brand, filterEl, nomatch, allBtn;
 
-const brand = document.createElement('a');
-brand.className = 'brand';
-brand.href = '#' + HOME;
-brand.dataset.f = HOME;
-brand.innerHTML = 'Куток<span>ПРОЄКТ · ВСІ МАТЕРІАЛИ</span>';
-frag.appendChild(brand);
-
-const fwrap = document.createElement('div');
-fwrap.className = 'fwrap';
-const filterEl = document.createElement('input');
-filterEl.className = 'filter';
-filterEl.type = 'search';
-filterEl.placeholder = 'Фільтр сторінок…  ( / )';
-filterEl.setAttribute('aria-label', 'Фільтр сторінок');
-fwrap.appendChild(filterEl);
-frag.appendChild(fwrap);
-
-function capSection(id, title, withAll) {
-  const cap = document.createElement('section');
-  cap.className = 'cap';
-  const head = document.createElement('div');
-  head.className = 'cap-head';
-  const btn = document.createElement('button');
-  btn.className = 'cap-btn';
-  btn.type = 'button';
-  btn.innerHTML = CHEV + title;
-  head.appendChild(btn);
-  if (withAll) {
-    const all = document.createElement('button');
-    all.className = 'all-btn';
-    all.type = 'button';
-    all.textContent = 'згорнути все';
-    all.addEventListener('click', () => {
-      const anyClosed = [...collapsibles.keys()]
-        .some(k => (k.startsWith('role:') || k.startsWith('screen:')) && !isOpen(k));
-      for (const k of collapsibles.keys())
-        if (k.startsWith('role:') || k.startsWith('screen:')) {
-          applyOpen(k, anyClosed);
-          openState[k] = anyClosed;
-        }
-      if (anyClosed) { applyOpen(id, true); openState[id] = true; }
-      saveStore();
-      syncAllBtn();
-    });
-    head.appendChild(all);
-    cap.__allBtn = all;
-  }
-  const body = document.createElement('div');
-  body.className = 'cap-body';
-  cap.appendChild(head);
-  cap.appendChild(body);
-  makeCollapsible(id, btn, body);
-  return { cap, body };
+function el(tag, cls, html) {
+  const n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (html != null) n.innerHTML = html;
+  return n;
 }
 
-function syncAllBtn() {
-  const all = wireCap.cap.__allBtn;
-  if (!all) return;
-  const anyClosed = [...collapsibles.keys()]
-    .some(k => (k.startsWith('role:') || k.startsWith('screen:')) && !isOpen(k));
-  all.textContent = anyClosed ? 'розгорнути все' : 'згорнути все';
-}
-
-// Ресерч і документи
-const resCap = capSection('cap:research', 'Ресерч і документи', false);
-for (const [f, t] of RESEARCH) {
-  const a = document.createElement('a');
-  a.className = 'pg';
+function addLink(container, t, f, ancestors, cls = 'pg') {
+  const a = el('a', cls);
   a.href = '#' + f;
   a.dataset.f = f;
   a.dataset.l = t;
   a.textContent = t;
-  resCap.body.appendChild(a);
-  navItems.set(f, { pg: a, ancestors: ['cap:research'] });
-  filterables.push({ el: a, text: (t + ' ' + f).toLowerCase(), ids: ['cap:research'] });
+  container.appendChild(a);
+  navItems.set(f, { pg: a, ancestors });
+  return a;
 }
-frag.appendChild(resCap.cap);
 
-// Вайрфрейми: роль → екран → стан
-const wireCap = capSection('cap:wire', 'Вайрфрейми', true);
-
-const hub = document.createElement('a');
-hub.className = 'pg';
-hub.href = '#wireframes/index.html';
-hub.dataset.f = 'wireframes/index.html';
-hub.dataset.l = 'Огляд вайрфреймів';
-hub.textContent = 'Огляд вайрфреймів';
-wireCap.body.appendChild(hub);
-navItems.set('wireframes/index.html', { pg: hub, ancestors: ['cap:wire'] });
-filterables.push({ el: hub, text: 'огляд вайрфреймів wireframes/index.html', ids: ['cap:wire'] });
-
-ROLES.forEach((r, ri) => {
-  const roleId = 'role:' + ri;
-  const roleEl = document.createElement('div');
-  roleEl.className = 'role';
-  const rBtn = document.createElement('button');
-  rBtn.className = 'role-btn';
-  rBtn.type = 'button';
-  rBtn.innerHTML = CHEV + r.role + `<span class="cnt">${r.screens.length}</span>`;
-  const rBody = document.createElement('div');
-  rBody.className = 'role-body';
-  roleEl.appendChild(rBtn);
-  roleEl.appendChild(rBody);
-  makeCollapsible(roleId, rBtn, rBody);
-
-  for (const s of r.screens) {
-    const mainFile = 'wireframes/' + s.states[0][0];
-    const screenId = 'screen:' + mainFile;
-    const scr = document.createElement('div');
-    scr.className = 'screen';
-
-    const row = document.createElement('div');
-    row.className = 'scr-row';
-
-    const tw = document.createElement('button');
-    tw.className = 'tw';
-    tw.type = 'button';
-    tw.innerHTML = CHEV;
-    tw.setAttribute('aria-label', 'Стани екрана «' + s.t + '»');
-    row.appendChild(tw);
-
-    const a = document.createElement('a');
-    a.className = 'pg';
-    a.href = '#' + mainFile;
-    a.dataset.f = mainFile;
-    a.dataset.l = s.t;
-    a.textContent = s.t;
-    row.appendChild(a);
-
-    if (s.tag) {
-      const [label, href, title] = s.tag;
-      const tag = document.createElement('a');
-      tag.className = 'tag';
-      const [tf, th] = href.split('#');
-      tag.href = '#' + tf;
-      tag.dataset.f = tf;
-      tag.dataset.h = th ? '#' + th : '';
-      tag.title = title;
-      tag.textContent = label;
-      row.appendChild(tag);
+function renderItems(items, body, ancestors, filterIds) {
+  for (const it of items) {
+    if (!it.f) {                       // етап є, артефакта ще немає
+      const ph = el('span', 'ph');
+      ph.dataset.l = it.t;
+      ph.textContent = it.t;
+      body.appendChild(ph);
+      filterables.push({ el: ph, text: it.t.toLowerCase(), ids: filterIds });
+      continue;
     }
-    scr.appendChild(row);
-
-    const states = document.createElement('div');
-    states.className = 'states';
-    let text = (s.t + ' ' + mainFile + ' ' + (s.tag ? s.tag[0] + ' ' + s.tag[2] : '')).toLowerCase();
-    for (const [sf, sl] of s.states) {
-      const file = 'wireframes/' + sf;
-      const st = document.createElement('a');
-      st.className = 'st';
-      st.href = '#' + file;
-      st.dataset.f = file;
-      st.dataset.l = sl;
-      st.textContent = sl;
-      states.appendChild(st);
-      text += ' ' + (sl + ' ' + file).toLowerCase();
-      navItems.set(file, { pg: st, ancestors: ['cap:wire', roleId, screenId] });
-    }
-    scr.appendChild(states);
-    navItems.get(mainFile).pg = a; // головний стан підсвічуємо на рядку екрана теж
-
-    if (s.states.length > 1) {
-      makeCollapsible(screenId, tw, states);
-    } else {
-      tw.classList.add('void');
-      tw.tabIndex = -1;
-      states.hidden = true;
-    }
-
-    filterables.push({ el: scr, text, ids: ['cap:wire', roleId, screenId], statesEl: states });
-    rBody.appendChild(scr);
+    const a = addLink(body, it.t, it.f, ancestors);
+    filterables.push({ el: a, text: (it.t + ' ' + it.f).toLowerCase(), ids: filterIds });
   }
-  wireCap.body.appendChild(roleEl);
-  filterables.push({ el: roleEl, text: r.role.toLowerCase(), ids: ['cap:wire', 'role:' + ri], isRole: true, roleId });
-  roleMeta.push({ cnt: rBtn.querySelector('.cnt'), body: rBody, total: r.screens.length });
-});
-frag.appendChild(wireCap.cap);
+}
 
-const nomatch = document.createElement('p');
-nomatch.className = 'nomatch';
-nomatch.textContent = 'Нічого не знайдено. Спробуйте коротший запит.';
-frag.appendChild(nomatch);
+function renderRoles(roles, body, ancestors, filterIds) {
+  roles.forEach((r, ri) => {
+    const roleId = 'role:' + ri;
+    const roleEl = el('div', 'role');
+    const rBtn = el('button', 'role-btn', CHEV + r.role + `<span class="cnt">${r.screens.length}</span>`);
+    rBtn.type = 'button';
+    const rBody = el('div', 'role-body');
+    roleEl.append(rBtn, rBody);
+    makeCollapsible(roleId, rBtn, rBody, true);
 
-nav.appendChild(frag);
-syncAllBtn();
+    for (const s of r.screens) {
+      const mainFile = 'wireframes/' + s.states[0][0];
+      const screenId = 'screen:' + mainFile;
+      const scr = el('div', 'screen');
+      const row = el('div', 'scr-row');
 
-// повний перелік дозволених файлів — і навігація, і захист від крафтових hash
-const ALL_FILES = new Set(
-  [...nav.querySelectorAll('[data-f]')].map(el => el.dataset.f));
+      const tw = el('button', 'tw', CHEV);
+      tw.type = 'button';
+      tw.setAttribute('aria-label', 'Стани екрана «' + s.t + '»');
+      row.appendChild(tw);
+
+      const a = el('a', 'pg');
+      a.href = '#' + mainFile;
+      a.dataset.f = mainFile;
+      a.dataset.l = s.t;
+      a.textContent = s.t;
+      row.appendChild(a);
+
+      if (s.tag) {
+        const [label, href, title] = s.tag;
+        const [tf, th] = href.split('#');
+        const tag = el('a', 'tag');
+        tag.href = '#' + tf;
+        tag.dataset.f = tf;
+        tag.dataset.h = th ? '#' + th : '';
+        tag.title = title;
+        tag.textContent = label;
+        row.appendChild(tag);
+      }
+      scr.appendChild(row);
+
+      const states = el('div', 'states');
+      let text = (s.t + ' ' + mainFile + ' ' + (s.tag ? s.tag[0] + ' ' + s.tag[2] : '')).toLowerCase();
+      const scrAnc = [...ancestors, roleId, screenId];
+      for (const [sf, sl] of s.states) {
+        const file = 'wireframes/' + sf;
+        addLink(states, sl, file, scrAnc, 'st');
+        text += ' ' + (sl + ' ' + file).toLowerCase();
+      }
+      scr.appendChild(states);
+      navItems.get(mainFile).pg = a;   // головний стан підсвічуємо і на рядку екрана
+
+      if (s.states.length > 1) {
+        makeCollapsible(screenId, tw, states, false);
+      } else {
+        tw.classList.add('void');
+        tw.tabIndex = -1;
+        states.hidden = true;
+      }
+
+      filterables.push({ el: scr, text, ids: [...filterIds, roleId, screenId] });
+      rBody.appendChild(scr);
+    }
+    body.appendChild(roleEl);
+    filterables.push({ el: roleEl, text: r.role.toLowerCase(), ids: [...filterIds, roleId], isRole: true, roleId });
+    roleMeta.push({ cnt: rBtn.querySelector('.cnt'), body: rBody, total: r.screens.length });
+  });
+}
+
+function groupCount(g) {
+  let n = (g.items || []).filter(i => i.f).length;
+  if (g.roles) for (const r of g.roles) for (const s of r.screens) n += s.states.length;
+  return n;
+}
+
+// група як вузол 2-го рівня (режим «за етапом»)
+function renderGroup(g, parentIds, container) {
+  const gid = 'grp:' + g.id;
+  const box = el('div', 'grp');
+  const btn = el('button', 'grp-btn', CHEV + g.t +
+    (g.lesson ? `<span class="les">У${g.lesson}</span>` : ''));
+  btn.type = 'button';
+  if (g.lesson) btn.title = 'Урок ' + g.lesson + ' — ' + LESSONS[g.lesson];
+  const body = el('div', 'grp-body');
+  box.append(btn, body);
+  makeCollapsible(gid, btn, body, true);
+
+  const anc = [...parentIds, gid];
+  renderItems(g.items || [], body, anc, anc);
+  if (g.roles) renderRoles(g.roles, body, anc, anc);
+
+  container.appendChild(box);
+  filterables.push({
+    el: box, ids: anc, isGroup: true, groupId: gid,
+    text: (g.t + ' ' + (g.lesson ? 'у' + g.lesson + ' урок ' + g.lesson + ' ' + LESSONS[g.lesson] : '')).toLowerCase(),
+  });
+}
+
+// верхнє дерево (режим «за етапом») або урок (режим «за уроком»)
+function renderSection(id, title, groups, asLesson) {
+  const secId = 'sec:' + mode + ':' + id;
+  const sec = el('section', 'sec');
+  const total = groups.reduce((n, g) => n + groupCount(g), 0);
+  const btn = el('button', 'sec-btn', CHEV + title + `<span class="cnt">${total}</span>`);
+  btn.type = 'button';
+  sec.appendChild(btn);
+  sec.appendChild(el('div', 'sec-rule'));
+  const body = el('div', 'sec-body');
+  sec.appendChild(body);
+  makeCollapsible(secId, btn, body, true);
+
+  const anc = [secId];
+  if (asLesson) {
+    // урок = одна група, зайвий рівень не заводимо
+    const g = groups[0];
+    renderItems(g.items || [], body, anc, anc);
+    if (g.roles) renderRoles(g.roles, body, anc, anc);
+  } else {
+    for (const g of groups) renderGroup(g, anc, body);
+  }
+  secMeta.push({ cnt: btn.querySelector('.cnt'), body, total });
+  return sec;
+}
+
+function buildNav() {
+  nav.innerHTML = '';
+  collapsibles.clear();
+  navItems.clear();
+  filterables.length = 0;
+  roleMeta.length = 0;
+  secMeta.length = 0;
+
+  const frag = document.createDocumentFragment();
+
+  brand = el('a', 'brand', 'Куток<span>ПРОЄКТ · ВСІ МАТЕРІАЛИ</span>');
+  brand.href = '#' + HOME;
+  brand.dataset.f = HOME;
+  frag.appendChild(brand);
+
+  const fwrap = el('div', 'fwrap');
+  filterEl = el('input', 'filter');
+  filterEl.type = 'search';
+  filterEl.placeholder = 'Фільтр сторінок…  ( / )';
+  filterEl.setAttribute('aria-label', 'Фільтр сторінок');
+  fwrap.appendChild(filterEl);
+
+  const tools = el('div', 'tools');
+  const modeBox = el('div', 'mode');
+  modeBox.setAttribute('role', 'group');
+  modeBox.setAttribute('aria-label', 'Групування дерева');
+  for (const [key, label] of [['stage', 'за етапом'], ['lesson', 'за уроком']]) {
+    const b = el('button', null, label);
+    b.type = 'button';
+    b.setAttribute('aria-pressed', String(mode === key));
+    b.addEventListener('click', () => setMode(key));
+    modeBox.appendChild(b);
+  }
+  tools.appendChild(modeBox);
+
+  allBtn = el('button', 'all-btn', 'згорнути все');
+  allBtn.type = 'button';
+  allBtn.addEventListener('click', toggleAll);
+  tools.appendChild(allBtn);
+  fwrap.appendChild(tools);
+  frag.appendChild(fwrap);
+
+  if (mode === 'stage') {
+    for (const s of SECTIONS) {
+      const gs = GROUPS.filter(g => g.sec === s.id);
+      if (gs.length) frag.appendChild(renderSection(s.id, s.t, gs, false));
+    }
+  } else {
+    const start = GROUPS.filter(g => !g.lesson);
+    if (start.length) frag.appendChild(renderSection('start', 'Старт', start, start.length === 1));
+    const byLesson = GROUPS.filter(g => g.lesson).sort((a, b) => a.lesson.localeCompare(b.lesson));
+    for (const g of byLesson)
+      frag.appendChild(renderSection('l' + g.lesson, g.lesson + ' · ' + LESSONS[g.lesson], [g], true));
+  }
+
+  nomatch = el('p', 'nomatch', 'Нічого не знайдено. Спробуйте коротший запит.');
+  frag.appendChild(nomatch);
+
+  nav.appendChild(frag);
+
+  filterEl.addEventListener('input', applyFilter);
+  filterEl.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { filterEl.value = ''; applyFilter(); filterEl.blur(); }
+  });
+  syncAllBtn();
+}
+
+function branchIds() {
+  return [...collapsibles.keys()].filter(k => !k.startsWith('sec:'));
+}
+
+function toggleAll() {
+  const anyClosed = branchIds().some(k => !isOpen(k));
+  for (const k of branchIds()) { applyOpen(k, anyClosed); openState[k] = anyClosed; }
+  if (anyClosed) for (const k of collapsibles.keys())
+    if (k.startsWith('sec:')) { applyOpen(k, true); openState[k] = true; }
+  saveStore();
+  syncAllBtn();
+}
+
+function syncAllBtn() {
+  if (!allBtn) return;
+  allBtn.textContent = branchIds().some(k => !isOpen(k)) ? 'розгорнути все' : 'згорнути все';
+}
+
+function setMode(next) {
+  if (mode === next) return;
+  mode = next;
+  try { localStorage.setItem(MODE_KEY, mode); } catch (_) {}
+  const q = filterEl ? filterEl.value : '';
+  buildNav();
+  filterEl.value = q;
+  applyFilter();
+  markActive(openEl.dataset.f || HOME);
+  revealActive();
+  buildSecs(lastDoc, lastFile);
+}
 
 // ── фільтр ──
-const labelled = [...nav.querySelectorAll('[data-l]')];
-
-// підсвітка збігу в назві (без збігу — просто текст)
 function markLabel(el, q) {
   const t = el.dataset.l;
   const i = q ? t.toLowerCase().indexOf(q) : -1;
@@ -600,57 +797,75 @@ function markLabel(el, q) {
 
 function applyFilter() {
   const q = filterEl.value.trim().toLowerCase();
-  for (const el of labelled) markLabel(el, q);
+  for (const e of nav.querySelectorAll('[data-l]')) markLabel(e, q);
+
   if (!q) {
     for (const it of filterables) it.el.hidden = false;
     for (const id of collapsibles.keys()) applyOpen(id, openState[id]);
     for (const r of roleMeta) r.cnt.textContent = r.total;
-    revealActive(false);
-    nomatch.style.display = 'none';
-    resCap.cap.hidden = wireCap.cap.hidden = false;
+    for (const s of secMeta) { s.cnt.textContent = s.total; s.body.parentElement.hidden = false; }
     nav.querySelectorAll('.secs').forEach(s => { s.hidden = false; });
+    nomatch.style.display = 'none';
+    revealActive(false);
     return;
   }
+
   let hits = 0;
-  const liveRoles = new Set();
+  const liveRoles = new Set(), liveGroups = new Set();
+
   for (const it of filterables) {
-    if (it.isRole) continue;
+    if (it.isRole || it.isGroup) continue;
     const hit = it.text.includes(q);
     it.el.hidden = !hit;
     if (hit) {
       hits++;
       for (const id of it.ids) {
         if (id.startsWith('role:')) liveRoles.add(id);
+        if (id.startsWith('grp:')) liveGroups.add(id);
         applyOpen(id, true);
       }
     }
   }
+  // блок секцій активної сторінки ховаємо разом із її рядком
   nav.querySelectorAll('.secs').forEach(s => {
     s.hidden = !!s.previousElementSibling && s.previousElementSibling.hidden;
   });
+
   for (const it of filterables) {
     if (!it.isRole) continue;
     const roleHit = it.text.includes(q);
     it.el.hidden = !roleHit && !liveRoles.has(it.roleId);
     if (roleHit) {
-      for (const id of it.ids) applyOpen(id, true);
+      for (const id of it.ids) { applyOpen(id, true); if (id.startsWith('grp:')) liveGroups.add(id); }
       const c = collapsibles.get(it.roleId);
       if (c) for (const child of c.body.querySelectorAll('.screen')) child.hidden = false;
       hits++;
     }
   }
-  resCap.cap.hidden = ![...resCap.body.children].some(el => !el.hidden);
-  wireCap.cap.hidden = ![...wireCap.body.children].some(el => !el.hidden);
+
+  for (const it of filterables) {
+    if (!it.isGroup) continue;
+    const grpHit = it.text.includes(q);
+    it.el.hidden = !grpHit && !liveGroups.has(it.groupId);
+    if (grpHit) {
+      for (const id of it.ids) applyOpen(id, true);
+      for (const child of it.el.querySelectorAll('.pg, .ph, .role, .screen')) child.hidden = false;
+      hits++;
+    }
+  }
+
+  for (const s of secMeta) {
+    const vis = s.body.querySelectorAll('a[data-f]:not([hidden])').length;
+    s.cnt.textContent = vis === s.total ? s.total : vis + '/' + s.total;
+    s.body.parentElement.hidden = ![...s.body.children].some(c => !c.hidden);
+  }
   for (const r of roleMeta) {
     const vis = r.body.querySelectorAll('.screen:not([hidden])').length;
     r.cnt.textContent = vis === r.total ? r.total : vis + '/' + r.total;
   }
   nomatch.style.display = hits ? 'none' : 'block';
 }
-filterEl.addEventListener('input', applyFilter);
-filterEl.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { filterEl.value = ''; applyFilter(); filterEl.blur(); }
-});
+
 function isTyping(el) {
   return el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.isContentEditable);
 }
@@ -659,52 +874,82 @@ document.addEventListener('keydown', e => {
     e.preventDefault();
     filterEl.focus();
   }
+  if ((e.key === 'j' || e.key === 'k') && !isTyping(document.activeElement) && !e.metaKey && !e.ctrlKey) {
+    e.preventDefault();
+    step(e.key === 'j' ? 1 : -1);
+  }
 });
 
 // ── навігація ──
 let pendingHash = '';
-let targetFile = null; // куди оболонка веде iframe (під час завантаження ≠ поточному документу)
+let targetFile = null;   // куди оболонка веде iframe (під час завантаження ≠ поточному документу)
+let lastDoc = null, lastFile = null;
 
 // оболонка може жити не в корені сервера — шляхи рахуємо від її теки
 const BASE = location.pathname.replace(/[^/]*$/, '');
-function toFile(pathname) {
-  return pathname.startsWith(BASE) ? pathname.slice(BASE.length) : pathname.replace(/^\//, '');
+function toFile(pathname, search = '') {
+  const p = pathname.startsWith(BASE) ? pathname.slice(BASE.length) : pathname.replace(/^\//, '');
+  return p + search;
 }
 
 function currentFile() {
-  try { return toFile(frame.contentWindow.location.pathname); }
-  catch (_) { return null; }
+  try {
+    const l = frame.contentWindow.location;
+    if (l.href === 'about:blank') return null;
+    return toFile(l.pathname, l.search);
+  } catch (_) { return null; }
 }
 
 function revealActive(scroll = true) {
-  const file = openEl.dataset.f;
-  const item = navItems.get(file);
+  const item = navItems.get(openEl.dataset.f);
   if (!item) return;
-  for (const id of item.ancestors) applyOpen(id, true); // показ, не намір
+  for (const id of item.ancestors) applyOpen(id, true);   // показ, не намір
   if (scroll) {
     const act = nav.querySelector('.pg.active, .st.active');
     if (act) act.scrollIntoView({ block: 'nearest' });
   }
 }
 
+function markActive(file) {
+  for (const e of nav.querySelectorAll('[data-f]'))
+    e.classList.toggle('active', e.dataset.f === file && e !== brand && !e.classList.contains('tag'));
+}
+
+// підпис у шапці: де ми в дереві
+function whereOf(file) {
+  const item = navItems.get(file);
+  if (!item) return '';
+  for (const id of item.ancestors) {
+    if (id.startsWith('grp:')) {
+      const g = GROUPS.find(x => 'grp:' + x.id === id);
+      if (g) return g.t + (g.lesson ? ' · У' + g.lesson : '');
+    }
+  }
+  const sec = item.ancestors.find(i => i.startsWith('sec:'));
+  if (sec && mode === 'lesson') {
+    const l = sec.split(':')[2].replace(/^l/, '');
+    return LESSONS[l] ? l + ' · ' + LESSONS[l] : '';
+  }
+  return '';
+}
+
 function show(file, push = true) {
   const cur = currentFile();
   const inFlight = targetFile !== null && targetFile !== cur;
-  if (targetFile !== file) pendingHash = ''; // новий перехід скасовує чужий якір
+  if (targetFile !== file) pendingHash = '';   // новий перехід скасовує чужий якір
   targetFile = file;
   if (cur !== file) {
     frame.src = file;
   } else if (inFlight) {
-    // документ уже правильний, але в польоті чужа навігація — скасувати
     try { frame.contentWindow.stop(); } catch (_) {}
   }
-  pathEl.textContent = '/' + file;
+  pathEl.textContent = '/' + file.replace(/^viewer\.html\?f=/, '');
+  whereEl.textContent = whereOf(file);
   openEl.href = file;
   openEl.dataset.f = file;
-  for (const el of nav.querySelectorAll('[data-f]'))
-    el.classList.toggle('active', el.dataset.f === file && el !== brand && !el.classList.contains('tag'));
+  markActive(file);
   if (push && location.hash !== '#' + file)
-    history.replaceState(null, '', '#' + file);
+    history.pushState(null, '', '#' + file);    // кнопка «назад» веде по історії перегляду
   revealActive();
   syncAllBtn();
 }
@@ -715,24 +960,30 @@ function goto(file, hash) {
     show(file);
     return;
   }
-  show(file);            // спершу перехід: він скидає чужий pendingHash…
-  pendingHash = hash || ''; // …а тоді ставимо свій якір
+  show(file);                 // спершу перехід: він скидає чужий pendingHash…
+  pendingHash = hash || '';   // …а тоді ставимо свій якір
+}
+
+// j/k — крок по видимих сторінках дерева
+function step(dir) {
+  const list = [...nav.querySelectorAll('a[data-f]')]
+    .filter(a => a !== brand && !a.classList.contains('tag') && !a.closest('[hidden]'));
+  if (!list.length) return;
+  const i = list.findIndex(a => a.dataset.f === openEl.dataset.f);
+  const next = list[Math.min(list.length - 1, Math.max(0, (i < 0 ? 0 : i + dir)))];
+  if (next) show(next.dataset.f);
 }
 
 nav.addEventListener('click', e => {
   const tag = e.target.closest('.tag');
-  if (tag) {
-    e.preventDefault();
-    goto(tag.dataset.f, tag.dataset.h);
-    return;
-  }
+  if (tag) { e.preventDefault(); goto(tag.dataset.f, tag.dataset.h); return; }
   const a = e.target.closest('a[data-f]');
   if (!a) return;
   e.preventDefault();
   show(a.dataset.f);
 });
 
-// ── секції активної research-сторінки: підтягуємо з її прихованого сайдбара ──
+// ── секції активної сторінки: дзеркалимо її прихований сайдбар у ліву панель ──
 let secsObserver = null;
 
 function buildSecs(doc, file) {
@@ -742,10 +993,9 @@ function buildSecs(doc, file) {
 
   const inner = [...doc.querySelectorAll('.sidenav .nav-links a[href^="#"]')];
   const item = navItems.get(file);
-  if (!inner.length || !item || !file.startsWith('research/')) return;
+  if (!inner.length || !item) return;
 
-  const box = document.createElement('div');
-  box.className = 'secs';
+  const box = el('div', 'secs');
   const mirror = new Map();
   for (const l of inner) {
     const a = document.createElement('a');
@@ -753,12 +1003,10 @@ function buildSecs(doc, file) {
     a.href = href;
     const numEl = l.querySelector('.n');
     if (numEl) {
-      const n = document.createElement('span');
-      n.className = 'n';
+      const n = el('span', 'n');
       n.textContent = numEl.textContent;
       a.appendChild(n);
-      a.appendChild(document.createTextNode(
-        l.textContent.replace(numEl.textContent, '').trim()));
+      a.appendChild(document.createTextNode(l.textContent.replace(numEl.textContent, '').trim()));
     } else {
       a.textContent = l.textContent.trim();
     }
@@ -783,7 +1031,7 @@ function buildSecs(doc, file) {
     } catch (_) {}
   });
 
-  // скролспай сторінки продовжує працювати у прихованому сайдбарі — віддзеркалюємо
+  // скролспай сторінки далі працює у прихованому сайдбарі — віддзеркалюємо клас
   const sync = () => {
     for (const l of inner) {
       const mine = mirror.get(l.getAttribute('href'));
@@ -791,21 +1039,17 @@ function buildSecs(doc, file) {
     }
   };
   secsObserver = new MutationObserver(sync);
-  for (const l of inner)
-    secsObserver.observe(l, { attributes: true, attributeFilter: ['class'] });
+  for (const l of inner) secsObserver.observe(l, { attributes: true, attributeFilter: ['class'] });
   sync();
 }
 
 // ── завантаження сторінки в iframe ──
 frame.addEventListener('load', () => {
   const file = currentFile();
-  if (!file) {
-    // недоступний/чужий документ — просто показуємо як є, не лишаємо порожнечу
-    frame.classList.add('ready');
-    return;
-  }
-  targetFile = file; // реальність перемогла (back/forward, програна гонка)
+  if (!file) { frame.classList.add('ready'); return; }
+  targetFile = file;                       // реальність перемогла (back/forward, програна гонка)
   const doc = frame.contentDocument;
+  lastDoc = doc; lastFile = file;
 
   // ховаємо власний сайдбар сторінки — панель у проєкті одна
   if (doc && doc.querySelector('.sidenav, .wf-nav') && !doc.getElementById('shell-css')) {
@@ -825,28 +1069,23 @@ frame.addEventListener('load', () => {
       const a = e.target.closest('a[href]');
       if (!a) return;
       const href = a.getAttribute('href') || '';
-      if (href.startsWith('#')) return; // якорі лишаємо самій сторінці
+      if (href.startsWith('#')) return;   // якорі лишаємо самій сторінці
       const url = new URL(a.href, doc.baseURI);
       const sameOrigin = url.origin === location.origin;
       if (sameOrigin && /\.html$/.test(url.pathname) && a.target !== '_blank') {
-        // переходи між сторінками проєкту ведемо через оболонку
         e.preventDefault();
-        goto(toFile(url.pathname), url.hash);
+        goto(toFile(url.pathname, url.search), url.hash);
       } else if (url.protocol === 'http:' || url.protocol === 'https:') {
-        // зовнішні сайти і сирі .md — у нову вкладку, iframe не чіпаємо
         e.preventDefault();
         window.open(url.href, '_blank', 'noopener');
       }
     });
     doc.addEventListener('keydown', e => {
-      if (e.key === '/' && !isTyping(e.target)) {
-        e.preventDefault();
-        filterEl.focus();
-      }
+      if (e.key === '/' && !isTyping(e.target)) { e.preventDefault(); filterEl.focus(); }
     });
     frame.contentWindow.addEventListener('pagehide', () => {
       frame.classList.remove('ready');
-      setTimeout(() => frame.classList.add('ready'), 2500); // запобіжник
+      setTimeout(() => frame.classList.add('ready'), 2500);   // запобіжник
     });
   }
 
@@ -860,13 +1099,17 @@ frame.addEventListener('load', () => {
   frame.classList.add('ready');
 });
 
-// ── старт: hash або головна (тільки файли з переліку — жодних javascript:/зовнішніх URL) ──
+// ── старт: hash або головна (тільки файли з дерева — жодних javascript:/зовнішніх URL) ──
+buildNav();
+const ALL_FILES = new Set([...nav.querySelectorAll('[data-f]')].map(e => e.dataset.f));
+
 function fromHash() {
   const f = decodeURIComponent(location.hash.slice(1));
   return ALL_FILES.has(f) ? f : HOME;
 }
 show(fromHash(), false);
-window.addEventListener('hashchange', () => show(fromHash()));
+window.addEventListener('hashchange', () => show(fromHash(), false));
+window.addEventListener('popstate', () => show(fromHash(), false));
 </script>
 </body>
 </html>
