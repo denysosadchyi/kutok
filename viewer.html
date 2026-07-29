@@ -196,12 +196,13 @@ function fail(title, detail) {
   docEl.appendChild(b);
 }
 
-// ── резолв посилань відносно теки .md-файлу ──
+// ── резолв посилань відносно теки .md-файлу (в'юер може жити не в корені сервера) ──
+const BASE = location.pathname.replace(/[^/]*$/, '');
 function resolve(href) {
   if (/^[a-z]+:/i.test(href) || href.startsWith('#') || href.startsWith('/')) return href;
-  const u = new URL(href, new URL(dir, location.href));
-  const path = u.pathname.replace(location.pathname.replace(/[^/]*$/, ''), '');
-  return path + u.search + u.hash;
+  const u = new URL(href, location.origin + BASE + dir);
+  const p = u.pathname.startsWith(BASE) ? u.pathname.slice(BASE.length) : u.pathname;
+  return p + u.search + u.hash;
 }
 
 // посилання на .md ведемо назад у в'юер — щоб не вивалюватись у сирий текст
