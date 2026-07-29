@@ -74,11 +74,13 @@
     scrollbar-color: var(--line) transparent;
   }
 
-  /* край скролу не обрізає дерево — гасимо його в колір панелі */
-  nav::after {
-    content: ''; display: block; position: sticky; bottom: 0;
-    height: 40px; margin-top: -40px; pointer-events: none;
-    background: linear-gradient(to top, var(--panel), transparent);
+  /* Край скролу не обрізає дерево — гасимо його в колір панелі.
+     Оверлей поверх панелі, а не sticky всередині неї: sticky-дитина
+     обмежена content-box скролера і зупиняється, не дійшовши до краю. */
+  body::before {
+    content: ''; position: fixed; left: 0; bottom: 0; z-index: 3;
+    width: calc(var(--nav-w) - 1px); height: 44px; pointer-events: none;
+    background: linear-gradient(to top, var(--panel) 30%, transparent);
   }
 
   .brand {
