@@ -306,9 +306,10 @@
   .st.active { color: var(--clay); background: var(--clay-soft); font-weight: 600; }
 
   /* підсвітка збігу фільтра */
+  /* від'ємний margin гасить padding: підсвітка не зсуває сусідні літери */
   .pg mark, .st mark {
     background: color-mix(in oklab, var(--clay) 22%, transparent); color: inherit;
-    border-radius: 2px; padding: 0 1px;
+    border-radius: 2px; padding: 0 1px; margin: 0 -1px;
   }
 
   /* порожній результат пояснює, за чим шукає фільтр, і дає вихід одним кліком */
