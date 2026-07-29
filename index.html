@@ -960,6 +960,8 @@ function markLabel(el, q) {
 
 function applyFilter() {
   const q = filterEl.value.trim().toLowerCase();
+  filterEl.parentElement.classList.toggle('has-value', !!q);
+  if (q) nav.dataset.filtering = '1'; else delete nav.dataset.filtering;
   for (const e of nav.querySelectorAll('[data-l]')) markLabel(e, q);
 
   if (!q) {
