@@ -893,7 +893,14 @@ function buildNav() {
       frag.appendChild(renderSection('l' + g.lesson, g.lesson + ' · ' + LESSONS[g.lesson], [g], true));
   }
 
-  nomatch = el('p', 'nomatch', 'Нічого не знайдено. Спробуйте коротший запит.');
+  nomatch = el('div', 'nomatch',
+    '<b>Нічого не знайшлося</b>' +
+    '<p>Фільтр дивиться на назви, шляхи файлів, job-теги (RJ2, SJ1) і номери уроків (У04). ' +
+    'Спробуйте коротший запит.</p>');
+  const reset = el('button', null, 'скинути фільтр');
+  reset.type = 'button';
+  reset.addEventListener('click', () => { filterEl.value = ''; applyFilter(); filterEl.focus(); });
+  nomatch.appendChild(reset);
   frag.appendChild(nomatch);
 
   nav.appendChild(frag);
