@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<title>Куток — документ</title>
+<meta name="description" content="Перегляд .md-джерел проєкту Куток без збірки: файл лишається джерелом істини.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  /* ===== В'юер .md — інструмент перегляду, не продукт. Тому власна типографіка,
+     а не токени продукту: він має виглядати як документ проєкту (одна мова з
+     research/*.html), а не як екран Кутка. ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  [hidden] { display: none !important; }
+
+  :root {
+    --paper:     oklch(97.5% 0.006 75);
+    --panel:     oklch(96.2% 0.007 75);
+    --ink:       oklch(25% 0.012 60);
+    --muted:     oklch(48% 0.015 65);
+    --faint:     oklch(62% 0.014 68);
+    --line:      oklch(90% 0.008 75);
+    --line-soft: oklch(93% 0.007 75);
+    --clay:      oklch(52% 0.115 40);
+    --clay-soft: oklch(94% 0.022 50);
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  html { scroll-behavior: smooth; scroll-padding-top: 24px; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+  body {
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: 15px; line-height: 1.62;
+    color: var(--ink); background: var(--paper);
+  }
+
+  a { color: var(--clay); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  :focus-visible { outline: 2px solid var(--clay); outline-offset: 2px; border-radius: 3px; }
+  ::selection { background: var(--clay-soft); }
+
+  .shell {
+    display: grid; grid-template-columns: 244px minmax(0, 1fr);
+    gap: 40px; max-width: 1180px; margin: 0 auto; padding: 0 28px;
+  }
+
+  /* ── Сайдбар розділів. В оболонці проєкту він ховається: панель у проєкті одна,
+     а оболонка дзеркалить ці ж посилання у свою ліву панель. ── */
+  .sidenav {
+    position: sticky; top: 0; align-self: start;
+    height: 100dvh; overflow-y: auto; padding: 26px 0 40px;
+    scrollbar-width: thin; scrollbar-color: var(--line) transparent;
+  }
+  .sidenav .back {
+    display: block; font-family: var(--mono); font-size: 10px;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+  }
+  .sidenav .back:hover { color: var(--clay); text-decoration: none; }
+  .sidenav h2 {
+    margin: 14px 0 10px; font-size: 15px; font-weight: 800; letter-spacing: -.01em;
+    color: var(--ink);
+  }
+  .sidenav .src {
+    display: block; font-family: var(--mono); font-size: 10px; color: var(--faint);
+    word-break: break-all; margin-bottom: 14px;
+  }
+  .nav-links { display: flex; flex-direction: column; gap: 1px; margin: 2px 0 2px 7px; }
+  .nav-links a {
+    font-size: 12.5px; font-weight: 500; color: var(--muted);
+    padding: 3px 8px; border-radius: 6px; line-height: 1.4;
+  }
+  .nav-links a:hover { color: var(--ink); background: var(--line-soft); text-decoration: none; }
+  .nav-links a.active { color: var(--clay); background: var(--clay-soft); }
+  .nav-links a .n { font-family: var(--mono); font-size: 10px; margin-right: 7px; opacity: .6; }
+
+  /* ── Документ ── */
+  .doc { padding: 34px 0 120px; max-width: 74ch; }
+  .doc > :first-child { margin-top: 0; }
+
+  .doc h1 {
+    font-size: 30px; font-weight: 800; line-height: 1.18; letter-spacing: -.022em;
+    margin: 0 0 22px;
+  }
+  .doc h2 {
+    font-size: 20px; font-weight: 800; line-height: 1.28; letter-spacing: -.015em;
+    margin: 48px 0 14px; padding-top: 22px; border-top: 1px solid var(--line);
+  }
+  .doc h3 { font-size: 16px; font-weight: 700; margin: 30px 0 10px; letter-spacing: -.008em; }
+  .doc h4 { font-size: 14px; font-weight: 700; margin: 22px 0 8px; color: var(--muted); }
+  .doc h5, .doc h6 {
+    font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--muted); margin: 20px 0 8px;
+  }
+
+  .doc p { margin: 0 0 14px; }
+  .doc ul, .doc ol { margin: 0 0 14px; padding-left: 22px; }
+  .doc li { margin: 0 0 5px; }
+  .doc li > ul, .doc li > ol { margin: 5px 0 0; }
+  .doc hr { border: 0; border-top: 1px solid var(--line); margin: 32px 0; }
+
+  .doc blockquote {
+    margin: 0 0 16px; padding: 2px 0 2px 16px;
+    border-left: 2px solid var(--clay); color: var(--muted);
+  }
+  .doc blockquote p:last-child { margin-bottom: 0; }
+
+  .doc code {
+    font-family: var(--mono); font-size: .85em;
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: 4px; padding: .1em .34em;
+  }
+  .doc pre {
+    margin: 0 0 16px; padding: 14px 16px; overflow-x: auto;
+    background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+  }
+  .doc pre code { background: none; border: 0; padding: 0; font-size: 12.5px; line-height: 1.6; }
+
+  .doc img { max-width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--line); }
+  .doc strong { font-weight: 700; }
+
+  /* таблиці — найчастіший формат у наших .md, тож окремо акуратно */
+  .tw { overflow-x: auto; margin: 0 0 18px; }
+  .doc table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+  .doc th, .doc td {
+    text-align: left; vertical-align: top;
+    padding: 8px 12px; border-bottom: 1px solid var(--line);
+  }
+  .doc th {
+    font-family: var(--mono); font-size: 10px; font-weight: 600;
+    letter-spacing: .09em; text-transform: uppercase; color: var(--muted);
+    border-bottom: 1px solid var(--ink);
+  }
+  .doc tbody tr:hover { background: var(--line-soft); }
+
+  .meta {
+    font-family: var(--mono); font-size: 11px; color: var(--faint);
+    letter-spacing: .04em; margin: 0 0 20px;
+  }
+  .err {
+    margin: 40px 0; padding: 18px 20px;
+    border: 1px solid var(--line); border-left: 2px solid var(--clay);
+    border-radius: 10px; background: var(--panel);
+  }
+  .err b { display: block; margin-bottom: 6px; }
+  .err code { font-family: var(--mono); font-size: 12px; }
+
+  @media (max-width: 900px) {
+    .shell { grid-template-columns: minmax(0, 1fr); gap: 0; padding: 0 20px; }
+    .sidenav { position: static; height: auto; padding: 20px 0 0; }
+    .nav-links { display: none; }
+    .doc { padding-top: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <nav class="sidenav" aria-label="Навігація">
+    <a class="back" href="index.html">← усі матеріали</a>
+    <h2 id="doc-title">Документ</h2>
+    <span class="src" id="doc-src"></span>
+    <div class="nav-links" id="toc" aria-label="Розділи документа"></div>
+  </nav>
+  <main class="doc" id="doc"></main>
+</div>
+
+<script>
+// ─────────────────────────────────────────────────────────────
+// В'юер .md і .css. Джерело істини — файл; тут лише відображення,
+// тому нічого не кешуємо і нічого не генеруємо на диск.
+// ─────────────────────────────────────────────────────────────
+const docEl   = document.getElementById('doc');
+const tocEl   = document.getElementById('toc');
+const titleEl = document.getElementById('doc-title');
+const srcEl   = document.getElementById('doc-src');
+
+// ── шлях: тільки відносний, тільки дозволені розширення ──
+const raw = new URLSearchParams(location.search).get('f') || '';
+const file = raw.replace(/^\/+/, '');
+const ok = file && !file.includes('..') && !/^[a-z]+:/i.test(file) && /\.(md|css|txt)$/i.test(file);
+const dir = file.replace(/[^/]*$/, '');           // тека файлу — база для його посилань
+
+function fail(title, detail) {
+  docEl.innerHTML = '';
+  const b = document.createElement('div');
+  b.className = 'err';
+  const t = document.createElement('b');
+  t.textContent = title;
+  const p = document.createElement('p');
+  p.textContent = detail;
+  b.append(t, p);
+  docEl.appendChild(b);
+}
+
+// ── резолв посилань відносно теки .md-файлу ──
+function resolve(href) {
+  if (/^[a-z]+:/i.test(href) || href.startsWith('#') || href.startsWith('/')) return href;
+  const u = new URL(href, new URL(dir, location.href));
+  const path = u.pathname.replace(location.pathname.replace(/[^/]*$/, ''), '');
+  return path + u.search + u.hash;
+}
+
+// посилання на .md ведемо назад у в'юер — щоб не вивалюватись у сирий текст
+function link(href) {
+  if (/^[a-z]+:/i.test(href) || href.startsWith('#')) return href;
+  const r = resolve(href);
+  const [p, h] = r.split('#');
+  if (/\.(md|css|txt)$/i.test(p.split('?')[0]))
+    return 'viewer.html?f=' + encodeURIComponent(p) + (h ? '#' + h : '');
+  return r;
+}
+
+// ── маркдаун → HTML ──
+function esc(s) {
+  return s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+}
+
+function inline(s) {
+  const code = [];
+  s = s.replace(/`([^`]+)`/g, (m, c) => { code.push(c); return ' ' + (code.length - 1) + ' '; });
+  s = esc(s);
+  s = s.replace(/!\[([^\]]*)\]\(([^)\s]+)(?:\s+&quot;[^&]*&quot;)?\)/g,
+    (m, alt, src) => `<img src="${esc(resolve(src))}" alt="${alt}" loading="lazy">`);
+  s = s.replace(/\[([^\]]+)\]\(([^)\s]+)(?:\s+&quot;[^&]*&quot;)?\)/g, (m, t, h) => {
+    const href = link(h);
+    const ext = /^[a-z]+:/i.test(href) ? ' target="_blank" rel="noopener"' : '';
+    return `<a href="${esc(href)}"${ext}>${t}</a>`;
+  });
+  s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  s = s.replace(/(^|[^*\w])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+  s = s.replace(/~~([^~]+)~~/g, '<del>$1</del>');
+  s = s.replace(/ (\d+) /g, (m, i) => '<code>' + esc(code[+i]) + '</code>');
+  return s;
+}
+
+let hid = 0;
+const heads = [];   // { id, level, text }
+
+function heading(level, text) {
+  const id = 'h' + (++hid);
+  heads.push({ id, level, text });
+  return `<h${level} id="${id}">${inline(text)}</h${level}>`;
+}
+
+function cells(row) {
+  return row.replace(/^\||\|$/g, '').split('|').map(c => c.trim());
+}
+
+// список: збираємо рівні за відступом, закриваємо стеком
+function renderList(lines) {
+  const out = [];
+  const stack = [];  // { indent, tag }
+  for (const ln of lines) {
+    const m = ln.match(/^(\s*)([-*+]|\d+[.)])\s+(.*)$/);
+    if (!m) { // продовження пункту
+      if (out.length) out[out.length - 1] += ' ' + inline(ln.trim());
+      continue;
+    }
+    const indent = m[1].replace(/\t/g, '  ').length;
+    const tag = /^\d/.test(m[2]) ? 'ol' : 'ul';
+    while (stack.length && indent < stack[stack.length - 1].indent) {
+      out.push('</li></' + stack.pop().tag + '>');
+    }
+    if (!stack.length || indent > stack[stack.length - 1].indent) {
+      if (stack.length) out.push(`<${tag}>`);
+      else out.push(`<${tag}>`);
+      stack.push({ indent, tag });
+    } else {
+      out.push('</li>');
+    }
+    out.push('<li>' + inline(m[3]));
+  }
+  while (stack.length) out.push('</li></' + stack.pop().tag + '>');
+  return out.join('');
+}
+
+function md2html(src) {
+  const lines = src.replace(/\r\n?/g, '\n').split('\n');
+  let i = 0;
+  const out = [];
+
+  // frontmatter — службовий, у документ не показуємо
+  if (lines[0] === '---') {
+    let j = 1;
+    while (j < lines.length && lines[j] !== '---') j++;
+    if (j < lines.length) i = j + 1;
+  }
+
+  while (i < lines.length) {
+    const ln = lines[i];
+
+    if (!ln.trim()) { i++; continue; }
+
+    // код
+    const fence = ln.match(/^\s*```+\s*(\S*)/);
+    if (fence) {
+      const buf = [];
+      i++;
+      while (i < lines.length && !/^\s*```+\s*$/.test(lines[i])) buf.push(lines[i++]);
+      i++;
+      out.push('<pre><code>' + esc(buf.join('\n')) + '</code></pre>');
+      continue;
+    }
+
+    // заголовок
+    const h = ln.match(/^(#{1,6})\s+(.*)$/);
+    if (h) { out.push(heading(h[1].length, h[2].replace(/\s*#+\s*$/, ''))); i++; continue; }
+
+    // горизонтальна лінія
+    if (/^\s*([-*_])\s*(\1\s*){2,}$/.test(ln)) { out.push('<hr>'); i++; continue; }
+
+    // таблиця
+    if (/^\s*\|/.test(ln) && /^\s*\|?[\s:|-]+\|[\s:|-]*$/.test(lines[i + 1] || '')) {
+      const head = cells(ln.trim());
+      i += 2;
+      const rows = [];
+      while (i < lines.length && /^\s*\|/.test(lines[i])) rows.push(cells(lines[i++].trim()));
+      out.push('<div class="tw"><table><thead><tr>' +
+        head.map(c => '<th>' + inline(c) + '</th>').join('') +
+        '</tr></thead><tbody>' +
+        rows.map(r => '<tr>' + r.map(c => '<td>' + inline(c) + '</td>').join('') + '</tr>').join('') +
+        '</tbody></table></div>');
+      continue;
+    }
+
+    // цитата
+    if (/^\s*>/.test(ln)) {
+      const buf = [];
+      while (i < lines.length && /^\s*>/.test(lines[i])) buf.push(lines[i++].replace(/^\s*>\s?/, ''));
+      out.push('<blockquote>' + md2html(buf.join('\n')) + '</blockquote>');
+      continue;
+    }
+
+    // список
+    if (/^\s*([-*+]|\d+[.)])\s+/.test(ln)) {
+      const buf = [];
+      while (i < lines.length && lines[i].trim() &&
+             !/^\s*(#{1,6}\s|```|\|)/.test(lines[i])) buf.push(lines[i++]);
+      out.push(renderList(buf));
+      continue;
+    }
+
+    // абзац
+    const buf = [];
+    while (i < lines.length && lines[i].trim() &&
+           !/^\s*(#{1,6}\s|```|>|\||([-*+]|\d+[.)])\s)/.test(lines[i])) buf.push(lines[i++]);
+    out.push('<p>' + inline(buf.join('\n')) + '</p>');
+  }
+  return out.join('\n');
+}
+
+// ── завантаження ──
+if (!ok) {
+  titleEl.textContent = 'Файл не вказано';
+  fail('Немає що показувати',
+    'В’юер відкривається як viewer.html?f=<шлях до .md>. Дозволені лише відносні шляхи всередині проєкту.');
+} else {
+  srcEl.textContent = '/' + file;
+  fetch(file)
+    .then(r => { if (!r.ok) throw new Error(r.status + ' ' + r.statusText); return r.text(); })
+    .then(text => {
+      const isCode = /\.css$/i.test(file);
+      const html = isCode
+        ? '<h1 id="h1">' + esc(file.split('/').pop()) + '</h1>' +
+          '<p class="meta">' + text.split('\n').length + ' рядків · перегляд без редагування</p>' +
+          '<pre><code>' + esc(text) + '</code></pre>'
+        : md2html(text);
+      docEl.innerHTML = html;
+
+      const h1 = docEl.querySelector('h1');
+      const name = h1 ? h1.textContent.trim() : file.split('/').pop();
+      document.title = 'Куток — ' + name;
+      titleEl.textContent = name;
+
+      buildToc();
+      wireLinks();
+    })
+    .catch(e => {
+      titleEl.textContent = 'Не відкрився';
+      fail('Файл не прочитався', file + ' — ' + e.message +
+        '. Якщо сторінку відкрито з file://, потрібен локальний сервер: python3 -m http.server.');
+    });
+}
+
+// ── зміст: h2 із документа; оболонка проєкту дзеркалить саме ці посилання ──
+function buildToc() {
+  const items = heads.filter(h => h.level === 2);
+  if (items.length < 2) { tocEl.hidden = true; return; }
+  const frag = document.createDocumentFragment();
+  items.forEach((h, idx) => {
+    const a = document.createElement('a');
+    a.href = '#' + h.id;
+    const n = document.createElement('span');
+    n.className = 'n';
+    n.textContent = String(idx + 1).padStart(2, '0');
+    a.appendChild(n);
+    a.appendChild(document.createTextNode(h.text.replace(/[*`]/g, '').trim()));
+    frag.appendChild(a);
+  });
+  tocEl.appendChild(frag);
+
+  // скролспай: активний — останній заголовок, що перетнув верх екрана
+  const links = new Map(items.map((h, idx) => [h.id, tocEl.children[idx]]));
+  const seen = new Map();
+  const spy = new IntersectionObserver(entries => {
+    for (const e of entries) seen.set(e.target.id, e);
+    let best = null;
+    for (const [id, e] of seen) {
+      if (e.boundingClientRect.top < 120) best = id;
+      else if (!best && e.isIntersecting) best = id;
+    }
+    for (const [id, a] of links) a.classList.toggle('active', id === best);
+  }, { rootMargin: '-100px 0px -70% 0px', threshold: 0 });
+  for (const h of items) {
+    const el = document.getElementById(h.id);
+    if (el) spy.observe(el);
+  }
+}
+
+// зовнішні лінки — у нову вкладку; решту веде оболонка або сам браузер
+function wireLinks() {
+  for (const a of docEl.querySelectorAll('a[href^="http"]')) {
+    a.target = '_blank';
+    a.rel = 'noopener';
+  }
+}
+</script>
+</body>
+</html>
