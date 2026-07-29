@@ -7,13 +7,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="kit.css">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components/index.css">
 <!--
   ОБОЛОНКА як РОЗМІТКА. Кіт-лише-CSS не вдягне того, що не має скелета — тому
   двошарова шапка (вордмарк-варіант + «назад»-варіант) і таб-бар живуть тут.
   Сірий екран: копіює .app, лишає ОДИН хедер, вставляє свій вміст у <main>,
   лишає <footer class="tabbar"> з активним потрібним табом.
-  Вигляд повністю з kit.css — тут нуль інлайн-стилів.
+  Вигляд повністю з tokens.css + components/ — тут нуль інлайн-стилів.
 -->
 </head>
 <body style="background:#e9e9e9; margin:0; min-height:100vh; display:flex; gap:32px; justify-content:center; align-items:flex-start; padding:28px 16px;">
@@ -35,7 +36,7 @@
 
   <main>
     <!-- ▼▼▼ ЕКРАН ВСТАВЛЯЄ СВІЙ ВМІСТ СЮДИ ▼▼▼ -->
-    <div style="padding:24px 18px; color:var(--ink-muted); font-family:var(--font-body); font-size:var(--fs-secondary);">
+    <div style="padding:24px 18px; color:var(--text-muted); font-family:var(--font-family-2); font-size:var(--font-size-13);">
       &lt;main&gt; — сюди екран кладе свій контент (стрічку, форму, профіль…)
     </div>
     <!-- ▲▲▲ /вміст ▲▲▲ -->
@@ -67,7 +68,7 @@
 
   <!-- Шапка · шар 2: назад + заголовок (для room / chat / verify / report …) -->
   <header class="app-head app-head--back">
-    <div class="head-brand-row"><svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--olive)"/><path d="M18 3L21 3L21 6Z" fill="var(--paper-2)"/></svg><div class="head-brand">Куток</div></div>
+    <div class="head-brand-row"><svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--color-brand)"/><path d="M18 3L21 3L21 6Z" fill="var(--bg-surface)"/></svg><div class="head-brand">Куток</div></div>
     <div class="head-back-row">
       <a class="head-back" href="#" aria-label="До списку"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M15 5l-7 7 7 7"/></svg></a>
       <h1 class="head-title">Оголошення кімнати</h1>
@@ -75,7 +76,7 @@
   </header>
 
   <main>
-    <div style="padding:24px 18px; color:var(--ink-muted); font-family:var(--font-body); font-size:var(--fs-secondary);">
+    <div style="padding:24px 18px; color:var(--text-muted); font-family:var(--font-family-2); font-size:var(--font-size-13);">
       &lt;main&gt; — вторинний екран (оголошення, чат, форма верифікації…)
     </div>
   </main>

@@ -7,9 +7,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="kit.css">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components/index.css">
 <style>
-  /* ===== Одягнено в кіт (ui/kit.css). Тут лишається лише каркас вайрфрейму (.wf-*)
+  /* ===== Одягнено в кіт (tokens.css + ui/components/). Тут лишається лише каркас вайрфрейму (.wf-*)
      і базовий ресет — жодних правил вигляду для застосунку. ===== */
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: sans-serif; background: #e9e9e9; color: #333; line-height: 1.4; }
@@ -20,7 +21,7 @@
   .wf-nav {
     position: sticky; top: 0; align-self: flex-start;
     flex: 0 0 258px; width: 258px; height: 100vh; overflow-y: auto;
-    background: #221E18; background-image: var(--grain-light);
+    background: #221E18; background-image: var(--grain-2);
     border-right: 1px solid #14110C;
     padding: 20px 15px 28px; color: #C7BCA6;
     font-family: Inter, system-ui, sans-serif;
@@ -60,20 +61,20 @@
   .job-tag:hover { color: #F3EED9; border-color: #6E7B2E; }
 
   /* ── Разове (тільки цей екран, див. ui/inventory.md → «Разове»): повноекранний
-     фото-в'юер. Вигляд токенами kit.css, у спільний кіт не тягнемо. ── */
-  .gallery-bar { display: flex; align-items: center; justify-content: space-between; padding: 16px var(--gutter) 10px; }
+     фото-в'юер. Вигляд токенами tokens.css + ui/components/, у спільний кіт не тягнемо. ── */
+  .gallery-bar { display: flex; align-items: center; justify-content: space-between; padding: 16px var(--space-16) 10px; }
   .gallery-close {
-    width: 38px; height: 38px; border-radius: var(--r-pill); border: var(--bd) solid var(--line);
-    background: transparent; color: var(--ink); display: inline-flex; align-items: center; justify-content: center;
+    width: 38px; height: 38px; border-radius: var(--radius-999); border: var(--border-1-5) solid var(--border-default);
+    background: transparent; color: var(--text-primary); display: inline-flex; align-items: center; justify-content: center;
   }
-  .gallery-close:hover { background: var(--ink-04); }
+  .gallery-close:hover { background: var(--bg-neutral); }
   .gallery-close svg { width: 15px; height: 15px; }
-  .gallery-viewer { padding: 6px var(--gutter) 0; }
-  .gallery-photo { width: 100%; aspect-ratio: 4 / 5; border-radius: var(--r-photo); object-fit: cover; display: block; background: var(--paper-2); }
-  .gallery-strip { list-style: none; display: flex; gap: 8px; padding: 14px var(--gutter) 22px; }
+  .gallery-viewer { padding: 6px var(--space-16) 0; }
+  .gallery-photo { width: 100%; aspect-ratio: 4 / 5; border-radius: var(--radius-26); object-fit: cover; display: block; background: var(--bg-surface); }
+  .gallery-strip { list-style: none; display: flex; gap: 8px; padding: 14px var(--space-16) 22px; }
   .gallery-strip li { flex: 0 0 auto; }
-  .gallery-thumb { width: 60px; height: 60px; border-radius: var(--r-skeleton); object-fit: cover; display: block; border: var(--bd) solid transparent; }
-  .gallery-thumb--current { border-color: var(--cobalt); }
+  .gallery-thumb { width: 60px; height: 60px; border-radius: var(--radius-8); object-fit: cover; display: block; border: var(--border-1-5) solid transparent; }
+  .gallery-thumb--current { border-color: var(--color-action); }
 </style>
 </head>
 <body>

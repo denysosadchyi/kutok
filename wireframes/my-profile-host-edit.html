@@ -7,9 +7,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="kit.css">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components/index.css">
 <style>
-  /* ===== Одягнено в кіт (ui/kit.css). Тут лишається лише каркас вайрфрейму (.wf-*)
+  /* ===== Одягнено в кіт (tokens.css + ui/components/). Тут лишається лише каркас вайрфрейму (.wf-*)
      і базовий ресет — жодних правил вигляду для застосунку. ===== */
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: sans-serif; background: #e9e9e9; color: #333; line-height: 1.4; }
@@ -20,7 +21,7 @@
   .wf-nav {
     position: sticky; top: 0; align-self: flex-start;
     flex: 0 0 258px; width: 258px; height: 100vh; overflow-y: auto;
-    background: #221E18; background-image: var(--grain-light);
+    background: #221E18; background-image: var(--grain-2);
     border-right: 1px solid #14110C;
     padding: 20px 15px 28px; color: #C7BCA6;
     font-family: Inter, system-ui, sans-serif;
@@ -373,7 +374,7 @@
   <header class="app-head">
     <div>
       <a class="head-back" href="my-profile-host.html" aria-label="Скасувати"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a>
-      <div class="head-brand-row"><svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--olive)"/><path d="M18 3L21 3L21 6Z" fill="var(--paper-2)"/></svg><div class="head-brand">Куток</div></div>
+      <div class="head-brand-row"><svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--color-brand)"/><path d="M18 3L21 3L21 6Z" fill="var(--bg-surface)"/></svg><div class="head-brand">Куток</div></div>
       <h1 class="head-word">Редагувати профіль</h1>
       <p class="head-sub">Зміни тут одразу оновлюють те, що бачать про вас кандидати.</p>
     </div>
