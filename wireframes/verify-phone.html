@@ -39,6 +39,15 @@
   .wf-nav-toggle-all { display: flex; gap: 6px; }
   .wf-nav-toggle-all button { flex: 1; font-size: 10.5px; padding: 6px 4px; border-radius: 8px; border: 1px solid #3A342B; background: #191510; color: #B3A992; cursor: pointer; font-family: inherit; }
   .wf-nav-toggle-all button:hover { background: #2C271F; color: #E7DECB; }
+  /* Перемикач теми — інструмент перегляду, не частина продукту (крок 5, урок 8).
+     Живе в тій самій темній chrome-панелі, тому свідомо на сирих hex. */
+  .wf-nav-theme { display: block; width: 100%; box-sizing: border-box; text-align: center; margin-bottom: 12px; padding: 8px 10px; border-radius: 8px; border: 1px solid #3A342B; background: #191510; color: #B3A992; font-size: 11.5px; font-weight: 700; cursor: pointer; font-family: inherit; }
+  .wf-nav-theme:hover { background: #2C271F; color: #E7DECB; }
+  .wf-nav-theme:focus-visible { outline: 2px solid #6E7B2E; outline-offset: 2px; }
+  /* Сцена навколо макета теж темніє — інакше темний екран лежить на світлому
+     полі й читається як помилка, а не як тема. Теж chrome, не продукт. */
+  html[data-theme="dark"] body { background: #12100D; }
+  html[data-theme="dark"] .wf-stage { background: #12100D; }
   .wf-nav details.role { margin-top: 6px; border-top: 1px solid #332E26; padding-top: 8px; }
   .wf-nav details.role:first-of-type { margin-top: 0; border-top: none; padding-top: 0; }
   .wf-nav details.role > summary { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; color: #9A9078; font-weight: 700; cursor: pointer; padding: 5px 5px; list-style: none; border-radius: 7px; }
@@ -60,6 +69,10 @@
   .job-tag { font-size: 9px; font-weight: 600; color: #B3A992; border: 1px solid #3A342B; background: #191510; padding: 1px 5px; border-radius: 5px; text-decoration: none; flex-shrink: 0; margin-left: auto; }
   .job-tag:hover { color: #F3EED9; border-color: #6E7B2E; }
 </style>
+<script>
+/* Тема застосовується ДО першого паінту, щоб не було спалаху світлої теми. */
+(function(){try{var t=localStorage.getItem('kutok-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
 </head>
 <body>
 <div class="wf-shell">
@@ -68,6 +81,7 @@
     <div class="wf-nav-title">Куток · вайрфрейми</div>
     <div class="wf-nav-hint">Клікни на розділ або екран, щоб згорнути/розгорнути</div>
     <a class="wf-nav-kit-link" href="kit.html">Кіт компонентів →</a>
+    <button type="button" class="wf-nav-theme" onclick="wfToggleTheme()" aria-pressed="false">Темна тема</button>
     <div class="wf-nav-tools">
       <input type="text" class="wf-nav-filter" placeholder="Фільтр за назвою…" oninput="wfNavFilter(this.value)">
       <div class="wf-nav-toggle-all">
@@ -433,6 +447,21 @@
       }
     });
   }
+  function wfToggleTheme() {
+    var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    var next = dark ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('kutok-theme', next); } catch (e) {}
+    wfSyncThemeLabel();
+  }
+  function wfSyncThemeLabel() {
+    var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    document.querySelectorAll('.wf-nav-theme').forEach(function (b) {
+      b.textContent = dark ? 'Світла тема' : 'Темна тема';
+      b.setAttribute('aria-pressed', dark ? 'true' : 'false');
+    });
+  }
+  wfSyncThemeLabel();
 </script>
 </body>
 </html>
