@@ -660,6 +660,7 @@ function renderGroup(g, parentIds, container) {
 // верхнє дерево (режим «за етапом») або урок (режим «за уроком»)
 function renderSection(id, title, groups, asLesson) {
   const secId = 'sec:' + mode + ':' + id;
+  secTitles.set(secId, title);
   const sec = el('section', 'sec');
   const total = groups.reduce((n, g) => n + groupCount(g), 0);
   const btn = el('button', 'sec-btn', CHEV + title + `<span class="cnt">${total}</span>`);
