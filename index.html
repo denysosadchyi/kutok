@@ -98,16 +98,36 @@
     border-bottom: 1px solid var(--line);
     box-shadow: 0 6px 12px -10px oklch(25% 0.012 60 / .2);
   }
-  .filter {
-    width: 100%; padding: 7px 10px;
-    font: inherit; font-size: 12px;
-    border: 1px solid var(--line); border-radius: 7px;
-    background: var(--paper); color: var(--ink);
-    transition: border-color .15s ease;
+  /* поле пошуку: іконка зліва, підказка клавіші справа — обидві всередині рамки,
+     щоб поле лишалось одним об'єктом, а не полем із супутниками */
+  .field { position: relative; display: flex; align-items: center; }
+  .field .glass {
+    position: absolute; left: 9px; width: 13px; height: 13px;
+    color: var(--faint); pointer-events: none;
+    fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round;
   }
+  .field:focus-within .glass { color: var(--clay); }
+  .filter {
+    width: 100%; padding: 7px 30px 7px 27px;
+    font: inherit; font-size: 12px;
+    border: 1px solid var(--line); border-radius: 8px;
+    background: var(--paper); color: var(--ink);
+    transition: border-color .15s ease, box-shadow .15s ease;
+  }
+  .filter::-webkit-search-cancel-button { display: none; }
   .filter:hover { border-color: oklch(84% 0.01 70); }
-  .filter:focus { outline: none; border-color: var(--clay); }
+  .filter:focus {
+    outline: none; border-color: var(--clay);
+    box-shadow: 0 0 0 3px var(--clay-soft);
+  }
   .filter::placeholder { color: var(--faint); }
+  .field kbd {
+    position: absolute; right: 8px; pointer-events: none;
+    font-family: var(--mono); font-size: 9.5px; line-height: 1; color: var(--faint);
+    border: 1px solid var(--line); border-radius: 4px; padding: 3px 5px 2px;
+    background: var(--panel);
+  }
+  .field:focus-within kbd, .field.has-value kbd { opacity: 0; }
 
   /* три контроли в 286px впритул — даємо переносити, щоб нічого не обрізалось */
   .tools { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 8px; }
