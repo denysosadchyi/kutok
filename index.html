@@ -72,7 +72,19 @@
     scrollbar-color: var(--line) transparent;
   }
 
-  .brand { display: block; padding-top: 22px; font-weight: 800; font-size: 15.5px; letter-spacing: -.01em; }
+  /* край скролу не обрізає дерево — гасимо його в колір панелі */
+  nav::after {
+    content: ''; display: block; position: sticky; bottom: 0;
+    height: 40px; margin-top: -40px; pointer-events: none;
+    background: linear-gradient(to top, var(--panel), transparent);
+  }
+
+  .brand {
+    display: block; margin: 0 -8px; padding: 22px 8px 8px;
+    font-weight: 800; font-size: 15.5px; letter-spacing: -.01em;
+    border-radius: 8px;
+  }
+  .brand:hover { background: var(--line-soft); }
   .brand span {
     display: block; font-family: var(--mono); font-size: 9px; font-weight: 400;
     color: var(--muted); letter-spacing: .16em; margin-top: 4px;
