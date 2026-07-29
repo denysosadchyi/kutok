@@ -95,7 +95,8 @@
   .filter:focus { outline: none; border-color: var(--clay); }
   .filter::placeholder { color: var(--faint); }
 
-  .tools { display: flex; align-items: center; gap: 6px; margin-top: 8px; }
+  /* три контроли в 286px впритул — даємо переносити, щоб нічого не обрізалось */
+  .tools { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 8px; }
   .mode {
     display: flex; flex: none; gap: 2px; padding: 2px;
     border: 1px solid var(--line); border-radius: 7px; background: var(--paper);
