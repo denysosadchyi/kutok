@@ -930,11 +930,7 @@ function whereOf(file) {
     }
   }
   const sec = item.ancestors.find(i => i.startsWith('sec:'));
-  if (sec && mode === 'lesson') {
-    const l = sec.split(':')[2].replace(/^l/, '');
-    return LESSONS[l] ? l + ' · ' + LESSONS[l] : '';
-  }
-  return '';
+  return sec ? (secTitles.get(sec) || '') : '';
 }
 
 function show(file, push = true) {
