@@ -522,6 +522,7 @@ const navItems   = new Map();  // file → { pg, ancestors: [ids] }
 const filterables = [];        // { el, text, ids, isGroup?, groupId?, isRole?, roleId? }
 const roleMeta   = [];         // { cnt, body, total } — чесний лічильник при фільтрі
 const secMeta    = [];         // те саме для верхніх дерев
+const secTitles  = new Map();  // sec-id → заголовок, для підпису в шапці
 
 let brand, filterEl, nomatch, allBtn;
 
