@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Текст: лічильник, оверлайн, підказка · Компоненти · Куток</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../design-system/index.css">
+<link rel="stylesheet" href="docs.css">
+</head>
+<body class="docs">
+<div class="docs-shell">
+
+<nav class="docs-nav" aria-label="Компоненти">
+  <a class="docs-nav-home" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--color-brand)"/><path d="M18 3L21 3L21 6Z" fill="var(--bg-surface)"/></svg>Куток · компоненти</a>
+  <p class="docs-nav-sub">design-system/ у дії</p>
+  <a class="docs-nav-why" href="why.html">Чому система така →</a>
+
+  <div class="docs-nav-group"><h3>Оболонка й навігація</h3><ul>
+    <li><a href="header.html">Хедер екрана</a></li>
+    <li><a href="search.html">Поповер пошуку</a></li>
+    <li><a href="tabbar.html">Таб-бар</a></li>
+    <li><a href="menu.html">Список-меню налаштувань</a></li>
+  </ul></div>
+
+  <div class="docs-nav-group"><h3>Кнопки</h3><ul>
+    <li><a href="button.html">Кнопка</a></li>
+  </ul></div>
+
+  <div class="docs-nav-group"><h3>Картки й списки</h3><ul>
+    <li><a href="card.html">Картка оголошення</a></li>
+    <li><a href="list.html">Рядок списку</a></li>
+    <li><a href="avatar.html">Аватар</a></li>
+    <li><a href="badge.html">Бейдж верифікації</a></li>
+    <li><a href="status-pill.html">Статус-піґулка</a></li>
+    <li><a href="chips.html">Факти й чипи</a></li>
+    <li><a href="review.html">Відгук</a></li>
+    <li><a href="meter.html">Метр повноти профілю</a></li>
+    <li><a href="profile-hero.html">Профіль-герой</a></li>
+  </ul></div>
+
+  <div class="docs-nav-group"><h3>Форми</h3><ul>
+    <li><a href="field.html">Поле форми</a></li>
+    <li><a href="checkbox.html">Чекбокс</a></li>
+    <li><a href="radio.html">Радіо-список</a></li>
+    <li><a href="privacy-group.html">Група приватності</a></li>
+    <li><a href="photo-upload.html">Ряд завантаження фото</a></li>
+  </ul></div>
+
+  <div class="docs-nav-group"><h3>Разове</h3><ul>
+    <li><a href="segment.html">Сегмент типу</a></li>
+    <li><a href="fab.html">FAB фільтра</a></li>
+    <li><a href="sheet.html">Боттом-шит</a></li>
+    <li><a href="role-option.html">Опції вибору ролі</a></li>
+    <li><a href="consent.html">Блок згоди</a></li>
+    <li><a href="legal-copy.html">Юридичний текст</a></li>
+    <li><a href="thumb-strip.html">Стрічка мініатюр</a></li>
+    <li><a href="gallery.html">Фото-в'юер</a></li>
+  </ul></div>
+
+  <div class="docs-nav-group"><h3>Зворотний зв'язок</h3><ul>
+    <li><a href="state.html">Порожній стан</a></li>
+    <li><a href="banner.html">Банер</a></li>
+    <li><a href="skeleton.html">Скелетон завантаження</a></li>
+    <li><a href="text.html" aria-current="page">Текст: лічильник, оверлайн, підказка</a></li>
+  </ul></div>
+
+  <div class="docs-nav-group"><h3>Чат</h3><ul>
+    <li><a href="chat.html">Бульбашки й поле вводу</a></li>
+  </ul></div>
+</nav>
+
+<main class="docs-main">
+
+  <p class="docs-crumb"><a href="index.html">Компоненти</a> / Зворотний зв'язок</p>
+  <p class="docs-eyebrow">Чотири ролі тексту</p>
+  <h1 class="docs-title">Текст: лічильник, оверлайн, підказка</h1>
+  <p class="docs-lede">Чотири маленькі текстові ролі з одного файлу стилів — сполучна тканина, яка тримає майже кожен екран, сама лишаючись непомітною.</p>
+  <div class="docs-meta"><code>.counter</code><code>.overline</code><code>.hint</code><code>.muted-note</code></div>
+
+  <section class="docs-sec" id="anatomy">
+    <h2>Анатомія</h2>
+    <p class="docs-sec-hint">Ця сторінка документує не один компонент з частинами, а чотири незалежні ролі тексту, що ділять один файл CSS — тому «анатомія» тут це чотири підписані приклади поруч, а не один інстанс із нумерованою легендою.</p>
+    <div class="docs-anatomy">
+      <div class="docs-stage">
+        <div style="display:flex; flex-direction:column; gap:20px; width:100%; max-width:320px; align-items:flex-start;">
+          <p class="counter">Кандидатів: <b>3</b></p>
+          <h2 class="overline" style="margin:0;">Звички та умови</h2>
+          <p class="hint" style="margin:0;">Порада: спілкуйтесь у Кутку до зустрічі. Зустрічайтесь у людному місці.</p>
+          <p class="muted-note" style="margin:0;">Користувачка ще не додала опис про себе.</p>
+        </div>
+      </div>
+      <ol class="docs-legend">
+        <li><b>Лічильник</b><span>(<code>.counter</code>) — 13px, приглушений, з жирним чорнильним числом усередині (<code>tabular-nums</code>): «Кандидатів: 3».</span></li>
+        <li><b>Оверлайн</b><span>(<code>.overline</code>) — 11px, великі літери, розрідження .08em, лейбл секції над блоком «Звички та умови» чи «Відгуки про мене».</span></li>
+        <li><b>Підказка</b><span>(<code>.hint</code>) — 13px, приглушена, коротка порада чи підпис поля.</span></li>
+        <li><b>Приглушений абзац</b><span>(<code>.muted-note</code>) — 16px, приглушений, для довшого самостійного речення, де 13px читалося б надто тихо.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="variants">
+    <h2>Варіанти й розміри</h2>
+    <div class="docs-variants">
+      <div class="docs-example">
+        <p class="docs-example-label">Лічильник — кількість</p>
+        <div class="docs-example-body"><p class="counter" style="margin:0;">Кандидатів: <b>3</b></p></div>
+      </div>
+      <div class="docs-example">
+        <p class="docs-example-label">Лічильник — позиція</p>
+        <div class="docs-example-body"><p class="counter" style="margin:0;">2 з 5</p></div>
+      </div>
+      <div class="docs-example">
+        <p class="docs-example-label">Оверлайн — лейбл секції</p>
+        <div class="docs-example-body"><h2 class="overline" style="margin:0;">Звички та умови</h2></div>
+      </div>
+      <div class="docs-example">
+        <p class="docs-example-label">Підказка — порада безпеки</p>
+        <div class="docs-example-body"><p class="hint" style="margin:0;">Порада: спілкуйтесь у Кутку до зустрічі. Зустрічайтесь у людному місці.</p></div>
+      </div>
+      <div class="docs-example">
+        <p class="docs-example-label">Приглушений абзац — порожній стан</p>
+        <div class="docs-example-body"><p class="muted-note" style="margin:0;">Користувачка ще не додала опис про себе.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="usage">
+    <h2>Коли вживати</h2>
+    <p class="docs-copy"><code>.counter</code> стоїть у <code>candidates</code>, <code>listings-desktop</code>, <code>my-profile-host</code>, <code>photo-viewer</code> та в станах завантаження <code>dialogs-loading</code>, <code>my-listings-loading</code> — скрізь, де потрібно назвати кількість чи позицію («N кандидатів», «i з N фото»). <code>.hint</code> — найпоширеніша з чотирьох ролей, ~50 екранів: підзаголовок під заголовком, поради безпеки в чаті, підказки під полями форми. <code>.overline</code> — лейбл секції над <a href="chips.html">чипами</a> чи блоком відгуків, завжди підпис структури екрана, ніколи бренд чи бейдж. <code>.muted-note</code> вживається точково — там, де приглушена думка довша за коротку підказку, найчастіше в порожніх станах профілю, де 13px читалося б надто тихо для обсягу тексту.</p>
+    <div class="docs-where">
+      <span>candidates / listings-desktop / photo-viewer — counter</span>
+      <span>~50 екранів — hint</span>
+      <span>my-profile-seeker / host — overline над chips і відгуками</span>
+      <span>profile-empty — muted-note</span>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="dodont">
+    <h2>Правило і антиправило</h2>
+    <div class="docs-dodont">
+      <div class="docs-do">
+        <span class="docs-do-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg>Так</span>
+        <div class="docs-do-stage">
+          <h2 class="overline" style="margin:0;">Звички та умови</h2>
+        </div>
+        <p>Оверлайн — лише лейбл секції, той самий формат, що й над блоком відгуків: великі літери, приглушений колір, нічого більше.</p>
+      </div>
+      <div class="docs-dont">
+        <span class="docs-dont-tag">✕ Ні</span>
+        <div class="docs-dont-stage">
+          <span class="overline" style="margin:0; display:inline;">Нове</span>
+        </div>
+        <p>Використовувати <code>.overline</code> як маленький тег чи бейдж-мітку — цей регістр і розрідження літер зарезервовані за лейблом секції; для інших дрібних написів у системі вже є свій клас, наприклад <code>.head-brand</code> у хедері.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="docs-foot">
+    <a href="skeleton.html">← Скелетон завантаження</a>
+    <a href="index.html">Усі компоненти</a>
+    <a href="chat.html">Бульбашки й поле вводу →</a>
+  </div>
+
+</main>
+</div>
+</body>
+</html>
