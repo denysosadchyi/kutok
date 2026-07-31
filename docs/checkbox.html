@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Чекбокс · Компоненти · Куток</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../design-system/index.css">
+<link rel="stylesheet" href="docs.css">
+</head>
+<body class="docs">
+<div class="docs-shell">
+
+<nav class="docs-nav" aria-label="Компоненти">
+  <a class="docs-nav-home" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--color-brand)"/><path d="M18 3L21 3L21 6Z" fill="var(--bg-surface)"/></svg>Куток · компоненти</a>
+  <p class="docs-nav-sub">design-system/ у дії</p>
+  <a class="docs-nav-why" href="why.html">Чому система така →</a>
+
+  <div class="docs-nav-group"><h3>Оболонка й навігація</h3><ul>
+    <li><a href="header.html">Хедер екрана</a></li>
+    <li><a href="search.html">Поповер пошуку</a></li>
+    <li><a href="tabbar.html">Таб-бар</a></li>
+    <li><a href="menu.html">Список-меню налаштувань</a></li>
+  </ul></div>
+
+  <div class="docs-nav-group"><h3>Кнопки</h3><ul>
+    <li><a href="button.html">Кнопка</a></li>
+  </ul></div>
+
+  <div class="docs-nav-group"><h3>Картки й списки</h3><ul>
+    <li><a href="card.html">Картка оголошення</a></li>
+    <li><a href="list.html">Рядок списку</a></li>
+    <li><a href="avatar.html">Аватар</a></li>
+    <li><a href="badge.html">Бейдж верифікації</a></li>
+    <li><a href="status-pill.html">Статус-піґулка</a></li>
+    <li><a href="chips.html">Факти й чипи</a></li>
+    <li><a href="review.html">Відгук</a></li>
+    <li><a href="meter.html">Метр повноти профілю</a></li>
+    <li><a href="profile-hero.html">Профіль-герой</a></li>
+  </ul></div>
+
+  <div class="docs-nav-group"><h3>Форми</h3><ul>
+    <li><a href="field.html">Поле форми</a></li>
+    <li><a href="checkbox.html" aria-current="page">Чекбокс</a></li>
+    <li><a href="radio.html">Радіо-список</a></li>
+    <li><a href="privacy-group.html">Група приватності</a></li>
+    <li><a href="photo-upload.html">Ряд завантаження фото</a></li>
+  </ul></div>
+
+  <div class="docs-nav-group"><h3>Разове</h3><ul>
+    <li><a href="segment.html">Сегмент типу</a></li>
+    <li><a href="fab.html">FAB фільтра</a></li>
+    <li><a href="sheet.html">Боттом-шит</a></li>
+    <li><a href="role-option.html">Опції вибору ролі</a></li>
+    <li><a href="consent.html">Блок згоди</a></li>
+    <li><a href="legal-copy.html">Юридичний текст</a></li>
+    <li><a href="thumb-strip.html">Стрічка мініатюр</a></li>
+    <li><a href="gallery.html">Фото-в'юер</a></li>
+  </ul></div>
+
+  <div class="docs-nav-group"><h3>Зворотний зв'язок</h3><ul>
+    <li><a href="state.html">Порожній стан</a></li>
+    <li><a href="banner.html">Банер</a></li>
+    <li><a href="skeleton.html">Скелетон завантаження</a></li>
+    <li><a href="text.html">Текст: лічильник, оверлайн, підказка</a></li>
+  </ul></div>
+
+  <div class="docs-nav-group"><h3>Чат</h3><ul>
+    <li><a href="chat.html">Бульбашки й поле вводу</a></li>
+  </ul></div>
+</nav>
+
+<main class="docs-main">
+
+  <p class="docs-crumb"><a href="index.html">Компоненти</a> / Форми</p>
+  <p class="docs-eyebrow">Базовий компонент</p>
+  <h1 class="docs-title">Чекбокс</h1>
+  <p class="docs-lede">Квадратик, чия межа мусить бути видимою сама по собі — тому що вона і є весь контрол.</p>
+  <div class="docs-meta"><code>.chk-line</code><code>.chk-box</code></div>
+
+  <section class="docs-sec" id="anatomy">
+    <h2>Анатомія</h2>
+    <p class="docs-sec-hint">Увімкнений і вимкнений стан поруч — та сама пара, що в consent.html.</p>
+    <div class="docs-anatomy">
+      <div class="docs-stage">
+        <div style="display:flex; flex-direction:column; gap:var(--space-13); max-width:340px;">
+          <label class="chk-line"><input type="checkbox" checked><span class="chk-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>Погоджуюсь на обробку персональних даних (ім'я, вік, телефон, про себе) відповідно до Політики приватності</label>
+          <label class="chk-line"><input type="checkbox"><span class="chk-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>Не палю</label>
+        </div>
+      </div>
+      <ol class="docs-legend">
+        <li><b>Увімкнений квадратик</b><span>заливка <code>--color-action</code> (кобальт) + біла галочка-svg — той самий гліф, що в бейджа верифікації.</span></li>
+        <li><b>Вимкнений квадратик</b><span>(<code>.chk-box</code>) — 22px, рамка <code>--border-control</code>, не <code>--border-default</code>: порожній квадрат є єдиним візуальним носієм контролу, тож його межа має відповідати WCAG 1.4.11 (контраст 3:1 для неконтент-елементів).</span></li>
+        <li><b>Текст мітки</b><span>нативний <code>&lt;input&gt;</code> схований (<code>position:absolute; opacity:0</code>), клікабельна зона — увесь <code>&lt;label class="chk-line"&gt;</code>.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="variants">
+    <h2>Варіанти й розміри</h2>
+    <p class="docs-sec-hint">Два реальні контексти вживання — довгий текст згоди й короткий побутовий факт.</p>
+    <div class="docs-variants">
+      <div class="docs-example">
+        <p class="docs-example-label">Увімкнений</p>
+        <div class="docs-example-body"><label class="chk-line"><input type="checkbox" checked><span class="chk-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>Не палю</label></div>
+      </div>
+      <div class="docs-example">
+        <p class="docs-example-label">Вимкнений</p>
+        <div class="docs-example-body"><label class="chk-line"><input type="checkbox"><span class="chk-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>Не палю</label></div>
+      </div>
+      <div class="docs-example docs-example--wide">
+        <p class="docs-example-label">Довгий текст згоди (consent.html)</p>
+        <div class="docs-example-body"><label class="chk-line"><input type="checkbox" checked><span class="chk-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>Погоджуюсь на обробку персональних даних (ім'я, вік, телефон, про себе) відповідно до Політики приватності</label></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="usage">
+    <h2>Коли вживати</h2>
+    <p class="docs-copy">Чекбокс — там, де вибір незалежний і не виключає інші пункти: правова згода на обробку даних і біометрію (<code>consent</code>), побутові факти при створенні кімнати чи профілю шукача («не палю», «є домашня тварина»), підтвердження в потоці верифікації. Клікабельна зона — увесь текст мітки, не лише квадратик: нативний <code>&lt;input&gt;</code> схований, а видимий <code>.chk-box</code> — лише його графічне представлення. Коли вибір один-із-багатьох (взаємно виключні варіанти), використовується не чекбокс, а <a href="radio.html">радіо-список</a>.</p>
+    <div class="docs-where">
+      <span>consent</span>
+      <span>room-create*</span>
+      <span>profile-create-seeker*</span>
+      <span>verify</span>
+      <span>my-profile-seeker-edit</span>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="dodont">
+    <h2>Правило і антиправило</h2>
+    <div class="docs-dodont">
+      <div class="docs-do">
+        <span class="docs-do-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg>Так</span>
+        <div class="docs-do-stage">
+          <label class="chk-line"><input type="checkbox"><span class="chk-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>Не палю</label>
+        </div>
+        <p><code>--border-control</code> для порожнього квадратика — сильніша, темніша межа саме тому, що квадратик є єдиним візуальним ідентифікатором цього інтерактивного елемента.</p>
+      </div>
+      <div class="docs-dont">
+        <span class="docs-dont-tag">✕ Ні</span>
+        <div class="docs-dont-stage">
+          <label class="chk-line"><input type="checkbox"><span class="chk-box" style="border-color: var(--border-default);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>Не палю</label>
+        </div>
+        <p>Замінювати рамку на <code>--border-default</code> — ту саму, що в роздільників і рамки ghost-кнопки. tokens.css фіксує, що це підставлення перевірене й відхилене: <code>--border-default</code> дає контраст лише 1.39:1, нижче порогу WCAG 1.4.11 (3:1). У роздільника чи ghost-кнопки цієї проблеми немає — їх уже ідентифікує підписаний рядок або текст кнопки, а порожній квадратик чекбокса — лише сам собою.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="docs-foot">
+    <a href="field.html">← Поле форми</a>
+    <a href="index.html">Усі компоненти</a>
+    <a href="radio.html">Радіо-список →</a>
+  </div>
+
+</main>
+</div>
+</body>
+</html>
