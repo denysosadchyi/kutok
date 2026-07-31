@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Сегмент типу · Компоненти · Куток</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../design-system/index.css">
+<link rel="stylesheet" href="docs.css">
+</head>
+<body class="docs">
+<div class="docs-shell">
+
+<nav class="docs-nav" aria-label="Компоненти">
+  <a class="docs-nav-home" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--color-brand)"/><path d="M18 3L21 3L21 6Z" fill="var(--bg-surface)"/></svg>Куток · компоненти</a>
+  <p class="docs-nav-sub">design-system/ у дії</p>
+  <a class="docs-nav-why" href="why.html">Чому система така →</a>
+
+  <div class="docs-nav-group"><h3>Оболонка й навігація</h3><ul>
+    <li><a href="header.html">Хедер екрана</a></li>
+    <li><a href="search.html">Поповер пошуку</a></li>
+    <li><a href="tabbar.html">Таб-бар</a></li>
+    <li><a href="menu.html">Список-меню налаштувань</a></li>
+  </ul></div>
+
+  <div class="docs-nav-group"><h3>Кнопки</h3><ul>
+    <li><a href="button.html">Кнопка</a></li>
+  </ul></div>
+
+  <div class="docs-nav-group"><h3>Картки й списки</h3><ul>
+    <li><a href="card.html">Картка оголошення</a></li>
+    <li><a href="list.html">Рядок списку</a></li>
+    <li><a href="avatar.html">Аватар</a></li>
+    <li><a href="badge.html">Бейдж верифікації</a></li>
+    <li><a href="status-pill.html">Статус-піґулка</a></li>
+    <li><a href="chips.html">Факти й чипи</a></li>
+    <li><a href="review.html">Відгук</a></li>
+    <li><a href="meter.html">Метр повноти профілю</a></li>
+    <li><a href="profile-hero.html">Профіль-герой</a></li>
+  </ul></div>
+
+  <div class="docs-nav-group"><h3>Форми</h3><ul>
+    <li><a href="field.html">Поле форми</a></li>
+    <li><a href="checkbox.html">Чекбокс</a></li>
+    <li><a href="radio.html">Радіо-список</a></li>
+    <li><a href="privacy-group.html">Група приватності</a></li>
+    <li><a href="photo-upload.html">Ряд завантаження фото</a></li>
+  </ul></div>
+
+  <div class="docs-nav-group"><h3>Разове</h3><ul>
+    <li><a href="segment.html" aria-current="page">Сегмент типу</a></li>
+    <li><a href="fab.html">FAB фільтра</a></li>
+    <li><a href="sheet.html">Боттом-шит</a></li>
+    <li><a href="role-option.html">Опції вибору ролі</a></li>
+    <li><a href="consent.html">Блок згоди</a></li>
+    <li><a href="legal-copy.html">Юридичний текст</a></li>
+    <li><a href="thumb-strip.html">Стрічка мініатюр</a></li>
+    <li><a href="gallery.html">Фото-в'юер</a></li>
+  </ul></div>
+
+  <div class="docs-nav-group"><h3>Зворотний зв'язок</h3><ul>
+    <li><a href="state.html">Порожній стан</a></li>
+    <li><a href="banner.html">Банер</a></li>
+    <li><a href="skeleton.html">Скелетон завантаження</a></li>
+    <li><a href="text.html">Текст: лічильник, оверлайн, підказка</a></li>
+  </ul></div>
+
+  <div class="docs-nav-group"><h3>Чат</h3><ul>
+    <li><a href="chat.html">Бульбашки й поле вводу</a></li>
+  </ul></div>
+</nav>
+
+<main class="docs-main">
+
+  <p class="docs-crumb"><a href="index.html">Компоненти</a> / Разове</p>
+  <p class="docs-eyebrow">Разовий патерн — тільки один екран</p>
+  <h1 class="docs-title">Сегмент типу</h1>
+  <p class="docs-lede">Перемикач «Кімнати / Люди / Усі» над стрічкою каталогу — розмітки цього компонента більше немає ніде в системі, окрім <code>listings</code>.</p>
+  <div class="docs-meta"><code>.filterbar</code><code>.seg</code><code>.seg-count</code></div>
+
+  <section class="docs-sec" id="anatomy">
+    <h2>Анатомія</h2>
+    <p class="docs-sec-hint">Той самий сегмент, що стоїть над стрічкою в <code>listings</code>, всередині тонкої обгортки <code>.filterbar</code> (лише відступи, не окрема стилістика).</p>
+    <div class="docs-anatomy">
+      <div class="docs-stage">
+        <fieldset class="seg">
+          <legend class="sr-only">Тип оголошень</legend>
+          <label><input type="radio" name="type"> Кімнати <span class="seg-count">18</span></label>
+          <label><input type="radio" name="type"> Люди <span class="seg-count">6</span></label>
+          <label><input type="radio" name="type" checked> Усі <span class="seg-count">24</span></label>
+        </fieldset>
+      </div>
+      <ol class="docs-legend">
+        <li><b>Трек</b><span>(<code>.seg</code>) — тло <code>--bg-neutral</code>, без рамки, радіус 999px, 4px внутрішнього відступу під три пункти рівної ширини.</span></li>
+        <li><b>Вибраний пункт</b><span>(<code>label:has(input:checked)</code>) — біла піґулка на <code>--bg-selected</code>, текст кобальт (<code>--color-action</code>), вага 700. Це не <code>--bg-surface</code>: піґулка лежить не на канвасі сторінки, а на темнішому треку сегмента, і в темній темі звичайна «виступ»-роль на ньому губилась — тому виділено окремий токен, який лишається видимим на обох тонах.</span></li>
+        <li><b>Лічильник</b><span>(<code>.seg-count</code>) — коло з числом: приглушене на невибраних пунктах, інвертується в кобальт із кремовим текстом на вибраному.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="variants">
+    <h2>Варіанти й розміри</h2>
+    <p class="docs-sec-hint">У цього контролу немає розмірів чи станів окрім «який пункт вибрано зараз» — тому варіантів навмисно небагато.</p>
+    <div class="docs-variants">
+      <div class="docs-example">
+        <p class="docs-example-label">Вибрано «Усі»</p>
+        <div class="docs-example-body">
+          <fieldset class="seg">
+            <legend class="sr-only">Тип оголошень</legend>
+            <label><input type="radio" name="type-a"> Кімнати <span class="seg-count">18</span></label>
+            <label><input type="radio" name="type-a"> Люди <span class="seg-count">6</span></label>
+            <label><input type="radio" name="type-a" checked> Усі <span class="seg-count">24</span></label>
+          </fieldset>
+        </div>
+      </div>
+      <div class="docs-example">
+        <p class="docs-example-label">Вибрано «Кімнати»</p>
+        <div class="docs-example-body">
+          <fieldset class="seg">
+            <legend class="sr-only">Тип оголошень</legend>
+            <label><input type="radio" name="type-b" checked> Кімнати <span class="seg-count">18</span></label>
+            <label><input type="radio" name="type-b"> Люди <span class="seg-count">6</span></label>
+            <label><input type="radio" name="type-b"> Усі <span class="seg-count">24</span></label>
+          </fieldset>
+        </div>
+        <p class="docs-example-note">Кобальт і лічильник переїжджають разом із вибором — форма пункту не змінюється.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="usage">
+    <h2>Коли вживати</h2>
+    <p class="docs-copy">Сегмент — <strong>перемикач типу видачі</strong>, а не фільтр: він живе виключно над стрічкою каталогу на <code>listings</code>, всередині <code>.filterbar</code>, і розділяє «Кімнати», «Люди» й «Усі» — три способи подивитись на той самий пошук. Лічильник поруч із кожним пунктом показує, скільки результатів дасть перемикання, тому людина бачить наслідок кліку заздалегідь, а не після нього. Дизайн (DESIGN.md) явно фіксує: лічильники зникають лише тоді, коли число справді невідоме (стани <code>-error</code> / <code>-loading</code>), а не тому, що воно нуль — «0» лишається видимим числом, а не порожнім місцем. Більше ніде в продукті немає екрана з таким самим потрійним поділом видачі, тому компонент і живе в розділі «Разове».</p>
+    <div class="docs-where">
+      <span>listings — над стрічкою каталогу, усередині .filterbar</span>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="dodont">
+    <h2>Правило і антиправило</h2>
+    <div class="docs-dodont">
+      <div class="docs-do">
+        <span class="docs-do-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg>Так</span>
+        <div class="docs-do-stage">
+          <fieldset class="seg">
+            <legend class="sr-only">Тип оголошень</legend>
+            <label><input type="radio" name="type-c"> Кімнати <span class="seg-count">18</span></label>
+            <label><input type="radio" name="type-c"> Люди <span class="seg-count">0</span></label>
+            <label><input type="radio" name="type-c" checked> Усі <span class="seg-count">24</span></label>
+          </fieldset>
+        </div>
+        <p>Три пункти рівної ширини (<code>flex:1</code> кожному), лічильник видно завжди — навіть коли він «0» для «Люди». Так контрол читається як одна ціла шкала, а не як довільний ряд кнопок.</p>
+      </div>
+      <div class="docs-dont">
+        <span class="docs-dont-tag">✕ Ні</span>
+        <div class="docs-dont-stage">
+          <span style="font-size:var(--font-size-16); font-weight:var(--font-weight-700); color:var(--text-primary);">Кімнати · Люди · Усі 24</span>
+        </div>
+        <p>Ховати лічильник, коли він дорівнює нулю, або звужувати пункт під коротшу назву. Обидва рухи здаються «економією місця», але саме рівна ширина й завжди видиме число — те, що робить сегмент одним фільтр-контролом, а не рядком випадкових кнопок.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="docs-foot">
+    <a href="photo-upload.html">← Ряд завантаження фото</a>
+    <a href="index.html">Усі компоненти</a>
+    <a href="fab.html">FAB фільтра →</a>
+  </div>
+
+</main>
+</div>
+</body>
+</html>
