@@ -593,8 +593,8 @@ const DOC_DARK =
 function paintFrame(doc) {
   if (!doc || !doc.documentElement) return;
   doc.documentElement.setAttribute('data-theme', theme);
-  // екрани одягнені в tokens.css — там темна тема вже є, чужого не підсовуємо
-  if (doc.querySelector('link[href*="tokens.css"]') || doc.getElementById('shell-dark')) return;
+  // екрани одягнені в design-system/ — там темна тема вже є, чужого не підсовуємо
+  if (doc.querySelector('link[href*="design-system"]') || doc.getElementById('shell-dark')) return;
   const st = doc.createElement('style');
   st.id = 'shell-dark';
   st.textContent = DOC_DARK;
