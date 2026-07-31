@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Радіо-список · Компоненти · Куток</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../design-system/index.css">
+<link rel="stylesheet" href="docs.css">
+</head>
+<body class="docs">
+<div class="docs-shell">
+
+<nav class="docs-nav" aria-label="Компоненти">
+  <a class="docs-nav-home" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--color-brand)"/><path d="M18 3L21 3L21 6Z" fill="var(--bg-surface)"/></svg>Куток · компоненти</a>
+  <p class="docs-nav-sub">design-system/ у дії</p>
+  <a class="docs-nav-why" href="why.html">Чому система така →</a>
+
+  <div class="docs-nav-group"><h3>Оболонка й навігація</h3><ul>
+    <li><a href="header.html">Хедер екрана</a></li>
+    <li><a href="search.html">Поповер пошуку</a></li>
+    <li><a href="tabbar.html">Таб-бар</a></li>
+    <li><a href="menu.html">Список-меню налаштувань</a></li>
+  </ul></div>
+
+  <div class="docs-nav-group"><h3>Кнопки</h3><ul>
+    <li><a href="button.html">Кнопка</a></li>
+  </ul></div>
+
+  <div class="docs-nav-group"><h3>Картки й списки</h3><ul>
+    <li><a href="card.html">Картка оголошення</a></li>
+    <li><a href="list.html">Рядок списку</a></li>
+    <li><a href="avatar.html">Аватар</a></li>
+    <li><a href="badge.html">Бейдж верифікації</a></li>
+    <li><a href="status-pill.html">Статус-піґулка</a></li>
+    <li><a href="chips.html">Факти й чипи</a></li>
+    <li><a href="review.html">Відгук</a></li>
+    <li><a href="meter.html">Метр повноти профілю</a></li>
+    <li><a href="profile-hero.html">Профіль-герой</a></li>
+  </ul></div>
+
+  <div class="docs-nav-group"><h3>Форми</h3><ul>
+    <li><a href="field.html">Поле форми</a></li>
+    <li><a href="checkbox.html">Чекбокс</a></li>
+    <li><a href="radio.html" aria-current="page">Радіо-список</a></li>
+    <li><a href="privacy-group.html">Група приватності</a></li>
+    <li><a href="photo-upload.html">Ряд завантаження фото</a></li>
+  </ul></div>
+
+  <div class="docs-nav-group"><h3>Разове</h3><ul>
+    <li><a href="segment.html">Сегмент типу</a></li>
+    <li><a href="fab.html">FAB фільтра</a></li>
+    <li><a href="sheet.html">Боттом-шит</a></li>
+    <li><a href="role-option.html">Опції вибору ролі</a></li>
+    <li><a href="consent.html">Блок згоди</a></li>
+    <li><a href="legal-copy.html">Юридичний текст</a></li>
+    <li><a href="thumb-strip.html">Стрічка мініатюр</a></li>
+    <li><a href="gallery.html">Фото-в'юер</a></li>
+  </ul></div>
+
+  <div class="docs-nav-group"><h3>Зворотний зв'язок</h3><ul>
+    <li><a href="state.html">Порожній стан</a></li>
+    <li><a href="banner.html">Банер</a></li>
+    <li><a href="skeleton.html">Скелетон завантаження</a></li>
+    <li><a href="text.html">Текст: лічильник, оверлайн, підказка</a></li>
+  </ul></div>
+
+  <div class="docs-nav-group"><h3>Чат</h3><ul>
+    <li><a href="chat.html">Бульбашки й поле вводу</a></li>
+  </ul></div>
+</nav>
+
+<main class="docs-main">
+
+  <p class="docs-crumb"><a href="index.html">Компоненти</a> / Форми</p>
+  <p class="docs-eyebrow">Базовий компонент</p>
+  <h1 class="docs-title">Радіо-список</h1>
+  <p class="docs-lede">Один вибір із переліку — з опцією показати наслідок вибору одразу поруч із назвою, а не ховати його в підказці.</p>
+  <div class="docs-meta"><code>.radio-option</code><code>.radio-dot</code><code>.opt-text</code><code>.opt-title</code><code>.opt-hint</code></div>
+
+  <section class="docs-sec" id="anatomy">
+    <h2>Анатомія</h2>
+    <p class="docs-sec-hint">Двохрядковий варіант із privacy-settings.html — заголовок опції і пояснення наслідку.</p>
+    <div class="docs-anatomy">
+      <div class="docs-stage">
+        <div style="display:flex; flex-direction:column; max-width:340px; width:100%;">
+          <label class="radio-option"><input type="radio" name="anat-vis"><span class="radio-dot"></span><span class="opt-text"><span class="opt-title">Усім видно</span><span class="opt-hint">Фото відкрите одразу в картці й профілі.</span></span></label>
+          <label class="radio-option"><input type="radio" name="anat-vis" checked><span class="radio-dot"></span><span class="opt-text"><span class="opt-title">Розмито, доки не буде взаємного інтересу</span><span class="opt-hint">Чітке фото відкриється, коли ви обоє натиснете «Хочу познайомитись».</span></span></label>
+        </div>
+      </div>
+      <ol class="docs-legend">
+        <li><b>Кружечок</b><span>(<code>.radio-dot</code>) — 22px коло, рамка <code>--border-control</code>: те саме обґрунтування WCAG 1.4.11, що й у чекбокса — порожнє кільце є весь контрол.</span></li>
+        <li><b>Заповнений стан</b><span>рамка й крапка всередині кола заливаються <code>--color-action</code> (кобальт) через <code>::after</code>.</span></li>
+        <li><b>Заголовок опції</b><span>(<code>.opt-title</code>) — основна назва варіанту, звичайна вага <code>--font-weight-600</code>.</span></li>
+        <li><b>Підказка-наслідок</b><span>(<code>.opt-hint</code>) — 11px, приглушений колір: пояснює, що саме зміниться, якщо обрати цей варіант, видима одразу, не за кліком.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="variants">
+    <h2>Варіанти й розміри</h2>
+    <p class="docs-sec-hint">Однорядковий список причин і двохрядковий варіант із поясненням наслідку.</p>
+    <div class="docs-variants">
+      <div class="docs-example docs-example--wide">
+        <p class="docs-example-label">Однорядковий — причини скарги (report.html)</p>
+        <div class="docs-example-body" style="display:flex; flex-direction:column; width:100%;">
+          <label class="radio-option"><input type="radio" name="reason" checked><span class="radio-dot"></span>Підозрілий профіль / фейкові фото</label>
+          <label class="radio-option"><input type="radio" name="reason"><span class="radio-dot"></span>Просить гроші наперед</label>
+          <label class="radio-option"><input type="radio" name="reason"><span class="radio-dot"></span>Неадекватна поведінка</label>
+          <label class="radio-option"><input type="radio" name="reason"><span class="radio-dot"></span>Інше</label>
+        </div>
+      </div>
+      <div class="docs-example docs-example--wide">
+        <p class="docs-example-label">Двохрядковий — видимість віку (privacy-settings.html)</p>
+        <div class="docs-example-body" style="display:flex; flex-direction:column; width:100%;">
+          <label class="radio-option"><input type="radio" name="age-visibility" checked><span class="radio-dot"></span><span class="opt-text"><span class="opt-title">Так</span><span class="opt-hint">Вік буде видно поруч з іменем у стрічці й профілі.</span></span></label>
+          <label class="radio-option"><input type="radio" name="age-visibility"><span class="radio-dot"></span><span class="opt-text"><span class="opt-title">Ні</span><span class="opt-hint">Вік прихований для інших, лишається лише у вашому профілі.</span></span></label>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="usage">
+    <h2>Коли вживати</h2>
+    <p class="docs-copy">Радіо-список — там, де вибір один-із-багатьох взаємно виключний: причина скарги (<code>report</code>) і налаштування приватності (<code>privacy-settings</code>, всередині <a href="privacy-group.html">групи приватності</a>). Двохрядковий варіант з <code>.opt-hint</code> вживається, коли вибір має неочевидний наслідок, який людина має побачити до того, як обере — наприклад, «Розмито, доки не буде взаємного інтересу» потребує пояснення, коли саме фото розблокується. Однорядковий варіант лишається для самопояснювальних варіантів, де додаткова підказка була б зайвим поясненням очевидного.</p>
+    <div class="docs-where">
+      <span>report* — причини скарги</span>
+      <span>privacy-settings — видимість фото / віку</span>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="dodont">
+    <h2>Правило і антиправило</h2>
+    <div class="docs-dodont">
+      <div class="docs-do">
+        <span class="docs-do-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg>Так</span>
+        <div class="docs-do-stage">
+          <label class="radio-option"><input type="radio" name="do-vis" checked><span class="radio-dot"></span><span class="opt-text"><span class="opt-title">Розмито, доки не буде взаємного інтересу</span><span class="opt-hint">Чітке фото відкриється, коли ви обоє натиснете «Хочу познайомитись».</span></span></label>
+        </div>
+        <p>Двохрядковий варіант — тут наслідок вибору («коли саме розблокується фото») не очевидний, тому <code>.opt-hint</code> пояснює його одразу, до кліку.</p>
+      </div>
+      <div class="docs-dont">
+        <span class="docs-dont-tag">✕ Ні</span>
+        <div class="docs-dont-stage">
+          <label class="radio-option"><input type="radio" name="dont-reason" checked><span class="radio-dot"></span><span class="opt-text"><span class="opt-title">Просить гроші наперед</span><span class="opt-hint">Кандидат вимагає передоплату до особистої зустрічі.</span></span></label>
+        </div>
+        <p>Додавати <code>.opt-hint</code> до причини скарги, яка й так самопояснювальна — «Просить гроші наперед» не потребує розшифровки. Це той самий принцип, що й у voice.md: не пояснювати очевидне.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="docs-foot">
+    <a href="checkbox.html">← Чекбокс</a>
+    <a href="index.html">Усі компоненти</a>
+    <a href="privacy-group.html">Група приватності →</a>
+  </div>
+
+</main>
+</div>
+</body>
+</html>
