@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Таб-бар · Компоненти · Куток</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../design-system/index.css">
+<link rel="stylesheet" href="docs.css">
+</head>
+<body class="docs">
+<div class="docs-shell">
+
+<nav class="docs-nav" aria-label="Компоненти">
+  <a class="docs-nav-home" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--color-brand)"/><path d="M18 3L21 3L21 6Z" fill="var(--bg-surface)"/></svg>Куток · компоненти</a>
+  <p class="docs-nav-sub">design-system/ у дії</p>
+  <a class="docs-nav-why" href="why.html">Чому система така →</a>
+
+  <div class="docs-nav-group"><h3>Оболонка й навігація</h3><ul>
+    <li><a href="header.html">Хедер екрана</a></li>
+    <li><a href="search.html">Поповер пошуку</a></li>
+    <li><a href="tabbar.html" aria-current="page">Таб-бар</a></li>
+    <li><a href="menu.html">Список-меню налаштувань</a></li>
+  </ul></div>
+
+  <div class="docs-nav-group"><h3>Кнопки</h3><ul>
+    <li><a href="button.html">Кнопка</a></li>
+  </ul></div>
+
+  <div class="docs-nav-group"><h3>Картки й списки</h3><ul>
+    <li><a href="card.html">Картка оголошення</a></li>
+    <li><a href="list.html">Рядок списку</a></li>
+    <li><a href="avatar.html">Аватар</a></li>
+    <li><a href="badge.html">Бейдж верифікації</a></li>
+    <li><a href="status-pill.html">Статус-піґулка</a></li>
+    <li><a href="chips.html">Факти й чипи</a></li>
+    <li><a href="review.html">Відгук</a></li>
+    <li><a href="meter.html">Метр повноти профілю</a></li>
+    <li><a href="profile-hero.html">Профіль-герой</a></li>
+  </ul></div>
+
+  <div class="docs-nav-group"><h3>Форми</h3><ul>
+    <li><a href="field.html">Поле форми</a></li>
+    <li><a href="checkbox.html">Чекбокс</a></li>
+    <li><a href="radio.html">Радіо-список</a></li>
+    <li><a href="privacy-group.html">Група приватності</a></li>
+    <li><a href="photo-upload.html">Ряд завантаження фото</a></li>
+  </ul></div>
+
+  <div class="docs-nav-group"><h3>Разове</h3><ul>
+    <li><a href="segment.html">Сегмент типу</a></li>
+    <li><a href="fab.html">FAB фільтра</a></li>
+    <li><a href="sheet.html">Боттом-шит</a></li>
+    <li><a href="role-option.html">Опції вибору ролі</a></li>
+    <li><a href="consent.html">Блок згоди</a></li>
+    <li><a href="legal-copy.html">Юридичний текст</a></li>
+    <li><a href="thumb-strip.html">Стрічка мініатюр</a></li>
+    <li><a href="gallery.html">Фото-в'юер</a></li>
+  </ul></div>
+
+  <div class="docs-nav-group"><h3>Зворотний зв'язок</h3><ul>
+    <li><a href="state.html">Порожній стан</a></li>
+    <li><a href="banner.html">Банер</a></li>
+    <li><a href="skeleton.html">Скелетон завантаження</a></li>
+    <li><a href="text.html">Текст: лічильник, оверлайн, підказка</a></li>
+  </ul></div>
+
+  <div class="docs-nav-group"><h3>Чат</h3><ul>
+    <li><a href="chat.html">Бульбашки й поле вводу</a></li>
+  </ul></div>
+</nav>
+
+<main class="docs-main">
+
+  <p class="docs-crumb"><a href="index.html">Компоненти</a> / Оболонка й навігація</p>
+  <p class="docs-eyebrow">Постійна нижня навігація</p>
+  <h1 class="docs-title">Таб-бар</h1>
+  <p class="docs-lede">Плаваюча оливкова піґулка з чотирма табами — на майже кожному екрані застосунку, і завжди рівно чотирма, без п'ятого центрального «+».</p>
+  <div class="docs-meta"><code>.tabbar</code><code>.tab-ico</code><code>.tab-txt</code><code>.tab-dot</code></div>
+
+  <section class="docs-sec" id="anatomy">
+    <h2>Анатомія</h2>
+    <p class="docs-sec-hint">Навбар читає власні ролі <code>--bg-navbar</code> / <code>--on-navbar</code>, не <code>--color-brand</code> — тому лишається тихою темною поверхнею в обох темах, а не інвертується разом зі сторінкою.</p>
+    <div class="docs-anatomy">
+      <div class="docs-stage">
+        <div style="position:relative; min-height:140px; width:100%;">
+          <footer class="tabbar">
+            <a class="active" href="#"><span class="tab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg></span><span class="tab-txt">Пошук</span></a>
+            <a href="#"><span class="tab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8.5 8.5h7M8.5 12.5h7M8.5 16.5h4"/></svg><span class="tab-dot">2</span></span><span class="tab-txt">Заявки</span></a>
+            <a href="#"><span class="tab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.6a8.6 8.6 0 1 0-7.5-4.4L3.4 20.6l4.5-1.1a8.56 8.56 0 0 0 4.1 1.1z"/></svg><span class="tab-dot">1</span></span><span class="tab-txt">Чати</span></a>
+            <a href="#"><span class="tab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.7"/><path d="M5 20.2c1.3-3.5 3.9-5.2 7-5.2s5.7 1.7 7 5.2"/></svg></span><span class="tab-txt">Профіль</span></a>
+          </footer>
+        </div>
+      </div>
+      <ol class="docs-legend">
+        <li><b>Піґулка</b><span>(<code>.tabbar</code>) — плаваюча, олива зі світлим зерном, 8px відступ від країв + safe-area, радіус 999px.</span></li>
+        <li><b>Неактивний таб</b><span>іконка + лейбл на 58% прозорості (кремовий на оливі).</span></li>
+        <li><b>Активний таб</b><span>(<code>.active</code>) — світла внутрішня піґулка <code>--on-navbar-active</code>, олива-іконка, лейбл вагою 700.</span></li>
+        <li><b>Лічильник</b><span>(<code>.tab-dot</code>) — біле коло з помаранчевою цифрою, сидить прямо на іконці Заявок/Чатів.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="variants">
+    <h2>Варіанти й розміри</h2>
+    <div class="docs-variants">
+      <div class="docs-example docs-example--wide">
+        <p class="docs-example-label">Шукач — активний «Пошук», 2 нові заявки, 1 непрочитаний чат</p>
+        <div class="docs-example-body" style="width:100%;">
+          <div style="position:relative; min-height:120px; width:100%;">
+            <footer class="tabbar">
+              <a class="active" href="#"><span class="tab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg></span><span class="tab-txt">Пошук</span></a>
+              <a href="#"><span class="tab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8.5 8.5h7M8.5 12.5h7M8.5 16.5h4"/></svg><span class="tab-dot">2</span></span><span class="tab-txt">Заявки</span></a>
+              <a href="#"><span class="tab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.6a8.6 8.6 0 1 0-7.5-4.4L3.4 20.6l4.5-1.1a8.56 8.56 0 0 0 4.1 1.1z"/></svg><span class="tab-dot">1</span></span><span class="tab-txt">Чати</span></a>
+              <a href="#"><span class="tab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.7"/><path d="M5 20.2c1.3-3.5 3.9-5.2 7-5.2s5.7 1.7 7 5.2"/></svg></span><span class="tab-txt">Профіль</span></a>
+            </footer>
+          </div>
+        </div>
+      </div>
+      <div class="docs-example docs-example--wide">
+        <p class="docs-example-label">Господар — активний «Профіль», 3 нові заявки на кімнату</p>
+        <div class="docs-example-body" style="width:100%;">
+          <div style="position:relative; min-height:120px; width:100%;">
+            <footer class="tabbar">
+              <a href="#"><span class="tab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg></span><span class="tab-txt">Пошук</span></a>
+              <a href="#"><span class="tab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8.5 8.5h7M8.5 12.5h7M8.5 16.5h4"/></svg><span class="tab-dot">3</span></span><span class="tab-txt">Заявки</span></a>
+              <a href="#"><span class="tab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.6a8.6 8.6 0 1 0-7.5-4.4L3.4 20.6l4.5-1.1a8.56 8.56 0 0 0 4.1 1.1z"/></svg></span><span class="tab-txt">Чати</span></a>
+              <a class="active" href="#"><span class="tab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.7"/><path d="M5 20.2c1.3-3.5 3.9-5.2 7-5.2s5.7 1.7 7 5.2"/></svg></span><span class="tab-txt">Профіль</span></a>
+            </footer>
+          </div>
+        </div>
+        <p class="docs-example-note">У господаря типово більше вхідних кандидатів — лічильник на «Заявках» відображає реальну чергу, не фіксоване число.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="usage">
+    <h2>Коли вживати</h2>
+    <p class="docs-copy">Таб-бар присутній майже на всіх ~69 екранах застосунку після входу — і в шукача, і в господаря — і зникає лише на переавторизаційних екранах (<code>login*</code>, <code>role-select</code>), де ще нема куди навігувати. Табів завжди рівно чотири: Пошук, Заявки, Чати, Профіль; лічильник-бейдж стоїть тільки на «Заявках» і «Чатах» і тільки коли є реальний непрочитаний/новий пункт — порожнього нуля не показуємо. Іконки — той самий єдиний контурний stroke-набір, що й у решті системи (DESIGN.md, «Navigation»); суцільних (solid) іконок у продукті немає.</p>
+    <div class="docs-where">
+      <span>усі екрани після входу, крім login* / role-select</span>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="dodont">
+    <h2>Правило і антиправило</h2>
+    <div class="docs-dodont">
+      <div class="docs-do">
+        <span class="docs-do-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg>Так</span>
+        <div class="docs-do-stage">
+          <div style="position:relative; min-height:100px; width:100%;">
+            <footer class="tabbar">
+              <a class="active" href="#"><span class="tab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg></span><span class="tab-txt">Пошук</span></a>
+              <a href="#"><span class="tab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8.5 8.5h7M8.5 12.5h7M8.5 16.5h4"/></svg></span><span class="tab-txt">Заявки</span></a>
+              <a href="#"><span class="tab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.6a8.6 8.6 0 1 0-7.5-4.4L3.4 20.6l4.5-1.1a8.56 8.56 0 0 0 4.1 1.1z"/></svg></span><span class="tab-txt">Чати</span></a>
+              <a href="#"><span class="tab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.7"/><path d="M5 20.2c1.3-3.5 3.9-5.2 7-5.2s5.7 1.7 7 5.2"/></svg></span><span class="tab-txt">Профіль</span></a>
+            </footer>
+          </div>
+        </div>
+        <p>Рівно чотири таби, без лічильника там, де немає реального очікуваного пункту — тихий стан за замовчуванням.</p>
+      </div>
+      <div class="docs-dont">
+        <span class="docs-dont-tag">✕ Ні</span>
+        <div class="docs-dont-stage">
+          <span style="font-size:var(--font-size-13); color:var(--text-muted); text-align:center;">п'ятий центральний таб «+ Додати кімнату»</span>
+        </div>
+        <p>Моодборд-референс мав центральний таб «+», його свідомо відкинули (concept.md): публікація кімнати — дія господаря, не постійна потреба кожного користувача, тож вона живе всередині профілю й списку оголошень господаря, а не постійною п'ятою кнопкою внизу.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="docs-foot">
+    <a href="search.html">← Поповер пошуку</a>
+    <a href="index.html">Усі компоненти</a>
+    <a href="menu.html">Список-меню налаштувань →</a>
+  </div>
+
+</main>
+</div>
+</body>
+</html>
