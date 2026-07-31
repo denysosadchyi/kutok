@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Компоненти · Куток</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../design-system/index.css">
+<link rel="stylesheet" href="docs.css">
+</head>
+<body class="docs">
+<div class="docs-shell">
+
+<nav class="docs-nav" aria-label="Компоненти">
+  <a class="docs-nav-home" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--color-brand)"/><path d="M18 3L21 3L21 6Z" fill="var(--bg-surface)"/></svg>Куток · компоненти</a>
+  <p class="docs-nav-sub">design-system/ у дії</p>
+  <a class="docs-nav-why" href="why.html">Чому система така →</a>
+
+  <div class="docs-nav-group"><h3>Оболонка й навігація</h3><ul>
+    <li><a href="header.html">Хедер екрана</a></li>
+    <li><a href="search.html">Поповер пошуку</a></li>
+    <li><a href="tabbar.html">Таб-бар</a></li>
+    <li><a href="menu.html">Список-меню налаштувань</a></li>
+  </ul></div>
+
+  <div class="docs-nav-group"><h3>Кнопки</h3><ul>
+    <li><a href="button.html">Кнопка</a></li>
+  </ul></div>
+
+  <div class="docs-nav-group"><h3>Картки й списки</h3><ul>
+    <li><a href="card.html">Картка оголошення</a></li>
+    <li><a href="list.html">Рядок списку</a></li>
+    <li><a href="avatar.html">Аватар</a></li>
+    <li><a href="badge.html">Бейдж верифікації</a></li>
+    <li><a href="status-pill.html">Статус-піґулка</a></li>
+    <li><a href="chips.html">Факти й чипи</a></li>
+    <li><a href="review.html">Відгук</a></li>
+    <li><a href="meter.html">Метр повноти профілю</a></li>
+    <li><a href="profile-hero.html">Профіль-герой</a></li>
+  </ul></div>
+
+  <div class="docs-nav-group"><h3>Форми</h3><ul>
+    <li><a href="field.html">Поле форми</a></li>
+    <li><a href="checkbox.html">Чекбокс</a></li>
+    <li><a href="radio.html">Радіо-список</a></li>
+    <li><a href="privacy-group.html">Група приватності</a></li>
+    <li><a href="photo-upload.html">Ряд завантаження фото</a></li>
+  </ul></div>
+
+  <div class="docs-nav-group"><h3>Разове</h3><ul>
+    <li><a href="segment.html">Сегмент типу</a></li>
+    <li><a href="fab.html">FAB фільтра</a></li>
+    <li><a href="sheet.html">Боттом-шит</a></li>
+    <li><a href="role-option.html">Опції вибору ролі</a></li>
+    <li><a href="consent.html">Блок згоди</a></li>
+    <li><a href="legal-copy.html">Юридичний текст</a></li>
+    <li><a href="thumb-strip.html">Стрічка мініатюр</a></li>
+    <li><a href="gallery.html">Фото-в'юер</a></li>
+  </ul></div>
+
+  <div class="docs-nav-group"><h3>Зворотний зв'язок</h3><ul>
+    <li><a href="state.html">Порожній стан</a></li>
+    <li><a href="banner.html">Банер</a></li>
+    <li><a href="skeleton.html">Скелетон завантаження</a></li>
+    <li><a href="text.html">Текст: лічильник, оверлайн, підказка</a></li>
+  </ul></div>
+
+  <div class="docs-nav-group"><h3>Чат</h3><ul>
+    <li><a href="chat.html">Бульбашки й поле вводу</a></li>
+  </ul></div>
+</nav>
+
+<main class="docs-main">
+
+  <div class="docs-hero">
+    <p class="docs-eyebrow">design-system/index.css у дії</p>
+    <h1 class="docs-title">Компоненти</h1>
+    <p class="docs-lede">32 живих компоненти мови «Каталог 73». Кожна картка нижче — не картинка й не копія коду, а той самий <code>design-system/index.css</code>, що одягає продукт: якщо змінити токен у <code>tokens.css</code>, ця сторінка перемалюється так само, як будь-який <code>wireframes/*.html</code>.</p>
+  </div>
+
+  <a class="docs-why-card" href="why.html">
+    <span><b>Чому система така</b><span>Візуальна мова «Каталог 73» — звідки вона взялась і що з ранніх референсів насправді лишилось у коді.</span></span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+  </a>
+
+  <section class="docs-cat">
+    <h2>Оболонка й навігація</h2>
+    <p>Каркас, що стоїть на кожному екрані застосунку: шапка, пошук, таб-бар, службове меню.</p>
+    <div class="docs-grid">
+
+      <a class="docs-card" href="header.html">
+        <div class="docs-card-preview">
+          <div style="display:flex; align-items:center; gap:6px;">
+            <svg viewBox="0 0 24 24" aria-hidden="true" style="width:13px; height:13px;"><path d="M3 3H18L21 6V21H3Z" fill="var(--color-brand)"/><path d="M18 3L21 3L21 6Z" fill="var(--bg-surface)"/></svg>
+            <span style="font-family:var(--font-family-1); font-weight:var(--font-weight-700); font-size:1.5rem; letter-spacing:-.03em; color:var(--color-brand);">Пошук</span>
+          </div>
+        </div>
+        <div class="docs-card-name">Хедер екрана</div>
+        <p class="docs-card-note">Вордмарк / назад+заголовок, бренд-рядок завжди присутній.</p>
+      </a>
+
+      <a class="docs-card" href="search.html">
+        <div class="docs-card-preview">
+          <div class="search-form" style="width:100%;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg><input type="search" placeholder="Пошук за назвою…" tabindex="-1" aria-hidden="true"></div>
+        </div>
+        <div class="docs-card-name">Поповер пошуку</div>
+        <p class="docs-card-note">Нативний popover, відкривається з кільця в шапці.</p>
+      </a>
+
+      <a class="docs-card" href="tabbar.html">
+        <div class="docs-card-preview">
+          <footer class="tabbar" style="position:static; margin:0; width:100%;">
+            <a class="active" href="#" tabindex="-1"><span class="tab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg></span><span class="tab-txt">Пошук</span></a>
+            <a href="#" tabindex="-1"><span class="tab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8.5 8.5h7M8.5 12.5h7M8.5 16.5h4"/></svg><span class="tab-dot">2</span></span><span class="tab-txt">Заявки</span></a>
+            <a href="#" tabindex="-1"><span class="tab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.7"/><path d="M5 20.2c1.3-3.5 3.9-5.2 7-5.2s5.7 1.7 7 5.2"/></svg></span><span class="tab-txt">Профіль</span></a>
+          </footer>
+        </div>
+        <div class="docs-card-name">Таб-бар</div>
+        <p class="docs-card-note">Плаваюча оливкова піґулка, 4 таби, ніколи не інвертується темою.</p>
+      </a>
+
+      <a class="docs-card" href="menu.html">
+        <div class="docs-card-preview">
+          <a class="menu-row" href="#" tabindex="-1" style="width:100%; border-bottom:none;"><span class="menu-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg></span><span class="menu-txt">Налаштування приватності</span><span class="menu-chev"></span></a>
+        </div>
+        <div class="docs-card-name">Список-меню налаштувань</div>
+        <p class="docs-card-note">Іконка + лейбл + шеврон, олива — бренд-нейтраль службового блоку.</p>
+      </a>
+
+    </div>
+  </section>
+
+  <section class="docs-cat">
+    <h2>Кнопки</h2>
+    <p>Один API на всі ролі — первинна, вторинна, розмір, форма, стан.</p>
+    <div class="docs-grid">
+      <a class="docs-card" href="button.html">
+        <div class="docs-card-preview">
+          <div style="display:flex; gap:10px;"><button type="button" class="btn btn--primary btn--sm" tabindex="-1">Застосувати</button><button type="button" class="btn btn--ghost btn--sm" tabindex="-1">Скасувати</button></div>
+        </div>
+        <div class="docs-card-name">Кнопка</div>
+        <p class="docs-card-note">Primary / ghost / sm / block / pill / btn-stack — одна база.</p>
+      </a>
+    </div>
+  </section>
+
+  <section class="docs-cat">
+    <h2>Картки й списки</h2>
+    <p>Каталог-картка, рядки списків, довіра (бейдж, метр, статус) і компоненти профілю.</p>
+    <div class="docs-grid">
+
+      <a class="docs-card" href="card.html">
+        <div class="docs-card-preview">
+          <div style="width:100%; max-width:180px;">
+            <div class="card-photo" style="position:relative; border-radius:var(--radius-26); overflow:hidden;">
+              <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=400&h=300&fit=crop&auto=format&q=60" alt="" style="display:block; width:100%; aspect-ratio:4/3; object-fit:cover;" loading="lazy">
+              <span class="badge badge--on-photo" style="transform:scale(.85); transform-origin:bottom right;"><span class="badge-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>телефон, фото</span>
+            </div>
+          </div>
+        </div>
+        <div class="docs-card-name">Картка оголошення</div>
+        <p class="docs-card-note">Фото + текст на папері, нуль тіней, нуль рамок.</p>
+      </a>
+
+      <a class="docs-card" href="list.html">
+        <div class="docs-card-preview">
+          <a class="row" href="#" tabindex="-1" style="width:100%;">
+            <span class="avatar avatar--sm ph">фото</span>
+            <span class="row-body"><span class="row-title">Олена</span><span class="row-meta">Кімната на Подолі</span></span>
+            <span class="row-side"><span class="row-unread">1</span></span>
+          </a>
+        </div>
+        <div class="docs-card-name">Рядок списку</div>
+        <p class="docs-card-note">Медіа-рядок для чатів, кандидатів, оголошень; + «Рядок людини».</p>
+      </a>
+
+      <a class="docs-card" href="avatar.html">
+        <div class="docs-card-preview">
+          <div style="display:flex; gap:10px; align-items:center;"><span class="avatar avatar--md ph">фото</span><span class="avatar avatar--sm ph">фото</span></div>
+        </div>
+        <div class="docs-card-name">Аватар</div>
+        <p class="docs-card-note">М'який квадрат, радіус 30px — свідомо не коло.</p>
+      </a>
+
+      <a class="docs-card" href="badge.html">
+        <div class="docs-card-preview">
+          <span class="badge"><span class="badge-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>телефон ✓ · фото ✓</span>
+        </div>
+        <div class="docs-card-name">Бейдж верифікації</div>
+        <p class="docs-card-note">Сигнатурний компонент — розшифровка, ніколи не «перевірено» голе.</p>
+      </a>
+
+      <a class="docs-card" href="status-pill.html">
+        <div class="docs-card-preview">
+          <div style="display:flex; gap:8px;"><span class="status-pill status-pill--success">Активне</span><span class="status-pill">очікує</span></div>
+        </div>
+        <div class="docs-card-name">Статус-піґулка</div>
+        <p class="docs-card-note">Життєвий цикл заявки чи оголошення — не плутати з бейджем.</p>
+      </a>
+
+      <a class="docs-card" href="chips.html">
+        <div class="docs-card-preview">
+          <ul class="chips" style="justify-content:center;"><li>Не палю</li><li>Без тварин</li></ul>
+        </div>
+        <div class="docs-card-name">Факти й чипи</div>
+        <p class="docs-card-note">Інертні факти, свідомо не кобальтові, не фільтри.</p>
+      </a>
+
+      <a class="docs-card" href="review.html">
+        <div class="docs-card-preview">
+          <div class="review" style="border-top:none; width:100%;"><p class="review-meta">Олена, господиня · травень 2026</p><p class="review-text">Платив вчасно, лишив кімнату чистою.</p></div>
+        </div>
+        <div class="docs-card-name">Відгук</div>
+        <p class="docs-card-note">Автор+дата над текстом; розділювач зверху, крім першого.</p>
+      </a>
+
+      <a class="docs-card" href="meter.html">
+        <div class="docs-card-preview">
+          <div class="meter-block" style="width:100%;"><p class="meter-label">Повнота профілю <b>90%</b></p><div class="meter"><div class="meter-fill" style="width:90%"></div></div></div>
+        </div>
+        <div class="docs-card-name">Метр повноти профілю</div>
+        <p class="docs-card-note">Другий сигнатурний компонент — кобальт, бо це прогрес, не бренд.</p>
+      </a>
+
+      <a class="docs-card" href="profile-hero.html">
+        <div class="docs-card-preview">
+          <div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
+            <span class="avatar avatar--md ph">фото</span>
+            <span style="font-family:var(--font-family-1); font-weight:var(--font-weight-700); font-size:1rem;">Аня, 23</span>
+          </div>
+        </div>
+        <div class="docs-card-name">Профіль-герой</div>
+        <p class="docs-card-note">Композиція: аватар + ім'я + бейдж + метр, центровано на канвасі.</p>
+      </a>
+
+    </div>
+  </section>
+
+  <section class="docs-cat">
+    <h2>Форми</h2>
+    <p>Поля, вибір, згода — без рамок, глибина лише тоном паперу.</p>
+    <div class="docs-grid">
+
+      <a class="docs-card" href="field.html">
+        <div class="docs-card-preview">
+          <div class="field" style="width:100%;"><label>Номер телефону</label><input type="tel" placeholder="+380" tabindex="-1"></div>
+        </div>
+        <div class="docs-card-name">Поле форми</div>
+        <p class="docs-card-note">Input / textarea / select, тло paper-2, без рамки.</p>
+      </a>
+
+      <a class="docs-card" href="checkbox.html">
+        <div class="docs-card-preview">
+          <label class="chk-line" style="cursor:default;"><input type="checkbox" checked tabindex="-1"><span class="chk-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>Не палю</label>
+        </div>
+        <div class="docs-card-name">Чекбокс</div>
+        <p class="docs-card-note">Border-control — сама рамка ідентифікує контрол.</p>
+      </a>
+
+      <a class="docs-card" href="radio.html">
+        <div class="docs-card-preview">
+          <label class="radio-option" style="cursor:default; padding:0;"><input type="radio" checked tabindex="-1"><span class="radio-dot"></span>Підозрілий профіль</label>
+        </div>
+        <div class="docs-card-name">Радіо-список</div>
+        <p class="docs-card-note">Простий і двурядковий (заголовок+пояснення) варіанти.</p>
+      </a>
+
+      <a class="docs-card" href="privacy-group.html">
+        <div class="docs-card-preview" style="align-items:flex-start; text-align:left;">
+          <div style="width:100%;"><span class="overline">Показувати вік</span><label class="radio-option" style="cursor:default; padding:4px 0;"><input type="radio" checked tabindex="-1"><span class="radio-dot"></span>Так</label></div>
+        </div>
+        <div class="docs-card-name">Група приватності</div>
+        <p class="docs-card-note">Семантичний fieldset без стилю за замовчуванням.</p>
+      </a>
+
+      <a class="docs-card" href="photo-upload.html">
+        <div class="docs-card-preview">
+          <div class="photo-row" style="justify-content:center;"><span class="photo-slot" style="width:56px; height:56px;"><img src="https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=120&h=120&fit=crop&auto=format&q=60" alt="" loading="lazy"></span><button class="photo-slot" style="width:56px; height:56px;" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button></div>
+        </div>
+        <div class="docs-card-name">Ряд завантаження фото</div>
+        <p class="docs-card-note">Порожній слот / прев'ю, той самий квадрат-радіус, що аватар.</p>
+      </a>
+
+    </div>
+  </section>
+
+  <section class="docs-cat">
+    <h2>Разове</h2>
+    <p>Компоненти одного екрана — фіксуємо, що вони існують, у спільний кіт не тягнемо без потреби.</p>
+    <div class="docs-grid">
+
+      <a class="docs-card" href="segment.html">
+        <div class="docs-card-preview">
+          <fieldset class="seg" style="width:100%;"><label tabindex="-1">Кімнати<span class="seg-count">18</span></label><label tabindex="-1">Люди<span class="seg-count">6</span></label><label tabindex="-1"><input type="radio" checked tabindex="-1"> Усі <span class="seg-count">24</span></label></fieldset>
+        </div>
+        <div class="docs-card-name">Сегмент типу</div>
+        <p class="docs-card-note">Тільки listings* — фільтр «Кімнати / Люди / Усі».</p>
+      </a>
+
+      <a class="docs-card" href="fab.html">
+        <div class="docs-card-preview">
+          <button class="fab" style="position:static; margin:0;" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h7M17.5 7H20M4 12h2.5M13 12h7M4 17h7M17.5 17H20"/><circle cx="14.5" cy="7" r="2.4"/><circle cx="9.5" cy="12" r="2.4"/><circle cx="14.5" cy="17" r="2.4"/></svg></button>
+        </div>
+        <div class="docs-card-name">FAB фільтра</div>
+        <p class="docs-card-note">56px — єдиний навмисний виняток розміру кнопок-іконок.</p>
+      </a>
+
+      <a class="docs-card" href="sheet.html">
+        <div class="docs-card-preview">
+          <div class="sheet" style="width:100%; padding:14px;"><div class="sheet-grip"></div><div class="sheet-head" style="margin-bottom:0;"><span class="sheet-title">Фільтр</span></div></div>
+        </div>
+        <div class="docs-card-name">Боттом-шит</div>
+        <p class="docs-card-note">Тон канвасу, «частина сторінки», не окрема поверхня.</p>
+      </a>
+
+      <a class="docs-card" href="role-option.html">
+        <div class="docs-card-preview">
+          <a class="role-option" href="#" tabindex="-1" style="width:100%;"><span class="role-option-title">Шукаю кімнату</span><span class="role-option-sub">Переглядати оголошення</span></a>
+        </div>
+        <div class="docs-card-name">Опції вибору ролі</div>
+        <p class="docs-card-note">Кнопки-опції, не картки — нема ще фото чи ціни.</p>
+      </a>
+
+      <a class="docs-card" href="consent.html">
+        <div class="docs-card-preview">
+          <label class="chk-line" style="cursor:default;"><input type="checkbox" checked tabindex="-1"><span class="chk-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>Погоджуюсь на обробку даних</label>
+        </div>
+        <div class="docs-card-name">Блок згоди</div>
+        <p class="docs-card-note">Персональні й біометричні дані — окремими чекбоксами.</p>
+      </a>
+
+      <a class="docs-card" href="legal-copy.html">
+        <div class="docs-card-preview" style="align-items:flex-start; text-align:left;">
+          <div class="legal-copy"><p style="font-size:var(--font-size-13);">Куток — сервіс для пошуку співмешканців і підселення у вільні кімнати в Києві…</p></div>
+        </div>
+        <div class="docs-card-name">Юридичний текст</div>
+        <p class="docs-card-note">Умови й Політика приватності — line-height 1.55.</p>
+      </a>
+
+      <a class="docs-card" href="thumb-strip.html">
+        <div class="docs-card-preview">
+          <div class="thumb-strip" style="margin:0;"><a href="#" tabindex="-1"><img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=160&h=120&fit=crop&auto=format&q=60" alt="" loading="lazy"></a><a href="#" tabindex="-1"><img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=160&h=120&fit=crop&auto=format&q=60" alt="" loading="lazy"></a></div>
+        </div>
+        <div class="docs-card-name">Стрічка мініатюр</div>
+        <p class="docs-card-note">Тільки room* — прев'ю решти фото кімнати.</p>
+      </a>
+
+      <a class="docs-card" href="gallery.html">
+        <div class="docs-card-preview">
+          <header class="gallery-bar" style="padding:0; width:100%;"><a class="gallery-close" href="#" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></a><p class="counter">2 з 5</p></header>
+        </div>
+        <div class="docs-card-name">Фото-в'юер</div>
+        <p class="docs-card-note">Повноекранний перегляд, кобальт-рамка як єдиний індикатор позиції.</p>
+      </a>
+
+    </div>
+  </section>
+
+  <section class="docs-cat">
+    <h2>Зворотний зв'язок</h2>
+    <p>Порожньо, помилка, завантаження — і дрібні текстові ролі, що тримають усе разом.</p>
+    <div class="docs-grid">
+
+      <a class="docs-card" href="state.html">
+        <div class="docs-card-preview">
+          <div class="state-icon" style="margin:0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18l-7 8v5l-4 2v-7L3 5z"/></svg></div>
+        </div>
+        <div class="docs-card-name">Порожній стан</div>
+        <p class="docs-card-note">Іконка + заголовок + текст + кнопки, спокійний тон, нуль urgency.</p>
+      </a>
+
+      <a class="docs-card" href="banner.html">
+        <div class="docs-card-preview">
+          <div class="banner banner--info" style="width:100%;"><span class="banner-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg></span>Заявку передано на ручну перевірку.</div>
+        </div>
+        <div class="docs-card-name">Банер</div>
+        <p class="docs-card-note">Колір лише в іконці — помилка/успіх/інфо, текст завжди ink.</p>
+      </a>
+
+      <a class="docs-card" href="skeleton.html">
+        <div class="docs-card-preview" style="flex-direction:column; gap:8px;">
+          <div class="sk sk-title" style="width:80%;"></div><div class="sk sk-price" style="width:40%;"></div>
+        </div>
+        <div class="docs-card-name">Скелетон завантаження</div>
+        <p class="docs-card-note">Копіює пропорції реального компонента, пульсує без кольору.</p>
+      </a>
+
+      <a class="docs-card" href="text.html">
+        <div class="docs-card-preview" style="flex-direction:column; gap:6px; align-items:flex-start; text-align:left;">
+          <p class="counter">Кандидатів: <b>3</b></p><p class="hint">Порада: зустрічайтесь у людному місці.</p>
+        </div>
+        <div class="docs-card-name">Текст: лічильник, оверлайн, підказка</div>
+        <p class="docs-card-note">Чотири дрібні текстові ролі з одного файлу.</p>
+      </a>
+
+    </div>
+  </section>
+
+  <section class="docs-cat">
+    <h2>Чат</h2>
+    <p>Бульбашки повідомлень і поле вводу — кобальт лише на власних, вихідних повідомленнях.</p>
+    <div class="docs-grid">
+      <a class="docs-card" href="chat.html">
+        <div class="docs-card-preview" style="flex-direction:column; align-items:stretch; gap:6px;">
+          <div class="msg msg--in" style="align-self:flex-start; font-size:var(--font-size-13);">Вітаю! Кімната ще вільна?</div>
+          <div class="msg msg--out" style="align-self:flex-end; font-size:var(--font-size-13);">Так, вільна з 1 липня.</div>
+        </div>
+        <div class="docs-card-name">Бульбашки й поле вводу</div>
+        <p class="docs-card-note">Вихідне — кобальт (дія), вхідне — paper-2, той самий голос, що всюди.</p>
+      </a>
+    </div>
+  </section>
+
+  <div class="docs-foot">
+    <span></span>
+    <a href="header.html">Почати з хедера екрана →</a>
+  </div>
+
+</main>
+</div>
+</body>
+</html>
