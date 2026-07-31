@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Збирає ui/components/index.css з окремих файлів компонентів.
+# Збирає design-system/components/index.css з окремих файлів компонентів.
 #
 # Навіщо збірка, а не @import: ланцюжок @import змушує браузер спершу забрати
 # й розпарсити index.css, і лише тоді запитати решту 29 файлів. Заміряно
@@ -10,7 +10,7 @@
 # Джерело істини — окремі файли компонентів. index.css генерований: правити
 # його руками не можна, зміни зітруться наступною збіркою.
 #
-# Порядок файлів задає manifest.txt. Запуск: bash ui/components/build.sh
+# Порядок файлів задає manifest.txt. Запуск: bash design-system/components/build.sh
 set -euo pipefail
 cd "$(dirname "$0")"
 
@@ -19,7 +19,7 @@ OUT=index.css
   echo "/* ==========================================================================="
   echo "   Куток — components/index.css · ЗГЕНЕРОВАНО, НЕ РЕДАГУВАТИ"
   echo "   Джерело — окремі файли компонентів у цій теці; порядок — manifest.txt."
-  echo "   Перезібрати: bash ui/components/build.sh"
+  echo "   Перезібрати: bash design-system/components/build.sh"
   echo "   =========================================================================== */"
   echo
   while IFS= read -r f; do
