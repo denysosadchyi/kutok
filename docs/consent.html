@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Блок згоди · Компоненти · Куток</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../design-system/index.css">
+<link rel="stylesheet" href="docs.css">
+</head>
+<body class="docs">
+<div class="docs-shell">
+
+<nav class="docs-nav" aria-label="Компоненти">
+  <a class="docs-nav-home" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--color-brand)"/><path d="M18 3L21 3L21 6Z" fill="var(--bg-surface)"/></svg>Куток · компоненти</a>
+  <p class="docs-nav-sub">design-system/ у дії</p>
+  <a class="docs-nav-why" href="why.html">Чому система така →</a>
+
+  <div class="docs-nav-group"><h3>Оболонка й навігація</h3><ul>
+    <li><a href="header.html">Хедер екрана</a></li>
+    <li><a href="search.html">Поповер пошуку</a></li>
+    <li><a href="tabbar.html">Таб-бар</a></li>
+    <li><a href="menu.html">Список-меню налаштувань</a></li>
+  </ul></div>
+
+  <div class="docs-nav-group"><h3>Кнопки</h3><ul>
+    <li><a href="button.html">Кнопка</a></li>
+  </ul></div>
+
+  <div class="docs-nav-group"><h3>Картки й списки</h3><ul>
+    <li><a href="card.html">Картка оголошення</a></li>
+    <li><a href="list.html">Рядок списку</a></li>
+    <li><a href="avatar.html">Аватар</a></li>
+    <li><a href="badge.html">Бейдж верифікації</a></li>
+    <li><a href="status-pill.html">Статус-піґулка</a></li>
+    <li><a href="chips.html">Факти й чипи</a></li>
+    <li><a href="review.html">Відгук</a></li>
+    <li><a href="meter.html">Метр повноти профілю</a></li>
+    <li><a href="profile-hero.html">Профіль-герой</a></li>
+  </ul></div>
+
+  <div class="docs-nav-group"><h3>Форми</h3><ul>
+    <li><a href="field.html">Поле форми</a></li>
+    <li><a href="checkbox.html">Чекбокс</a></li>
+    <li><a href="radio.html">Радіо-список</a></li>
+    <li><a href="privacy-group.html">Група приватності</a></li>
+    <li><a href="photo-upload.html">Ряд завантаження фото</a></li>
+  </ul></div>
+
+  <div class="docs-nav-group"><h3>Разове</h3><ul>
+    <li><a href="segment.html">Сегмент типу</a></li>
+    <li><a href="fab.html">FAB фільтра</a></li>
+    <li><a href="sheet.html">Боттом-шит</a></li>
+    <li><a href="role-option.html">Опції вибору ролі</a></li>
+    <li><a href="consent.html" aria-current="page">Блок згоди</a></li>
+    <li><a href="legal-copy.html">Юридичний текст</a></li>
+    <li><a href="thumb-strip.html">Стрічка мініатюр</a></li>
+    <li><a href="gallery.html">Фото-в'юер</a></li>
+  </ul></div>
+
+  <div class="docs-nav-group"><h3>Зворотний зв'язок</h3><ul>
+    <li><a href="state.html">Порожній стан</a></li>
+    <li><a href="banner.html">Банер</a></li>
+    <li><a href="skeleton.html">Скелетон завантаження</a></li>
+    <li><a href="text.html">Текст: лічильник, оверлайн, підказка</a></li>
+  </ul></div>
+
+  <div class="docs-nav-group"><h3>Чат</h3><ul>
+    <li><a href="chat.html">Бульбашки й поле вводу</a></li>
+  </ul></div>
+</nav>
+
+<main class="docs-main">
+
+  <p class="docs-crumb"><a href="index.html">Компоненти</a> / Разове</p>
+  <p class="docs-eyebrow">Блокер запуску</p>
+  <h1 class="docs-title">Блок згоди</h1>
+  <p class="docs-lede">Дві згоди — дві окремі галочки: персональні й біометричні дані ніколи не ховаються за одним спільним «Погоджуюсь».</p>
+  <div class="docs-meta"><code>.consent-block</code><code>.legal-links</code><code>.chk-line</code><code>.chk-box</code><code>.hint</code></div>
+
+  <section class="docs-sec" id="anatomy">
+    <h2>Анатомія</h2>
+    <p class="docs-sec-hint">Три блоки з екрана правової згоди на біометрію — так, як вони йдуть один за одним у продукті.</p>
+    <div class="docs-anatomy">
+      <div class="docs-stage">
+        <div style="display:flex; flex-direction:column; max-width:360px;">
+          <div class="consent-block">
+            <label class="chk-line">
+              <input type="checkbox" name="consent_data" checked>
+              <span class="chk-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>
+              Погоджуюсь на обробку персональних даних (ім'я, вік, телефон, про себе) відповідно до Політики приватності
+            </label>
+          </div>
+          <div class="consent-block">
+            <label class="chk-line">
+              <input type="checkbox" name="consent_biometrics" checked>
+              <span class="chk-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>
+              Погоджуюсь на обробку біометричних даних (селфі, перевірка на living-присутність) для підтвердження, що фото профілю належить реальній людині
+            </label>
+          </div>
+          <div class="consent-block">
+            <p class="hint">Ознайомтесь з документами перед тим, як продовжити:</p>
+            <div class="legal-links">
+              <a href="#">Умови використання</a>
+              <span>·</span>
+              <a href="#">Політика приватності</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ol class="docs-legend">
+        <li><b>Блок даних</b><span>(<code>.consent-block</code>) — перший чекбокс: <a href="checkbox.html">чекбокс</a> (<code>.chk-line</code> / <code>.chk-box</code>) з повним переліком полів профілю, які він охоплює.</span></li>
+        <li><b>Блок біометрії</b><span>(<code>.consent-block</code>) — другий, окремий чекбокс: інша категорія даних (селфі, living-перевірка), тому інша галочка, не той самий пункт.</span></li>
+        <li><b>Підказка й лінки</b><span>(<code>.hint</code>, <a href="text.html">documented на text.html</a>) + (<code>.legal-links</code>) — інлайн-рядок з кобальтовими текстовими лінками на повні документи, розділений крапкою по центру.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="variants">
+    <h2>Варіанти й розміри</h2>
+    <p class="docs-sec-hint"><code>.consent-block</code> — це лише одиниця вертикального відступу; форма всередині завжди своя.</p>
+    <div class="docs-variants">
+      <div class="docs-example">
+        <p class="docs-example-label">Згода на дані</p>
+        <div class="docs-example-body">
+          <div class="consent-block">
+            <label class="chk-line">
+              <input type="checkbox" checked>
+              <span class="chk-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>
+              Погоджуюсь на обробку персональних даних
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="docs-example">
+        <p class="docs-example-label">Згода на біометрію</p>
+        <div class="docs-example-body">
+          <div class="consent-block">
+            <label class="chk-line">
+              <input type="checkbox" checked>
+              <span class="chk-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>
+              Погоджуюсь на обробку біометричних даних
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="docs-example">
+        <p class="docs-example-label">Лінки на документи</p>
+        <div class="docs-example-body">
+          <div class="consent-block">
+            <p class="hint">Ознайомтесь з документами перед тим, як продовжити:</p>
+            <div class="legal-links">
+              <a href="#">Умови використання</a>
+              <span>·</span>
+              <a href="#">Політика приватності</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="usage">
+    <h2>Коли вживати</h2>
+    <p class="docs-copy"><code>.consent-block</code> і <code>.legal-links</code> живуть винятково на <code>consent.html</code> — екрані обов'язкової правової згоди, який людина проходить перед верифікацією. За CLAUDE.md це один з двох <strong>блокерів запуску</strong> застосунку (поруч із входом для існуючого користувача): без нього немає законної підстави обробляти телефон і селфі, на яких тримається весь механізм довіри R1. Кожен <code>.consent-block</code> — одна юридично самостійна дія: користувач тисне «Продовжити» лише після того, як обидва чекбокси відмічені, а лінки на самі документи (<code>.legal-links</code>) завжди доступні поруч, а не десь у налаштуваннях. Формулювання чекбоксів навмисно довгі й конкретні — не заради стилю, а тому що коротке «Погоджуюсь з умовами» юридично не покриває те, на що людина реально погоджується.</p>
+    <div class="docs-where">
+      <span>consent — обидва чекбокси й лінки</span>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="dodont">
+    <h2>Правило і антиправило</h2>
+    <div class="docs-dodont">
+      <div class="docs-do">
+        <span class="docs-do-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg>Так</span>
+        <div class="docs-do-stage">
+          <div style="display:flex; flex-direction:column; gap:var(--space-13); max-width:320px;">
+            <label class="chk-line"><input type="checkbox" checked><span class="chk-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>Погоджуюсь на обробку персональних даних</label>
+            <label class="chk-line"><input type="checkbox" checked><span class="chk-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>Погоджуюсь на обробку біометричних даних</label>
+          </div>
+        </div>
+        <p>Два окремі <code>.consent-block</code> з двома окремими чекбоксами, тому що персональні дані й біометрія — юридично різні категорії, і кожна вимагає власної, конкретної згоди, а не спільної «галочки за все».</p>
+      </div>
+      <div class="docs-dont">
+        <span class="docs-dont-tag">✕ Ні</span>
+        <div class="docs-dont-stage">
+          <div style="max-width:320px;">
+            <label class="chk-line"><input type="checkbox" checked><span class="chk-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>Погоджуюсь з умовами використання</label>
+          </div>
+        </div>
+        <p>Одна загальна галочка «погоджуюсь з умовами» не каже, на що саме людина погодилась: чи охоплює вона селфі й living-перевірку, чи лише базовий профіль. Для біометричних даних потрібна окрема, явно сформульована згода — сховати її всередині загального пункту означає видавати те, чого користувач фактично не підтвердив.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="docs-foot">
+    <a href="role-option.html">← Опції вибору ролі</a>
+    <a href="index.html">Усі компоненти</a>
+    <a href="legal-copy.html">Юридичний текст →</a>
+  </div>
+
+</main>
+</div>
+</body>
+</html>
