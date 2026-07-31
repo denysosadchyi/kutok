@@ -1,0 +1,771 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Куток — персони і JTBD</title>
+<style>
+/* ===== Kootok personas + JTBD · ті самі Notion design tokens, що й research.html ===== */
+
+:root{
+  --canvas:#ffffff; --surface:#f6f5f4; --surface-soft:#fafaf9; --tint-gray:#f0eeec;
+  --hairline:#e5e3df; --hairline-soft:#ede9e4; --hairline-strong:#c8c4be;
+  --ink:#1a1a1a; --charcoal:#37352f; --slate:#5d5b54; --steel:#787671; --stone:#a4a097; --muted:#bbb8b1;
+  --primary:#5645d4; --primary-deep:#3a2a99; --link:#0075de;
+  --navy:#0a1530; --navy-mid:#1a2a52;
+  --peach:#ffe8d4; --orange-deep:#793400; --orange:#dd5b00;
+  --rose:#fde0ec; --pink-deep:#a02e6d;
+  --mint:#d9f3e1; --green:#1aae39; --green-deep:#127a29;
+  --lavender:#e6e0f5; --purple-800:#391c57;
+  --sky:#dcecfa; --sky-ink:#0a4a7a;
+  --yellow:#fef7d6; --yellow-strong:#fbe98f; --yellow-ink:#6b4e00; --yellow-line:#e6c65c;
+  --cream:#f8f5e8; --error:#e03131;
+  --font:'Inter',-apple-system,BlinkMacSystemFont,system-ui,'Segoe UI',Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+  --sh1:rgba(15,15,15,.04) 0 1px 2px 0;
+  --sh2:rgba(15,15,15,.08) 0 4px 12px 0;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --canvas:#191919; --surface:#232323; --surface-soft:#1f1f1f; --tint-gray:#262626;
+    --hairline:#2f2f2f; --hairline-soft:#292929; --hairline-strong:#3c3c3c;
+    --ink:#f5f4f2; --charcoal:#d7d3cb; --slate:#b3afa6; --steel:#928e86; --stone:#6f6b64; --muted:#57534c;
+    --primary:#8b7ff0; --primary-deep:#a99cf7; --link:#6bb0ff;
+    --navy:#0a1530; --navy-mid:#1a2a52;
+    --peach:#3a2a1a; --orange-deep:#e6a870; --orange:#e6a870;
+    --rose:#331f2a; --pink-deep:#e88bbd;
+    --mint:#16281c; --green:#5fc878; --green-deep:#5fc878;
+    --lavender:#241d34; --purple-800:#c7b8ec;
+    --sky:#16232f; --sky-ink:#7cc0f5;
+    --yellow:#2b2614; --yellow-strong:#4a3f10; --yellow-ink:#ffd85c; --yellow-line:#7a6820;
+    --cream:#26241c; --error:#f06565;
+    --sh1:rgba(0,0,0,.3) 0 1px 2px 0; --sh2:rgba(0,0,0,.35) 0 4px 14px 0;
+  }
+}
+:root[data-theme="light"]{
+  --canvas:#ffffff; --surface:#f6f5f4; --surface-soft:#fafaf9; --tint-gray:#f0eeec;
+  --hairline:#e5e3df; --hairline-soft:#ede9e4; --hairline-strong:#c8c4be;
+  --ink:#1a1a1a; --charcoal:#37352f; --slate:#5d5b54; --steel:#787671; --stone:#a4a097; --muted:#bbb8b1;
+  --primary:#5645d4; --primary-deep:#3a2a99; --link:#0075de; --navy:#0a1530; --navy-mid:#1a2a52;
+  --peach:#ffe8d4; --orange-deep:#793400; --orange:#dd5b00; --rose:#fde0ec; --pink-deep:#a02e6d;
+  --mint:#d9f3e1; --green:#1aae39; --green-deep:#127a29; --lavender:#e6e0f5; --purple-800:#391c57;
+  --sky:#dcecfa; --sky-ink:#0a4a7a;
+  --yellow:#fef7d6; --yellow-strong:#fbe98f; --yellow-ink:#6b4e00; --yellow-line:#e6c65c;
+  --cream:#f8f5e8; --error:#e03131;
+  --sh1:rgba(15,15,15,.04) 0 1px 2px 0; --sh2:rgba(15,15,15,.08) 0 4px 12px 0;
+}
+:root[data-theme="dark"]{
+  --canvas:#191919; --surface:#232323; --surface-soft:#1f1f1f; --tint-gray:#262626;
+  --hairline:#2f2f2f; --hairline-soft:#292929; --hairline-strong:#3c3c3c;
+  --ink:#f5f4f2; --charcoal:#d7d3cb; --slate:#b3afa6; --steel:#928e86; --stone:#6f6b64; --muted:#57534c;
+  --primary:#8b7ff0; --primary-deep:#a99cf7; --link:#6bb0ff; --navy:#0a1530; --navy-mid:#1a2a52;
+  --peach:#3a2a1a; --orange-deep:#e6a870; --orange:#e6a870; --rose:#331f2a; --pink-deep:#e88bbd;
+  --mint:#16281c; --green:#5fc878; --green-deep:#5fc878; --lavender:#241d34; --purple-800:#c7b8ec;
+  --sky:#16232f; --sky-ink:#7cc0f5;
+  --yellow:#2b2614; --yellow-strong:#4a3f10; --yellow-ink:#ffd85c; --yellow-line:#7a6820;
+  --cream:#26241c; --error:#f06565;
+  --sh1:rgba(0,0,0,.3) 0 1px 2px 0; --sh2:rgba(0,0,0,.35) 0 4px 14px 0;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--canvas);color:var(--charcoal);font-family:var(--font);
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  overflow-x:hidden}
+
+/* layout */
+.app{display:grid;grid-template-columns:260px minmax(0,1fr)}
+.sidebar{position:sticky;top:0;height:100vh;overflow-y:auto;background:var(--surface-soft);
+  border-right:1px solid var(--hairline);padding:22px 14px 40px}
+.content{min-width:0;padding:0 24px}
+.content-inner{max-width:760px;margin:0 auto;padding:44px 0 96px}
+
+/* brand */
+.brand{display:flex;align-items:center;gap:10px;padding:2px 8px 20px}
+.brand svg{width:24px;height:24px;flex:none}
+.brand svg path{stroke:var(--primary);stroke-width:5;fill:none;stroke-linecap:square}
+.brand-txt b{font-weight:600;font-size:15px;display:block;line-height:1.1;color:var(--ink);letter-spacing:-.01em}
+.brand-txt span{font-size:12px;color:var(--stone)}
+
+/* nav */
+.nav-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;
+  color:var(--stone);padding:12px 10px 6px}
+.nav a{display:flex;align-items:center;gap:9px;padding:6px 10px;border-radius:6px;
+  color:var(--slate);text-decoration:none;font-size:14px;font-weight:500;line-height:1.3;
+  border:none;transition:background .12s,color .12s}
+.nav a .n{font-size:12px;color:var(--stone);min-width:1.1em;font-variant-numeric:tabular-nums}
+.nav a:hover{background:var(--tint-gray);color:var(--ink)}
+.nav a.active{background:var(--lavender);color:var(--primary);font-weight:600}
+.nav a.active .n{color:var(--primary)}
+.nav a.sub{padding-left:28px;font-size:13px;font-weight:400}
+
+/* page switcher (shared between research.html / personas.html) */
+.pageswitch{display:flex;flex-direction:column;gap:2px;padding-bottom:6px;
+  border-bottom:1px solid var(--hairline)}
+.pageswitch a{display:flex;align-items:center;gap:9px;padding:7px 10px;border-radius:6px;
+  color:var(--slate);text-decoration:none;font-size:14px;font-weight:500;line-height:1.3;
+  transition:background .12s,color .12s}
+.pageswitch a svg{width:15px;height:15px;flex:none;opacity:.9}
+.pageswitch a:hover{background:var(--tint-gray);color:var(--ink)}
+.pageswitch a.cur{background:var(--lavender);color:var(--primary);font-weight:600}
+
+.side-links{margin-top:20px;padding:14px 10px 0;border-top:1px solid var(--hairline)}
+.side-links a{display:flex;align-items:center;gap:9px;color:var(--steel);font-size:13px;
+  font-weight:500;text-decoration:none;padding:6px 0;border:none}
+.side-links a:hover{color:var(--ink)}
+.side-links a svg{width:16px;height:16px;flex:none}
+
+.mobtop{display:none}
+
+/* hero band (navy) */
+.heroband{background:var(--navy);border-radius:16px;padding:40px 36px;margin:0 0 24px;
+  color:#fff;box-shadow:var(--sh2);position:relative;overflow:hidden}
+.heroband::after{content:"";position:absolute;right:-40px;top:-40px;width:200px;height:200px;
+  background:radial-gradient(circle,rgba(86,69,212,.5),transparent 70%);pointer-events:none}
+.heroband .eyebrow{color:#b9aef7}
+.heroband h1{color:#fff;margin:0 0 12px}
+.heroband .lede{color:rgba(255,255,255,.72);margin:0}
+
+/* typography */
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;
+  color:var(--primary);margin:0 0 12px}
+h1{font-weight:700;font-size:42px;line-height:1.12;letter-spacing:-1px;margin:0 0 12px;color:var(--ink)}
+h2{font-weight:600;font-size:30px;line-height:1.2;letter-spacing:-.5px;margin:56px 0 8px;
+  padding-top:28px;border-top:1px solid var(--hairline);color:var(--ink);scroll-margin-top:20px}
+h2:first-of-type{border-top:none;padding-top:0}
+h2 .h2n{color:var(--stone);font-size:16px;font-weight:500;margin-right:10px;font-variant-numeric:tabular-nums}
+h3{font-weight:600;font-size:20px;line-height:1.3;margin:32px 0 10px;color:var(--ink);letter-spacing:-.2px;
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+h4{font-weight:600;font-size:16px;margin:0 0 6px;color:var(--ink)}
+p{margin:10px 0}
+.lede{font-size:18px;color:var(--slate);line-height:1.5;margin:0 0 20px}
+a{color:var(--link);text-decoration:none}
+a:hover{text-decoration:underline}
+strong,b{font-weight:600;color:var(--ink)}
+section{scroll-margin-top:20px}
+ul{margin:8px 0;padding-left:20px}
+li{margin:6px 0;font-size:15px;color:var(--slate)}
+li b{color:var(--ink)}
+
+/* callouts */
+.callout{display:flex;gap:12px;background:var(--surface);border:1px solid var(--hairline);
+  border-radius:8px;padding:14px 16px;margin:16px 0;font-size:15px;color:var(--slate)}
+.callout .ico{font-size:17px;line-height:1.4;flex:none}
+.callout b{color:var(--ink)}
+.callout.accent{background:var(--lavender);border-color:transparent;color:var(--purple-800)}
+.callout.accent b{color:var(--purple-800)}
+.callout.rust{background:var(--peach);border-color:transparent;color:var(--orange-deep)}
+.callout.rust b{color:var(--orange-deep)}
+
+/* ===== ЧЕСНІСТЬ: бейджі статусу твердження — першокласний елемент дизайну ===== */
+.hyp,.dis,.conf,.na{display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.03em;
+  padding:1px 8px;border-radius:6px;vertical-align:baseline;line-height:1.55}
+/* короткі маркери не ламаємо; багатослівні — навпаки, мають переноситись у вузьких клітинках */
+.hyp,.na{white-space:nowrap}
+.dis,.conf{white-space:normal;overflow-wrap:anywhere}
+/* [?] — гіпотеза, даних немає */
+.hyp{background:var(--yellow-strong);color:var(--yellow-ink);border:1px solid var(--yellow-line)}
+/* спростовано доресерчем */
+.dis{background:var(--rose);color:var(--pink-deep);border:1px solid transparent;text-transform:uppercase}
+/* підтверджено доресерчем */
+.conf{background:var(--mint);color:var(--green-deep);border:1px solid transparent;text-transform:uppercase}
+/* структурно не стосується */
+.na{background:var(--tint-gray);color:var(--steel);border:1px solid var(--hairline)}
+/* важливість 1–3 у матриці */
+.imp{display:inline-block;font-family:var(--mono);font-size:12px;font-weight:700;
+  background:var(--lavender);color:var(--purple-800);padding:1px 8px;border-radius:6px}
+.imp.top{background:var(--primary);color:#fff}
+
+/* блок-легенда бейджів */
+.legend{display:grid;grid-template-columns:max-content minmax(0,1fr);column-gap:16px;
+  margin:16px 0 0;padding:2px 16px;background:var(--surface);
+  border:1px solid var(--hairline);border-radius:10px}
+.legend dt{padding:12px 0 12px;display:flex;align-items:flex-start;min-width:0}
+.legend dd{margin:0;padding:12px 0;font-size:13.5px;line-height:1.55;color:var(--slate);min-width:0}
+.legend dt:not(:first-of-type),.legend dd:not(:first-of-type){border-top:1px solid var(--hairline)}
+
+/* смуга-акцент для гіпотези всередині тексту */
+.hypline{background:var(--yellow);border-left:3px solid var(--yellow-line);
+  border-radius:0 8px 8px 0;padding:10px 14px;margin:10px 0;font-size:14.5px;color:var(--slate)}
+.hypline b{color:var(--ink)}
+
+/* tag chips */
+.gtag{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.02em;
+  padding:2px 8px;border-radius:6px;vertical-align:middle}
+.gtag.primary{background:var(--primary);color:#fff;text-transform:uppercase;letter-spacing:.06em}
+.gtag.second{background:var(--sky);color:var(--sky-ink);text-transform:uppercase;letter-spacing:.06em}
+.gtag.hard{background:var(--lavender);color:var(--purple-800)}
+.gtag.asp{background:var(--peach);color:var(--orange-deep)}
+
+/* tables */
+.twrap{overflow-x:auto;border:1px solid var(--hairline);border-radius:8px;margin:14px 0;
+  -webkit-overflow-scrolling:touch;max-width:100%}
+table{border-collapse:collapse;width:100%;min-width:1080px;background:var(--canvas);font-size:13.5px}
+th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--hairline-soft);vertical-align:top;line-height:1.5}
+thead th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;font-weight:600;
+  color:var(--stone);background:var(--surface);white-space:nowrap}
+tbody th{font-weight:600;background:var(--surface-soft);color:var(--ink);min-width:210px}
+tbody tr:last-child td,tbody tr:last-child th{border-bottom:none}
+td.per{min-width:190px}
+td.fn{min-width:190px}
+td.cm{min-width:280px}
+
+/* cite pill */
+.cite{font-family:var(--mono);font-size:11px;color:var(--primary);
+  background:var(--tint-gray);padding:1px 6px;border-radius:4px;white-space:nowrap;
+  vertical-align:baseline;font-weight:600}
+
+/* cards */
+.cards{display:grid;gap:12px;margin:16px 0}
+.card{background:var(--canvas);border:1px solid var(--hairline);border-radius:12px;padding:20px 22px}
+.card h4{margin:0 0 8px;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.card p{margin:6px 0;font-size:15px;color:var(--slate)}
+.card p b{color:var(--ink)}
+.card .mtag{font-size:12px;color:var(--stone);margin-top:8px}
+
+/* persona cards */
+.persona{background:var(--canvas);border:1px solid var(--hairline);border-radius:14px;
+  padding:24px 24px 22px;margin:18px 0;box-shadow:var(--sh1)}
+.persona.is-primary{border-color:var(--primary);border-width:2px;box-shadow:var(--sh2)}
+.persona .ph{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+.persona .ph .nm{font-size:22px;font-weight:700;letter-spacing:-.3px;color:var(--ink)}
+.persona .role{font-size:14px;color:var(--steel);margin:0 0 12px}
+.persona .blk{margin-top:16px;padding-top:14px;border-top:1px solid var(--hairline-soft)}
+.persona .blk:first-of-type{border-top:none;padding-top:0}
+.blk-h{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;
+  color:var(--primary);margin:0 0 6px}
+.persona p{font-size:15px;color:var(--slate);margin:7px 0}
+.persona p b{color:var(--ink)}
+
+/* quotes */
+blockquote{margin:12px 0;padding:16px 18px;background:var(--cream);border-left:3px solid var(--primary);
+  border-radius:0 10px 10px 0;font-size:16px;line-height:1.55;color:var(--ink);font-weight:500}
+blockquote.real{background:var(--mint);border-left-color:var(--green-deep)}
+blockquote.hypq{background:var(--yellow);border-left-color:var(--yellow-line)}
+blockquote .qsrc{display:block;margin-top:9px;font-size:12px;font-weight:500;color:var(--steel);
+  font-family:var(--mono);word-break:break-word}
+.qlbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--steel);margin:14px 0 0}
+
+/* core-mvp blocks */
+.core{background:var(--surface);border:1px solid var(--hairline);border-radius:12px;padding:18px 22px;margin:12px 0}
+.core .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--primary);font-weight:700}
+.core .gt{font-weight:600;margin:4px 0 8px;color:var(--ink);font-size:17px}
+.core .hy{font-size:15px;color:var(--slate);margin:6px 0}
+.core .fr{font-size:13px;color:var(--steel);margin-top:8px}
+
+/* chips */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+.chip{font-size:13px;color:var(--slate);background:var(--surface);border:1px solid var(--hairline);border-radius:9999px;padding:4px 13px}
+.chip b{color:var(--ink)}
+
+/* footer */
+.foot{margin-top:40px;padding-top:20px;border-top:1px solid var(--hairline);font-size:13px;color:var(--steel)}
+
+/* theme btn */
+.themebtn{position:fixed;bottom:16px;right:16px;z-index:20;background:var(--canvas);border:1px solid var(--hairline-strong);
+  color:var(--slate);border-radius:8px;padding:7px 10px;cursor:pointer;font-size:15px;box-shadow:var(--sh2)}
+.themebtn:hover{color:var(--ink)}
+
+@media (max-width:900px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .sidebar{display:none}
+  .mobtop{display:block;position:sticky;top:0;z-index:15;background:var(--surface-soft);
+    border-bottom:1px solid var(--hairline);padding:10px 16px}
+  .mobtop summary{display:flex;align-items:center;gap:8px;cursor:pointer;list-style:none;font-weight:600;color:var(--ink)}
+  .mobtop summary svg{width:20px;height:20px}
+  .mobtop summary svg path{stroke:var(--primary);stroke-width:5;fill:none}
+  .mobtop summary::-webkit-details-marker{display:none}
+  .mobtop .mn{margin-left:auto;font-size:13px;color:var(--stone)}
+  .mobtop nav{padding:8px 0 2px}
+  .mobtop nav a{display:block;padding:7px 4px;color:var(--slate);text-decoration:none;font-size:14px}
+  .mobtop .mswitch{display:flex;gap:8px;padding:2px 0 8px;margin-bottom:4px;border-bottom:1px solid var(--hairline)}
+  .mobtop .mswitch a{flex:1;text-align:center;padding:8px 10px;border-radius:8px;background:var(--surface);
+    border:1px solid var(--hairline);font-size:13px;font-weight:500;color:var(--slate)}
+  .mobtop .mswitch a.cur{background:var(--lavender);border-color:transparent;color:var(--primary);font-weight:600}
+  .content{padding:0 18px}
+  .content-inner{padding:24px 0 64px}
+  .heroband{padding:28px 22px}
+  h1{font-size:30px;letter-spacing:-.5px}
+  h2{font-size:23px}
+  .persona{padding:18px 16px}
+  .persona .ph .nm{font-size:19px}
+  blockquote{padding:14px 14px;font-size:15px}
+}
+/* на вузьких екранах легенда стає стовпчиком: бейдж над поясненням */
+@media (max-width:560px){
+  .legend{grid-template-columns:minmax(0,1fr);padding:2px 14px}
+  .legend dt{padding:12px 0 5px}
+  .legend dd{padding:0 0 12px;border-top:0}
+  .legend dd:not(:first-of-type){border-top:0}
+}
+</style>
+</head>
+<body>
+<div class="mobtop"><details><summary><svg viewBox="0 0 34 34"><path d="M6 28 L6 6 L28 6"/></svg><span>Куток · персони і JTBD</span><span class="mn">зміст ▾</span></summary><nav>
+<span class="mswitch"><a href="research.html">Дослідження ринку</a><a class="cur" href="personas.html">Персони і JTBD</a></span>
+<a href="#origin">01 · Звідки ці дані</a>
+<a href="#personas">02 · Персони</a>
+<a href="#jobs">03 · Ієрархія jobs</a>
+<a href="#matrix">04 · JTBD-матриця</a>
+<a href="#core">05 · Ядро MVP</a>
+<a href="#open">06 · Що ще відкрито</a>
+<a href="https://github.com/denysosadchyi/kootok" target="_blank" rel="noopener">↗ GitHub-репозиторій</a>
+</nav></details></div>
+<div class="app">
+<aside class="sidebar">
+<div class="brand"><svg viewBox="0 0 34 34"><path d="M6 28 L6 6 L28 6"/></svg><span class="brand-txt"><b>Куток</b><span>персони і JTBD</span></span></div>
+<div class="nav-label">Сторінки</div>
+<div class="pageswitch">
+<a href="research.html"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M2 2h12v2H2V2zm0 4h12v2H2V6zm0 4h8v2H2v-2z"/></svg>Дослідження ринку</a>
+<a class="cur" href="personas.html"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M5.5 7a2.5 2.5 0 100-5 2.5 2.5 0 000 5zm5 0a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM1 13c0-2.2 2-3.5 4.5-3.5S10 10.8 10 13v1H1v-1zm10.5-3.5c2.2 0 3.5 1.4 3.5 3.5v1h-4v-1c0-1.1-.4-2.1-1.1-2.8.5-.4 1-.7 1.6-.7z"/></svg>Персони і JTBD</a>
+</div>
+<div class="nav-label">Зміст</div>
+<div class="nav">
+<a href="#origin"><span class="n">01</span>Звідки ці дані</a>
+<a href="#personas"><span class="n">02</span>Персони</a>
+<a class="sub" href="#p-marichka">Марічка</a>
+<a class="sub" href="#p-oleh">Олег</a>
+<a class="sub" href="#p-nastia">Настя</a>
+<a href="#jobs"><span class="n">03</span>Ієрархія jobs</a>
+<a href="#matrix"><span class="n">04</span>JTBD-матриця</a>
+<a href="#core"><span class="n">05</span>Ядро MVP</a>
+<a href="#open"><span class="n">06</span>Що ще відкрито</a>
+</div>
+<div class="side-links">
+<a href="https://github.com/denysosadchyi/kootok" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub-репозиторій</a>
+</div>
+</aside>
+<main class="content"><div class="content-inner">
+
+<!-- ============ 01 ============ -->
+<section id="origin" class="spy">
+<div class="heroband">
+<p class="eyebrow">Куток · пошук співмешканців у Києві</p>
+<h1>Персони і JTBD</h1>
+<p class="lede">Три персони й ієрархія jobs-to-be-done, побудовані з конкурентного ресерчу та точкового web-доресерчу. Кожне твердження має статус: підтверджене джерелом, підтверджене доресерчем, спростоване або гіпотеза.</p>
+</div>
+<div class="chips">
+<span class="chip"><b>3</b> персони</span>
+<span class="chip"><b>1</b> primary</span>
+<span class="chip"><b>10</b> job-ів у матриці</span>
+<span class="chip"><b>3</b> job-и в ядро MVP</span>
+<span class="chip"><b>4</b> реальні цитати</span>
+</div>
+
+<div class="callout rust"><span class="ico">⚠️</span><div><b>Це не інтерв'ю з живими людьми.</b> Персони побудовані зі спостережень конкурентного ресерчу (<a href="research.html">research.md</a>, джерела <span class="cite">S1</span>–<span class="cite">S56</span>) плюс точкового web-доресерчу <b>2026-07-30</b> (<span class="cite">S57</span>–<span class="cite">S69</span>). Там, де конкретного факту немає, стоїть <span class="hyp">[?]</span> і формулювання лишається гіпотезою, а не фактом. Нічого не згладжено: краще порожньо, ніж здогад.</div></div>
+
+<div class="callout"><span class="ico">🗣</span><div>У першій версії дослідження не було <b>жодної</b> прямої цитати користувача — єдиним реальним текстовим артефактом «голосу аудиторії» була сама назва FB-групи «Рієлтори - зло» <span class="cite">S16</span>. Доресерч 2026-07-30 це частково закрив: нижче є чотири реальні цитати, і всі вони позначені <span class="conf">реальна цитата</span>. Реконструйовані «цитати-настрою» лишились позначеними як <span class="hyp">[?] гіпотеза</span>.</div></div>
+
+<h3>Легенда позначок</h3>
+<dl class="legend">
+<dt><span class="hyp">[?]</span></dt>
+<dd>Гіпотеза. Джерело цього не підтверджує — формулювання лишено як напрямок для перевірки, не як факт.</dd>
+<dt><span class="conf">підтверджено доресерчем</span></dt>
+<dd>Твердження закрите локальними українськими джерелами 2026-07-30.</dd>
+<dt><span class="dis">спростовано</span></dt>
+<dd>Доресерч показав протилежне — попереднє припущення знято.</dd>
+<dt><span class="na">—</span></dt>
+<dd>Структурно не стосується цієї персони (не «немає даних», а «не її job»).</dd>
+</dl>
+</section>
+
+<!-- ============ 02 ============ -->
+<section id="personas" class="spy"><h2><span class="h2n">02</span>Персони</h2>
+<p>Три персони. Одна primary — найкраще задокументований сегмент; дві secondary — потрібні для повноти двосторонньої моделі, але тримаються переважно на гіпотезах.</p>
+
+<!-- Марічка -->
+<article class="persona is-primary" id="p-marichka">
+<div class="ph"><span class="nm">Марічка, 18–25</span> <span class="gtag primary">Primary</span></div>
+<p class="role">Новоприбула студентка з Telegram-каналу</p>
+
+<div class="hypline"><b>Вік — діапазон із джерела <span class="cite">S13</span>, не конкретна точка:</b> пости КНУсусіди показують ~18–25. Точніша цифра була б вигадкою.</div>
+
+<div class="blk">
+<p class="blk-h">Чому primary</p>
+<p>Найкраще задокументований сегмент у всьому дослідженні — є конкретні цифри віку, бюджету, розміру спільноти й формату оголошень (КНУсусіди, <span class="cite">S13</span><span class="cite">S14</span>), і сценарій прямо збігається з ключовим флоу брифу «переїжджають у Київ». Інші сегменти або мають менше даних (лістери кімнат), або є вужчою підмножиною цього самого сценарію.</p>
+</div>
+
+<div class="blk">
+<p class="blk-h">Контекст</p>
+<p>Переїжджає в Київ на навчання (або перший рік роботи) — виведено зі статусів «студент / першокурсниця / працюючий» у постах <span class="cite">S13</span>. Шукає через канал свого вишу — але канал дає їй <b>релевантність, а не захист</b>.</p>
+<p><span class="conf">підтверджено доресерчем</span> Механізму довіри там немає навіть номінально: адміни в закріпленому пості пишуть, що не перевіряють авторів <span class="cite">S65</span>, а всередині «студентського» каналу відкрито працюють рієлтори з комісіями до 7000 грн / 50% оренди <span class="cite">S67</span>.</p>
+</div>
+
+<div class="blk">
+<p class="blk-h">Jobs-to-be-done</p>
+<ul>
+<li>Коли я щойно переїхала в Київ, я хочу швидко знайти кімнату в межах бюджету ~5–11 тис. грн (рідше до 28 тис.) <span class="cite">S13</span>, щоб не переплачувати за тимчасове житло, поки шукаю. <span class="hyp">[?]</span> конкретний мотив «готель/хостел» джерелом не підтверджений — прибрано за аудитом.</li>
+<li>Коли я гортаю канал, я хочу зрозуміти, чи сумісна я з майбутнім сусідом за побутом (охайність, гості, режим дня), щоб не поселитися з незнайомцем «наосліп». <span class="cite">S13</span><span class="cite">S14</span></li>
+<li>Коли я знаходжу пост, я хочу написати автору напряму й швидко отримати відповідь, щоб не втратити варіант, поки шукають інші. <span class="cite">S11</span><span class="cite">S12</span><span class="cite">S13</span></li>
+</ul>
+</div>
+
+<div class="blk">
+<p class="blk-h">Болі сьогодні (OLX / чати / знайомі)</p>
+<ul>
+<li>Стрічка каналу неструктурована: пости — вільний текст з емодзі, без карток, фото, фільтрів чи пошуку всередині каналу — доводиться гортати вручну все підряд. <span class="cite">S13</span><span class="cite">S14</span></li>
+<li>Формально верифікації, відгуків чи бейджів «перевірено» немає — рахунок лише на тому, що канал прив'язаний до вишу. <span class="cite">S14</span></li>
+<li>Контакт (Telegram-нік) світиться відкрито прямо в пості — щоб написати, ніякої згоди не питають; а й сама вона теж світить свій контакт публічно, коли публікує пост. <span class="cite">S13</span></li>
+<li>OLX має фільтри (район, ціна, площа), але <b>немає</b> профілю шукача чи фільтра за звичками — там винаймаєш об'єкт, а не шукаєш людину. <span class="cite">S1</span></li>
+</ul>
+</div>
+
+<div class="blk">
+<p class="blk-h">Тригери довіри</p>
+<p><b>Переконує:</b> знайомий формат посту (ім'я / вік / факультет / бюджет / район / побажання до сусіда) — підтверджено як фактичний формат каналу <span class="cite">S13</span><span class="cite">S14</span>. Спільний контекст (виш, бюджети, райони) дає релевантність — але НЕ довіру.</p>
+<p><span class="dis">спростовано</span> Версію «приналежність = довіра» доресерч спростував самозізнаннями адмінів обох каналів <span class="cite">S65</span><span class="cite">S66</span> (див. research.md, розділ 6, питання 1).</p>
+<p><b>Відлякує</b> <span class="conf">підтверджено доресерчем</span> — передоплата / «залог» до перегляду: і адмінський гайд її каналу <span class="cite">S66</span>, і поліція <span class="cite">S59</span> називають це головним маркером скаму; реальний кейс — студент втратив 8 200 грн передоплати за оголошенням із тематичної Telegram-спільноти <span class="cite">S69</span>.</p>
+<p><b>Відлякує</b> <span class="hyp">[?] гіпотеза</span> — порожній чи занадто «рекламний» профіль без деталей про побут викликає підозру щодо фейку/розлучки, особливо після новин про фейкові оголошення в категорії (аналог кейсу Roomster/FTC <span class="cite">S53</span>, хоча це не про Україну).</p>
+</div>
+
+<div class="blk">
+<p class="blk-h">Цитата-настрій</p>
+<p class="qlbl">Дослівно з архіву каналу КНУсусіди — скільки насправді коштує «студентський» пошук із рієлтором усередині «свого» каналу</p>
+<blockquote class="real">«оплата: 14000 в місяць + 14000 залог + 7000 ріелтору. тому за вересень виходить 35000 (17500 з кожного)»
+<span class="qsrc"><span class="conf">реальна цитата</span> S67 · t.me/knu_susid/3185</span></blockquote>
+<p class="qlbl">Голос середовища, в якому вона шукає — закріплений пост адмінів її каналу</p>
+<blockquote class="real">«Ми не перевіряємо авторів постів і не несемо відповідальності за шахрайство. Уважність — ваше все.»
+<span class="qsrc"><span class="conf">реальна цитата</span> S65</span></blockquote>
+<p class="mtag" style="font-size:13px;color:var(--steel)">Попередня версія цього блоку була реконструкцією <span class="hyp">[?]</span> — замінена реальними цитатами.</p>
+</div>
+</article>
+
+<!-- Олег -->
+<article class="persona" id="p-oleh">
+<div class="ph"><span class="nm">Олег, вік <span class="hyp">[?]</span></span> <span class="gtag second">Secondary</span></div>
+<p class="role">Власник кімнати, шукає співмешканця</p>
+
+<div class="hypline"><b>Вік не вказано свідомо:</b> research.md не містить жодних демографічних даних про бік лістера — будь-яка цифра була б вигадкою.</div>
+
+<div class="blk">
+<p class="blk-h">Чому secondary</p>
+<p>Двостороння модель ринку (кімнати + люди) прямо підтверджена тим, що HomeMate і КНУсусіди вже мають обидва типи постів — «є кімната» і «шукаю куток» <span class="cite">S11</span><span class="cite">S14</span> — але <b>дослідження описує майже виключно бік шукача</b>. Про мотивацію й страхи саме власника кімнати конкретних даних практично немає. Персона потрібна для повноти двосторонньої моделі, але більшість пунктів нижче — гіпотези.</p>
+</div>
+
+<div class="blk">
+<p class="blk-h">Контекст</p>
+<p><span class="hyp">[?] гіпотеза</span> — не підтверджено джерелом: орендує квартиру, попередній сусід з'їхав (переїзд, одруження, повернення до батьків) — і тепер треба швидко закрити кімнату, щоб не платити за неї самому.</p>
+<p>Сам факт, що такі оголошення існують в HomeMate/КНУсусідах поруч із «шукаю кімнату», підтверджений <span class="cite">S11</span><span class="cite">S14</span>; конкретна причина з'їзду сусіда — ні.</p>
+</div>
+
+<div class="blk">
+<p class="blk-h">Jobs-to-be-done</p>
+<ul>
+<li>Коли сусід з'їжджає, я хочу швидко знайти заміну, щоб не покривати його частку оренди самостійно. <span class="hyp">[?]</span> мотивація логічно випливає з наявності «термінових» оголошень у HomeMate <span class="cite">S10</span>, сама причина не підтверджена.</li>
+<li>Коли я публікую оголошення, я хочу відсіяти людей, з якими точно не спрацюється побутово (куріння, тварини, гості), ще до першого контакту. <span class="cite">S1</span> — аналог до фільтрів OLX, перенесений на бік лістера.</li>
+<li><span class="hyp">[?] гіпотеза</span> Я хочу відчувати, що новий сусід — не випадкова людина з вулиці, а хтось із мінімальною перевіркою. Прямо не підтверджена жодним джерелом про українську аудиторію (лише непрямо через модель Badi/Roomi, де верифікація підіймає профіль у видачі <span class="cite">S34</span><span class="cite">S41</span> — але це західні продукти).</li>
+</ul>
+</div>
+
+<div class="blk">
+<p class="blk-h">Болі сьогодні (OLX / чати / знайомі)</p>
+<ul>
+<li>В OLX і DIM.RIA профілю «я здаю кімнату і шукаю конкретного типу сусіда» як окремої сутності немає — можна тільки дати оголошення про об'єкт. <span class="cite">S1</span><span class="cite">S5</span></li>
+<li>В Telegram/FB публікація — вручну через адміна каналу чи модератора групи, без структури і без гарантії, що пост взагалі побачать потрібні люди. <span class="cite">S12</span><span class="cite">S16</span></li>
+<li>Немає способу перевірити людину до заселення — рахунок лише на враженні з переписки. <span class="hyp">[?]</span> логічний висновок з відсутності верифікації в цих каналах <span class="cite">S14</span>; сам біль власника не сформульований джерелом напряму.</li>
+</ul>
+</div>
+
+<div class="blk">
+<p class="blk-h">Тригери довіри</p>
+<p><b>Переконує</b> <span class="hyp">[?] гіпотеза</span> — заповнений, деталізований профіль з реальними звичками, а не порожня анкета. За аналогією з тим, що верифіковані профілі в Diggz піднімаються у видачі саме тому, що це сигнал надійності <span class="cite">S44</span>.</p>
+<p><b>Відлякує</b> <span class="hyp">[?] гіпотеза</span> — відсутність відповіді на прямі питання про побут, зникнення з переписки. Не підтверджена джерелом.</p>
+</div>
+
+<div class="blk">
+<p class="blk-h">Цитата-настрій</p>
+<p class="qlbl">Жодного реального артефакту немає — лістерська сторона взагалі не цитується в дослідженні. Нижче гіпотетична реконструкція за форматом «є кімната» з HomeMate <span class="cite">S11</span></p>
+<blockquote class="hypq">«Здаю кімнату, сусідка з'їхала. Шукаю дівчину, не палить, без гостей на будні.»
+<span class="qsrc"><span class="hyp">[?] реконструкція, не реальна цитата</span></span></blockquote>
+</div>
+</article>
+
+<!-- Настя -->
+<article class="persona" id="p-nastia">
+<div class="ph"><span class="nm">Настя, вік <span class="hyp">[?]</span></span> <span class="gtag second">Secondary</span></div>
+<p class="role">Тікає від рієлторів у Facebook-групу</p>
+
+<div class="hypline"><b>Вік не вказано свідомо:</b> про демографію FB-груп джерело прямо каже «точний розмір і демографія недоступні» <span class="cite">S16</span>.</div>
+
+<div class="blk">
+<p class="blk-h">Чому secondary</p>
+<p>Цей сегмент має один по-справжньому реальний артефакт — саму назву топової групи «Рієлтори - зло. Оренда квартир і кімнат Київ» <span class="cite">S16</span>, яка є прямим і недвозначним сигналом емоції аудиторії. Але поза цією назвою дані дуже тонкі («дані не підтверджені» стоїть біля майже кожної осі FB-груп <span class="cite">S16</span>–<span class="cite">S19</span>) — тому він доповнює, а не замінює primary-персону.</p>
+</div>
+
+<div class="blk">
+<p class="blk-h">Контекст</p>
+<p>Орендує в Києві, свідомо шукає в групі, названій проти рієлторів — сам вибір такої групи є єдиним підтвердженим фактом <span class="cite">S16</span>.</p>
+<p><span class="hyp">[?]</span> «Вже живе в Києві давно, не новоприбула» — вигадана деталь, прибрана за аудитом: учасниця групи з тим самим успіхом може бути новоприбулою.</p>
+<p><span class="hyp">[?] гіпотеза</span> Особистий негативний досвід із рієлторами — виведено з назви групи, не підтверджений факт.</p>
+</div>
+
+<div class="blk">
+<p class="blk-h">Jobs-to-be-done</p>
+<ul>
+<li>Коли шукаю кімнату/сусіда, я хочу знайти варіант без рієлторської комісії, щоб не переплачувати за посередництво. <span class="cite">S16</span><span class="cite">S25</span> — наратив «без комісії» підтверджений і назвою групи, і тим, наскільки сильно Bird будує на цьому УТП.</li>
+<li><span class="hyp">[?] гіпотеза</span> Я хочу мати змогу поскаржитись чи заблокувати підозрілий контакт, щоб група не перетворилась на звалище спаму. За аналогією з тим, що робота адмінів/модераторів у FB-групах взагалі існує як механізм <span class="cite">S19</span>; сам мотив користувача джерелом не сформульовано.</li>
+</ul>
+</div>
+
+<div class="blk">
+<p class="blk-h">Болі сьогодні (OLX / чати / знайомі)</p>
+<ul>
+<li>Хронологічна стрічка постів без фільтрів чи пошуку в межах логіки продукту — ручний скрол. <span class="hyp">[?]</span> структура групи типова для FB, точний опис самого UX за логіном недоступний — «дані не підтверджені» <span class="cite">S16</span>.</li>
+<li>Контакт — через коментарі під постом або перехід у Messenger до незнайомця, без жодного проміжного кроку згоди. <span class="hyp">[?]</span> «дані не підтверджені» щодо точного механізму <span class="cite">S16</span>.</li>
+<li>Засилля рієлторів-посередників у групі, яка мала б бути про людей — сама назва групи це підтверджує як біль №1 для цього сегмента. <span class="cite">S16</span></li>
+</ul>
+</div>
+
+<div class="blk">
+<p class="blk-h">Тригери довіри</p>
+<p><b>Переконує:</b> явна відмова від комісії/посередників як фільтр «свій-чужий» — хто пише «без комісії», той автоматично сприймається як безпечніший. <span class="cite">S16</span><span class="cite">S25</span></p>
+<p><b>Відлякує</b> <span class="hyp">[?] гіпотеза</span> — пости, що виглядають як рієлторська реклама під виглядом приватного оголошення. Виведено з назви групи, прямо не сформульовано джерелом.</p>
+</div>
+
+<div class="blk">
+<p class="blk-h">Цитата-настрій</p>
+<p class="qlbl">Реальний артефакт — сама назва групи, що функціонує як колективна цитата-настрій аудиторії</p>
+<blockquote class="real">«Рієлтори - зло. Оренда квартир і кімнат Київ, пошук співмешканців»
+<span class="qsrc"><span class="conf">реальна назва групи</span> S16</span></blockquote>
+<p class="qlbl">Реальна цитата з DOU-треда про пошук житла (доресерч 2026-07-30). Наводимо без імені автора — атрибуція до конкретного ніка ненадійна, див. research.md розділ 6</p>
+<blockquote class="real">«Ріелтор — це проксі — який може викривити загальну картину для обох сторін, аби пошвидше закрити об'єкт»
+<span class="qsrc"><span class="conf">реальна цитата</span> S62</span></blockquote>
+<p class="mtag" style="font-size:13px;color:var(--steel)">Попередня гіпотетична реконструкція <span class="hyp">[?]</span> замінена реальною цитатою.</p>
+</div>
+</article>
+</section>
+
+<!-- ============ 03 ============ -->
+<section id="jobs" class="spy"><h2><span class="h2n">03</span>Ієрархія jobs</h2>
+<p>Формат: «Коли [ситуація], я хочу [мотивація], щоб [результат]» — без назв функцій, лише прогрес людини. Усе, що не має опори в ресерчі, винесено в окрему секцію «Гіпотези», а не в основний список.</p>
+
+<h3>Головний job продукту</h3>
+<div class="callout accent"><span class="ico">◎</span><div><b>Коли я шукаю, з ким і де жити в Києві, я хочу знайти людину чи кімнату, якій можу довіряти, щоб оселитися без стресу й ризику нарватися на шахрая чи несумісного співмешканця.</b><br><span style="font-size:14px">Це не job однієї персони, а спільний знаменник усіх трьох: Марічка (переїзд, вибір сусіда наосліп), Олег (потреба закрити кімнату надійною людиною), Настя (втома від непрозорого ринку). Прямо відображає місію брифу і головну ринкову прогалину: жоден ХАРД-конкурент не будує довіру саме до людини, лише до товару/об'єкта/продавця <span class="cite">S3</span><span class="cite">S6</span><span class="cite">S14</span>.</span></div></div>
+
+<h3>Related jobs — шлях до головного</h3>
+<div class="cards">
+<div class="card"><h4>1. Швидко знайти варіант у межах бюджету після переїзду</h4><p>Коли я щойно переїхала в Київ, я хочу швидко знайти варіант у межах свого бюджету, щоб не переплачувати за тимчасове житло, поки триває пошук.</p><p class="mtag"><b>Звідки:</b> Марічка — бюджетні діапазони з реальних постів КНУсусіди (~5–11 тис. грн, зрідка до 28 тис.) <span class="cite">S13</span>; підтверджено діапазонами HomeMate (3400–10000 грн) <span class="cite">S11</span> і OLX (1200–5000 грн) <span class="cite">S1</span>.</p></div>
+
+<div class="card"><h4>2. Оцінити побутову сумісність до контакту</h4><p>Коли я розглядаю варіант, я хочу зрозуміти, чи ми сумісні за побутом (охайність, гості, режим дня), перш ніж написати чи погодитись, щоб не поселитися з незнайомцем навмання.</p><p class="mtag"><b>Звідки:</b> Марічка — саме ці критерії реально фігурують у постах КНУсусіди й HomeMate <span class="cite">S13</span><span class="cite">S14</span>; підтверджено тим, що жоден ХАРД-конкурент (OLX, DIM.RIA) не дає способу порівняти людей за побутом <span class="cite">S1</span><span class="cite">S5</span>.</p></div>
+
+<div class="card"><h4>3. Швидко достукатись і отримати відповідь</h4><p>Коли я знаходжу підходящий варіант, я хочу швидко достукатись до автора й отримати відповідь, щоб не втратити його, поки шукають інші.</p><p class="mtag"><b>Звідки:</b> Марічка — контакт у HomeMate/КНУсусідах відбувається миттєво, напряму, без проміжних кроків <span class="cite">S11</span><span class="cite">S12</span><span class="cite">S13</span>. Це вкорінена звичка, з якою будь-яке рішення Кутка муситиме конкурувати за швидкість.</p></div>
+
+<div class="card"><h4>4. Вийти напряму на людину, без посередників</h4><p>Коли я шукаю варіант, я хочу вийти напряму на людину, без посередників, щоб не переплачувати за їхню участь.</p><p class="mtag"><b>Звідки:</b> Настя — сама назва найбільшої FB-групи «Рієлтори - зло» <span class="cite">S16</span> як прямий сигнал цього мотиву; підсилено тим, наскільки сильно Bird будує УТП саме на «без комісії» <span class="cite">S25</span>.</p></div>
+
+<div class="card"><h4>5. Швидко знайти нового мешканця після термінового звільнення кімнати</h4><p>Коли кімната несподівано звільняється, я хочу швидко знайти нового мешканця, щоб не покривати цю частку оренди самостійно.</p><p class="mtag"><b>Звідки:</b> Олег — частково підкріплено: категорія «термінова оренда» реально існує в HomeMate <span class="cite">S10</span>, але конкретна причина звільнення не підтверджена — у personas.md цей пункт позначений <span class="hyp">[?]</span> саме через це. Job лишено в основному списку, бо сам факт існування терміновості підтверджений джерелом, а не вигаданий з нуля.</p></div>
+</div>
+
+<h3>Emotional jobs</h3>
+<div class="cards">
+<div class="card"><h4>Е1. Почуватися в безпеці, не наражатись на шахрайство і брехню</h4><p>Коли я обираю майбутнього співмешканця, я хочу почуватися в безпеці, а не ризикувати нарватися на шахрая, фейкове оголошення чи брехню, щоб не витрачати гроші, час і нерви на варіанти, яких не існує.</p><p class="mtag"><b>Звідки</b> <span class="conf">підтверджено доресерчем</span> 2026-07-30: офіційне попередження київської поліції про схему «уявних» квартир <span class="cite">S59</span>, експертна оцінка «~10% орендарів стикалися з шахраями» <span class="cite">S57</span>, «шахрайства зросли у кілька разів» після 24.02.2022 <span class="cite">S58</span>.</p><p class="mtag"><b>Нюанс із живих обговорень:</b> домінуюча емоція — не «мене пограбують» (типова втрата — завдаток 150–200 грн <span class="cite">S58</span>), а «мені брешуть і витрачають мій час» — скарги на рієлторів і неактуальні оголошення <span class="cite">S62</span>, відгук «Заплатила 700 грн, щоб мені сказали, що квартира здана» <span class="cite">S61</span>. Раніше цей job спирався лише на американський прецедент FTC/Roomster <span class="cite">S53</span> — аудит позначав це як ризик, тепер закрито українськими джерелами.</p></div>
+
+<div class="card"><h4>Е2. Відчувати, що мене сприймають як людину, а не як спам</h4><p>Коли я публікую свою кімнату чи себе як шукача, я хочу відчувати, що мене сприймають як людину, а не як рекламний спам чи чергового посередника, щоб не соромитись цього кроку.</p><p class="mtag"><b>Звідки:</b> Настя — емоційний заряд назви «Рієлтори - зло» <span class="cite">S16</span> прямо вказує на це роздратування: люди втомились, що простір, де мали б бути люди, засмічений рекламою від імені посередників.</p></div>
+</div>
+
+<h3>Social jobs</h3>
+<div class="cards">
+<div class="card"><h4>С1. Шукати серед людей свого контексту (виш, бюджет, райони)</h4><p>Коли я шукаю кімнату через канал свого вишу, я хочу шукати серед людей мого контексту (той самий виш, схожі бюджети, зрозумілі райони), щоб не продиратися крізь нерелевантний загальний ринок.</p><p class="mtag"><b>Звідки:</b> Марічка — формат постів КНУсусіди реально зібраний довкола спільного контексту (виш/факультет, бюджет, гілки метро) <span class="cite">S13</span><span class="cite">S14</span>.</p></div>
+<div class="callout rust"><span class="ico">↺</span><div><span class="dis">спростовано</span> <b>Переформульовано після доресерчу 2026-07-30.</b> Початкова версія цього job звучала як «щоб довіра приходила через приналежність до спільноти» — це спростовано самим каналом: адміни в закріпленому пості пишуть «Ми не перевіряємо авторів постів і не несемо відповідальності за шахрайство» <span class="cite">S65</span>, у власному гайді попереджають «Шахраїв вистачає, будьте пильні!» <span class="cite">S66</span>, а всередині каналу відкрито працюють рієлтори з комісіями до 7000 грн / 50% <span class="cite">S67</span>. Приналежність дає релевантність і контекст — але не механізм довіри.</div></div>
+
+<div class="card"><h4>С2. Публічно заявити позицію проти посередників</h4><p>Коли я приєднуюсь до спільноти проти рієлторів, я хочу публічно позначити свою позицію, щоб знайти однодумців, яким довіряю більше, ніж незнайомому ринку.</p><p class="mtag"><b>Звідки:</b> Настя — сама назва групи «Рієлтори - зло. Оренда квартир і кімнат Київ, пошук співмешканців» <span class="cite">S16</span> є актом публічного самовизначення її учасників, а не просто нейтральною назвою.</p></div>
+</div>
+
+<h3><span class="hyp">[?]</span> Гіпотези — не підкріплені даними ресерчу</h3>
+<p>Ці job-и звучать правдоподібно, але жодне джерело в research.md чи personas.md їх прямо не підтверджує — тому вони <b>не входять</b> в основну ієрархію й не потрапляють у матрицю.</p>
+<div class="hypline"><span class="hyp">[?]</span> <b>Коли я публікую оголошення про кімнату, я хочу відчувати, що новий сусід — не випадкова людина з вулиці, а хтось із мінімальною перевіркою, щоб зменшити тривогу перед заселенням.</b> (Олег) — за аналогією з тим, що верифіковані профілі піднімаються у видачі в Diggz/Badi <span class="cite">S34</span><span class="cite">S44</span>, але це механіка західних продуктів, а не задокументоване відчуття української аудиторії.</div>
+<div class="hypline"><span class="hyp">[?]</span> <b>Коли переді мною кілька схожих варіантів, я хочу зіставити їх один з одним, щоб ухвалити рішення впевнено.</b> — у research.md немає жодних даних про те, як люди реально порівнюють варіанти чи скільки їх переглядають до рішення (прогалина прямо названа в personas.md).</div>
+<div class="hypline"><span class="hyp">[?]</span> <b>Коли пошук за вузькими критеріями нічого не дає, я хочу отримати підказку розширити критерії, щоб не застрягнути в порожній видачі.</b> — це власна гіпотеза автора дослідження (Прогалина 4 в research.md), а не спостереження за поведінкою живих людей.</div>
+<div class="hypline"><span class="hyp">[?]</span> <b>Коли контакти сховані до взаємної згоди, я хочу, щоб перший крок все одно здавався таким же швидким, як пряме звернення в Telegram, щоб гейтинг не сприймався як бар'єр.</b> — теж гіпотеза автора дослідження (Прогалина 5), не підтверджена реакцією реальних користувачів.</div>
+</section>
+
+<!-- ============ 04 ============ -->
+<section id="matrix" class="spy"><h2><span class="h2n">04</span>JTBD-матриця</h2>
+<p>Рядки — job-и з ієрархії вище (без «Гіпотез»: їх важливість неможливо оцінити, бо не підтверджено сам job). Колонки-персони — важливість <b>1–3</b> для цієї персони. <span class="hyp">[?]</span> там, де даних немає (не середнє, не здогадка); <span class="na">—</span> там, де job структурно не стосується цієї персони. <b>ФУНКЦІЯ</b> — що з рішень брифу закриває цей job. <b>КОНКУРЕНТИ</b> — чи закритий цей job гравцями з research.md, і ким саме.</p>
+
+<div class="twrap"><table>
+<thead><tr><th>Job</th><th>Марічка <span style="text-transform:none">(primary)</span></th><th>Олег <span style="text-transform:none">(secondary)</span></th><th>Настя <span style="text-transform:none">(secondary)</span></th><th>Функція</th><th>Конкуренти</th></tr></thead>
+<tbody>
+
+<tr>
+<th>Головний. Довіра при виборі людини/кімнати, оселитися без стресу й ризику</th>
+<td class="per"><span class="imp top">3</span> центральний мотив сегмента: жодної верифікації в її каналах немає, адміни самі попереджають «Шахраїв вистачає, будьте пильні!» і знімають із себе відповідальність <span class="cite">S14</span><span class="cite">S65</span><span class="cite">S66</span></td>
+<td class="per"><span class="hyp">[?]</span> персона сама позначає свою потребу в довірі до нового сусіда як гіпотезу; дослідження не описує бік лістера</td>
+<td class="per"><span class="imp">2</span> назва групи «Рієлтори - зло» видає загальну зневіру ринку, хоча її гострий фокус вужчий (комісія, не сумісність) <span class="cite">S16</span></td>
+<td class="fn">Верифікація телефону + соцлінк + відгуки/бейджі «перевірено» (F1+F2+F3)</td>
+<td class="cm"><b>Не закритий</b> у Києві: жоден ХАРД-гравець не верифікує людину, лише товар/продавця/об'єкт <span class="cite">S3</span><span class="cite">S6</span><span class="cite">S14</span>. Частково закритий в АСПІРАЦІЙНИХ (Badi bank-верифікація, SpareRoom ID+background) <span class="cite">S34</span><span class="cite">S32</span> — але це не Київ</td>
+</tr>
+
+<tr>
+<th>1. Швидко знайти варіант у межах бюджету після переїзду</th>
+<td class="per"><span class="imp top">3</span> конкретні бюджетні діапазони з реальних постів <span class="cite">S13</span>, підтверджено HomeMate <span class="cite">S11</span> і OLX <span class="cite">S1</span></td>
+<td class="per"><span class="na">—</span> структурно не його job (він пропонує, не шукає)</td>
+<td class="per"><span class="hyp">[?]</span> чи вона взагалі в пошуку нового житла за бюджетом — дослідження не уточнює</td>
+<td class="fn">Фільтри (район, бюджет) (F5)</td>
+<td class="cm"><b>Закритий</b>: базовий фільтр ціни/району вже робочий на OLX <span class="cite">S1</span> і в усіх структурованих гравцях — це галузевий стандарт, не диференціація</td>
+</tr>
+
+<tr>
+<th>2. Оцінити побутову сумісність до контакту</th>
+<td class="per"><span class="imp top">3</span> критерії (охайність, гості, режим дня) фігурують прямо в реальних постах <span class="cite">S13</span><span class="cite">S14</span></td>
+<td class="per"><span class="imp">2</span> обидва типи постів (маю кімнату / шукаю) уже містять «побажання до сусіда» <span class="cite">S11</span><span class="cite">S14</span>, тобто лістер теж фільтрує вхідних</td>
+<td class="per"><span class="hyp">[?]</span> фокус її сегмента (комісія/посередники) в дослідженні не перетинається з побутовими критеріями</td>
+<td class="fn">Фільтри за звичками (чистота, гості, тварини, куріння, режим дня) (F5)</td>
+<td class="cm"><b>Не закритий</b> у Києві: OLX/DIM.RIA фільтрів звичок не мають <span class="cite">S1</span><span class="cite">S5</span>. Diggz єдиний, хто на цьому будує алгоритм — але це США, чужий ринок <span class="cite">S44</span></td>
+</tr>
+
+<tr>
+<th>3. Швидко достукатись і отримати відповідь</th>
+<td class="per"><span class="imp top">3</span> контакт у HomeMate/КНУсусідах миттєвий, це вкорінена звичка <span class="cite">S11</span><span class="cite">S12</span><span class="cite">S13</span></td>
+<td class="per"><span class="hyp">[?]</span> швидкість відповіді як окрема потреба лістера не сформульована джерелом</td>
+<td class="per"><span class="hyp">[?]</span> механізм контакту в FB-групах позначений «дані не підтверджені» <span class="cite">S16</span></td>
+<td class="fn">Вбудований чат зі взаємною згодою (F6)</td>
+<td class="cm"><b>Закритий неформально й ризиковано</b>: Telegram/FB дають миттєвий прямий контакт без жодного захисту <span class="cite">S11</span>–<span class="cite">S16</span>. Формальні гравці (Badi, Roomi, Roomster) свідомо уповільнюють цей крок заради безпеки <span class="cite">S33</span><span class="cite">S41</span><span class="cite">S48</span> — тобто швидко+безпечно одночасно ніхто не закрив</td>
+</tr>
+
+<tr>
+<th>4. Вийти напряму на людину, без посередників</th>
+<td class="per"><span class="hyp">[?]</span> не сформульовано як мотив саме студентського сегмента</td>
+<td class="per"><span class="hyp">[?]</span> не сформульовано джерелом</td>
+<td class="per"><span class="imp top">3</span> сама назва групи «Рієлтори - зло» <span class="cite">S16</span>, підсилено УТП Bird «без комісії» <span class="cite">S25</span></td>
+<td class="fn">Двостороння модель (люди публікують напряму, без рієлтора-посередника) (F4)</td>
+<td class="cm"><b>Частково закритий</b>: Bird явно закриває наративом «без комісії» <span class="cite">S25</span>; OLX/DIM.RIA дозволяють прямий контакт з власником, але змішують це з оголошеннями агенцій <span class="cite">S1</span><span class="cite">S5</span>. FB-групи самі підтверджують, що проблема не закрита навіть у них (звідси й назва) <span class="cite">S16</span></td>
+</tr>
+
+<tr>
+<th>5. Швидко знайти нового мешканця після термінового звільнення кімнати</th>
+<td class="per"><span class="na">—</span> структурно не її job (вона шукач, не лістер)</td>
+<td class="per"><span class="imp">2</span> категорія «термінова оренда» реально існує в HomeMate <span class="cite">S10</span>; конкретна причина звільнення не підтверджена <span class="hyp">[?]</span></td>
+<td class="per"><span class="na">—</span> дослідження не описує її як лістера</td>
+<td class="fn">Двостороння модель + фільтри (F4+F5); окремого механізму «терміновості» в брифі немає</td>
+<td class="cm"><b>Не закритий</b>: HomeMate має саму категорію термінових оголошень, але жодного механізму пришвидшення підбору — публікація й пошук ручні <span class="cite">S10</span><span class="cite">S12</span></td>
+</tr>
+
+<tr>
+<th>Емоційний 1. Почуватися в безпеці, не наражатись на шахрайство/брехню</th>
+<td class="per"><span class="imp top">3</span> <span class="conf">підтверджено доресерчем</span> попередження київської поліції (вразлива група — новоприбулі/переселенці) <span class="cite">S59</span>, експертні оцінки <span class="cite">S57</span><span class="cite">S58</span></td>
+<td class="per"><span class="hyp">[?]</span> його сторона ризику (кого він пускає у свою квартиру) джерелом не описана; але власники вже вручну «верифікують» кандидатів через соцмережі <span class="cite">S63</span> — непрямий сигнал, що потреба існує</td>
+<td class="per"><span class="imp top">3</span> <span class="cite">S16</span> (недовіра до фейкових «власницьких» постів) + локальні підтвердження <span class="cite">S58</span><span class="cite">S62</span>: болить і брехня/змарнований час, не лише гроші</td>
+<td class="fn">Верифікація телефону + соцлінк + відгуки/бейджі + скарги/модерація + актуальність оголошень (F1+F2+F3+F7)</td>
+<td class="cm"><b>Не закритий</b> у Києві: жодної верифікації особи ні в OLX/DIM.RIA (об'єкт, не людина), ні в Telegram/FB (нуль) <span class="cite">S3</span><span class="cite">S14</span><span class="cite">S16</span>. Анти-приклад закриття: Josti бере плату за контакти, але не гарантує актуальності — переживається як обман (3.5/5, «Заплатила 700 грн...») <span class="cite">S60</span><span class="cite">S61</span></td>
+</tr>
+
+<tr>
+<th>Емоційний 2. Відчувати, що мене сприймають як людину, а не як спам/посередника</th>
+<td class="per"><span class="hyp">[?]</span> не сформульовано джерелом для студентського сегмента</td>
+<td class="per"><span class="hyp">[?]</span> не сформульовано джерелом</td>
+<td class="per"><span class="imp top">3</span> прямий емоційний заряд назви «Рієлтори - зло» <span class="cite">S16</span></td>
+<td class="fn">Профілі людей (не лише оголошення-товар) + модерація (F4+F7)</td>
+<td class="cm"><b>Не закритий ніде</b> в research.md — жоден гравець не описаний як такий, що вирішує саме це відчуття</td>
+</tr>
+
+<tr>
+<th>Соціальний 1. Шукати серед людей свого контексту (виш, бюджет, райони) <span class="dis">спростовано</span> версію «довіра через приналежність» <span class="cite">S65</span>–<span class="cite">S67</span></th>
+<td class="per"><span class="imp top">3</span> формат постів КНУсусіди реально зібраний довкола спільного контексту <span class="cite">S13</span><span class="cite">S14</span>; але довіри цей контекст НЕ дає — адміни самі це декларують <span class="cite">S65</span><span class="cite">S66</span></td>
+<td class="per"><span class="hyp">[?]</span> не сформульовано джерелом</td>
+<td class="per"><span class="hyp">[?]</span> її механізм інший (позиція/ідентичність, не інституційна приналежність)</td>
+<td class="fn">Фільтри (район, бюджет) + профілі з контекстом (F5); окремої механіки «спільнот» бриф не має — і доресерч показав, що це не втрата: спільноти не додають довіри</td>
+<td class="cm"><b>Закритий частково</b>: релевантність контексту канали дають, а довіру — ні (самозізнання адмінів <span class="cite">S65</span><span class="cite">S66</span>, рієлтори всередині <span class="cite">S67</span>, поліцейський кейс скаму в тематичній спільноті <span class="cite">S69</span>)</td>
+</tr>
+
+<tr>
+<th>Соціальний 2. Публічно заявити позицію проти посередників</th>
+<td class="per"><span class="hyp">[?]</span> не її мотив за джерелами</td>
+<td class="per"><span class="hyp">[?]</span> не сформульовано джерелом</td>
+<td class="per"><span class="imp top">3</span> сама назва групи як акт публічного самовизначення учасників <span class="cite">S16</span></td>
+<td class="fn">Немає прямого відповідника в брифі — теж слабке місце</td>
+<td class="cm"><b>Закритий лише неформально</b> через саму назву/існування групи <span class="cite">S16</span>; жоден продукт не формалізує «ідентичність проти рієлторів» як механіку</td>
+</tr>
+
+</tbody></table></div>
+<p style="font-size:13px;color:var(--steel)">↔ Таблиця гортається вбік.</p>
+</section>
+
+<!-- ============ 05 ============ -->
+<section id="core" class="spy"><h2><span class="h2n">05</span>Ядро MVP</h2>
+<p>Три job-и, важливі для primary-персони Марічки на рівні <b>3</b> <b>і</b> не закриті ринком у Києві.</p>
+
+<div class="core">
+<p class="lbl">Ядро 1</p>
+<p class="gt">Головний job — довіра при виборі людини/кімнати</p>
+<p class="hy">3 для Марічки, ринком не закритий <span class="cite">S3</span><span class="cite">S6</span><span class="cite">S14</span> — це прямий диференціатор, а не парність.</p>
+</div>
+
+<div class="core">
+<p class="lbl">Ядро 2</p>
+<p class="gt">Related 2 — побутова сумісність до контакту</p>
+<p class="hy">3 для Марічки, ринком не закритий у Києві <span class="cite">S1</span><span class="cite">S5</span>; Diggz закриває це лише в США <span class="cite">S44</span>.</p>
+</div>
+
+<div class="core">
+<p class="lbl">Ядро 3</p>
+<p class="gt">Emotional 1 — безпека від шахрайства і брехні</p>
+<p class="hy">3 для Марічки, ринком не закритий <span class="cite">S3</span><span class="cite">S14</span><span class="cite">S16</span>. <span class="conf">підтверджено доресерчем</span> Після 2026-07-30 спирається на локальні джерела (поліція Києва <span class="cite">S59</span>, експертки <span class="cite">S57</span><span class="cite">S58</span>, живі скарги <span class="cite">S61</span><span class="cite">S62</span>), а не лише на прецедент FTC/Roomster <span class="cite">S53</span>.</p>
+<p class="fr"><b>Уточнення акценту з доресерчу:</b> формулювати цінність як «тут не бреше ні оголошення, ні людина» (актуальність + підтверджена особа), а не «захистимо твої гроші» — типова втрата грошова мала (150–200 грн), болить брехня і змарнований час <span class="cite">S58</span><span class="cite">S62</span>.</p>
+</div>
+
+<h3>Свідомо не потрапив у ядро</h3>
+<div class="cards">
+<div class="card"><h4>Related 1 — бюджет</h4><p>Теж 3 для Марічки, але вже <b>закритий</b> галузевим стандартом (фільтр ціни/району на OLX <span class="cite">S1</span>) — це має бути в продукті як парність, а не як точка диференціації.</p></div>
+<div class="card"><h4>Related 3 — швидка відповідь</h4><p>Теж 3, але ринок його вже «закрив» небезпечним способом (миттєвий незахищений контакт у Telegram) — тому це радше обмеження дизайну чату (не програти в швидкості), а не окремий job, що потребує нової функції з нуля.</p></div>
+</div>
+
+<h3>Функції-кандидати на виліт</h3>
+<div class="cards">
+<div class="card"><h4>Монетизація (F9, freemium/буст)</h4><p>Не мапиться на жоден із 10 job-ів у матриці — матриця підтверджує власне рішення брифу не будувати це в MVP, а лише «проєктувати з запасом».</p></div>
+<div class="card"><h4>Лінк на соцмережі (F2) — <span class="conf">знятий з кандидатів на виліт</span></h4><p>Раніше тримався лише на аналогії з Diggz (США <span class="cite">S44</span>); тепер є пряме київське підтвердження знизу: власники кімнат уже самі вимагають лінки на соцмережі для «схвалення мешканця» в реальних оголошеннях <span class="cite">S63</span>. Функція формалізує наявну поведінку ринку — лишається в MVP.</p></div>
+</div>
+</section>
+
+<!-- ============ 06 ============ -->
+<section id="open" class="spy"><h2><span class="h2n">06</span>Що ще відкрито</h2>
+<p>Персони й ієрархія побудовані на конкурентному ресерчі + точковому web-доресерчі (2026-07-30, research.md розділ 6), а не на прямих інтерв'ю.</p>
+
+<h3><span class="conf">закрито доресерчем 2026-07-30</span></h3>
+<div class="cards">
+<div class="card"><h4>«Немає жодної реальної цитати живої людини»</h4><p>Тепер є: адмінський дисклеймер КНУсусідів <span class="cite">S65</span>, пости з комісіями <span class="cite">S67</span>, відгук про Josti «Заплатила 700 грн...» <span class="cite">S61</span>, цитати з DOU <span class="cite">S62</span>.</p></div>
+<div class="card"><h4>«Страх шахрайства тримається лише на американському кейсі FTC»</h4><p>Підтверджено локально: поліція Києва <span class="cite">S59</span>, експертки <span class="cite">S57</span><span class="cite">S58</span>, кейс 8 200 грн <span class="cite">S69</span>.</p></div>
+<div class="card"><h4>«Приналежність до вишу = довіра» <span class="dis">спростовано</span></h4><p>Канали самі декларують відсутність перевірки <span class="cite">S65</span><span class="cite">S66</span>, рієлтори працюють всередині <span class="cite">S67</span>.</p></div>
+</div>
+
+<h3><span class="hyp">[?]</span> Досі відкрито</h3>
+<div class="hypline"><span class="hyp">[?]</span> <b>Мотивація й страхи власника кімнати (персона 2)</b> майже повністю не підтверджені — це найслабша персона з трьох. Єдиний новий непрямий сигнал: власники вже вручну вимагають соцмережі кандидатів <span class="cite">S63</span>.</div>
+<div class="hypline"><span class="hyp">[?]</span> <b>Немає даних</b>, скільки варіантів людина переглядає до рішення, скільки триває пошук, скільки заселень «зривається» потім.</div>
+<div class="hypline"><span class="hyp">[?]</span> <b>Живі цитати саме про підселення/кімнати</b> (не квартири) — досі майже немає. Шлях: Google Play-відгуки (потрібен скрапер), vidhuk.ua (403), ручний перегляд груп.</div>
+
+<div class="callout"><span class="ico">📌</span><div>Емоційних і соціальних job-ів тут лише по два — не тому що інших не існує, а тому що ресерч дає опору лише під ці. Будь-які додаткові job-и, сформульовані пізніше на основі власного дослідження користувачів, варто звіряти з переліком прогалин перед тим, як додавати їх сюди.</div></div>
+
+<div class="foot">Персони й JTBD Кутка · 3 персони · 10 job-ів · 3 в ядро MVP · джерела <span class="cite">S1</span>–<span class="cite">S69</span> в <a href="research.html">дослідженні ринку</a> · вихідні <a href="https://github.com/denysosadchyi/kootok/blob/main/research/personas.md">personas.md</a> і <a href="https://github.com/denysosadchyi/kootok/blob/main/research/jtbd.md">jtbd.md</a> · репозиторій <a href="https://github.com/denysosadchyi/kootok">denysosadchyi/kootok</a></div>
+</section>
+
+</div></main></div>
+<button class="themebtn" id="tt" title="Тема">◐</button>
+
+<script>
+(function(){
+ var root=document.documentElement, btn=document.getElementById('tt');
+ try{var s=localStorage.getItem('kt');if(s)root.setAttribute('data-theme',s);}catch(e){}
+ btn.addEventListener('click',function(){
+   var cur=root.getAttribute('data-theme');
+   if(!cur){cur=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}
+   var next=cur==='dark'?'light':'dark';
+   root.setAttribute('data-theme',next);
+   try{localStorage.setItem('kt',next);}catch(e){}
+ });
+ var links=[].slice.call(document.querySelectorAll('.sidebar .nav > a'));
+ var map={};links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a;});
+ var secs=[].slice.call(document.querySelectorAll('section.spy'));
+ var obs=new IntersectionObserver(function(es){
+   es.forEach(function(en){
+     if(en.isIntersecting){
+       links.forEach(function(a){a.classList.remove('active');});
+       var a=map[en.target.id];if(a)a.classList.add('active');
+     }
+   });
+ },{rootMargin:'-10% 0px -80% 0px',threshold:0});
+ secs.forEach(function(s){obs.observe(s);});
+ document.querySelectorAll('.mobtop a').forEach(function(a){a.addEventListener('click',function(){var d=document.querySelector('.mobtop details');if(d)d.open=false;});});
+})();
+</script>
+
+</body>
+</html>

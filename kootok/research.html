@@ -1,0 +1,709 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Куток — дослідження ринку</title>
+<style>
+/* ===== Kootok research · Notion design tokens (VoltAgent/awesome-design-md · notion) ===== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root{
+  --canvas:#ffffff; --surface:#f6f5f4; --surface-soft:#fafaf9; --tint-gray:#f0eeec;
+  --hairline:#e5e3df; --hairline-soft:#ede9e4; --hairline-strong:#c8c4be;
+  --ink:#1a1a1a; --charcoal:#37352f; --slate:#5d5b54; --steel:#787671; --stone:#a4a097; --muted:#bbb8b1;
+  --primary:#5645d4; --primary-deep:#3a2a99; --link:#0075de;
+  --navy:#0a1530; --navy-mid:#1a2a52;
+  --peach:#ffe8d4; --orange-deep:#793400; --orange:#dd5b00;
+  --rose:#fde0ec; --pink-deep:#a02e6d;
+  --mint:#d9f3e1; --green:#1aae39; --green-deep:#127a29;
+  --lavender:#e6e0f5; --purple-800:#391c57;
+  --sky:#dcecfa; --sky-ink:#0a4a7a;
+  --yellow:#fef7d6; --cream:#f8f5e8; --error:#e03131;
+  --font:'Inter',-apple-system,BlinkMacSystemFont,system-ui,'Segoe UI',Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+  --sh1:rgba(15,15,15,.04) 0 1px 2px 0;
+  --sh2:rgba(15,15,15,.08) 0 4px 12px 0;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --canvas:#191919; --surface:#232323; --surface-soft:#1f1f1f; --tint-gray:#262626;
+    --hairline:#2f2f2f; --hairline-soft:#292929; --hairline-strong:#3c3c3c;
+    --ink:#f5f4f2; --charcoal:#d7d3cb; --slate:#b3afa6; --steel:#928e86; --stone:#6f6b64; --muted:#57534c;
+    --primary:#8b7ff0; --primary-deep:#a99cf7; --link:#6bb0ff;
+    --navy:#0a1530; --navy-mid:#1a2a52;
+    --peach:#3a2a1a; --orange-deep:#e6a870; --orange:#e6a870;
+    --rose:#331f2a; --pink-deep:#e88bbd;
+    --mint:#16281c; --green:#5fc878; --green-deep:#5fc878;
+    --lavender:#241d34; --purple-800:#c7b8ec;
+    --sky:#16232f; --sky-ink:#7cc0f5;
+    --yellow:#2b2614; --cream:#26241c; --error:#f06565;
+    --sh1:rgba(0,0,0,.3) 0 1px 2px 0; --sh2:rgba(0,0,0,.35) 0 4px 14px 0;
+  }
+}
+:root[data-theme="light"]{
+  --canvas:#ffffff; --surface:#f6f5f4; --surface-soft:#fafaf9; --tint-gray:#f0eeec;
+  --hairline:#e5e3df; --hairline-soft:#ede9e4; --hairline-strong:#c8c4be;
+  --ink:#1a1a1a; --charcoal:#37352f; --slate:#5d5b54; --steel:#787671; --stone:#a4a097; --muted:#bbb8b1;
+  --primary:#5645d4; --primary-deep:#3a2a99; --link:#0075de; --navy:#0a1530; --navy-mid:#1a2a52;
+  --peach:#ffe8d4; --orange-deep:#793400; --orange:#dd5b00; --rose:#fde0ec; --pink-deep:#a02e6d;
+  --mint:#d9f3e1; --green:#1aae39; --green-deep:#127a29; --lavender:#e6e0f5; --purple-800:#391c57;
+  --sky:#dcecfa; --sky-ink:#0a4a7a; --yellow:#fef7d6; --cream:#f8f5e8; --error:#e03131;
+  --sh1:rgba(15,15,15,.04) 0 1px 2px 0; --sh2:rgba(15,15,15,.08) 0 4px 12px 0;
+}
+:root[data-theme="dark"]{
+  --canvas:#191919; --surface:#232323; --surface-soft:#1f1f1f; --tint-gray:#262626;
+  --hairline:#2f2f2f; --hairline-soft:#292929; --hairline-strong:#3c3c3c;
+  --ink:#f5f4f2; --charcoal:#d7d3cb; --slate:#b3afa6; --steel:#928e86; --stone:#6f6b64; --muted:#57534c;
+  --primary:#8b7ff0; --primary-deep:#a99cf7; --link:#6bb0ff; --navy:#0a1530; --navy-mid:#1a2a52;
+  --peach:#3a2a1a; --orange-deep:#e6a870; --orange:#e6a870; --rose:#331f2a; --pink-deep:#e88bbd;
+  --mint:#16281c; --green:#5fc878; --green-deep:#5fc878; --lavender:#241d34; --purple-800:#c7b8ec;
+  --sky:#16232f; --sky-ink:#7cc0f5; --yellow:#2b2614; --cream:#26241c; --error:#f06565;
+  --sh1:rgba(0,0,0,.3) 0 1px 2px 0; --sh2:rgba(0,0,0,.35) 0 4px 14px 0;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--canvas);color:var(--charcoal);font-family:var(--font);
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+
+/* layout */
+.app{display:grid;grid-template-columns:260px minmax(0,1fr)}
+.sidebar{position:sticky;top:0;height:100vh;overflow-y:auto;background:var(--surface-soft);
+  border-right:1px solid var(--hairline);padding:22px 14px 40px}
+.content{min-width:0;padding:0 24px}
+.content-inner{max-width:760px;margin:0 auto;padding:44px 0 96px}
+
+/* brand */
+.brand{display:flex;align-items:center;gap:10px;padding:2px 8px 20px}
+.brand svg{width:24px;height:24px;flex:none}
+.brand svg path{stroke:var(--primary);stroke-width:5;fill:none;stroke-linecap:square}
+.brand-txt b{font-weight:600;font-size:15px;display:block;line-height:1.1;color:var(--ink);letter-spacing:-.01em}
+.brand-txt span{font-size:12px;color:var(--stone)}
+
+/* nav */
+.nav-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;
+  color:var(--stone);padding:12px 10px 6px}
+.nav a{display:flex;align-items:center;gap:9px;padding:6px 10px;border-radius:6px;
+  color:var(--slate);text-decoration:none;font-size:14px;font-weight:500;line-height:1.3;
+  border:none;transition:background .12s,color .12s}
+.nav a .n{font-size:12px;color:var(--stone);min-width:1.1em;font-variant-numeric:tabular-nums}
+.nav a:hover{background:var(--tint-gray);color:var(--ink)}
+.nav a.active{background:var(--lavender);color:var(--primary);font-weight:600}
+.nav a.active .n{color:var(--primary)}
+.nav a.sub{padding-left:28px;font-size:13px;font-weight:400}
+
+/* page switcher (shared between research.html / personas.html) */
+.pageswitch{display:flex;flex-direction:column;gap:2px;padding-bottom:6px;
+  border-bottom:1px solid var(--hairline)}
+.pageswitch a{display:flex;align-items:center;gap:9px;padding:7px 10px;border-radius:6px;
+  color:var(--slate);text-decoration:none;font-size:14px;font-weight:500;line-height:1.3;
+  transition:background .12s,color .12s}
+.pageswitch a svg{width:15px;height:15px;flex:none;opacity:.9}
+.pageswitch a:hover{background:var(--tint-gray);color:var(--ink)}
+.pageswitch a.cur{background:var(--lavender);color:var(--primary);font-weight:600}
+
+.side-links{margin-top:20px;padding:14px 10px 0;border-top:1px solid var(--hairline)}
+.side-links a{display:flex;align-items:center;gap:9px;color:var(--steel);font-size:13px;
+  font-weight:500;text-decoration:none;padding:6px 0;border:none}
+.side-links a:hover{color:var(--ink)}
+.side-links a svg{width:16px;height:16px;flex:none}
+
+.mobtop{display:none}
+
+/* hero band (navy) */
+.heroband{background:var(--navy);border-radius:16px;padding:40px 36px;margin:0 0 24px;
+  color:#fff;box-shadow:var(--sh2);position:relative;overflow:hidden}
+.heroband::after{content:"";position:absolute;right:-40px;top:-40px;width:200px;height:200px;
+  background:radial-gradient(circle,rgba(86,69,212,.5),transparent 70%);pointer-events:none}
+.heroband .eyebrow{color:#b9aef7}
+.heroband h1{color:#fff;margin:0 0 12px}
+.heroband .lede{color:rgba(255,255,255,.72);margin:0}
+
+/* typography */
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;
+  color:var(--primary);margin:0 0 12px}
+h1{font-weight:700;font-size:42px;line-height:1.12;letter-spacing:-1px;margin:0 0 12px;color:var(--ink)}
+h2{font-weight:600;font-size:30px;line-height:1.2;letter-spacing:-.5px;margin:56px 0 8px;
+  padding-top:28px;border-top:1px solid var(--hairline);color:var(--ink);scroll-margin-top:20px}
+h2:first-of-type{border-top:none;padding-top:0}
+h2 .h2n{color:var(--stone);font-size:16px;font-weight:500;margin-right:10px;font-variant-numeric:tabular-nums}
+h3{font-weight:600;font-size:20px;line-height:1.3;margin:32px 0 10px;color:var(--ink);letter-spacing:-.2px;
+  display:flex;align-items:center;gap:8px}
+h4{font-weight:600;font-size:16px;margin:0 0 6px;color:var(--ink)}
+p{margin:10px 0}
+.lede{font-size:18px;color:var(--slate);line-height:1.5;margin:0 0 20px}
+a{color:var(--link);text-decoration:none}
+a:hover{text-decoration:underline}
+strong,b{font-weight:600;color:var(--ink)}
+section{scroll-margin-top:20px}
+
+/* callouts */
+.callout{display:flex;gap:12px;background:var(--surface);border:1px solid var(--hairline);
+  border-radius:8px;padding:14px 16px;margin:16px 0;font-size:15px;color:var(--slate)}
+.callout .ico{font-size:17px;line-height:1.4;flex:none}
+.callout b{color:var(--ink)}
+.callout.accent{background:var(--lavender);border-color:transparent;color:var(--purple-800)}
+.callout.accent b{color:var(--purple-800)}
+.callout.rust{background:var(--peach);border-color:transparent;color:var(--orange-deep)}
+
+/* quotes */
+blockquote{margin:14px 0;padding:16px 18px;background:var(--cream);border-left:3px solid var(--primary);
+  border-radius:0 10px 10px 0;font-size:16px;line-height:1.55;color:var(--ink);font-weight:500}
+blockquote.real{background:var(--mint);border-left-color:var(--green-deep)}
+blockquote .qsrc{display:block;margin-top:9px;font-size:12px;font-weight:500;color:var(--steel);
+  font-family:var(--mono);word-break:break-word}
+blockquote .qsrc a{color:var(--steel)}
+
+/* verdict badges */
+.vd{display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;
+  padding:2px 8px;border-radius:5px;vertical-align:middle;margin-right:6px}
+.vd.ok{background:var(--mint);color:var(--green-deep)}
+.vd.no{background:var(--rose);color:var(--pink-deep)}
+
+/* tag chips (badge-tag-*) */
+.gtag{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.02em;
+  padding:2px 8px;border-radius:6px;vertical-align:middle}
+.gtag.hard{background:var(--lavender);color:var(--purple-800)}
+.gtag.soft{background:var(--sky);color:var(--sky-ink)}
+.gtag.asp{background:var(--peach);color:var(--orange-deep)}
+
+/* tables */
+.twrap{overflow-x:auto;border:1px solid var(--hairline);border-radius:8px;margin:14px 0;
+  max-width:100%;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;min-width:640px;background:var(--canvas);font-size:14px}
+th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--hairline-soft);vertical-align:top;line-height:1.5}
+thead th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;font-weight:600;
+  color:var(--stone);background:var(--surface);white-space:nowrap}
+tbody th{font-weight:600;white-space:nowrap;background:var(--surface-soft);color:var(--ink)}
+tbody tr:last-child td,tbody tr:last-child th{border-bottom:none}
+
+/* cite pill */
+.cite{font-family:var(--mono);font-size:11px;color:var(--link);text-decoration:none;
+  background:var(--tint-gray);padding:1px 6px;border-radius:4px;white-space:nowrap;vertical-align:baseline;font-weight:500}
+.cite:hover{background:var(--sky);text-decoration:none}
+.cite.nv{color:var(--orange-deep);background:var(--peach)}
+.nv-txt{color:var(--orange);font-weight:600}
+
+/* cards */
+.cards{display:grid;gap:12px;margin:16px 0}
+.card{background:var(--canvas);border:1px solid var(--hairline);border-radius:12px;padding:20px 22px}
+.card h4{margin:0 0 8px;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.card p{margin:6px 0;font-size:15px;color:var(--slate)}
+.card p b{color:var(--ink)}
+.card .mtag{font-size:12px;color:var(--stone);margin-top:8px}
+.card.win{background:var(--mint)}
+.card.win h4::before{content:"✓";color:var(--green-deep);font-weight:700}
+.card.no{background:var(--rose)}
+.card.no h4::before{content:"✕";color:var(--pink-deep);font-weight:700}
+.card.pattern{background:var(--lavender)}
+
+/* gap cards */
+.gap{background:var(--surface);border:1px solid var(--hairline);border-radius:12px;padding:18px 22px;margin:12px 0}
+.gap .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--primary);font-weight:600}
+.gap .gt{font-weight:600;margin:4px 0 8px;color:var(--ink)}
+.gap .hy{font-size:15px;color:var(--slate);margin-bottom:8px}
+.gap .fr{font-size:13px;color:var(--steel)}
+.gap .fr b{font-family:var(--mono);font-size:12px;background:var(--sky);color:var(--sky-ink);padding:1px 7px;border-radius:4px;font-weight:600}
+
+/* sources */
+.src-table td:first-child{font-family:var(--mono);color:var(--primary);white-space:nowrap;font-size:12px;font-weight:600}
+.src-table td{font-size:13px}
+/* довгі URL не мають розпирати таблицю джерел */
+.src-table a{overflow-wrap:anywhere;word-break:break-word}
+
+/* screenshots */
+.shots{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin:16px 0}
+figure{margin:0;background:var(--canvas);border:1px solid var(--hairline);border-radius:12px;overflow:hidden}
+figure img{width:100%;display:block;aspect-ratio:16/10;object-fit:cover;object-position:top;background:var(--surface)}
+figcaption{padding:9px 12px;font-size:12px;color:var(--slate)}
+figcaption b{display:block;color:var(--ink);font-size:13px;margin-bottom:2px}
+
+/* chips */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+.chip{font-size:13px;color:var(--slate);background:var(--surface);border:1px solid var(--hairline);border-radius:9999px;padding:4px 13px}
+.chip b{color:var(--ink)}
+
+/* footer */
+.foot{margin-top:40px;padding-top:20px;border-top:1px solid var(--hairline);font-size:13px;color:var(--steel)}
+
+/* theme btn */
+.themebtn{position:fixed;bottom:16px;right:16px;z-index:20;background:var(--canvas);border:1px solid var(--hairline-strong);
+  color:var(--slate);border-radius:8px;padding:7px 10px;cursor:pointer;font-size:15px;box-shadow:var(--sh2)}
+.themebtn:hover{color:var(--ink)}
+
+@media (max-width:900px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  tbody th{white-space:normal}
+  .sidebar{display:none}
+  .mobtop{display:block;position:sticky;top:0;z-index:15;background:var(--surface-soft);
+    border-bottom:1px solid var(--hairline);padding:10px 16px}
+  .mobtop summary{display:flex;align-items:center;gap:8px;cursor:pointer;list-style:none;font-weight:600;color:var(--ink)}
+  .mobtop summary svg{width:20px;height:20px}
+  .mobtop summary svg path{stroke:var(--primary);stroke-width:5;fill:none}
+  .mobtop summary::-webkit-details-marker{display:none}
+  .mobtop .mn{margin-left:auto;font-size:13px;color:var(--stone)}
+  .mobtop nav{padding:8px 0 2px}
+  .mobtop nav a{display:block;padding:7px 4px;color:var(--slate);text-decoration:none;font-size:14px}
+  .mobtop .mswitch{display:flex;gap:8px;padding:2px 0 8px;margin-bottom:4px;border-bottom:1px solid var(--hairline)}
+  .mobtop .mswitch a{flex:1;text-align:center;padding:8px 10px;border-radius:8px;background:var(--surface);
+    border:1px solid var(--hairline);font-size:13px;font-weight:500;color:var(--slate)}
+  .mobtop .mswitch a.cur{background:var(--lavender);border-color:transparent;color:var(--primary);font-weight:600}
+  .content{padding:0 18px}
+  .content-inner{padding:24px 0 64px}
+  .heroband{padding:28px 22px}
+  h1{font-size:32px;letter-spacing:-.5px}
+  h2{font-size:24px}
+  blockquote{padding:14px 14px;font-size:15px}
+}
+
+</style>
+</head>
+<body>
+<div class="mobtop"><details><summary><svg viewBox="0 0 34 34"><path d="M6 28 L6 6 L28 6"/></svg><span>Куток · дослідження</span><span class="mn">зміст ▾</span></summary><nav>
+<span class="mswitch"><a class="cur" href="research.html">Дослідження ринку</a><a href="personas.html">Персони і JTBD</a></span>
+<a href="#overview">01 · Огляд</a>
+<a href="#competitors">02 · Конкуренти</a>
+<a href="#market">03 · Патерни ринку</a>
+<a href="#benchmark">04 · Бенчмарк</a>
+<a href="#uxpatterns">05 · Патерни взаємодії</a>
+<a href="#conclusions">06 · Висновки</a>
+<a href="#reresearch">07 · Доресерч після персон</a>
+<a href="#screens">08 · Скріни</a>
+<a href="#sources">09 · Джерела</a>
+<a href="https://github.com/denysosadchyi/kootok" target="_blank" rel="noopener">↗ GitHub-репозиторій</a>
+</nav></details></div>
+<div class="app">
+<aside class="sidebar">
+<div class="brand"><svg viewBox="0 0 34 34"><path d="M6 28 L6 6 L28 6"/></svg><span class="brand-txt"><b>Куток</b><span>дослідження ринку</span></span></div>
+<div class="nav-label">Сторінки</div>
+<div class="pageswitch">
+<a class="cur" href="research.html"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M2 2h12v2H2V2zm0 4h12v2H2V6zm0 4h8v2H2v-2z"/></svg>Дослідження ринку</a>
+<a href="personas.html"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M5.5 7a2.5 2.5 0 100-5 2.5 2.5 0 000 5zm5 0a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM1 13c0-2.2 2-3.5 4.5-3.5S10 10.8 10 13v1H1v-1zm10.5-3.5c2.2 0 3.5 1.4 3.5 3.5v1h-4v-1c0-1.1-.4-2.1-1.1-2.8.5-.4 1-.7 1.6-.7z"/></svg>Персони і JTBD</a>
+</div>
+<div class="nav-label">Зміст</div>
+<div class="nav">
+<a href="#overview"><span class="n">01</span>Огляд</a>
+<a href="#competitors"><span class="n">02</span>Конкуренти</a>
+<a class="sub" href="#g-hard">ХАРД</a>
+<a class="sub" href="#g-soft">СОФТ</a>
+<a class="sub" href="#g-asp">Аспіраційні</a>
+<a href="#market"><span class="n">03</span>Патерни ринку</a>
+<a href="#benchmark"><span class="n">04</span>Бенчмарк</a>
+<a href="#uxpatterns"><span class="n">05</span>Патерни взаємодії</a>
+<a href="#conclusions"><span class="n">06</span>Висновки</a>
+<a href="#reresearch"><span class="n">07</span>Доресерч після персон</a>
+<a class="sub" href="#q-scam">Страх шахрайства</a>
+<a class="sub" href="#q-belong">Приналежність = довіра?</a>
+<a href="#screens"><span class="n">08</span>Скріни</a>
+<a href="#sources"><span class="n">09</span>Джерела</a>
+</div>
+<div class="side-links"><a href="https://github.com/denysosadchyi/kootok" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub-репозиторій</a></div>
+</aside>
+<main class="content"><div class="content-inner">
+<section id="overview" class="spy">
+<div class="heroband">
+<p class="eyebrow">Куток · пошук співмешканців у Києві</p>
+<h1>Дослідження ринку та патернів підбору співмешканця</h1>
+<p class="lede">Джерело-верифіковане дослідження 12 конкурентів у трьох групах: по кожному — окремий веб-ресерч за пʼятьма осями і незалежна перевірка джерел, де агент-скептик перефетчував кожен URL і знижував факт до «дані не підтверджені», якщо сторінка його не підтверджувала.</p>
+</div>
+<div class="chips">
+<span class="chip"><b>12</b> конкурентів</span>
+<span class="chip"><b>3</b> групи</span>
+<span class="chip"><b>49/60</b> осей підтверджено</span>
+<span class="chip"><b>70</b> джерел</span>
+<span class="chip"><b>9</b> скрінів</span>
+</div>
+<div class="callout accent"><span class="ico">🔎</span><div>Кожен факт має позначку <a class="cite" href="#sources">S#</a> — джерело в розділі «Джерела». Осі без надійного джерела чесно позначені <span class="cite nv">неперевірено</span> / <b class="nv-txt">дані не підтверджені</b>. Нічого не вигадано: краще порожньо, ніж здогад.</div></div>
+</section>
+<section id="competitors" class="spy"><h2><span class="h2n">02</span>Конкуренти</h2>
+<p>Три групи за близькістю до Кутка. У кожній картці: чому конкурент у групі, що з нього взяти, і матриця пʼяти осей із посиланнями на джерела.</p>
+<h3 id="g-hard"><span class="gtag hard">ХАРД</span> &nbsp;Той самий продукт, та сама аудиторія, наш ринок — Київ</h3>
+<div class="card">
+<h4>OLX.ua</h4>
+<p><b>Чому в групі:</b> OLX — домінантний класифайд України з масовою аудиторією (за сторонніми даними real estate — понад 6 млн відвідувачів/міс), де вже зараз реально шукають підселення й оренду кімнат у Києві. Це прямий канал, куди йде цільова аудиторія Кутка, тож він конкурує за той самий пошуковий інтент напряму — звідси ХАРД.</p>
+<p><b>Що взяти для Кутка:</b> структуровані фільтри саме під підселення (район міста, діапазон ціни, дозвіл на тварин/меблювання) — вони вже добре працюють на OLX. Але посилити те, чого в OLX немає: двосторонність (профілі шукачів, а не лише оголошення кімнат), фільтри за побутовими звичками (чистота, гості, режим дня, куріння) і довіру до людини як співмешканця, а не до продавця товару. OLX-рейтинг привʼязаний до угод із доставкою і не працює для оренди — Кутку потрібна власна репутація «після заселення».</p>
+<div class="twrap"><table><thead><tr><th>Вісь</th><th>Дані</th></tr></thead><tbody>
+<tr><th>Аудиторія</th><td>OLX Ukraine — лідер класифайдів країни; у 2025 відновив 92% від довоєнного рівня активних користувачів, 99% активних подавачів оголошень і 93% кількості оголошень; нерухомість — одна з найшвидше зростаючих категорій (за березень 2026 залученість покупців до оголошень квартир +12% р/р). За сторонніми даними (Similarweb/AIM) — понад 20 млн користувачів/міс і ~6 млн відвідувачів у категорії нерухомості, а ядро аудиторії 25-34 роки збігається з ЦА Кутка, але ці конкретні цифри в першоджерелі не підтверджено. <a class="cite" href="#s4">S4</a></td></tr>
+<tr><th>Основа продукту</th><td>Універсальний класифайд оголошень. Контент структуровано за категоріями; у нерухомості є окремий розділ «Кімнати → Довгострокова оренда кімнат», де за пошуком «підселення» у Києві знайдено ~54 оголошення. Контент подано картками (фото, назва, ціна, дата, район/метро, площа); публікують і приватні власники (бейдж «Власник»), і агенції. <a class="cite" href="#s1">S1</a></td></tr>
+<tr><th>Ключовий механізм</th><td>Механізм — односторонній: шукач фільтрує оголошення кімнат за параметрами (район міста, ціна від ~1200 до 5000 грн, площа, меблювання, дозвіл на тварин) і читає картки. Алгоритмічного матчингу немає. Контакт зі стороною — через вбудований чат OLX за оголошенням; профілів шукачів кімнат як окремої сутності немає (лише оголошення тих, хто здає/шукає). <a class="cite" href="#s1">S1</a></td></tr>
+<tr><th>Довіра</th><td>Довіра будується через модерацію оголошень і систему рейтингів/відгуків продавця (шкала 1-5 зірок, середнє арифметичне, теги-причини для оцінок, оцінка впродовж 60 днів). Ключове обмеження: запити на «перевірену» оцінку отримують лише покупці, що купили через OLX Доставку після фізичного отримання товару — тобто рейтинг заточений під товарні угоди, а не під оренду житла/підселення. <a class="cite" href="#s3">S3</a></td></tr>
+<tr><th>Монетизація</th><td>Модель: базове розміщення + платні послуги просування. Три послуги — «Підняття» (оновлює дату, піднімає вгору), «Топ-оголошення» (ротаційний показ зі значком, 7 або 30 днів), «VIP» (показ на головній сторінці OLX, ~1,5 млн переглядів/день). Продаються і пакетами («Легкий старт», «Швидкий продаж», «Турбо продаж») з різним охопленням (≈4x/16x/30x переглядів). Конкретні ціни на сторінці реклами не розкриті (залежать від регіону, показуються при покупці). <a class="cite" href="#s2">S2</a></td></tr>
+</tbody></table></div>
+</div>
+<div class="card">
+<h4>DIM.RIA</h4>
+<p><b>Чому в групі:</b> Найбільший в Україні портал нерухомості (група RIA.com) з великою стрічкою реальної довгострокової оренди квартир і кімнат у Києві. Прямо конкурує за той самий запит «зняти житло» і зробив довіру/верифікацію своєю ключовою перевагою — тобто б'ється саме за ту цінність, на якій будується Куток. Тому це хард-конкурент за трафік і за сприйняття «тут безпечно».</p>
+<p><b>Що взяти для Кутка:</b> Головне — їхня система довіри: статус «Перевірене оголошення» через виїзд інспектора, фото 360°, звірку з держреєстром та верифікацію особи. Це готовий бенчмарк візуалізації довіри бейджами. Також близька модель монетизації «база безкоштовна, платиш за перевірку/просування». Куток може взяти інакше: DIM.RIA — про об'єкти й агентів, а не про людей-співмешканців; ніша двостороннього матчингу людей і сумісності побуту в них не закрита.</p>
+<div class="twrap"><table><thead><tr><th>Вісь</th><th>Дані</th></tr></thead><tbody>
+<tr><th>Аудиторія</th><td>Орендарі та покупці нерухомості по всій Україні (усі обласні центри, у т.ч. Київ); платформа позиціонує себе як та, що «навчила українців купувати нерухомість онлайн», з упізнаваністю бренду 50–57%. Аудиторія ширша за 22–30 і не сфокусована на співмешканцях — це радше орендар↔власник/рієлтор. <a class="cite" href="#s5">S5</a></td></tr>
+<tr><th>Основа продукту</th><td>Маркетплейс нерухомості з верифікованими оголошеннями: понад 185 тис. перевірених об'єктів по Україні, панорамні фото 360°, відеоогляди, детальні картки. Доступ через веб і мобільний застосунок. Контент структурований як каталог об'єктів (продаж/оренда квартир, кімнат, будинків), а не профілі людей. <a class="cite" href="#s5">S5</a></td></tr>
+<tr><th>Ключовий механізм</th><td>Пошук за фільтрами/каталогом (район, кількість кімнат, ціна тощо), без алгоритму сумісності. Контакт із власником/рієлтором — напряму через оголошення (телефон у картці, «без посередників»), без внутрішнього матчингу сторін. <span class="cite nv">неперевірено</span></td></tr>
+<tr><th>Довіра</th><td>Багаторівнева перевірка: робот-інспектор автоматично видаляє підозрілі оголошення, живий інспектор виїжджає на місце і робить фото 360°, система звіряє права власності з держреєстром; заявлено 140k+ перевірених об'єктів і 1500+ рієлторів/400+ агентств зі статусом «Перевірений». (Верифікація особи через Дію/BankID та цифра 91% перевірених оголошень на цій сторінці не підтверджені.) <a class="cite" href="#s6">S6</a></td></tr>
+<tr><th>Монетизація</th><td>Базове розміщення безкоштовне за умови проходження перевірки нерухомості; для орендодавців перевірка квартири коштує ~100 грн, для орендарів пошук безкоштовний. Розміщення без перевірки — платне на 30 днів залежно від регіону (напр. Київська обл. 250 грн). Для рієлторів/агентств — підписка зі знижкою ~50% на публікації та пакети просування (буст) оголошень. <a class="cite" href="#s8">S8</a></td></tr>
+</tbody></table></div>
+</div>
+<div class="card">
+<h4>HomeMate (Telegram)</h4>
+<p><b>Чому в групі:</b> Прямий конкурент Кутка по суті: та сама аудиторія (пошук співмешканців, кімнат і колівінгу в Києві, молоді орендарі), той самий канал звички користувача — Telegram. Розвʼязує ту саму задачу «знайти сусіда / куток», тому це ХАРД-конкурент, хоча реалізований примітивно (канал + ручна модерація адміном, без структури, без верифікації, без чату всередині продукту).</p>
+<p><b>Що взяти для Кутка:</b> HomeMate доводить попит саме в Telegram-середовищі — там, де живе цільова аудиторія Кутка, і показує двосторонність контенту («є кімната» + «шукаю куток») як робочу модель. Але його слабкі місця — це прямі можливості для Кутка: немає жодної верифікації чи довіри (все на «особистих контактах у Telegram»), немає фільтрів/структури (стрічка постів), немає вбудованого чату (контакти світяться відкрито), публікація тільки вручну через адміна. Куток може забрати цю аудиторію, давши те, чого в HomeMate немає: верифікацію+бейджі довіри, структуровані картки з фільтрами за звичками/районом/бюджетом і безпечний вбудований чат без відкритого зливу контактів. Малий розмір спільноти (сотні підписників) свідчить, що ніша не зайнята сильним гравцем.</p>
+<div class="twrap"><table><thead><tr><th>Вісь</th><th>Дані</th></tr></thead><tbody>
+<tr><th>Аудиторія</th><td>Молоді орендарі Києва, що шукають співмешканців, кімнати, колівінг чи термінову оренду; спільнота невелика — за різними снапшотами від ~190 до ~700 підписників (каталог показує 242 підписники на каналі homemate1). Гео — переважно Київ (у постах згадуються Голосіївський, Шевченківський, Печерський, Подільський, Солом'янський райони та метро). <a class="cite" href="#s10">S10</a></td></tr>
+<tr><th>Основа продукту</th><td>Це Telegram-канал (homemate1) + повʼязаний чат @HomeMateKyiv для пошуку сусідів, кімнат, співмешканців, термінової оренди та колівінгу. Контент — стрічка неструктурованих текстових оголошень з емодзі, ціни на кімнати орієнтовно 3400–10000 грн (часто «на двох»); окремого сайту чи застосунку не виявлено. <a class="cite" href="#s11">S11</a></td></tr>
+<tr><th>Ключовий механізм</th><td>Матчингу як такого немає: користувач гортає стрічку постів і пише напряму в особисті (Telegram-хендл вказано в кожному оголошенні). Щоб опублікувати оголошення, треба написати адміну (@j1teamzv для каналу; власник/адмін чату — @Topbaa) — публікація ручна, бота чи фільтрів немає. <a class="cite" href="#s12">S12</a></td></tr>
+<tr><th>Довіра</th><td>Формальної верифікації, репутації чи системи відгуків немає — довіра тримається лише на особистих Telegram-контактах у постах. Модерація зводиться до ручного пропуску оголошень адміном/власником. Публічний рейтинг каталогу низький (2.0/5 за 3 відгуками). <a class="cite" href="#s10">S10</a></td></tr>
+<tr><th>Монетизація</th><td>Явних платних послуг, підписок чи бустів у відкритих джерелах не виявлено — підписка/перегляд безкоштовні, оголошення розміщуються через адміна. Наявність або відсутність плати за розміщення напряму не підтверджена (умови не опубліковано). <span class="cite nv">неперевірено</span></td></tr>
+</tbody></table></div>
+</div>
+<div class="card">
+<h4>Telegram-канали пошуку сусідів (КНУсусіди та подібні)</h4>
+<p><b>Чому в групі:</b> Це прямий поведінковий субститут: саме тут цільова аудиторія Кутка (22–30, студенти/молодь, native-користувачі Telegram) шукає сусідів і кімнати вже зараз, безкоштовно і без окремого застосунку. Куток замінює саме цей сценарій, тож ці канали — найгарячіший конкурент за увагу й контент.</p>
+<p><b>Що взяти для Кутка:</b> 1) Формат оголошень у цих каналах де-факто вже містить майбутні фільтри Кутка (бюджет, район/гілка метро, дата заселення, звички: охайність, повага до простору) — але як вільний неструктурований текст; Куток виграє, формалізувавши це в структуровані поля + фільтри. 2) Головна діра — нуль довіри: контакт (Telegram-нік) світиться відкрито в пості, немає верифікації, відгуків і майже немає модерації; це точка входу Кутка (гейтований чат, верифікація, бейджі). 3) Безкоштовна модель каналів підтверджує стратегію «безкоштовно на старті». 4) Контент уже двосторонній («шукаю кімнату» і «шукаю сусіда в свою квартиру»), що валідує двосторонню модель Кутка.</p>
+<div class="twrap"><table><thead><tr><th>Вісь</th><th>Дані</th></tr></thead><tbody>
+<tr><th>Аудиторія</th><td>Студенти та молодь, повʼязані з КНУ ім. Шевченка, ширше — молоді орендарі Києва. Пости показують вік ~18–25, статуси «студент/першокурсниця/працюючий», бюджети від ~5000 до 28000 грн (типово 5–11 тис.), гео — Київ (синя та червона гілки метро). Оригінальний канал має 3,6K підписників і переїжджає на новий knu_susidd. <a class="cite" href="#s13">S13</a></td></tr>
+<tr><th>Основа продукту</th><td>Це не застосунок, а Telegram-канал(и): стрічка оголошень, де кожен пост — переслане повідомлення від користувача з (напів)стандартизованим текстом (імʼя, вік, факультет, бюджет, район, дата заселення, побажання до сусіда) і Telegram-ніком для контакту. Контент неструктурований, без карток, фото і пошуку в межах каналу. <a class="cite" href="#s14">S14</a></td></tr>
+<tr><th>Ключовий механізм</th><td>Матчингу як такого немає. Оголошення публікуються у стрічці; зацікавлені самі гортають пости і пишуть автору напряму в особисті Telegram за вказаним ніком. Тобто пошук = ручний скролінг + прямий DM; контакт відкритий одразу, без взаємної згоди чи фільтрів. <a class="cite" href="#s13">S13</a></td></tr>
+<tr><th>Довіра</th><td>Механізмів довіри практично немає: відсутня верифікація особи, немає відгуків чи репутації, немає бота, контакт світиться публічно, жодних бейджів «перевірено». Модерація мінімальна (адмінська). Це головна слабкість сегмента. <a class="cite" href="#s14">S14</a></td></tr>
+<tr><th>Монетизація</th><td>Розміщення оголошень у цих студентських/районних каналах виглядає безкоштовним; платних підписок, бустів чи комісії у відкритому контенті не видно. Монетизація фактично відсутня. <span class="cite nv">неперевірено</span></td></tr>
+</tbody></table></div>
+</div>
+<div class="card">
+<h4>Facebook-групи оренди/сусідів (Київ)</h4>
+<p><b>Чому в групі:</b> Це прямий поточний спосіб, яким цільова аудиторія Кутка вже шукає кімнати й співмешканців у Києві: десятки активних груп («Рієлтори - зло. Оренда квартир і кімнат Київ», «ОРЕНДА КВАРТИР КИЇВ» тощо) з тисячами учасників, безкоштовні, з миттєвим охопленням. Куток напряму відбирає в них увагу й контент.</p>
+<p><b>Що взяти для Кутка:</b> Взяти двосторонню логіку «і кімнати, і люди» та живий обсяг контенту, але закрити головні болі груп: хаотична стрічка без фільтрів, нуль верифікації особи, засилля рієлторів-посередників (сама назва топ-групи — «Рієлтори - зло»), спам і скрол замість структурованого пошуку. Ключова диференціація Кутка — фільтри за звичками/бюджетом/районом, верифікація та відгуки, безпечний вбудований чат замість переходу в Messenger до незнайомця.</p>
+<div class="twrap"><table><thead><tr><th>Вісь</th><th>Дані</th></tr></thead><tbody>
+<tr><th>Аудиторія</th><td>Користувачі груп — ті, хто орендує/підселяється в Києві, багато молоді 22–30; групи публічні або приватні, орієнтовані на Київ. Точний розмір і демографія недоступні: контент і статистика учасників за логіном Facebook. <span class="cite nv">неперевірено</span></td></tr>
+<tr><th>Основа продукту</th><td>Це тематичні Facebook-групи оренди житла та пошуку сусідів у Києві (напр. «Рієлтори - зло. Оренда квартир і кімнат Київ, пошук співмешканців»). Контент — стрічка оголошень-постів від учасників: і «здаю кімнату», і «шукаю куток». <a class="cite" href="#s16">S16</a></td></tr>
+<tr><th>Ключовий механізм</th><td>Пошук — це ручний скрол хронологічної стрічки постів (частково пошук по ключових словах у групі); матчингу немає. Контакт відбувається через коментарі під постом або перехід у приватні повідомлення Messenger. Точний опис недоступний — стрічка за логіном. <span class="cite nv">неперевірено</span></td></tr>
+<tr><th>Довіра</th><td>Спеціальної верифікації особи орендарів/сусідів немає; довіра тримається на публічному профілі Facebook і ручній модерації адмінів/модераторів (правила групи, схвалення постів і заявок на вступ). Відгуків про заселення чи бейджів довіри немає. <span class="cite nv">неперевірено</span></td></tr>
+<tr><th>Монетизація</th><td>Самі групи оренди безкоштовні; заробляють переважно рієлтори-посередники через пости. У Facebook існує окрема функція платних Subscription Groups (підписка $4.99–$29.99/міс за ексклюзивний контент), але для цих груп оренди вона не застосовується. <a class="cite" href="#s18">S18</a></td></tr>
+</tbody></table></div>
+</div>
+<h3 id="g-soft"><span class="gtag soft">СОФТ</span> &nbsp;Інший продукт, але та сама базова задача — знайти, з ким і де жити</h3>
+<div class="card">
+<h4>Flatfy / LUN.ua</h4>
+<p><b>Чому в групі:</b> Це агрегатор оголошень нерухомості (оренда/продаж квартир, будинків, у т.ч. кімнат), а не сервіс пошуку співмешканців. Він розв'язує суміжну задачу — знайти житло/оголошення в одному місці замість розкиданих OLX і Telegram, — але не будує довіру між людьми, які житимуть разом, і не має профілів шукачів чи матчингу. Тому конкуренція непряма (СОФТ).</p>
+<p><b>Що взяти для Кутка:</b> Головне, що варто взяти: (1) агрегація і дедуплікація оголошень з десятків джерел (OLX, Telegram, рієлтори) через ML — прямий рецепт проти болю «оголошення розкидані»; (2) контроль якості картки — мінімум 3 фото інтер'єру 600x600, точна адреса, актуальна ціна, заборона телефонів на фото; (3) фільтр «без посередників» як сильний UX-сигнал довіри; (4) карта як основний спосіб перегляду. Куток може перейняти дедуплікацію контенту на cold-start і жорсткі вимоги до якості картки, але додати те, чого в LUN немає — двосторонні профілі людей, звички співмешканця та верифікацію особи.</p>
+<div class="twrap"><table><thead><tr><th>Вісь</th><th>Дані</th></tr></thead><tbody>
+<tr><th>Аудиторія</th><td>Аудиторія — люди, що шукають/здають житло в Україні та за кордоном (8 країн). За даними Економічної правди, ~2,5 млн унікальних відвідувачів щомісяця, а всі проєкти групи ЛУН охоплюють ~12 млн користувачів. Це масовий загальний ринок нерухомості, не вужча ніша 22–30 років, як у Кутка. <a class="cite" href="#s22">S22</a></td></tr>
+<tr><th>Основа продукту</th><td>Flatfy — пошуковик/агрегатор вторинної нерухомості: збирає актуальні оголошення в одному інтерфейсі, групує дублікати. Контент структуровано за типом операції та об'єкта (продаж/оренда квартир і будинків) і за геолокацією (Київ, Львів, Одеса тощо), працює у 8 країнах. <span class="cite nv">неперевірено</span></td></tr>
+<tr><th>Ключовий механізм</th><td>Механізм — пошук за фільтрами (ціна, площа, поверх, розташування, район) плюс карта; алгоритмічного матчингу сторін немає. Під капотом ML збирає оголошення про одну квартиру з десятків сайтів і рієлторів, групує дублікати й автокатегоризує. Контакт відбувається поза платформою — за телефоном власника/рієлтора з картки оголошення. <a class="cite" href="#s22">S22</a></td></tr>
+<tr><th>Довіра</th><td>Довіра будується на модерації та якості оголошень, а не на верифікації людей: оголошення проходить перевірку до 24 год, вимоги — актуальна ціна, точна адреса з номером будинку, мінімум 3 фото інтер'єру від 600x600, заборона телефонів на фото і спаму; дублікати групуються. Верифікації особи, відгуків між сторонами чи бейджів «перевірено» немає. <a class="cite" href="#s21">S21</a></td></tr>
+<tr><th>Монетизація</th><td>Модель монетизації — рекламна. Основний дохід дає первинний ринок (~70% виручки групи): забудовники купують просування ЖК, преміум-пакети для Києва коштували від 25 до 75+ тис. грн/міс за один ЖК. Розміщення оголошень власниками/рієлторами про вторинку відбувається через партнерську мережу (Rieltor.ua, OLX, DOM.RIA та ін.) і базово доступне безкоштовно; точних тарифів на бусти вторинки на відкритих сторінках не наведено. <a class="cite" href="#s22">S22</a></td></tr>
+</tbody></table></div>
+</div>
+<div class="card">
+<h4>Bird (bird.in.ua / birdrent.com)</h4>
+<p><b>Чому в групі:</b> Bird розвʼязує суміжну проблему — пошук орендного житла в Києві без ріелтора/комісії, для схожої молодої мобільної аудиторії. Але це односторонній агрегатор оголошень квартир (не двостороння модель «кімнати + люди»), без матчингу співмешканців і без профілів шукачів. Тому це не прямий, а мʼякий/суміжний конкурент: перетин по гео, аудиторії та наративу «без комісії», але інша модель контенту.</p>
+<p><b>Що взяти для Кутка:</b> (1) наратив «Без комісії» як сильний стикер/бейдж прямо на картці — знімає головний фінансовий страх; (2) розділ вручну верифікованих обʼєктів (Bird Select) із відеотуром перед візитом — прямий аналог бейджа «перевірено» + зниження ризику; (3) розумні фільтри з людяною мовою («без бабциного ремонту») — тон бренду; (4) підписка на нові оголошення за фільтрами як утримання; (5) урок монетизації: B2B/реклама на старті в Україні, а платну підписку (B2C) вводити обережно і лише там, де є готовність платити (Польща 30 zł/міс).</p>
+<div class="twrap"><table><thead><tr><th>Вісь</th><th>Дані</th></tr></thead><tbody>
+<tr><th>Аудиторія</th><td>Орендарі житла у пʼятьох містах-мільйонниках України (Київ, Львів, Харків, Одеса, Дніпро), а також Лондон і Варшава; мобільна аудиторія (iOS має ~41 тис. оцінок, 4.9/5). Молоді користувачі, що шукають квартиру без посередника. <a class="cite" href="#s24">S24</a></td></tr>
+<tr><th>Основа продукту</th><td>Мобільний застосунок (iOS+Android) для пошуку орендних квартир на 3D-мапі. Агрегує ~70 000 оголошень із топ-сайтів (ЛУН, Rieltor, OLX, Dim.Ria), ШІ розпізнає адреси та прибирає дублікати. Внутрішній стартап ЛУН (юрособа Birb OU). <a class="cite" href="#s24">S24</a></td></tr>
+<tr><th>Ключовий механізм</th><td>Пошук: 3D-мапа будинків, малювання власних зон пошуку, фільтри (район, ЖК, метро, поверх, тип), дизлайк («точно ні»), підписка на нові квартири за фільтрами. Контакт — напряму з власником без посередника; у Bird Select запис на перегляд через кнопку та узгодження часу з менеджером у Telegram. <a class="cite" href="#s25">S25</a></td></tr>
+<tr><th>Довіра</th><td>Довіра будується через Bird Select — розділ особисто/вручну перевірених квартир (нові ЖК, свіжий ремонт) із відео-румтуром перед фізичним переглядом і стикером «Без комісії», що знижує ризик фейків. Публічних систем відгуків про орендодавців/орендарів чи взаємних рейтингів не виявлено. <a class="cite" href="#s25">S25</a></td></tr>
+<tr><th>Монетизація</th><td>В Україні — модель B2B: заробляє на рієлторах і порталах нерухомості, рекламі та комісії в Bird Select (для орендаря — без комісії). iOS давав ~$50 тис./міс на початку 2025. У Польщі (Варшава) перейшли на B2C: користувач сам платить підписку 30 злотих/міс. <a class="cite" href="#s27">S27</a></td></tr>
+</tbody></table></div>
+</div>
+<h3 id="g-asp"><span class="gtag asp">АСПІРАЦІЙНІ</span> &nbsp;Міжнародні еталони в категорії пошуку співмешканців</h3>
+<div class="card">
+<h4>SpareRoom</h4>
+<p><b>Чому в групі:</b> SpareRoom — це №1 flatshare-майданчик Великої Британії, що працює з 1999 року, з дорослою моделлю монетизації, живою модерацією 7 днів/тиждень і платною ID-верифікацією з бекграунд-чеком. Для раннього Кутка це недосяжний зараз масштаб і зрілість процесів — тому аспіраційний орієнтир, а не прямий конкурент.</p>
+<p><b>Що взяти для Кутка:</b> Головне для Кутка: двостороння модель (оголошення кімнат + профілі шукачів, де сторони знаходять одне одного) як базова структура; жива модерація кожного оголошення 7 днів/тиждень проти скаму; опційна верифікація з видимим бейджем-галочкою на профілі як сигнал довіри; і механіка «пейволл на контакт» (Early Bird — платний ранній доступ до свіжих оголошень) як приклад монетизації без псування безкоштовного ядра.</p>
+<div class="twrap"><table><thead><tr><th>Вісь</th><th>Дані</th></tr></thead><tbody>
+<tr><th>Аудиторія</th><td>Користувачі — люди, що шукають кімнату чи співмешканця у містах Великої Британії (Лондон, Манчестер, Бірмінгем, Единбург). Позиціонується як №1 flatshare-сайт країни за незалежним трафік-моніторингом; 20 000+ відгуків на Trustpilot з рейтингом 4.7. Точних цифр активних користувачів не розкрито. <a class="cite" href="#s29">S29</a></td></tr>
+<tr><th>Основа продукту</th><td>Маркетплейс flatshare із двостороннім контентом: оголошення про вільні кімнати та профілі шукачів житла — обидві сторони створюють оголошення й знаходять одне одного. Пошук за локацією/поштовим індексом з фільтрами за бюджетом і вподобаннями; далі контакт і особистий перегляд. <a class="cite" href="#s28">S28</a></td></tr>
+<tr><th>Ключовий механізм</th><td>Матчинг — через пошук і фільтри (без алгоритмічного скору): користувач шукає за районом/бюджетом, а щоб написати іншій стороні, треба зареєструватися й контактувати напряму. Ключова монетизаційна механіка: нові безкоштовні оголошення молодші за 7 днів доступні для контакту лише платним Early Bird-користувачам, безкоштовні — тільки коли оголошенню понад тиждень. <a class="cite" href="#s32">S32</a></td></tr>
+<tr><th>Довіра</th><td>Кожне оголошення перевіряється двічі — автоматичною системою і живою командою модераторів, які працюють 7 днів/тиждень, відсіюючи скамерів. Додатково є опційна ID-верифікація (документ + селфі, звірка з базами, бекграунд-чек на серйозні судимості) з видимим бейджем-галочкою на профілі й оголошенні. <span class="cite nv">неперевірено</span></td></tr>
+<tr><th>Монетизація</th><td>Базове користування безкоштовне, дохід — з платних апгрейдів. Early Bird (ранній доступ до нових оголошень): 100 пенсів/день, £14 за тиждень, £25 за 2 тижні, £28 за 4 тижні. Також Bold Ads — виділені оголошення для більшої видимості в пошуку — та платна ID-верифікація (близько $15 за 12 міс). <a class="cite" href="#s32">S32</a></td></tr>
+</tbody></table></div>
+</div>
+<div class="card">
+<h4>Badi</h4>
+<p><b>Чому в групі:</b> Badi — великий міжнародний VC-профінансований гравець (Барселона; підняв $30M+), із зрілим продуктом: ML-рекомендації, in-app платежі, Lister Score, верифікація, платні тарифи. Це масштаб і технічна глибина далеко за межами MVP Кутка, тому радше орієнтир-натхнення, а не прямий конкурент.</p>
+<p><b>Що взяти для Кутка:</b> Двостороння модель «кімнати + профілі» з механікою взаємної згоди (chat request → чат) — прямий аналог того, що планує Куток. Варто перейняти: (1) репутаційний Lister Score як прозорий сигнал довіри замість алгоритму сумісності; (2) «trusted» бейдж за верифікацією; (3) утримання комунікації всередині продукту з модерацією/скаргами. Обережно з монетизацією: Badi змістився до керованого оренди-по-кімнатах сервісу (Badi Plus) — для Кутка на старті це передчасно.</p>
+<div class="twrap"><table><thead><tr><th>Вісь</th><th>Дані</th></tr></thead><tbody>
+<tr><th>Аудиторія</th><td>Дві сторони: шукачі кімнат (seekers) і власники/лістери (listers), переважно молоді мобільні орендарі у великих містах Європи. Платформа заявляє, що зʼєднала понад 6M людей; за вторинними даними — 300k+ оголошень і 2M+ користувачів (2020). <span class="cite nv">неперевірено</span></td></tr>
+<tr><th>Основа продукту</th><td>Мобільний застосунок і веб для оренди кімнат та квартир по кімнатах. Контент двосторонній: оголошення кімнат/квартир від власників + профілі орендарів. Позиціонується як «провідна платформа оренди кімнат і квартир». <a class="cite" href="#s33">S33</a></td></tr>
+<tr><th>Ключовий механізм</th><td>Шукач надсилає chat request на оголошення, після чого спілкується з лістером у вбудованому чаті, аби «орендувати з повною безпекою». Контакти не світяться до старту чату. Додатково Badi заявляє ML-матчинг та Lister Score (динамічний рейтинг лістера), але їх формулу й термінологію «MATCH»/«Badi Inbox» офіційна сторінка про Badi не підтверджує. <a class="cite" href="#s33">S33</a></td></tr>
+<tr><th>Довіра</th><td>Ключова верифікація — підтвердження банківського рахунку лістера, що дає синій бейдж «trusted user». Є постійний моніторинг спільноти та проста система скарг («розслідуємо кожен репорт»), а також захист платежів усередині платформи. Верифікацію ID/телефону чи систему відгуків сторінка trust-and-safety не згадує. <a class="cite" href="#s34">S34</a></td></tr>
+<tr><th>Монетизація</th><td>Монетизація через Badi Plus — керований сервіс оренди по кімнатах для власників: Badi бере на себе маркетинг, скринінг орендарів, обслуговування та операції й щомісяця виплачує власнику орендну плату. Історично існує платний буст Badi Gold (~19,99€ за оголошення на 30 днів — цю ціну підтвердити не вдалось, сторінка повертала 403). <a class="cite" href="#s35">S35</a></td></tr>
+</tbody></table></div>
+</div>
+<div class="card">
+<h4>Roomi</h4>
+<p><b>Чому в групі:</b> Roomi — зрілий американський продукт того самого класу (пошук кімнат + співмешканців), що вже реалізував усе, до чого прагне Куток: двостороння модель, вбудований чат, верифікація особи, бейджі «перевірено». Масштабований (200+ міст), має нативні застосунки і відпрацьовану монетизацію. Це орієнтир «куди рости», а не прямий локальний конкурент — звідси АСПІРАЦІЙНІ. Водночас низький рейтинг у App Store (2.1/5) показує, яких граблів уникати.</p>
+<p><b>Що взяти для Кутка:</b> 1) Двостороння механіка «swipe and match» + фільтри як спосіб знайомити сторони. 2) Модель безкоштовного входу з жорсткими лімітами (1 активне оголошення, до 10 контактів), що м'яко штовхає до апгрейду — каркас майбутньої монетизації Кутка. 3) Верифікація як платна цінність + бейдж «перевірено» біля профілю. 4) Чат, що ховає контакти до взаємної згоди — збігається з рішенням Кутка. АНТИ-урок: низький рейтинг (2.1) через глючний UI, зламані фільтри й збої в чаті — для Кутка стабільність базових функцій важливіша за кількість фіч.</p>
+<div class="twrap"><table><thead><tr><th>Вісь</th><th>Дані</th></tr></thead><tbody>
+<tr><th>Аудиторія</th><td>Люди, що шукають спільне житло у містах — і ті, хто шукає співмешканця, і ті, хто здає вільну кімнату/сублет. Продукт працює у понад 200 містах світу (переважно США), віковий рейтинг застосунку 4+. Точний розмір активної аудиторії у відкритих джерелах не вказано. <a class="cite" href="#s41">S41</a></td></tr>
+<tr><th>Основа продукту</th><td>Маркетплейс кімнат і співмешканців: оголошення вільних кімнат, сублетів і місячної оренди + профілі шукачів. Двостороння модель — обидві сторони публікують і знаходять одне одного. Є мобільний веб і нативні застосунки iOS/Android, а також вбудоване бронювання з обробкою платежів. <a class="cite" href="#s41">S41</a></td></tr>
+<tr><th>Ключовий механізм</th><td>Пошук через фільтри (локація, ціна, терміновість заїзду, тип житла, зручності, тривалість оренди) плюс перегляд на мапі й сортування (нові, ціна). У застосунку є механіка «swipe and match» зі співмешканцями. Контакт відбувається через вбудований чат; безкоштовним користувачам дозволено до 10 контактів. Алгоритмічного скору сумісності у відкритих джерелах не описано — матчинг тримається на фільтрах і свайпах. <a class="cite" href="#s42">S42</a></td></tr>
+<tr><th>Довіра</th><td>Ключовий акцент — верифікація: перевірка ID і бекграунд-чеки, що підтверджують особу користувача. Є статус/бейдж «Verified» і вбудований чат, що приховує особисті контакти до готовності поділитися. Повна верифікація платна. Стороння оцінка довіри: рейтинг App Store лише 2.1/5 (733 відгуки) через технічні проблеми. <a class="cite" href="#s41">S41</a></td></tr>
+<tr><th>Монетизація</th><td>Freemium: базовий пошук і 1 активне оголошення + до 10 контактів безкоштовно. Платні плани знімають ліміти й дають верифікацію: Roomi Gold (9.99$), Premium (14.99$/тиждень і 29.99$/місяць), Safety Bundle (14.99$, або 9.99$/тиждень). Ціни IAP підтверджені сторінкою App Store; деталі лімітів безкоштовного тарифу (1 оголошення, 10 контактів) та бізнес-планів (Solo Agent, Business Unlimited) — з FAQ сайту, а не з App Store. <a class="cite" href="#s41">S41</a></td></tr>
+</tbody></table></div>
+</div>
+<div class="card">
+<h4>Diggz</h4>
+<p><b>Чому в групі:</b> Diggz — зрілий американський продукт із власним алгоритмом сумісності способу життя, який ранжує людей одне для одного (пряма протилежність нашому підходу «тільки фільтри»). Це орієнтир того, куди Куток міг би вирости, а не прямий конкурент у Києві: інша гео (США/Канада), масштаб і зрілий монетизаційний шар (Premium). Тому — аспіраційний.</p>
+<p><b>Що взяти для Кутка:</b> Механіка «взаємний лайк → матч → вільний чат» + платні «Instant Messages», щоб написати без матчу, — зрозумілий, знайомий з дейтингу патерн першого контакту, який знімає незручність і водночас захищає від спаму. Варто взяти: контакти ховаються до згоди, а спілкування залишається на платформі «доки не відчуєш, що безпечно дати свій контакт». Також сильна ідея довіри — верифікація профілю (соцмережі, рекомендації, спільні друзі/школи/місто) прямо піднімає профіль у видачі, тобто довіра винагороджується видимістю. Навіть якщо ми не робимо алгоритмічний скор, ці елементи довіри й безпечного контакту прямо лягають у наш фокус на довірі.</p>
+<div class="twrap"><table><thead><tr><th>Вісь</th><th>Дані</th></tr></thead><tbody>
+<tr><th>Аудиторія</th><td>Люди, що шукають співмешканця або здають вільну кімнату/суборенду у великих містах США та Канади (Нью-Йорк, Лос-Анджелес, Чикаго, Маямі, Торонто та ін.). Точних цифр аудиторії чи вікового сегмента у відкритих джерелах не знайдено. <a class="cite" href="#s46">S46</a></td></tr>
+<tr><th>Основа продукту</th><td>Двосторонній маркетплейс: можна виставити кімнату/суборенду в оренду АБО створити оголошення «шукаю співмешканця» (roommate wanted). Дає пошук і кімнат, і людей, із фільтрами за зручностями, хоча огляд відзначає, що фільтрів менше, ніж у Roomi. <span class="cite nv">неперевірено</span></td></tr>
+<tr><th>Ключовий механізм</th><td>Власний алгоритм ранжує кандидатів за сумісністю: схожий бюджет, дата заїзду, ті самі райони, звички (чистота, куріння, алкоголь), робочий графік, спільні друзі. Контакт — як у дейтингу: лайк → взаємний лайк = матч → вільний чат; можна пропустити очікування, надіславши платний Instant Message. <a class="cite" href="#s44">S44</a></td></tr>
+<tr><th>Довіра</th><td>Довіра будується на верифікації профілю (Facebook, особисті рекомендації, спільні друзі/школи/місто), причому верифікація підвищує профіль у видачі. Плюс ШІ проти шахраїв і ручна перевірка профілів, а також унікальна функція — запит tenant screening report (перевірка орендаря) прямо в застосунку. <a class="cite" href="#s46">S46</a></td></tr>
+<tr><th>Монетизація</th><td>Freemium: базовий пошук, лайки та повідомлення безкоштовні (безкоштовні ліміти: до 50 лайків/день, повідомлення обмежуються — за оглядом, апгрейд потрібен після 5 надісланих). Diggz Premium дає ~10 поновлюваних Instant Messages/день, безлімітні лайки, підняття у видачі та преміум-фільтри; підписка тижнева/двотижнева/місячна рекурентна. Точних цін у доларах у відкритих джерелах не знайдено. <a class="cite" href="#s45">S45</a></td></tr>
+</tbody></table></div>
+</div>
+<div class="card">
+<h4>Roomster</h4>
+<p><b>Чому в групі:</b> Roomster — глобальний зрілий гравець (10M+ завантажень, 20M+ акаунтів за власними даними) з десятиліттями на ринку US/global, нативними застосунками iOS/Android і побудованою freemium-монетизацією. Для раннього Кутка це орієнтир масштабу й механік (верифікація, paywall на комунікацію), а не прямий конкурент у Києві. Водночас це аспіраційний приклад із застереженням: Roomster програв позов FTC за фейкові відгуки й оголошення — тобто взірець того, як НЕ треба будувати довіру.</p>
+<p><b>Що взяти для Кутка:</b> (1) безкоштовна ручна ID-верифікація з бейджем «перевірено» + перевірка права власності на житло (utility bill/lease) для тих, хто здає кімнату — сильний сигнал довіри, який лягає на нашу двосторонню модель; (2) вбудований чат до обміну контактами. Але вивчати як анти-приклад монетизації: агресивний paywall на повідомлення + фейкові оголошення привели Roomster до позову FTC. Для Кутка це аргумент тримати старт безкоштовним, а зростання будувати на реальній довірі, а не на штучних сповіщеннях про «нові повідомлення».</p>
+<div class="twrap"><table><thead><tr><th>Вісь</th><th>Дані</th></tr></thead><tbody>
+<tr><th>Аудиторія</th><td>Глобальна аудиторія US/international: шукачі кімнат і співмешканців, орендодавці/власники житла, студенти (off-campus housing). За власними заявами на сайті — 10M+ завантажень і 20M+ акаунтів. <a class="cite" href="#s48">S48</a></td></tr>
+<tr><th>Основа продукту</th><td>Двостороння платформа-маркетплейс для пошуку кімнат/сусідів: користувачі створюють безкоштовний профіль, задають бюджет/локацію/дату заїзду, переглядають оголошення кімнат і профілі людей та публікують власні. Є мобільний веб + нативні застосунки iOS/Android. <a class="cite" href="#s48">S48</a></td></tr>
+<tr><th>Ключовий механізм</th><td>Матчингу за алгоритмом немає — це self-service пошук за фільтрами (ціна, район, спосіб життя тощо) плюс перегляд оголошень/профілів. Контакт відбувається через вбудований захищений чат, персональні контактні дані не розкриваються публічно до комунікації в застосунку. <a class="cite" href="#s48">S48</a></td></tr>
+<tr><th>Довіра</th><td>У 2022 FTC та штати подали позов, а у серпні 2023 забезпечили запропонований ордер, що назавжди забороняє Roomster Corp. і власникам (John Shriber, Roman Zaks) купувати/стимулювати відгуки: компанія використовувала фейкові відгуки й фіктивні (phony) оголошення, щоб заманювати користувачів. Продуктові механізми довіри (ручна ID-верифікація, бейдж «Validated», proof-of-residence, скринінг повідомлень) декларує сам Roomster. <a class="cite" href="#s53">S53</a></td></tr>
+<tr><th>Монетизація</th><td>Freemium з paywall на комунікацію: реєстрація, профіль, перегляд і публікація безкоштовні, але щоб читати/відповідати на повідомлення, потрібна платна підписка. Користувачі скаржаться на плату за перегляд повідомлень. <span class="cite nv">неперевірено</span></td></tr>
+</tbody></table></div>
+</div>
+</section>
+<section id="market" class="spy"><h2><span class="h2n">03</span>Патерни ринку</h2>
+<h3>Спільні патерни</h3>
+<div class="card"><h4>Пошук працює на фільтрах, а не на алгоритмі сумісності</h4><p>Майже всі гравці дають користувачу самому фільтрувати оголошення за районом, ціною й параметрами та читати картки/пости; алгоритмічного скору сумісності немає (єдиний виняток на ринку — Diggz).</p><p class="mtag">Докази: OLX.ua <a class="cite" href="#s1">S1</a>, Flatfy / LUN.ua <a class="cite" href="#s22">S22</a>, SpareRoom <a class="cite" href="#s32">S32</a>, Roomi <a class="cite" href="#s42">S42</a>, Roomster <a class="cite" href="#s48">S48</a></p></div>
+<div class="card"><h4>Безкоштовне базове ядро + freemium-монетизація на просуванні/апгрейдах</h4><p>Реєстрація, перегляд і базове розміщення безкоштовні, а платять за просування оголошень, ранній доступ чи зняття лімітів. Це підтверджує стратегію Кутка «безкоштовно на старті».</p><p class="mtag">Докази: OLX.ua <a class="cite" href="#s2">S2</a>, DIM.RIA <a class="cite" href="#s8">S8</a>, SpareRoom <a class="cite" href="#s32">S32</a>, Bird (bird.in.ua / birdrent.com) <a class="cite" href="#s27">S27</a>, Flatfy / LUN.ua <a class="cite" href="#s22">S22</a></p></div>
+<div class="card"><h4>Структуровані оголошення-картки з гео- та ціновими фільтрами</h4><p>Структуровані гравці подають контент однотипними картками (фото, ціна, район/метро) з фільтрами за геолокацією та бюджетом — на противагу хаотичній текстовій стрічці в Telegram/Facebook.</p><p class="mtag">Докази: OLX.ua <a class="cite" href="#s1">S1</a>, DIM.RIA <a class="cite" href="#s5">S5</a>, Bird (bird.in.ua / birdrent.com) <a class="cite" href="#s24">S24</a>, Roomi <a class="cite" href="#s42">S42</a></p></div>
+<div class="card"><h4>Довіра будується на перевірці/модерації оголошень, а не особи</h4><p>У структурованих гравців довіра тримається на модерації, рейтингах чи інспекції самого оголошення/об'єкта, а не на верифікації людини-співмешканця — тут ринкова прогалина для Кутка.</p><p class="mtag">Докази: OLX.ua <a class="cite" href="#s3">S3</a>, DIM.RIA <a class="cite" href="#s6">S6</a>, Flatfy / LUN.ua <a class="cite" href="#s21">S21</a>, Bird (bird.in.ua / birdrent.com) <a class="cite" href="#s25">S25</a></p></div>
+<h3>Ключові відмінності</h3>
+<div class="card"><h4>Двостороння модель (кімнати + профілі людей) проти односторонніх оголошень</h4><p>Спеціалізовані roommate-продукти дають обом сторонам публікувати й знаходити одне одного (і кімната, і профіль шукача), тоді як класифайди й агрегатори мають лише оголошення про об'єкти без окремої сутності профілю шукача.</p><p class="mtag">Докази: SpareRoom <a class="cite" href="#s28">S28</a>, Roomster <a class="cite" href="#s48">S48</a>, HomeMate (Telegram) <a class="cite" href="#s11">S11</a>, OLX.ua <a class="cite" href="#s1">S1</a>, DIM.RIA <a class="cite" href="#s5">S5</a></p></div>
+<div class="card"><h4>Що саме верифікують: особу людини vs об'єкт нерухомості vs продавця vs нічого</h4><p>Гравці принципово розходяться в об'єкті довіри — західні roommate-сервіси перевіряють особу (ID/бекграунд), DIM.RIA перевіряє нерухомість, OLX рейтингує продавця через товарну угоду, а Telegram/Facebook не мають жодної верифікації.</p><p class="mtag">Докази: Roomi <a class="cite" href="#s41">S41</a>, DIM.RIA <a class="cite" href="#s6">S6</a>, OLX.ua <a class="cite" href="#s3">S3</a>, Telegram-канали пошуку сусідів (КНУсусіди та подібні) <a class="cite" href="#s14">S14</a></p></div>
+<div class="card"><h4>Алгоритмічний матчинг сумісності — лише Diggz, решта тільки фільтри</h4><p>Diggz ранжує людей одне для одного за сумісністю способу життя (бюджет, дата, район, звички), тоді як усі інші свідомо лишаються на самостійному пошуку за фільтрами — це рішення, яке Куток теж обрав.</p><p class="mtag">Докази: Diggz <a class="cite" href="#s44">S44</a>, Roomi <a class="cite" href="#s42">S42</a>, OLX.ua <a class="cite" href="#s1">S1</a></p></div>
+<div class="card"><h4>Гейтований вбудований чат (контакти сховані) проти відкритих контактів у пості</h4><p>Продуктові платформи ховають контакти до згоди й тримають комунікацію всередині (chat request → чат), а Telegram/Facebook-канали світять особистий хендл прямо в оголошенні без будь-якого захисту.</p><p class="mtag">Докази: Badi <a class="cite" href="#s33">S33</a>, Roomi <a class="cite" href="#s41">S41</a>, Telegram-канали пошуку сусідів (КНУсусіди та подібні) <a class="cite" href="#s13">S13</a>, HomeMate (Telegram) <a class="cite" href="#s12">S12</a></p></div>
+<div class="card"><h4>Фокус на людині-співмешканцеві та побутових звичках проти фокусу на об'єкті нерухомості</h4><p>Одні гравці описують людину і сумісність побуту (звички, чистота, куріння, режим), інші — виключно об'єкт (метраж, поверх, ціна). Куток претендує саме на першу, слабо зайняту нішу «людей і сумісності».</p><p class="mtag">Докази: Diggz <a class="cite" href="#s44">S44</a>, Telegram-канали пошуку сусідів (КНУсусіди та подібні) <a class="cite" href="#s14">S14</a>, DIM.RIA <a class="cite" href="#s5">S5</a>, Bird (bird.in.ua / birdrent.com) <a class="cite" href="#s24">S24</a></p></div>
+</section>
+<section id="benchmark" class="spy"><h2><span class="h2n">04</span>Бенчмарк — механізми для MVP</h2>
+<h3>Топ-механізми, що варто взяти</h3><div class="cards">
+<div class="card win"><h4>Двостороння модель контенту: оголошення кімнат + окремі профілі шукачів, де обидві сторони публікують і знаходять одне одного</h4><p><b>Як працює:</b> Користувач створює або оголошення «є кімната», або профіль/оголошення «шукаю куток». Пошук працює в обидва боки: власник кімнати може знайти потрібного співмешканця за його профілем, а шукач — кімнату. У SpareRoom це базова структура («Create an ad and let potential flatmates find you»), так само в Roomi (оголошення кімнат/сублетів + профілі шукачів) і Roomster (профіль + перегляд і оголошень, і людей).</p><p><b>Чому підходить Кутку:</b> Прямо реалізує ключове рішення брифу — двостороння модель «і кімнати, і люди». Це головна диференціація від OLX/DIM.RIA (односторонній каталог обʼєктів, профілів шукачів як сутності немає) і від Telegram-каналів (неструктурована стрічка). Валідовано попитом: HomeMate і КНУсусіди де-факто вже мають двосторонній контент («шукаю кімнату» + «шукаю сусіда в квартиру»).</p><p class="mtag">Джерела: SpareRoom <a class="cite" href="#s28">S28</a> · Roomi <a class="cite" href="#s41">S41</a> · Roomster <a class="cite" href="#s48">S48</a></p></div>
+<div class="card win"><h4>Структуровані фільтри саме під підселення (район/метро, діапазон бюджету, тварини, меблювання) + фільтри за побутовими звичками співмешканця</h4><p><b>Як працює:</b> Контент подається картками з машинно-читабельними полями, а пошук іде набором фільтрів без алгоритмічного ранжування. OLX уже дає робочі фільтри під оренду кімнат у Києві (район, ціна ~1200–5000 грн, площа, меблювання, дозвіл на тварин). Roomi додає фільтри терміновості заїзду, типу житла, зручностей і тривалості. У Telegram-каналах ці ж параметри (бюджет, район/гілка метро, дата заселення, охайність) уже пишуть, але лише вільним текстом.</p><p><b>Чому підходить Кутку:</b> Реалізує рішення брифу «пошук ТІЛЬКИ за фільтрами, свідомо без скору сумісності». Куток формалізує в структуровані поля те, що в Telegram лежить сирим текстом, і додає те, чого немає в OLX — фільтри за звичками (чистота, гості, тварини, куріння, режим дня), бо йдеться про сумісність людей, а не про товарну угоду.</p><p class="mtag">Джерела: OLX.ua <a class="cite" href="#s1">S1</a> · Roomi <a class="cite" href="#s42">S42</a></p></div>
+<div class="card win"><h4>Гейтований контакт із взаємною згодою: запит на чат → внутрішній чат, персональні контакти сховані до згоди</h4><p><b>Як працює:</b> Щоб написати іншій стороні, користувач надсилає chat request; спілкування триває у вбудованому чаті, а особисті контакти не розкриваються публічно. У Badi — «send a chat request → talk to the lister → rent with total security». У Roomi чат ховає особисті контакти «до готовності поділитися». Roomster тримає комунікацію у захищеному чаті без публічного розкриття контактів.</p><p><b>Чому підходить Кутку:</b> Прямо лягає на рішення брифу — вбудований чат, контакти не світяться до взаємної згоди, є скарги/блокування. Це головна закрита діра конкурентів-субститутів: у HomeMate, КНУсусідах і Facebook-групах Telegram-нік світиться відкрито в кожному пості без жодного захисту. Куток дає безпечний перший контакт замість зливу контактів незнайомцю.</p><p class="mtag">Джерела: Badi <a class="cite" href="#s33">S33</a> · Roomi <a class="cite" href="#s41">S41</a> · Roomster <a class="cite" href="#s48">S48</a></p></div>
+<div class="card win"><h4>Верифікація особи з видимим бейджем «перевірено» на профілі та оголошенні</h4><p><b>Як працює:</b> Користувач проходить перевірку, після чого біля профілю зʼявляється видимий бейдж довіри, що піднімає готовність писати саме йому. У Badi верифікація (підтвердження банківського рахунку) дає синій бейдж «trusted user» плюс постійний моніторинг спільноти й проста система репортів («investigate every single report»). Roomi робить ID/бекграунд-верифікацію з бейджем «Verified». DIM.RIA візуалізує довіру статусом «Перевірене оголошення» через інспекцію.</p><p><b>Чому підходить Кутку:</b> Реалізує рішення брифу — верифікація + бейджі «перевірено» як сигнал довіри, і механіку скарг/блокування. Куток бере саму механіку «верифікація → видимий бейдж → пріоритет уваги», але наповнює її своїм дешевим способом (телефон через SMS/Telegram + лінк на Instagram/LinkedIn), а не банк-рахунком чи виїздом інспектора. Це головна відсутня цінність у HomeMate/Telegram-каналах, де довіри нуль.</p><p class="mtag">Джерела: Badi <a class="cite" href="#s34">S34</a> · Roomi <a class="cite" href="#s41">S41</a> · DIM.RIA <a class="cite" href="#s6">S6</a></p></div>
+<div class="card win"><h4>Агрегація й ML-дедуплікація оголошень з розкиданих джерел (OLX, Telegram, рієлтори) для наповнення першого контенту</h4><p><b>Як працює:</b> Система збирає оголошення з десятків зовнішніх джерел в один інтерфейс і ML-групує дублікати про той самий обʼєкт. Flatfy/LUN збирає й дедуплікує вторинку з OLX, Rieltor, DOM.RIA з контролем якості картки (мін. 3 фото інтерʼєру 600x600, точна адреса, заборона телефонів на фото, модерація до 24 год). Bird агрегує ~70 тис. оголошень із топ-сайтів із ШІ-розпізнаванням адрес і прибиранням дублікатів.</p><p><b>Чому підходить Кутку:</b> Це прямий рецепт проти болю брифу «оголошення розкидані по Telegram і OLX» і робоча відповідь на відкрите питання cold start — чим наповнити стрічку на старті, поки немає власного контенту. Куток може перейняти дедуплікацію + жорсткі вимоги до якості картки, додавши те, чого в агрегаторах немає: двосторонні профілі людей і звички співмешканця.</p><p class="mtag">Джерела: Flatfy/LUN.ua <a class="cite" href="#s21">S21</a> · джерело <a class="cite" href="#s22">S22</a> · Bird <a class="cite" href="#s24">S24</a></p></div>
+</div><h3>Механізми, що не спрацюють</h3><div class="cards">
+<div class="card no"><h4>Алгоритмічний скор сумісності способу життя, що ранжує людей одне для одного</h4><p><b>Як працює:</b> Diggz має власний алгоритм, який ранжує кандидатів у співмешканці за сумісністю: схожий бюджет, дата заїзду, ті самі райони, звички (чистота, куріння, алкоголь), спільні друзі. Верифіковані профілі додатково піднімаються у видачі. Контакт іде за дейтинг-логікою: лайк → взаємний лайк = матч.</p><p><b>Чому не підходить:</b> Прямо суперечить свідомому рішенню брифу — «пошук ТІЛЬКИ за фільтрами, без алгоритмічного скору сумісності; люди фільтрують самі й читають профілі». Скор додає непрозорість, потребує даних і тюнінгу, яких на старті немає, і забирає в користувача контроль, тоді як Куток свідомо ставить на прозорі фільтри + самостійне читання профілів.</p><p class="mtag">Джерела: Diggz <a class="cite" href="#s44">S44</a></p></div>
+<div class="card no"><h4>Пейволл на комунікацію / платний ранній доступ до свіжих оголошень</h4><p><b>Як працює:</b> SpareRoom тримає нові безкоштовні оголошення молодші за 7 днів лише для платних Early Bird-користувачів (100 пенсів/день, £14/тиж), тобто платиш за швидший контакт. Roomster ставить платну підписку на читання/відповідь на повідомлення. Badi монетизується через буст і керований сервіс.</p><p><b>Чому не підходить:</b> Суперечить рішенню брифу «безкоштовно на старті, фокус на зростанні та довірі». Платний барʼєр на перший контакт душить обсяг матчів саме тоді, коли Кутку критично набрати ліквідність двосторонньої мережі. Roomster — прямий анти-приклад: агресивний paywall на повідомлення разом із фейковими оголошеннями привів до позову й заборони FTC, тобто це ще й ризик для довіри — головної цінності Кутка.</p><p class="mtag">Джерела: SpareRoom Early Bird <a class="cite" href="#s32">S32</a> · Roomster (анти-приклад, FTC) <a class="cite" href="#s53">S53</a></p></div>
+</div></section>
+<section id="uxpatterns" class="spy"><h2><span class="h2n">05</span>Патерни взаємодії</h2>
+<p>Пʼять принципово різних UX-патернів підбору співмешканця (крок 05–06, артефакт «Пʼять патернів підбору сусіда» <a class="cite" href="#s56">S56</a>), звірених із живими прикладами з ринку.</p>
+<div class="cards">
+<div class="card"><h4>Свайп-колода</h4><p><b>Як працює:</b> Картки одна за одною; свайп вправо — цікаво, вліво — ні; взаємний лайк відкриває чат.</p><p><b>Де застосовується:</b> Дейтинг, а з roommate-продуктів — Roomi (механіка «swipe &amp; match»).</p><p><b>Коли підходить:</b> Швидко й звично, добре працює на великому потоці кандидатів.</p><p><b>Коли ламається:</b> Ламається на малому пулі (десяток кімнат вичерпується за хвилину) і знецінює рішення, яке ухвалюють на місяці спільного життя — воно не про свайп.</p></div>
+<div class="card pattern"><h4>Пошук і фільтри (маркетплейс) <span class="gtag hard">обраний</span></h4><p><b>Як працює:</b> Стрічка карток + набір фільтрів (район, бюджет, звички); користувач сам звужує й читає профілі.</p><p><b>Де застосовується:</b> OLX, SpareRoom, Roomster, DIM.RIA — фактичний стандарт ринку.</p><p><b>Коли підходить:</b> Дає контроль і прозорість, плавно деградує навіть при малому обсязі, нативно лягає на двосторонню модель.</p><p><b>Коли ламається:</b> Порожня видача при надто вузьких фільтрах; потребує нейтрального сортування, щоб не стати нескінченним скролом.</p></div>
+<div class="card"><h4>Алгоритмічний скор сумісності</h4><p><b>Як працює:</b> Система рахує «сумісність» за звичками/бюджетом/датою і ранжує людей одне для одного.</p><p><b>Де застосовується:</b> Єдиний на ринку — Diggz (США).</p><p><b>Коли підходить:</b> Знімає з користувача роботу з відбору, коли даних і кандидатів багато.</p><p><b>Коли ламається:</b> «Чорна скринька» без прозорості, потребує обсягу даних і тюнінгу, яких у молодого продукту немає; забирає контроль — а бриф свідомо обрав фільтри.</p></div>
+<div class="card"><h4>Довірена мережа спільноти</h4><p><b>Як працює:</b> Пошук усередині замкненої спільноти (виш, роботодавець, ЖК), де вже є базова довіра й спільні знайомі.</p><p><b>Де застосовується:</b> КНУсусіди (студентська приналежність), Facebook-групи (спільні друзі/профіль).</p><p><b>Коли підходить:</b> Довіра «безкоштовна» — вона вже вбудована в приналежність; сильний старт для cold-start.</p><p><b>Коли ламається:</b> Не масштабується за межі спільноти; поза нею довіра зникає, а сегментація дробить і без того малий ринок.</p></div>
+<div class="card"><h4>Реверсивний пост (шукач публічно)</h4><p><b>Як працює:</b> Не кімнати шукають людину, а людина публікує «шукаю куток», і пропозиції приходять до неї.</p><p><b>Де застосовується:</b> Профілі шукачів у SpareRoom, оголошення «шукаю сусіда» в HomeMate/КНУсусідах.</p><p><b>Коли підходить:</b> Балансує двосторонній ринок, коли кімнат мало, а шукачів багато; дає контент з боку попиту.</p><p><b>Коли ламається:</b> Працює лише як доповнення — сам по собі не закриває задачу підбору й потребує зустрічного боку пропозиції.</p></div>
+</div>
+<div class="callout accent"><span class="ico">✓</span><div><b>Вердикт.</b> Обраний — <b>пошук і фільтри</b>: (1) двостороння модель Кутка <a class="cite" href="#s55">S55</a> нативно лягає на маркетплейс (як SpareRoom); (2) бриф ухвалив «тільки фільтри, без алгоскору» <a class="cite" href="#s55">S55</a> — і ринок це підтверджує: алгоскор має лише Diggz; (3) список деградує плавно навіть при десятку кімнат. <b>Другий за умови cold-start</b> — довірена мережа спільноти (посів через виші/ЖК). <b>Не підходять</b> — свайп-колода (знецінює рішення на місяці) та алгоскор (непрозорість, якої бриф уникнув).</div></div>
+</section>
+<section id="conclusions" class="spy"><h2><span class="h2n">06</span>Висновки — прогалини та гіпотези</h2>
+<div class="gap"><p class="lbl">Прогалина 1</p><p class="gt">Бриф не визначає, як наповнити першу стрічку контентом. Без критичної маси і кімнат, і профілів двостороння модель мертва на старті — порожня стрічка не дає цінності першим користувачам.</p><p class="hy"><b>Гіпотеза:</b> Засіяти стрічку через ML-агрегацію + дедуплікацію відкритих оголошень (OLX, Telegram-канали, DIM.RIA) як seed-контент, паралельно вручну верифікуючи перші реальні профілі; агреговані картки чесно позначати «неперевірено» до підтвердження власником, щоб не змішувати їх із верифікованим ядром.</p><p class="fr">Випливає з: <b>БЕНЧМАРК — Flatfy/LUN та Bird будують продукт на ML-дедуплікації (~70k оголошень з OLX/Rieltor/DIM.RIA, перевірка до 24 год). КОНКУРЕНТИ — HomeMate (~240–700 підписників) і КНУсусіди (3,6K) показують, що вільного двостороннього контенту в Telegram достатньо для парсингу, а ніша не зайнята сильним гравцем.</b></p><p class="fr" style="margin-top:.3rem">Відкрите питання брифу: cold start (як наповнити перший контент — парсинг Telegram-груп / ручний посів)</p></div>
+<div class="gap"><p class="lbl">Прогалина 2</p><p class="gt">Верифікація «телефон + соцлінк» слабша за галузевий стандарт довіри, а відгуки «після заселення» мають проблему курки-яйця: немає механізму підтвердити сам факт заселення, і на старті нема кому лишати відгуки — головна цінність (довіра) не працює з дня 1.</p><p class="hy"><b>Гіпотеза:</b> Багаторівнева довіра: базовий бейдж за телефоном, вищий — за опційною (можливо платною) верифікацією особи селфі+документ; факт заселення підтверджувати взаємним підтвердженням обох сторін у чаті; до накопичення відгуків показувати проксі-сигнали довіри — давність акаунта, повнота профілю, швидкість відповідей.</p><p class="fr">Випливає з: <b>БЕНЧМАРК — SpareRoom (платна ID+background check з бейджем-галочкою), Badi (верифікація банк-рахунку → «trusted»), Diggz (tenant screening report), DIM.RIA (виїзд інспектора + звірка з держреєстром). КОНКУРЕНТИ — OLX-рейтинг «перевірено» видається лише через OLX Доставку і не переноситься на оренду житла.</b></p><p class="fr" style="margin-top:.3rem">Відкрите питання брифу: нове</p></div>
+<div class="gap"><p class="lbl">Прогалина 3</p><p class="gt">Бриф описує лише реактивну модерацію (скарги/блокування), але не задає проактивного контролю якості оголошень і захисту від фейків/скаму — а це головний ризик ніші оренди, і відкрите питання «хто обробляє скарги» лишається без операційної відповіді.</p><p class="hy"><b>Гіпотеза:</b> Ввести обовʼязкові вимоги до картки до публікації (мін. фото інтерʼєру, заборона контактів на фото/в тексті, точний район) + подвійну модерацію (авто-фільтр підозрілого + жива перевірка); бейдж «перевірено» присвоювати лише після проходження, а не за фактом реєстрації.</p><p class="fr">Випливає з: <b>ПАТЕРНИ — Roomster програв позов FTC саме за фейкові оголошення (phony listings). БЕНЧМАРК — SpareRoom модерує кожне оголошення двічі (авто + жива команда) 7 днів/тиждень; Flatfy перевіряє до 24 год і вимагає ≥3 фото 600×600 без телефонів на фото. КОНКУРЕНТИ — у Telegram/Facebook модерація мінімальна (ручний пропуск адміном), це їхня головна діра.</b></p><p class="fr" style="margin-top:.3rem">Відкрите питання брифу: модерація (хто і як обробляє скарги на старті)</p></div>
+<div class="gap"><p class="lbl">Прогалина 4</p><p class="gt">Свідома відмова від будь-якого ранжування («тільки фільтри») ризикує дати погану навігацію: у двосторонній стрічці без сортування за релевантністю/свіжістю користувач тоне у скролі, а вузькі фільтри за звичками часто дають порожню видачу — тобто відтворює біль Telegram, який мав замінити.</p><p class="hy"><b>Гіпотеза:</b> Лишити фільтри ядром, але додати нейтральне (не «скор сумісності») сортування — свіжість, повнота й верифікованість профілю, активність — плюс підказки «розширити фільтр» при малій видачі; звички показувати прозорими тегами для самостійного зіставлення.</p><p class="fr">Випливає з: <b>БЕНЧМАРК — Diggz ранжує кандидатів за тими самими сигналами, що збирає Куток (чистота, куріння, бюджет, дата заїзду), Roomi додає swipe&amp;match поверх фільтрів. ПАТЕРНИ — у КНУсусіди/HomeMate пошук = ручний скрол хронологічної стрічки, саме той сценарій, який бриф хоче структурувати.</b></p><p class="fr" style="margin-top:.3rem">Відкрите питання брифу: нове</p></div>
+<div class="gap"><p class="lbl">Прогалина 5</p><p class="gt">Гейтований чат «контакти не світяться до взаємної згоди» додає тертя проти головної переваги Telegram — миттєвого відкритого контакту й прямого DM; є ризик не переманити аудиторію, яка звикла писати напряму.</p><p class="hy"><b>Гіпотеза:</b> Зробити перший крок максимально легким: one-tap «написати» без обміну контактами, швидкі шаблони-відповіді, видима реактивність/онлайн — щоб швидкість входу конкурувала з Telegram, а гейтинг контактів лишався непомітним тертям, а не бар'єром.</p><p class="fr">Випливає з: <b>ПАТЕРНИ — у HomeMate, КНУсусіди й Facebook-групах Telegram-нік видно прямо в пості й пишуть в особисті одразу (контакт відкритий без згоди). БЕНЧМАРК — Badi (chat request → чат) і Diggz (лайк → взаємний матч → чат) теж ховають контакти до згоди, але компенсують це знайомим із дейтингу one-tap флоу.</b></p><p class="fr" style="margin-top:.3rem">Відкрите питання брифу: нове</p></div>
+<div class="gap"><p class="lbl">Прогалина 6</p><p class="gt">Двостороння модель потребує балансу обох сторін, але бриф не визначає, з якого боку наповнювати ринок першим і як міряти «здоровʼя» ліквідності — що прямо змикається з невирішеним питанням метрик успіху MVP.</p><p class="hy"><b>Гіпотеза:</b> На старті засівати перевагою сторону пропозиції (оголошення кімнат — їх легше парсити), а метрикою успіху MVP брати не DAU, а частку оголошень/профілів, що отримали ≥1 взаємний контакт, і медіанний час до першого матчу.</p><p class="fr">Випливає з: <b>БЕНЧМАРК — SpareRoom, Badi і Roomi двосторонні й свідомо тримають активними обидві сторони (оголошення кімнат + профілі шукачів). КОНКУРЕНТИ — у КНУсусіди/HomeMate контент уже двосторонній («є кімната» + «шукаю куток»), що валідує модель, але жоден канал не має метрики матчингу.</b></p><p class="fr" style="margin-top:.3rem">Відкрите питання брифу: метрики успіху MVP (кількість матчів, заселень, DAU)</p></div>
+<div class="gap"><p class="lbl">Прогалина 7</p><p class="gt">«Безкоштовно на старті» задано, але не окреслено, які майбутні монетизаційні важелі сумісні з довірою — а деякі патерни її прямо руйнують, тож проєктувати «з запасом» треба вже зараз, щоб не закласти токсичну механіку.</p><p class="hy"><b>Гіпотеза:</b> Проєктувати монетизацію на просуванні/бусті оголошень і опційній платній верифікації (продавати цінність і видимість, а не доступ), свідомо уникаючи paywall на комунікацію/прочитання повідомлень; ядро першого контакту тримати безкоштовним назавжди.</p><p class="fr">Випливає з: <b>ПАТЕРНИ — Roomster дійшов до позову FTC через агресивний paywall на повідомлення + фейки (анти-урок). БЕНЧМАРК — SpareRoom монетизує ранній доступ (Early Bird £14/тиж), Roomi — ліміти (1 оголошення / 10 контактів), OLX — платні Підняття/Топ/VIP поверх безкоштовної бази; усі продають просування/ліміти, а не саму довіру.</b></p><p class="fr" style="margin-top:.3rem">Відкрите питання брифу: монетизація (freemium, буст оголошень — проєктуємо з запасом)</p></div>
+</section>
+<section id="reresearch" class="spy"><h2><span class="h2n">07</span>Доресерч після персон</h2>
+<p class="lede">Точкове закриття дірок, знайдених аудитом персон/JTBD (<a href="https://github.com/denysosadchyi/kootok/blob/main/research/audit.md" target="_blank" rel="noopener">audit.md</a>). Виконано 2026-07-30 web-фетчем; кожне джерело нижче реально відкрито й перевірено, якщо не зазначено інше. Нові джерела — <a class="cite" href="#s57">S57</a>–<a class="cite" href="#s70">S70</a>.</p>
+
+<h3 id="q-scam">Питання 2 аудиту: чи реальний страх шахрайства саме в київської аудиторії?</h3>
+<div class="callout accent"><span class="ico">✓</span><div><span class="vd ok">підтверджено</span><b>Вердикт: підтверджено як локальний український біль, а не імпорт із кейсу FTC/Roomster.</b> Але з важливим нюансом: домінуюча емоція — не «мене пограбують», а «мені брешуть і витрачають мій час».</div></div>
+
+<h4 style="margin-top:22px">Знахідки</h4>
+<div class="cards">
+<div class="card"><h4>~10% орендарів стикалися з шахраями</h4><p>Оцінка голови комітету Союзу фахівців нерухомості України (експертна оцінка рієлторки, <b>НЕ соціологія</b> — джерело даних стаття не вказує). Описані схеми: аванс до перегляду, підроблені документи, «орендарі», що вивозять меблі.</p><p class="mtag">Джерело: <a class="cite" href="#s57">S57</a></p></div>
+
+<div class="card"><h4>Шахрайства зросли «у кілька разів» з початку повномасштабного вторгнення</h4><p>Експертка Вікторія Берещак. Ключова деталь: завдаток буває мікроскопічний, <b>150–200 грн</b> — схема розрахована на потік, жертва втрачає мало грошей, але багато часу й довіри. Друга схема: «здавання одного об'єкту кільком людям».</p>
+<blockquote class="real">«Зросла кількість фіктивних оголошень, які пропонують супервигідні умови, які ви отримаєте, як тільки переведете на картку завдаток»
+<span class="qsrc">пряма цитата · Вікторія Берещак · <a class="cite" href="#s58">S58</a></span></blockquote>
+<p class="mtag">Джерело: <a class="cite" href="#s58">S58</a></p></div>
+
+<div class="card"><h4>Київська поліція офіційно попереджає</h4><p>ГУ НП у м. Києві, 10.11.2022. Вразлива група — переселенці.</p>
+<blockquote class="real">«оренда житла за вигідною ціною для переселенців — аферисти здають "уявні" квартири... після отримання передплати не виходять на зв'язок»
+<span class="qsrc">пряма цитата · ГУ НП у м. Києві · <a class="cite" href="#s59">S59</a></span></blockquote>
+<p class="mtag">Джерело: <a class="cite" href="#s59">S59</a></p></div>
+
+<div class="card"><h4>Недовіра — дефолтний стан аудиторії до нових сервісів оренди</h4><p>Перша реакція DOU-спільноти на новий київський сервіс Josti (платні контакти власника) — не «як зручно», а сценарій скаму.</p>
+<blockquote class="real">«Берём несуществующую хату, генерим фотки, ставим привлекательную цену. Собираем по 4%...»
+<span class="qsrc">пряма цитата · DOU-тред про Josti · <a class="cite" href="#s60">S60</a></span></blockquote>
+<p class="mtag">Джерело: <a class="cite" href="#s60">S60</a></p></div>
+
+<div class="card"><h4>Платний доступ + неактуальне оголошення переживається як обман</h4><p>Навіть якщо формально це не скам: відгук в App Store на Josti (рейтинг застосунку 3.5/5). Прямий аргумент <b>проти платного розблокування контактів у MVP</b> і <b>за агресивну архівацію протухлих оголошень</b>.</p>
+<blockquote class="real">«Заплатила 700 грн, щоб мені сказали, що квартира здана. Гроші повернули на баланс застосунку»
+<span class="qsrc">пряма цитата · відгук в App Store (Josti) · <a class="cite" href="#s61">S61</a></span></blockquote>
+<p class="mtag">Джерело: <a class="cite" href="#s61">S61</a></p></div>
+
+<div class="card"><h4>У побутових розмовах болить не стільки крадіжка, скільки брехня посередників</h4><p>У великому DOU-треді про пошук житла домінують скарги на рієлторів, а історій «мене кинули на гроші» немає. Увага: атрибуція цитат цього треду до конкретних авторів <b>ненадійна</b> (WebFetch-самарайзер плутав ніки), тому цитати наводимо без імен.</p>
+<blockquote class="real">«Ріелтор — це проксі, який може викривити загальну картину для обох сторін, аби пошвидше закрити об'єкт»
+<span class="qsrc">пряма цитата без атрибуції · DOU · <a class="cite" href="#s62">S62</a></span></blockquote>
+<p class="mtag">Джерело: <a class="cite" href="#s62">S62</a></p></div>
+
+<div class="card"><h4>Власники кімнат уже вручну «верифікують» кандидатів через соцмережі</h4><p>Реальне оголошення кімнати в Києві (Межигірська, <b>7000 грн</b>) вимагає надіслати інформацію про себе і посилання на соцмережі для «схвалення мешканця». Тобто механіка «лінк на соцмережі» з брифу відтворює те, що ринок робить сам — це піднімає її з «кандидата на виліт» (за матрицею <a href="personas.html#core">jtbd</a>) до <b>підтвердженої знизу практики</b>.</p><p class="mtag">Джерело: <a class="cite" href="#s63">S63</a></p></div>
+
+<div class="card"><h4>Системна причина, чому шахрайство квітне</h4><p>Ринок оренди майже повністю тіньовий — за 2024 рік дохід від оренди офіційно задекларували <b>~900 осіб</b> на всю країну; житло орендують <b>65%</b> тих, хто переїхав після 24.02.2022 (проти 17% загалом); рієлторів 40–80 тис., кваліфікованими ринок вважає 2–3 тис.</p><p class="mtag">Джерело: <a class="cite" href="#s64">S64</a></p></div>
+</div>
+
+<div class="callout rust"><span class="ico">⚠️</span><div><b>Що не вдалося дістати (чесно).</b> Відгуки OLX/DIM.RIA у Google Play (контент за JS, WebFetch не бачить), Reddit r/Kyiv (фетч заблоковано), форум Мінфіну (тематичної гілки про оренду, схоже, немає), vidhuk.ua про DIM.RIA — 403. Живих цитат саме про підселення/кімнати (а не квартири) досі майже немає — <b>головна відкрита дірка</b>.</div></div>
+
+<h3 id="q-belong">Питання 1 аудиту: чи працює приналежність до «свого» каналу як механізм довіри?</h3>
+<div class="callout rust"><span class="ico">✕</span><div><span class="vd no">спростовано</span><b>Вердикт: спростовано — найсильніші докази дали самі канали.</b> Досліджено <b>2 738 реальних постів</b> (повна пагінація t.me/s/ трьох каналів) + зовнішні джерела.</div></div>
+
+<h4 style="margin-top:22px">Знахідки</h4>
+<div class="cards">
+<div class="card"><h4>Адміни КНУсусідів самі відмовляються від ролі гаранта</h4><p>Закріплений пост-інструкція каналу містить дисклеймер (дослівно). Вимог «підтвердь, що ти студент КНУ» немає навіть в інструкції подання.</p>
+<blockquote class="real">«Ми не перевіряємо авторів постів і не несемо відповідальності за шахрайство. Уважність — ваше все. Не кидайте передоплату незнайомим людям, зустрічайтеся в публічних місцях, перевіряйте документи»
+<span class="qsrc">дослівно · закріплений пост КНУсусідів · <a class="cite" href="#s65">S65</a></span></blockquote>
+<p class="mtag">Джерело: <a class="cite" href="#s65">S65</a></p></div>
+
+<div class="card"><h4>Ті самі адміни у власному гайді попереджають про шахраїв</h4><p>З чек-листом анти-шахрайства (підозріло низькі ціни, відмова від договору, «залог за перегляд») і порадою шукати також на LUN/OLX/DOM.RIA.</p>
+<blockquote class="real">«Шахраїв вистачає, будьте пильні!»
+<span class="qsrc">дослівно · адмінський гайд КНУсусідів · <a class="cite" href="#s66">S66</a></span></blockquote>
+<p class="mtag">Джерело: <a class="cite" href="#s66">S66</a></p></div>
+
+<div class="card"><h4>«Свої» канали не відсіюють комерційних гравців</h4><p>Щонайменше <b>24 з 2 460</b> архівних постів КНУсусідів містять комісію посереднику; у новому каналі — пряме промо агентства нерухомості. Плюс структурна сліпота: це канал <b>без коментарів</b> — учасники фізично не можуть поскаржитись чи попередити інших, тож відсутність скарг ≠ відсутність проблем.</p>
+<blockquote class="real">«оплата: 14000 в місяць + 14000 залог + 7000 ріелтору», «окрема кімната 5000 + 50% рієлтору»
+<span class="qsrc">дослівно · пости КНУсусідів · <a class="cite" href="#s67">S67</a></span></blockquote>
+<p class="mtag">Джерело: <a class="cite" href="#s67">S67</a></p></div>
+
+<div class="card"><h4>HomeMate Kyiv не має навіть декларативної рамки довіри</h4><p>За 91 переглянутий пост — нуль правил, нуль попереджень, нуль дисклеймерів; комісії теж трапляються.</p>
+<blockquote class="real">«2850 місяць + комунальні / Комісія 2000»
+<span class="qsrc">дослівно · пост HomeMate Kyiv · <a class="cite" href="#s68">S68</a></span></blockquote>
+<p class="mtag">Джерело: <a class="cite" href="#s68">S68</a></p></div>
+
+<div class="card"><h4>Верифікований поліцейський кейс скаму саме в тематичній Telegram-спільноті</h4><p>22-річний студент знайшов оголошення оренди в тематичній спільноті, переказав <b>8 200 грн</b> передоплати за «бронювання», псевдоорендодавець зник, оголошення видалили (Тернопіль, не Київ — <b>індикатор, не доказ</b> по КНУсусідах).</p><p class="mtag">Джерело: <a class="cite" href="#s69">S69</a></p></div>
+
+<div class="card"><h4>Структурна вразливість месенджера не залежить від «спільнотності»</h4><p>Ризики зростають саме при спілкуванні виключно через месенджери — ідентичність = нік, історії взаємодій немає, зникнути коштує нуль.</p><p class="mtag">Джерело: <a class="cite" href="#s70">S70</a></p></div>
+</div>
+
+<div class="callout"><span class="ico">🔍</span><div><b>Що не знайдено.</b> Публічної скарги «мене кинули саме в КНУсусідах» — але це <b>слабкий негативний доказ</b> (канал без коментарів = скаргу нікуди подати).</div></div>
+
+<div class="callout accent"><span class="ico">✎</span><div><b>Правильне формулювання для персон/JTBD.</b> Приналежність до каналу дає <b>релевантність аудиторії й соціальний контекст</b> (спільний виш, схожі бюджети, зрозумілі райони) — але <b>не дає жодного механізму довіри</b>; це підтверджено адмінськими заявами обох досліджених каналів.</div></div>
+
+<h4 style="margin-top:22px">Наслідки для продукту</h4>
+<div class="gap"><p class="lbl">Наслідки для продукту</p><p class="gt">Безпека/верифікація лишається в ядрі MVP, але акцент повідомлення варто змістити з «захистимо твої гроші» на «тут не бреше ні оголошення, ні людина» — актуальність оголошень і підтверджена особа, без платного доступу до контактів.</p><p class="hy">Ніша Кутка — не «спільнота вже дає довіру, ми зручніше упакуємо», а навпаки: <b>довіра ніде не реалізована</b>, тож верифікація (телефон + соцмережі + відгуки) — справжня диференціація, а не косметика.</p></div>
+</section>
+<section id="screens" class="spy"><h2><span class="h2n">08</span>Скріни ключових екранів</h2><div class="shots">
+<figure><img loading="lazy" src="https://raw.githubusercontent.com/denysosadchyi/kootok/main/research/screens/01-olx-list.png" alt="OLX.ua"><figcaption><b>OLX.ua</b>Пошук «підселення», Київ — публічно</figcaption></figure>
+<figure><img loading="lazy" src="https://raw.githubusercontent.com/denysosadchyi/kootok/main/research/screens/02-olx-detail.png" alt="OLX.ua"><figcaption><b>OLX.ua</b>Картка оголошення (згодом зникла — плинність)</figcaption></figure>
+<figure><img loading="lazy" src="https://raw.githubusercontent.com/denysosadchyi/kootok/main/research/screens/08-dimria-home.png" alt="DIM.RIA"><figcaption><b>DIM.RIA</b>Головна: «Перевірена нерухомість на мапі»</figcaption></figure>
+<figure><img loading="lazy" src="https://raw.githubusercontent.com/denysosadchyi/kootok/main/research/screens/09-flatfy-home.png" alt="Flatfy / LUN"><figcaption><b>Flatfy / LUN</b>Головна: агрегатор оренди/продажу</figcaption></figure>
+<figure><img loading="lazy" src="https://raw.githubusercontent.com/denysosadchyi/kootok/main/research/screens/03-homemate-render-note.png" alt="HomeMate"><figcaption><b>HomeMate</b>Рендер недоступний у headless (не «доступ обмежено»)</figcaption></figure>
+<figure><img loading="lazy" src="https://raw.githubusercontent.com/denysosadchyi/kootok/main/research/screens/04-spareroom-home.png" alt="SpareRoom"><figcaption><b>SpareRoom</b>Головна — публічно</figcaption></figure>
+<figure><img loading="lazy" src="https://raw.githubusercontent.com/denysosadchyi/kootok/main/research/screens/05-spareroom-search.png" alt="SpareRoom"><figcaption><b>SpareRoom</b>Пошук, Лондон (Києва на платформі немає)</figcaption></figure>
+<figure><img loading="lazy" src="https://raw.githubusercontent.com/denysosadchyi/kootok/main/research/screens/06-badi-home.png" alt="Badi"><figcaption><b>Badi</b>Головна — публічно</figcaption></figure>
+<figure><img loading="lazy" src="https://raw.githubusercontent.com/denysosadchyi/kootok/main/research/screens/07-fb-group-access-limited.png" alt="Facebook-група"><figcaption><b>Facebook-група <span class="nv-txt">(доступ обмежено)</span></b>Доступ обмежено — стіна логіну</figcaption></figure>
+</div></section>
+<section id="sources" class="spy"><h2><span class="h2n">09</span>Джерела</h2>
+<div class="twrap"><table class="src-table"><thead><tr><th>#</th><th>Джерело</th><th>Що підтверджує</th></tr></thead><tbody>
+<tr id="s1"><td>S1</td><td><a href="https://www.olx.ua/uk/nedvizhimost/komnaty/dolgosrochnaya-arenda-komnat/kiev/q-%D0%BF%D1%96%D0%B4%D1%81%D0%B5%D0%BB%D0%B5%D0%BD%D0%BD%D1%8F/" target="_blank" rel="noopener">https://www.olx.ua/uk/nedvizhimost/komnaty/dolgosrochnaya-arenda-komnat/kiev/q-%D0%BF%D1%96%D0%B4%D1%81%D0%B5%D0%BB%D0%B5%D0%BD%D0%BD%D1%8F/</a></td><td>Розділ оренди кімнат/підселення в Києві — структура, фільтри, картки, ~54 оголошення, бейдж Власник</td></tr>
+<tr id="s2"><td>S2</td><td><a href="https://business.olx.ua/reklama/" target="_blank" rel="noopener">https://business.olx.ua/reklama/</a></td><td>Платні послуги просування: Підняття, Топ, VIP і пакети (монетизація)</td></tr>
+<tr id="s3"><td>S3</td><td><a href="https://business.olx.ua/novi-reytynhy/" target="_blank" rel="noopener">https://business.olx.ua/novi-reytynhy/</a></td><td>Нова система рейтингів і відгуків продавця; перевірені оцінки лише через OLX Доставку (довіра)</td></tr>
+<tr id="s4"><td>S4</td><td><a href="https://www.olxgroup.com/news/olx-group-launches-otodim-platform-in-ukraine-deepening-commitment-to-the-countrys-real-estate-market/" target="_blank" rel="noopener">https://www.olxgroup.com/news/olx-group-launches-otodim-platform-in-ukraine-deepening-commitment-to-the-countrys-real-estate-market/</a></td><td>Аудиторія OLX Ukraine: відновлення 92%/99%/93% до довоєнного рівня, зростання real estate</td></tr>
+<tr id="s5"><td>S5</td><td><a href="https://www.pravda.com.ua/projects/2025/12/23/8013085/" target="_blank" rel="noopener">https://www.pravda.com.ua/projects/2025/12/23/8013085/</a></td><td>Стаття УП про те, як працює DIM.RIA: аудиторія, 185k об'єктів, 91% перевірених, механізм, монетизація</td></tr>
+<tr id="s6"><td>S6</td><td><a href="https://dom.ria.com/uk/verification-attributes-buyers.html" target="_blank" rel="noopener">https://dom.ria.com/uk/verification-attributes-buyers.html</a></td><td>Офіційна сторінка: як DIM.RIA перевіряє нерухомість і продавців (інспектор, реєстр, цифри 140k+/1500+/400+)</td></tr>
+<tr id="s7"><td>S7</td><td><a href="https://dom.ria.com/uk/perevireni-dla-orendariv/" target="_blank" rel="noopener">https://dom.ria.com/uk/perevireni-dla-orendariv/</a></td><td>Офіційна сторінка для орендарів: 4 етапи перевірки, ціна перевірки 100 грн; механіку пошуку не описує</td></tr>
+<tr id="s8"><td>S8</td><td><a href="https://help.ria.com/index.php?%2FKnowledgebase%2FArticle%2FView%2F1110%2F129=" target="_blank" rel="noopener">https://help.ria.com/index.php?%2FKnowledgebase%2FArticle%2FView%2F1110%2F129=</a></td><td>База знань RIA: вартість розміщення оголошень по регіонах (Київ 250 грн), безкоштовно за умови перевірки</td></tr>
+<tr id="s9"><td>S9</td><td><a href="https://dom.ria.com/uk/arenda-komnat/kiev/" target="_blank" rel="noopener">https://dom.ria.com/uk/arenda-komnat/kiev/</a></td><td>Стрічка оренди кімнат у Києві — підтверджує наявність сегмента кімнат</td></tr>
+<tr id="s10"><td>S10</td><td><a href="https://uk.telegram-store.com/catalog/channels/homemate1" target="_blank" rel="noopener">https://uk.telegram-store.com/catalog/channels/homemate1</a></td><td>Картка каналу homemate1: опис, 242 підписники, категорія Нерухомість, адмін @j1teamzv, рейтинг 2.0/5 за 3 відгуками, статус неактивний</td></tr>
+<tr id="s11"><td>S11</td><td><a href="https://t.me/s/homemate1" target="_blank" rel="noopener">https://t.me/s/homemate1</a></td><td>Веб-превʼю каналу: оголошення, ціни 3400–10000 грн, райони Києва, інструкція подання через @j1teamzv, згадка @HomeMateKyiv, структура постів текст+емодзі</td></tr>
+<tr id="s12"><td>S12</td><td><a href="https://t.me/s/HomeMateKyiv" target="_blank" rel="noopener">https://t.me/s/HomeMateKyiv</a></td><td>Веб-превʼю чату ~694 підписники: оголошення з віком/бюджетом, відкриті особисті хендли, адмін @Topbaa, відсутність верифікації/відгуків, гео Київ</td></tr>
+<tr id="s13"><td>S13</td><td><a href="https://t.me/s/knu_susid" target="_blank" rel="noopener">https://t.me/s/knu_susid</a></td><td>Оригінальний канал КНУсусіди (3,6K підписників): приклади постів, формат оголошень, бюджети, гео (синя/червона гілки), відкриті tg-ніки, згадка про переїзд на knu_susidd</td></tr>
+<tr id="s14"><td>S14</td><td><a href="https://t.me/s/knu_susidd" target="_blank" rel="noopener">https://t.me/s/knu_susidd</a></td><td>Новий канал КНУсусіди (1,16K підписників): напівстандартизований формат публікацій, відсутність бота/комісії/верифікації/відгуків/бейджів</td></tr>
+<tr id="s15"><td>S15</td><td><a href="https://t.me/s/rooms_kyiv" target="_blank" rel="noopener">https://t.me/s/rooms_kyiv</a></td><td>Канал Rooms Київ (1,37K підписників): структура оголошень оренди з емодзі-маркерами, явне позиціювання «без комісійних», перевірка господаря через реєстри/Open Data Bot — для порівняння моделі</td></tr>
+<tr id="s16"><td>S16</td><td><a href="https://www.facebook.com/groups/rieltory.zlo/?locale=uk_UA" target="_blank" rel="noopener">https://www.facebook.com/groups/rieltory.zlo/?locale=uk_UA</a></td><td>Топова київська група оренди/сусідів — підтверджує назву й тематику продукту</td></tr>
+<tr id="s17"><td>S17</td><td><a href="https://www.facebook.com/groups/kyivorendakvartyr/" target="_blank" rel="noopener">https://www.facebook.com/groups/kyivorendakvartyr/</a></td><td>Ще одна київська група оренди квартир (структура контенту)</td></tr>
+<tr id="s18"><td>S18</td><td><a href="https://techcrunch.com/2018/06/20/facebook-subscription-groups/" target="_blank" rel="noopener">https://techcrunch.com/2018/06/20/facebook-subscription-groups/</a></td><td>Функція платних Subscription Groups Facebook: ціни $4.99–$29.99/міс, комісія</td></tr>
+<tr id="s19"><td>S19</td><td><a href="https://www.facebook.com/help/901690736606156" target="_blank" rel="noopener">https://www.facebook.com/help/901690736606156</a></td><td>Ролі адмін/модератор у групах Facebook — механізм модерації (з пошуку, сторінка за логіном)</td></tr>
+<tr id="s20"><td>S20</td><td><a href="https://flatfy.ua/uk/" target="_blank" rel="noopener">https://flatfy.ua/uk/</a></td><td>Головна Flatfy — опис продукту, категорії контенту, гео (підтверджує агрегатор/дедуплікацію та категорії квартир+будинків, але НЕ підтверджує категорію кімнат чи виокремлення 2020)</td></tr>
+<tr id="s21"><td>S21</td><td><a href="https://flatfy.ua/uk/boards" target="_blank" rel="noopener">https://flatfy.ua/uk/boards</a></td><td>Сторінка розміщення оголошень — правила, модерація до 24 год, вимоги до фото/якості, партнерські сайти (перевірено, підтверджує)</td></tr>
+<tr id="s22"><td>S22</td><td><a href="https://epravda.com.ua/publications/2021/05/24/674150/" target="_blank" rel="noopener">https://epravda.com.ua/publications/2021/05/24/674150/</a></td><td>Стаття Економічної правди — бізнес-модель, монетизація (преміум-пакети 25–75+ тис грн, 70% з первинки), аудиторія 2,5 млн/12 млн, ML-механізм (перевірено, підтверджує)</td></tr>
+<tr id="s23"><td>S23</td><td><a href="https://birdrent.com/" target="_blank" rel="noopener">https://birdrent.com/</a></td><td>Офіційний лендинг bird (iOS-застосунок оренди житла на 3D-мапі)</td></tr>
+<tr id="s24"><td>S24</td><td><a href="https://apps.apple.com/ua/app/bird-ai-%D0%BE%D1%80%D0%B5%D0%BD%D0%B4%D0%B0-%D0%BA%D0%B2%D0%B0%D1%80%D1%82%D0%B8%D1%80/id1446261104" target="_blank" rel="noopener">https://apps.apple.com/ua/app/bird-ai-%D0%BE%D1%80%D0%B5%D0%BD%D0%B4%D0%B0-%D0%BA%D0%B2%D0%B0%D1%80%D1%82%D0%B8%D1%80/id1446261104</a></td><td>App Store: функціонал, ~70 тис. оголошень, джерела агрегації, міста, оцінки 4.9/41k, розробник Birb OU</td></tr>
+<tr id="s25"><td>S25</td><td><a href="https://nashkiev.ua/news/rumtur-i-nikakoi-komissii-arendovat-kvartiru-v-kieve-stalo-prosche" target="_blank" rel="noopener">https://nashkiev.ua/news/rumtur-i-nikakoi-komissii-arendovat-kvartiru-v-kieve-stalo-prosche</a></td><td>Огляд Bird Select: перевірені квартири, відеотури, запис через Telegram-менеджера, без комісії</td></tr>
+<tr id="s26"><td>S26</td><td><a href="https://kosht.media/servis-dlia-orendy-kvartyr-bird-zapratsiuvav-u-novykh-mistakh-milyonnykakh/" target="_blank" rel="noopener">https://kosht.media/servis-dlia-orendy-kvartyr-bird-zapratsiuvav-u-novykh-mistakh-milyonnykakh/</a></td><td>Огляд запуску в містах-мільйонниках, агрегація, ШІ-дедуплікація, фільтри, Bird Select</td></tr>
+<tr id="s27"><td>S27</td><td><a href="https://vctr.media/ua/ukrayinskyj-bird-vyjshov-u-polshhu-i-zminyv-biznes-model-334921/" target="_blank" rel="noopener">https://vctr.media/ua/ukrayinskyj-bird-vyjshov-u-polshhu-i-zminyv-biznes-model-334921/</a></td><td>Бізнес-модель: B2B/реклама/комісія в Україні vs B2C-підписка 30 zł/міс у Польщі; засновник Арсеній Фещенко</td></tr>
+<tr id="s28"><td>S28</td><td><a href="https://www.spareroom.co.uk/content/about-us/how-spareroom-works/" target="_blank" rel="noopener">https://www.spareroom.co.uk/content/about-us/how-spareroom-works/</a></td><td>Опис як працює продукт: двостороння модель, пошук за локацією, контакт і перегляд</td></tr>
+<tr id="s29"><td>S29</td><td><a href="https://www.spareroom.co.uk/content/about/about-spareroom-new/" target="_blank" rel="noopener">https://www.spareroom.co.uk/content/about/about-spareroom-new/</a></td><td>Про SpareRoom: №1 flatshare у UK, заснований 1999, модерація 7 днів/тиждень, Trustpilot</td></tr>
+<tr id="s30"><td>S30</td><td><a href="https://www.spareroom.com/content/info-faq/verification-explained/" target="_blank" rel="noopener">https://www.spareroom.com/content/info-faq/verification-explained/</a></td><td>Пояснення верифікації: документ+селфі, бекграунд-чек, бейдж-галочка, ~$15 за 12 міс</td></tr>
+<tr id="s31"><td>S31</td><td><a href="https://blog.spareroom.co.uk/what-spareroom-do-to-keep-you-safe/" target="_blank" rel="noopener">https://blog.spareroom.co.uk/what-spareroom-do-to-keep-you-safe/</a></td><td>Безпека: подвійна модерація (авто + люди), команда 7 днів/тиждень проти скаму</td></tr>
+<tr id="s32"><td>S32</td><td><a href="https://www.spareroom.co.uk/content/info-advice/early-bird-explained/" target="_blank" rel="noopener">https://www.spareroom.co.uk/content/info-advice/early-bird-explained/</a></td><td>Early Bird: ціни в GBP та механіка платного раннього доступу до нових оголошень</td></tr>
+<tr id="s33"><td>S33</td><td><a href="https://badi.com/about-badi" target="_blank" rel="noopener">https://badi.com/about-badi</a></td><td>Офіційна сторінка «про Badi»: двостороння модель (шукачі + лістери), «leading room and apartment rental platform», флоу пошук → chat request → чат. НЕ містить цифр 6M/300k/2M.</td></tr>
+<tr id="s34"><td>S34</td><td><a href="https://badi.com/trust-and-safety" target="_blank" rel="noopener">https://badi.com/trust-and-safety</a></td><td>Офіційна сторінка довіри й безпеки: верифікація банк-рахунку, синій бейдж trusted, моніторинг спільноти, репорти («investigate every single report»), захист платежів. Підтверджено дослівно.</td></tr>
+<tr id="s35"><td>S35</td><td><a href="https://plus.badi.com/owners/" target="_blank" rel="noopener">https://plus.badi.com/owners/</a></td><td>Badi Plus для власників — керований сервіс оренди по кімнатах: «We handle marketing, tenant selection, maintenance, and operations», «We pay your rent monthly». Підтверджено.</td></tr>
+<tr id="s36"><td>S36</td><td><a href="https://techcrunch.com/2019/01/10/badi-gets-30m-for-ai-aided-room-rentals/" target="_blank" rel="noopener">https://techcrunch.com/2019/01/10/badi-gets-30m-for-ai-aided-room-rentals/</a></td><td>TechCrunch: раунд $30M, ML-матчинг, база в Барселоні (через пошуковий сніпет, напряму не відкривалось)</td></tr>
+<tr id="s37"><td>S37</td><td><a href="https://badi.com/blog/en/lister-score/" target="_blank" rel="noopener">https://badi.com/blog/en/lister-score/</a></td><td>Сторінка Lister Score (спроба відкрити не вдалась — таймаут; деталі формули не підтверджені)</td></tr>
+<tr id="s38"><td>S38</td><td><a href="https://badiapp.zendesk.com/hc/en-gb/articles/12133567964444-What-is-Badi-Gold" target="_blank" rel="noopener">https://badiapp.zendesk.com/hc/en-gb/articles/12133567964444-What-is-Badi-Gold</a></td><td>Довідка про Badi Gold (HTTP 403; ціна ~19,99€ лише з пошукового сніпета, не підтверджена)</td></tr>
+<tr id="s39"><td>S39</td><td><a href="https://roomiapp.com" target="_blank" rel="noopener">https://roomiapp.com</a></td><td>Офіційний сайт: опис продукту, фільтри пошуку, мапа, безкоштовне розміщення, верифікація</td></tr>
+<tr id="s40"><td>S40</td><td><a href="https://roomiapp.com/faq" target="_blank" rel="noopener">https://roomiapp.com/faq</a></td><td>FAQ: ліміти безкоштовного тарифу (1 оголошення, 10 контактів), згадка планів Premium/Solo Agent/Unlimited, Global iD</td></tr>
+<tr id="s41"><td>S41</td><td><a href="https://apps.apple.com/us/app/roommates-by-roomi/id690346626" target="_blank" rel="noopener">https://apps.apple.com/us/app/roommates-by-roomi/id690346626</a></td><td>App Store: swipe and match, 200+ міст, верифікація ID/бекграунд, ціни IAP (Gold 9.99$, Premium 14.99$/29.99$, Safety Bundle 14.99$/9.99$), рейтинг 2.1/5 (733 відгуки)</td></tr>
+<tr id="s42"><td>S42</td><td><a href="https://roomiapp.com/rooms" target="_blank" rel="noopener">https://roomiapp.com/rooms</a></td><td>Сторінка оренди кімнат: фільтри, сортування (нові, ціна), перегляд на мапі, терміновість заїзду</td></tr>
+<tr id="s43"><td>S43</td><td><a href="https://roomiapp.com/roommates" target="_blank" rel="noopener">https://roomiapp.com/roommates</a></td><td>Сторінка з верифікованими профілями співмешканців</td></tr>
+<tr id="s44"><td>S44</td><td><a href="https://blog.diggz.co/the-new-and-improved-matching-algorithm/" target="_blank" rel="noopener">https://blog.diggz.co/the-new-and-improved-matching-algorithm/</a></td><td>Офіційний блог: фактори алгоритму сумісності (бюджет, дата заїзду, райони, чистота, куріння, алкоголь) та вплив верифікації (Facebook, спільні друзі/школи/міста) на видачу. НЕ містить: робочий графік, механіку лайк→матч→чат, платні Instant Messages.</td></tr>
+<tr id="s45"><td>S45</td><td><a href="https://blog.diggz.co/introducing-diggz-premium/" target="_blank" rel="noopener">https://blog.diggz.co/introducing-diggz-premium/</a></td><td>Офіційний блог: функції Diggz Premium (10 поновлюваних Instant Messages/день, безлімітні лайки, буст у видачі, преміум-фільтри), ліміт 50 лайків/день для звичайних, тижнева/двотижнева/місячна рекурентна підписка</td></tr>
+<tr id="s46"><td>S46</td><td><a href="https://www.prnewswire.com/news-releases/new-york-city-based-diggz-rolls-out-its-popular-online-roommate-matching-services-nationwide-300422873.html" target="_blank" rel="noopener">https://www.prnewswire.com/news-releases/new-york-city-based-diggz-rolls-out-its-popular-online-roommate-matching-services-nationwide-300422873.html</a></td><td>Прес-реліз: заснування (NYC, 2014, Avi Burstein і Ben Blodgett), експансія на 12 метро США/Канади вкл. Торонто, tenant screening report у застосунку, ШІ + ручна перевірка проти шахраїв, двостороння модель (виставити кімнату / знайти кімнату / шукати квартиру разом). НЕ згадує Facebook-верифікацію/рекомендації та буст у видачі.</td></tr>
+<tr id="s47"><td>S47</td><td><a href="https://roomiapp.com/blog/us/apartment-hacks/diggz-alternative-choose-best-room-finder" target="_blank" rel="noopener">https://roomiapp.com/blog/us/apartment-hacks/diggz-alternative-choose-best-room-finder</a></td><td>Сторонній огляд (конкурент Roomi): підтверджує менше фільтрів, ніж у Roomi, брак фільтра типу оголошення, апгрейд після 5 повідомлень, гео США. НЕ підтверджує двосторонню модель — фокус на пошуку кімнат</td></tr>
+<tr id="s48"><td>S48</td><td><a href="https://roomster.com/" target="_blank" rel="noopener">https://roomster.com/</a></td><td>Офіційний сайт: опис продукту, аудиторія, масштаб (10M+ завантажень, 20M+ акаунтів), фільтри, вбудований чат, ID-валідація — перевірено, підтверджує</td></tr>
+<tr id="s49"><td>S49</td><td><a href="https://roomster.com/trust-and-safety" target="_blank" rel="noopener">https://roomster.com/trust-and-safety</a></td><td>Сторінка Trust &amp; Safety: деталі ID-верифікації, бейджів, proof-of-residence, скринінгу повідомлень (декларація вендора; окремо не фетчив)</td></tr>
+<tr id="s50"><td>S50</td><td><a href="https://roomiapp.com/blog/us/apartment-hacks/roomster-alternative-choose-best-roommate-finder" target="_blank" rel="noopener">https://roomiapp.com/blog/us/apartment-hacks/roomster-alternative-choose-best-roommate-finder</a></td><td>Сторонній огляд (Roomi): підтверджує paywall на повідомлення, але дає ціни $9.99–$49.99 і 3-денну підписку — НЕ підтверджує заявлені $5.95–7.99/$29.95</td></tr>
+<tr id="s51"><td>S51</td><td><a href="https://www.trustpilot.com/review/roomster.com" target="_blank" rel="noopener">https://www.trustpilot.com/review/roomster.com</a></td><td>Trustpilot: відгуки користувачів (не фетчив у цій перевірці)</td></tr>
+<tr id="s52"><td>S52</td><td><a href="https://www.ftc.gov/news-events/news/press-releases/2022/08/ftc-states-sue-rental-listing-platform-roomster-its-owners-duping-prospective-renters-fake-reviews" target="_blank" rel="noopener">https://www.ftc.gov/news-events/news/press-releases/2022/08/ftc-states-sue-rental-listing-platform-roomster-its-owners-duping-prospective-renters-fake-reviews</a></td><td>Прес-реліз FTC 2022: позов за фейкові відгуки й фіктивні оголошення (WebFetch 403; сторінка існує)</td></tr>
+<tr id="s53"><td>S53</td><td><a href="https://www.ftc.gov/news-events/news/press-releases/2023/08/ftc-state-partners-secure-proposed-order-banning-roomster-owners-using-deceptive-reviews" target="_blank" rel="noopener">https://www.ftc.gov/news-events/news/press-releases/2023/08/ftc-state-partners-secure-proposed-order-banning-roomster-owners-using-deceptive-reviews</a></td><td>Прес-реліз FTC 2023: заборона Roomster і власникам — перевірено через прямий фетч (HTTP 200), підтверджує фейкові відгуки й phony listings</td></tr>
+<tr id="s54"><td>S54</td><td><a href="https://play.google.com/store/apps/details?id=com.roomster&hl=en_US" target="_blank" rel="noopener">https://play.google.com/store/apps/details?id=com.roomster&amp;hl=en_US</a></td><td>Google Play: підтвердження масштабу завантажень і платформи (не фетчив у цій перевірці)</td></tr>
+<tr id="s55"><td>S55</td><td><a href="https://github.com/denysosadchyi/kootok/blob/main/CLAUDE.md" target="_blank" rel="noopener">https://github.com/denysosadchyi/kootok/blob/main/CLAUDE.md</a></td><td>CLAUDE.md — продуктовий бриф Кутка (внутрішній документ)</td></tr>
+<tr id="s56"><td>S56</td><td><i>внутрішній документ</i></td><td>Артефакт «Пʼять патернів підбору сусіда» (крок 05–06) — внутрішній аналіз цієї сесії на основі CLAUDE.md</td></tr>
+<tr id="s57"><td>S57</td><td><a href="https://blog.olx.ua/25916/kozhen-desyatij-orendar-stikavsya-z-shaxrayami-yak-ne-potrapiti-na-gachok-shaxraiv-pid-chas-poshuku-kvartiri/" target="_blank" rel="noopener">https://blog.olx.ua/25916/…</a></td><td>Блог OLX (2021/22): експертна оцінка «кожен десятий орендар стикався з шахраями» (Союз фахівців нерухомості), три типові схеми. Перевірено фетчем</td></tr>
+<tr id="s58"><td>S58</td><td><a href="https://suspilne.media/rivne/370699-aki-najposirenisi-sahrajstva-na-rinku-orendi-zitla-poasnue-ekspertka/" target="_blank" rel="noopener">https://suspilne.media/rivne/370699-…</a></td><td>Суспільне (02.2023): шахрайства з орендою зросли «у кілька разів» після 24.02.2022; завдаток 150–200 грн; здача одного обʼєкта кільком людям. Перевірено фетчем, прямі цитати експертки</td></tr>
+<tr id="s59"><td>S59</td><td><a href="https://kyiv.npu.gov.ua/news/politseiski-kyieva-poperedzhaiut-hromadian-pro-nyzku-shakhraiskykh-skhem-zlovmysnykiv-v-umovakh-viiny" target="_blank" rel="noopener">https://kyiv.npu.gov.ua/news/politseiski-kyieva-poperedzhaiut-…</a></td><td>Офіційне попередження ГУ НП у м. Києві (11.2022): схема «уявних» квартир з передплатою, вразлива група — переселенці. Перевірено фетчем</td></tr>
+<tr id="s60"><td>S60</td><td><a href="https://dou.ua/forums/topic/57704/" target="_blank" rel="noopener">https://dou.ua/forums/topic/57704/</a></td><td>DOU-тред про сервіс Josti: перша реакція аудиторії — сценарій скаму («генерим фотки... собираем по 4%») — недовіра як дефолтний стан. Перевірено фетчем</td></tr>
+<tr id="s61"><td>S61</td><td><a href="https://apps.apple.com/ua/app/josti-%D0%B4%D0%BE%D0%B2%D0%B3%D0%BE%D1%81%D1%82%D1%80%D0%BE%D0%BA%D0%BE%D0%B2%D0%B0-%D0%BE%D1%80%D0%B5%D0%BD%D0%B4%D0%B0/id6446787293" target="_blank" rel="noopener">https://apps.apple.com/ua/app/josti-…/id6446787293</a></td><td>App Store Josti (3.5/5, 325 оцінок): живий відгук «Заплатила 700 грн, щоб мені сказали, що квартира здана» — платний доступ + неактуальність = субʼєктивний обман. Перевірено фетчем</td></tr>
+<tr id="s62"><td>S62</td><td><a href="https://dou.ua/forums/topic/52860/" target="_blank" rel="noopener">https://dou.ua/forums/topic/52860/</a></td><td>DOU-тред «Оренда помешкання: лайфхаки»: домінує недовіра до рієлторів, а не страх крадіжки. Перевірено фетчем; атрибуція цитат до ніків ненадійна (самарайзер плутав авторів) — цитуємо без імен</td></tr>
+<tr id="s63"><td>S63</td><td><a href="https://www.obozrevatel.com/ukr/ekonomika-glavnaya/economy/kimnata-pislya-remontu-za-7-tis-grn-viklikala-hvilyu-oburennya-ukraintsiv-shokuvav-stan-zhitla-v-tsentri-stolitsi.htm" target="_blank" rel="noopener">https://www.obozrevatel.com/ukr/…/kimnata-pislya-remontu-za-7-tis-grn-…</a></td><td>OBOZ (05.2026): реальне оголошення кімнати в Києві 7000 грн — власник вимагає лінки на соцмережі для «схвалення мешканця»; ручна верифікація через соцмережі вже існує знизу. Перевірено фетчем</td></tr>
+<tr id="s64"><td>S64</td><td><a href="https://epravda.com.ua/finances/yak-ukrajina-zahishchaye-rinok-zhitla-ta-borotbu-z-shahraystvom-u-neruhomosti-823583/" target="_blank" rel="noopener">https://epravda.com.ua/finances/yak-ukrajina-zahishchaye-rinok-zhitla-…</a></td><td>Економічна правда (07.2026, Олена Шуляк): тіньовість ринку оренди (~900 декларацій доходу за 2024), 65% орендарів серед переселенців, 40–80 тис. рієлторів без ліцензування. Перевірено фетчем</td></tr>
+<tr id="s65"><td>S65</td><td><a href="https://t.me/knu_susidd/14" target="_blank" rel="noopener">https://t.me/knu_susidd/14</a></td><td>Закріплений пост-інструкція КНУсусідів з дисклеймером: «Ми не перевіряємо авторів постів і не несемо відповідальності за шахрайство». Перевірено фетчем</td></tr>
+<tr id="s66"><td>S66</td><td><a href="https://t.me/knu_susid/1718" target="_blank" rel="noopener">https://t.me/knu_susid/1718</a></td><td>Адмінський гайд «Як студенту знайти житло в Києві»: «Шахраїв вистачає, будьте пильні!», чек-лист анти-шахрайства, порада шукати на LUN/OLX/DOM.RIA. Перевірено фетчем</td></tr>
+<tr id="s67"><td>S67</td><td><a href="https://t.me/s/knu_susid" target="_blank" rel="noopener">https://t.me/s/knu_susid</a></td><td>Суцільна вигрузка 2 460 постів (+187 у knu_susidd): ≥24 пости з комісією рієлтору (до 7000 грн / 50%), промо агентства нерухомості, канал без коментарів (скаргу подати нікуди). Перевірено фетчем з пагінацією</td></tr>
+<tr id="s68"><td>S68</td><td><a href="https://t.me/s/HomeMateKyiv" target="_blank" rel="noopener">https://t.me/s/HomeMateKyiv</a></td><td>91 пост HomeMate Kyiv: нуль правил/попереджень/дисклеймерів, комісії трапляються («Комісія 2000»), підпис постів технічним Telegram-ID без верифікації. Перевірено фетчем</td></tr>
+<tr id="s69"><td>S69</td><td><a href="https://www.0352.ua/news/4118970/sob-tut-ziti-potribna-peredoplata-sahrai-vidurili-grosi-u-studenta-akij-hotiv-orenduvati-kvartiru-v-ternopoli" target="_blank" rel="noopener">https://www.0352.ua/news/4118970/…</a></td><td>Поліцейський кейс: студент втратив 8 200 грн за оголошенням із тематичної Telegram-спільноти (Тернопіль). Перевірено фетчем, повний текст</td></tr>
+<tr id="s70"><td>S70</td><td><a href="https://sud.ua/uk/news/ukraine/342087-moshennicheskaya-arenda-pochemu-predoplata-za-kvartiru-mozhet-ostavit-vas-bez-deneg-i-zhilya" target="_blank" rel="noopener">https://sud.ua/uk/news/ukraine/342087-…</a></td><td>Механіка схеми шахрайської оренди: «ризики значно зростають при... спілкуванні лише через месенджери» — структурна вразливість незалежно від «спільнотності». Перевірено фетчем</td></tr>
+</tbody></table></div>
+<div class="foot">Джерело-верифіковане дослідження · 12 конкурентів · 49/60 осей підтверджено · 70 джерел · вихідний <a href="https://github.com/denysosadchyi/kootok/blob/main/research/research.md">research.md</a> · репозиторій <a href="https://github.com/denysosadchyi/kootok">denysosadchyi/kootok</a></div>
+</section>
+</div></main></div>
+<button class="themebtn" id="tt" title="Тема">◐</button>
+
+<script>
+(function(){
+ var root=document.documentElement, btn=document.getElementById('tt');
+ try{var s=localStorage.getItem('kt');if(s)root.setAttribute('data-theme',s);}catch(e){}
+ btn.addEventListener('click',function(){
+   var cur=root.getAttribute('data-theme');
+   if(!cur){cur=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}
+   var next=cur==='dark'?'light':'dark';
+   root.setAttribute('data-theme',next);
+   try{localStorage.setItem('kt',next);}catch(e){}
+ });
+ var links=[].slice.call(document.querySelectorAll('.sidebar .nav > a'));
+ var map={};links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a;});
+ var secs=[].slice.call(document.querySelectorAll('section.spy'));
+ var obs=new IntersectionObserver(function(es){
+   es.forEach(function(en){
+     if(en.isIntersecting){
+       links.forEach(function(a){a.classList.remove('active');});
+       var a=map[en.target.id];if(a)a.classList.add('active');
+     }
+   });
+ },{rootMargin:'-10% 0px -80% 0px',threshold:0});
+ secs.forEach(function(s){obs.observe(s);});
+ // close mobile menu on click
+ document.querySelectorAll('.mobtop a').forEach(function(a){a.addEventListener('click',function(){var d=document.querySelector('.mobtop details');if(d)d.open=false;});});
+})();
+</script>
+
+</body>
+</html>
