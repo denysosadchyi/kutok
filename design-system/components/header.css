@@ -62,3 +62,12 @@
   font-family: var(--font-family-1); font-weight: var(--font-weight-700);
   font-size: var(--font-size-18); line-height: 1.2; letter-spacing: -.01em; color: var(--text-primary);
 }
+
+/* ── Десктоп: шапка звужується в колонку контенту (сайдбар зліва, base.css) ──
+   Обидва варіанти шапки (.app-head сам собою й .app-head--back як модифікатор
+   того самого класу) більше не тягнуться на всю ширину оболонки — лише на
+   колонку "head" поруч із навігацією; той самий поріг --bp-desktop, що
+   в base.css/tabbar.css. */
+@media (min-width: 67.5rem) {
+  .app-head { grid-area: head; }
+}

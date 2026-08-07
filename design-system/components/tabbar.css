@@ -26,3 +26,37 @@
   background: var(--bg-navbar-badge); color: var(--on-navbar-badge);
   font-size: var(--font-size-10); font-weight: var(--font-weight-700); line-height: var(--size-15); text-align: center; border-radius: var(--radius-999);
 }
+
+/* ── Десктоп: та сама навігація, сайдбаром зліва замість пігулки знизу ──
+   responsive/width-audit.md (DESIGN.md §7) називає це «нова поведінка» —
+   ширина відкриває розкладку, якої на телефоні немає. Той самий поріг
+   --bp-desktop, що в base.css/header.css (тут — літерал, з тієї самої
+   причини: у @media-умові custom property не читається).
+
+   Список пунктів, іконки, лейблі, лічильники — ті самі елементи з тієї самої
+   розмітки (жоден екран не змінено), лише вертикальний стек замість
+   горизонтального ряду. Кольорові ролі не чіпаються: --bg-navbar,
+   --on-navbar, --bg-navbar-active, --on-navbar-active, --bg-navbar-badge,
+   --on-navbar-badge лишаються тими самими — тому активний стан, hover,
+   focus-visible і лічильник виглядають однаково в обох темах, як і на
+   мобільному (перевизначені в tokens.css [data-theme="dark"], не тут). */
+@media (min-width: 67.5rem) {
+  .tabbar {
+    grid-area: nav;
+    position: sticky; top: 0; bottom: auto;
+    align-self: stretch;
+    margin: 0;
+    flex-direction: column; align-items: stretch;
+    gap: var(--space-4);
+    border-radius: 0;
+    padding: var(--space-20) var(--space-12);
+  }
+  .tabbar a {
+    flex: none;
+    flex-direction: row; justify-content: flex-start;
+    gap: var(--space-10);
+    padding: var(--space-10) var(--space-14);
+  }
+  .tabbar a:focus-visible { outline-offset: -2px; }
+  .tab-txt { font-size: var(--font-size-13); }
+}

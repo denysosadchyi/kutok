@@ -17,6 +17,33 @@
 .app a:not(:where(.btn)) { color: inherit; text-decoration: none; }
 .app main { flex: 1 1 auto; }  /* навбар і FAB завжди внизу */
 
+/* ── Десктоп: таб-бар стає сайдбаром зліва, шапка звужується в колонку контенту ──
+   responsive/width-audit.md (DESIGN.md §7): один поріг на всю оболонку —
+   той самий --bp-desktop із tokens.css (67.5rem/1080px). Тут — літерал:
+   у значенні медіа-умови (не в декларації) custom property браузери ще не
+   читають. Grid замість flex-row: .app-head і main та .tabbar лишаються
+   прямими нащадками .app рівно в тому самому DOM-порядку, що й на мобільному
+   (жоден екран не міняється) — area-розкладка розводить їх по колонках без
+   переставляння розмітки. .app-head дістає area в header.css, .tabbar —
+   у tabbar.css: кожен компонент сам відповідає за свою половину. */
+@media (min-width: 67.5rem) {
+  .app {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    grid-template-rows: auto 1fr; /* ряд шапки — рівно висота вмісту, не
+      частка від min-height: 100vh. Без цього ряд без явного розміру бере
+      частку зайвої висоти (grid default align-content: stretch розтягує
+      auto-ряди на всю висоту .app) — і .app-head--back (flex-direction:
+      column, justify-content: space-between з базового .app-head)
+      розсуває бренд-рядок і back+заголовок на всю ту висоту замість того,
+      щоб лишитись компактним зверху. */
+    grid-template-areas: "nav head" "nav main";
+    max-width: var(--container-max);
+    min-height: 100vh;
+  }
+  .app main { grid-area: main; }
+}
+
 /* 1px тут — частина канонічної ідіоми приховування для скрін-рідерів
    (розмір + clip), а не дизайнерське значення: його не тюнять темою чи
    ребрендом, тому свідомо лишається числом. Те саме в .chk-line input,

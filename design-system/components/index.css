@@ -24,6 +24,33 @@
 .app a:not(:where(.btn)) { color: inherit; text-decoration: none; }
 .app main { flex: 1 1 auto; }  /* навбар і FAB завжди внизу */
 
+/* ── Десктоп: таб-бар стає сайдбаром зліва, шапка звужується в колонку контенту ──
+   responsive/width-audit.md (DESIGN.md §7): один поріг на всю оболонку —
+   той самий --bp-desktop із tokens.css (67.5rem/1080px). Тут — літерал:
+   у значенні медіа-умови (не в декларації) custom property браузери ще не
+   читають. Grid замість flex-row: .app-head і main та .tabbar лишаються
+   прямими нащадками .app рівно в тому самому DOM-порядку, що й на мобільному
+   (жоден екран не міняється) — area-розкладка розводить їх по колонках без
+   переставляння розмітки. .app-head дістає area в header.css, .tabbar —
+   у tabbar.css: кожен компонент сам відповідає за свою половину. */
+@media (min-width: 67.5rem) {
+  .app {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    grid-template-rows: auto 1fr; /* ряд шапки — рівно висота вмісту, не
+      частка від min-height: 100vh. Без цього ряд без явного розміру бере
+      частку зайвої висоти (grid default align-content: stretch розтягує
+      auto-ряди на всю висоту .app) — і .app-head--back (flex-direction:
+      column, justify-content: space-between з базового .app-head)
+      розсуває бренд-рядок і back+заголовок на всю ту висоту замість того,
+      щоб лишитись компактним зверху. */
+    grid-template-areas: "nav head" "nav main";
+    max-width: var(--container-max);
+    min-height: 100vh;
+  }
+  .app main { grid-area: main; }
+}
+
 /* 1px тут — частина канонічної ідіоми приховування для скрін-рідерів
    (розмір + clip), а не дизайнерське значення: його не тюнять темою чи
    ребрендом, тому свідомо лишається числом. Те саме в .chk-line input,
@@ -99,6 +126,15 @@
   font-size: var(--font-size-18); line-height: 1.2; letter-spacing: -.01em; color: var(--text-primary);
 }
 
+/* ── Десктоп: шапка звужується в колонку контенту (сайдбар зліва, base.css) ──
+   Обидва варіанти шапки (.app-head сам собою й .app-head--back як модифікатор
+   того самого класу) більше не тягнуться на всю ширину оболонки — лише на
+   колонку "head" поруч із навігацією; той самий поріг --bp-desktop, що
+   в base.css/tabbar.css. */
+@media (min-width: 67.5rem) {
+  .app-head { grid-area: head; }
+}
+
 /* ── search.css ────────────────────────────────────────────────────────────── */
 /* ── Поповер пошуку ── (listings 1:1) */
 .search-popover {
@@ -152,6 +188,40 @@
      темній смузі в обох темах і тому не перевертається разом зі сторінкою. */
   background: var(--bg-navbar-badge); color: var(--on-navbar-badge);
   font-size: var(--font-size-10); font-weight: var(--font-weight-700); line-height: var(--size-15); text-align: center; border-radius: var(--radius-999);
+}
+
+/* ── Десктоп: та сама навігація, сайдбаром зліва замість пігулки знизу ──
+   responsive/width-audit.md (DESIGN.md §7) називає це «нова поведінка» —
+   ширина відкриває розкладку, якої на телефоні немає. Той самий поріг
+   --bp-desktop, що в base.css/header.css (тут — літерал, з тієї самої
+   причини: у @media-умові custom property не читається).
+
+   Список пунктів, іконки, лейблі, лічильники — ті самі елементи з тієї самої
+   розмітки (жоден екран не змінено), лише вертикальний стек замість
+   горизонтального ряду. Кольорові ролі не чіпаються: --bg-navbar,
+   --on-navbar, --bg-navbar-active, --on-navbar-active, --bg-navbar-badge,
+   --on-navbar-badge лишаються тими самими — тому активний стан, hover,
+   focus-visible і лічильник виглядають однаково в обох темах, як і на
+   мобільному (перевизначені в tokens.css [data-theme="dark"], не тут). */
+@media (min-width: 67.5rem) {
+  .tabbar {
+    grid-area: nav;
+    position: sticky; top: 0; bottom: auto;
+    align-self: stretch;
+    margin: 0;
+    flex-direction: column; align-items: stretch;
+    gap: var(--space-4);
+    border-radius: 0;
+    padding: var(--space-20) var(--space-12);
+  }
+  .tabbar a {
+    flex: none;
+    flex-direction: row; justify-content: flex-start;
+    gap: var(--space-10);
+    padding: var(--space-10) var(--space-14);
+  }
+  .tabbar a:focus-visible { outline-offset: -2px; }
+  .tab-txt { font-size: var(--font-size-13); }
 }
 
 /* ── menu.css ────────────────────────────────────────────────────────────── */
