@@ -179,6 +179,44 @@
   --duration-1: .15s; /* було --dur */
   --easing-1: ease;   /* було --ease */
 
+  /* ── Адаптив: точки зміни поведінки ──
+     rem, не px: точка реагує на масштаб шрифту користувача, а не лише на
+     піксельну ширину вікна — той самий принцип, що й --font-size-* вище.
+
+     Рівно дві точки, бо responsive/width-audit.md називає рівно дві поведінки,
+     що змінюються ширшим екраном (третя категорія, «однаково», нової точки не
+     потребує — там нічого не перемикається):
+
+     --bp-tablet — де вмикається «розкладка ширше» (той самий вміст лягає в
+     колонки): audit.md — role-select, legal, listings, my-profile-seeker/host
+     (+ -edit), my-listings, photo-viewer. Не нова точка «під планшет» — це
+     вже прототипований поріг wireframes/listings-desktop.html
+     (@media (min-width: 760px): панель фільтрів + сітка карток).
+
+     --bp-desktop — де вмикається «нова поведінка» (майстер-деталь список+деталі,
+     жива прев'ю картки під час заповнення): audit.md — room, profile,
+     applications, candidates, dialogs, chat, profile-create-seeker/host,
+     room-create. Audit.md, примітка «Планшет vs десктоп»: планшет-портрет
+     замалий для двох панелей одночасно й лишається однопанельним, як телефон,
+     тому ця поведінка чекає ширшої точки — того самого порогу, що й третя
+     колонка сітки в wireframes/listings-desktop.html
+     (@media (min-width: 1080px): 1fr 1fr 1fr). */
+  --bp-tablet: 47.5rem;  /* 760px */
+  --bp-desktop: 67.5rem; /* 1080px */
+
+  /* ── Сітка (адаптив) ──
+     Значення — не нові рішення, а перенесені з того самого прототипу
+     wireframes/listings-desktop.html, на який спираються точки вище. */
+  --grid-gap: 1.5rem;        /* 24px — той самий зазор, що spacing.feed-gap
+                                 (DESIGN.md): картки просто перетікають у
+                                 колонки з тим самим проміжком, не новим. */
+  --container-max: 68.75rem; /* 1100px — .device на --bp-tablet+ у
+                                 listings-desktop.html; єдина стеля ширини,
+                                 --bp-desktop лише міняє кількість колонок
+                                 у ній, не саму стелю. */
+  --col-count-tablet: 2;     /* ul.feed 1fr 1fr від --bp-tablet */
+  --col-count-desktop: 3;    /* ul.feed 1fr 1fr 1fr від --bp-desktop */
+
   /* ── Зерно паперу (значення без змін, лише переназвані) ── */
   --grain-1: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.35' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='0.13'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); /* було --grain, темний шум 13% */
   --grain-2: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.35' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='0' intercept='1'/%3E%3CfeFuncG type='linear' slope='0' intercept='1'/%3E%3CfeFuncB type='linear' slope='0' intercept='1'/%3E%3CfeFuncA type='linear' slope='0.10'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); /* було --grain-light, світлий шум 10% */
