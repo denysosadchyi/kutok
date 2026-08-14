@@ -64,7 +64,7 @@
   /* Сцена навколо макета теж темніє — інакше темний екран лежить на світлому
      полі й читається як помилка, а не як тема. Теж chrome, не продукт. */
   html[data-theme="dark"] body { background: var(--bg-page); }
-  html[data-theme="dark"] .wf-stage { background: #12100D; }
+  html[data-theme="dark"] .wf-stage { background: var(--bg-page); }
   .wf-nav details.role { margin-top: 6px; border-top: 1px solid #332E26; padding-top: 8px; }
   .wf-nav details.role:first-of-type { margin-top: 0; border-top: none; padding-top: 0; }
   .wf-nav details.role > summary { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; color: #9A9078; font-weight: 700; cursor: pointer; padding: 5px 5px; list-style: none; border-radius: 7px; }
