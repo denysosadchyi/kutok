@@ -535,6 +535,26 @@ function paintFrame(doc) {
   doc.head.appendChild(st);
 }
 
+// В обмеженій ширині макет має лежати рівно на одному тлі (полотні .stage),
+// без фону самого документа поміж ними. Знімаємо цей середній шар лише для
+// екранів (.app з design-system) — документи (research/*, viewer) фон
+// документа несуть самі і його чіпати не треба.
+function applyEmbedBg(doc) {
+  if (!doc || !doc.documentElement) return;
+  const isScreen = !!doc.querySelector('link[href*="design-system"]');
+  let st = doc.getElementById('shell-embed');
+  if (isScreen && stageW !== 'full') {
+    if (!st) {
+      st = doc.createElement('style');
+      st.id = 'shell-embed';
+      st.textContent = 'html,body{background:transparent!important}';
+      doc.head.appendChild(st);
+    }
+  } else if (st) {
+    st.remove();
+  }
+}
+
 function setTheme(next) {
   theme = next;
   document.documentElement.setAttribute('data-theme', theme);
