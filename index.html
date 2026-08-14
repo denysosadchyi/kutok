@@ -439,94 +439,46 @@ const SECTIONS = [
   { id: 'design', t: 'Дизайн' },
 ];
 
-const TAGS = {
-  infra:   'research/sitemap.html#infra',
-  privacy: 'research/sitemap.html#privacy',
-  related: 'research/jtbd.html#related',
-  social:  'research/jtbd.html#social',
-  emo:     'research/jtbd.html#emotional',
-};
-
-// дерево «роль → екран → стан» — з оригінального .wf-nav вайрфреймів
-const ROLES = [
-  { role: 'Спільне · обидві ролі', screens: [
-    { t: 'Вхід (existing-user)', tag: ['G1', TAGS.infra, 'Інфраструктура — sitemap, рішення #8'], states: [
-      ['login.html', 'успіх'], ['login-error.html', 'помилка'], ['login-loading.html', 'завантаження']]},
-    { t: 'Вибір ролі', tag: ['рішення', TAGS.infra, 'Продуктове рішення: окремі шляхи шукач/господар'], states: [
-      ['role-select.html', 'успіх']]},
-    { t: 'Згода на дані + біометрію', tag: ['G2', TAGS.infra, 'Інфраструктура — sitemap, рішення #9'], states: [
-      ['consent.html', 'успіх']]},
-    { t: 'Верифікація · телефон', tag: ['RJ2', TAGS.related, 'RJ2 — переконатися, що людина реальна, до контакту'], states: [
-      ['verify-phone.html', 'успіх'], ['verify-phone-error.html', 'помилка'], ['verify-phone-loading.html', 'завантаження']]},
-    { t: 'Верифікація · SMS-код', tag: ['RJ2', TAGS.related, 'RJ2 — переконатися, що людина реальна, до контакту'], states: [
-      ['verify-code.html', 'успіх'], ['verify-code-error.html', 'помилка'], ['verify-code-loading.html', 'завантаження']]},
-    { t: 'Верифікація · селфі', tag: ['RJ2', TAGS.related, 'RJ2 — переконатися, що людина реальна, до контакту'], states: [
-      ['verify-selfie.html', 'успіх'], ['verify-selfie-error.html', 'помилка'], ['verify-loading.html', 'перевіряємо']]},
-    { t: 'Верифікація · результат', tag: ['RJ2', TAGS.related, 'RJ2 — переконатися, що людина реальна, до контакту'], states: [
-      ['verify.html', 'готово'], ['verify-error.html', 'фото не збіглось'], ['verify-pending.html', 'на ручній перевірці']]},
-  ]},
-  { role: 'Шукач · Аня', screens: [
-    { t: 'Стрічка / каталог', tag: ['RJ1', TAGS.related, 'RJ1 — знайти серед багатьох тих, хто базово підходить'], states: [
-      ['listings.html', 'успіх'], ['listings-empty.html', 'порожній · вузький фільтр'],
-      ['listings-empty-coldstart.html', 'порожній · немає бази'], ['listings-error.html', 'помилка'],
-      ['listings-loading.html', 'завантаження'], ['listings-desktop.html', 'desktop']]},
-    { t: 'Мої заявки', tag: ['RJ3', TAGS.related, 'RJ3 — почати розмову тільки якщо інтерес взаємний'], states: [
-      ['applications.html', 'успіх'], ['applications-empty.html', 'порожній'], ['applications-loading.html', 'завантаження']]},
-    { t: 'Створення профілю · шукач', tag: ['SJ1', TAGS.social, 'Social Job — виглядати серйозним кандидатом'], states: [
-      ['profile-create-seeker.html', 'успіх'], ['profile-create-seeker-error.html', 'помилка'],
-      ['profile-create-seeker-loading.html', 'завантаження']]},
-    { t: 'Мій профіль · шукач', tag: ['RJ4', TAGS.related, 'RJ4 — прийти на зустріч підготовленим'], states: [
-      ['my-profile-seeker.html', 'успіх'], ['my-profile-seeker-loading.html', 'завантаження'],
-      ['my-profile-seeker-edit.html', 'редагування']]},
-  ]},
-  { role: 'Господар · Олена', screens: [
-    { t: 'Створення / редагування оголошення', tag: ['RJ1', TAGS.related, 'RJ1 з боку господаря — щоб мене знайшли'], states: [
-      ['room-create.html', 'успіх'], ['room-create-error.html', 'помилка'], ['room-create-loading.html', 'завантаження']]},
-    { t: 'Мої оголошення', tag: ['lifecycle', TAGS.infra, 'Інфраструктура — sitemap, рішення #12'], states: [
-      ['my-listings.html', 'успіх'], ['my-listings-empty.html', 'порожній'], ['my-listings-loading.html', 'завантаження']]},
-    { t: 'Вхідні заявки / кандидати', tag: ['RJ3', TAGS.related, 'RJ3 з боку господаря — переглядає кандидатів'], states: [
-      ['candidates.html', 'успіх'], ['candidates-empty.html', 'порожній'], ['candidates-loading.html', 'завантаження']]},
-    { t: 'Створення профілю · господар', tag: ['SJ1', TAGS.social, 'Social Job — виглядати серйозним господарем'], states: [
-      ['profile-create-host.html', 'успіх'], ['profile-create-host-error.html', 'помилка'],
-      ['profile-create-host-loading.html', 'завантаження']]},
-    { t: 'Мій профіль · господар', tag: ['RJ4', TAGS.related, 'RJ4 — прийти на зустріч підготовленим'], states: [
-      ['my-profile-host.html', 'успіх'], ['my-profile-host-loading.html', 'завантаження'],
-      ['my-profile-host-edit.html', 'редагування']]},
-  ]},
-  { role: 'Взаємодія · обидві ролі', screens: [
-    { t: 'Профіль іншої людини', tag: ['RJ2', TAGS.related, 'RJ2 — переконатися, що людина реальна, до контакту'], states: [
-      ['profile.html', 'успіх'], ['profile-empty.html', 'порожній'], ['profile-error.html', 'помилка'],
-      ['profile-loading.html', 'завантаження']]},
-    { t: 'Оголошення кімнати', tag: ['RJ2', TAGS.related, 'RJ2 — переконатися, що людина реальна, до контакту'], states: [
-      ['room.html', 'успіх'], ['room-error.html', 'помилка'], ['room-loading.html', 'завантаження']]},
-    { t: 'Список діалогів', tag: ['RJ3', TAGS.related, 'RJ3 — почати розмову тільки якщо інтерес взаємний'], states: [
-      ['dialogs.html', 'успіх'], ['dialogs-empty.html', 'порожній'], ['dialogs-loading.html', 'завантаження']]},
-    { t: 'Чат', tag: ['RJ3', TAGS.related, 'RJ3 — почати розмову тільки якщо інтерес взаємний'], states: [
-      ['chat.html', 'успіх'], ['chat-empty.html', 'порожній'], ['chat-loading.html', 'завантаження']]},
-  ]},
-  // Периферія, виведена з активних 20: екрани лишились робочими у wireframes/_archive/,
-  // але далі (токени → дизайн-система → адаптив → анімація) їх не ведемо — вони не додають
-  // нової задачі дизайну. Правовий статус #9–#11 від цього не змінився.
-  { role: 'Архів · поза ключовими 20', screens: [
-    { t: 'Скарга на людину', tag: ['EJ2', TAGS.emo, 'EJ2 — застосовується симетрично: скаржитись може і шукач, і господар'], states: [
-      ['_archive/report.html', 'форма'], ['_archive/report-loading.html', 'завантаження'],
-      ['_archive/report-error.html', 'помилка'], ['_archive/report-sent.html', 'надіслано']]},
-    { t: 'Фото-в’юер', tag: ['RJ4', TAGS.related, 'RJ4 — прийти на зустріч підготовленим'], states: [
-      ['_archive/photo-viewer.html', 'успіх']]},
-    { t: 'Приватність', tag: ['безпека', TAGS.privacy, 'Налаштування приватності — рішення #1'], states: [
-      ['_archive/privacy-settings.html', 'успіх']]},
-    { t: 'Заблоковані', tag: ['безпека', TAGS.privacy, 'Рішення безпеки і приватності #4'], states: [
-      ['_archive/blocked.html', 'успіх'], ['_archive/blocked-empty.html', 'порожній']]},
-    { t: 'Керування акаунтом', tag: ['безпека', TAGS.privacy, 'Рішення безпеки і приватності #3'], states: [
-      ['_archive/account.html', 'успіх']]},
-    { t: 'Підтримка / звернення', tag: ['G', TAGS.infra, 'Інфраструктура — sitemap, рішення #10'], states: [
-      ['_archive/support.html', 'успіх'], ['_archive/support-loading.html', 'завантаження']]},
-    { t: 'Умови й Політика приватності', tag: ['G', TAGS.infra, 'Інфраструктура — sitemap, рішення #9'], states: [
-      ['_archive/legal.html', 'успіх']]},
-    { t: 'Відновлення доступу', tag: ['G', TAGS.infra, 'Інфраструктура — sitemap, рішення #11'], states: [
-      ['_archive/recovery.html', 'успіх']]},
-  ]},
+// Плоский список екранів. Ролі, стани і job-теги свідомо прибрані з дерева:
+// панель потрібна, щоб швидко відкрити екран, а не щоб переказувати карту —
+// карта живе в sitemap.md / ia.md, стани відкриваються з самого екрана.
+const SCREENS = [
+  ['Вхід (existing-user)',              'login.html'],
+  ['Вибір ролі',                        'role-select.html'],
+  ['Згода на дані + біометрію',         'consent.html'],
+  ['Верифікація · телефон',             'verify-phone.html'],
+  ['Верифікація · SMS-код',             'verify-code.html'],
+  ['Верифікація · селфі',               'verify-selfie.html'],
+  ['Верифікація · результат',           'verify.html'],
+  ['Стрічка / каталог',                 'listings.html'],
+  ['Мої заявки',                        'applications.html'],
+  ['Створення профілю · шукач',         'profile-create-seeker.html'],
+  ['Мій профіль · шукач',               'my-profile-seeker.html'],
+  ['Створення / редагування оголошення','room-create.html'],
+  ['Мої оголошення',                    'my-listings.html'],
+  ['Вхідні заявки / кандидати',         'candidates.html'],
+  ['Створення профілю · господар',      'profile-create-host.html'],
+  ['Мій профіль · господар',            'my-profile-host.html'],
+  ['Профіль іншої людини',              'profile.html'],
+  ['Оголошення кімнати',                'room.html'],
+  ['Список діалогів',                   'dialogs.html'],
+  ['Чат',                               'chat.html'],
 ];
+
+// Периферія, виведена з активних 20 (крок 09). Файли робочі, лежать
+// у wireframes/_archive/ — але далі по етапах дизайну їх не ведемо.
+const ARCHIVE = [
+  ['Скарга на людину',            '_archive/report.html'],
+  ['Фото-в\u2019юер',                 '_archive/photo-viewer.html'],
+  ['Приватність',                 '_archive/privacy-settings.html'],
+  ['Заблоковані',                 '_archive/blocked.html'],
+  ['Керування акаунтом',          '_archive/account.html'],
+  ['Підтримка / звернення',       '_archive/support.html'],
+  ['Умови й Політика приватності','_archive/legal.html'],
+  ['Відновлення доступу',         '_archive/recovery.html'],
+];
+
+const wf = ([t, f]) => ({ t, f: 'wireframes/' + f });
 
 const GROUPS = [
   // ── Старт: про проєкт загалом, поза етапами ──
@@ -577,10 +529,12 @@ const GROUPS = [
     { t: 'Оболонка застосунку',    f: 'ui/shell.html' },
     { t: 'Конвенції екранів',      f: md('wireframes/_conventions.md') },
   ]},
-  { id: 'screens', sec: 'design', lesson: '04', t: 'Екрани', roles: ROLES, items: [
+  { id: 'screens', sec: 'design', lesson: '04', t: 'Екрани', items: [
     { t: 'Індекс екранів',   f: 'wireframes/index.html' },
     { t: 'Реєстр екранів',   f: md('wireframes/_screens.md') },
+    ...SCREENS.map(wf),
   ]},
+  { id: 'archive', sec: 'design', lesson: '04', t: 'Архів · поза 20', items: ARCHIVE.map(wf) },
   { id: 'adaptive', sec: 'design', lesson: '10', t: 'Адаптив', items: [
     { t: 'Стрічка · desktop', f: 'wireframes/listings-desktop.html' },
   ]},
