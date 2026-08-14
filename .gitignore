@@ -4,3 +4,11 @@
 # Agentation toolbar — збірка локальна (node_modules важкий і не потрібен
 # нікому крім машини, що перезбирає dev/agentation.js через dev/build/build.sh)
 dev/build/node_modules/
+
+# Сервер анотацій — теж локальна установка npm (dev/mcp/package.json лишається
+# в git, щоб установку можна було відтворити одним `npm install --prefix dev/mcp`)
+dev/mcp/node_modules/
+
+# Вердикти рев'ювера — стан однієї машини, а не матеріал проєкту: файл
+# переписується на кожен клік у таблиці й засмічував би історію.
+dev/fixlog-ratings.json
