@@ -29,8 +29,9 @@
 
 /* Лого і поле пошуку живуть у розмітці таб-бару, але на телефоні їх немає:
    там бренд у шапці, а пошук — поповер за кнопкою-лупою. Правило стоїть ПІСЛЯ
-   `.tabbar a` навмисно — специфічність однакова, вирішує порядок. */
-.tabbar-brand, .tabbar-search { display: none; }
+   `.tabbar a` і селектором через `>`: у `.tabbar a` є тип-селектор, тому проста
+   пара класів його не переб'є — бренд лишався б видимим у мобільній пігулці. */
+.tabbar > .tabbar-brand, .tabbar > .tabbar-search { display: none; }
 
 /* ── Десктоп: та сама навігація, верхньою панеллю замість пігулки знизу ──
    responsive/width-audit.md (DESIGN.md §7) називає це «нова поведінка» —
@@ -79,7 +80,7 @@
   .tab-dot { background: var(--bg-brand-solid); color: var(--on-brand-solid); }
 
   /* Лого — те саме, що в шапці (.brand-mark + вордмарк), лише в панелі. */
-  .tabbar-brand {
+  .tabbar > .tabbar-brand {
     display: inline-flex; align-items: center; gap: var(--space-8);
     padding: var(--space-8) var(--space-10);
     color: var(--color-brand);
@@ -91,7 +92,7 @@
   /* Пошук більше не ховається за кнопкою-лупою: на десктопі є ширина, щоб
      тримати поле розгорнутим просто в панелі (кнопку в шапці ховає header.css).
      Вигляд успадковано від .search-form — тут лише місце і розмір. */
-  .tabbar-search {
+  .tabbar > .tabbar-search {
     display: flex;
     flex: 0 1 var(--size-320);
     margin-right: auto; margin-left: var(--space-12);

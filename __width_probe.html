@@ -587,7 +587,7 @@ const WIDTHS = [
 const WIDTH_KEY = 'kutok-shell-width';
 const mainEl = document.querySelector('main');
 const wsw = document.getElementById('wsw');
-let stageW = 'full';
+let stageW = '1280';
 try {
   const w = localStorage.getItem(WIDTH_KEY);
   if (WIDTHS.some(x => x.key === w)) stageW = w;
@@ -1236,10 +1236,6 @@ window.addEventListener('popstate', () => show(fromHash(), false));
         main: mainEl.getBoundingClientRect().width
       };
       document.title = 'WIDTH_PROBE:' + JSON.stringify(result);
-      const out = document.createElement('pre');
-      out.id = 'width-probe-result';
-      out.textContent = JSON.stringify(result);
-      document.body.appendChild(out);
       return true;
     } catch (_) { return false; }
   };
