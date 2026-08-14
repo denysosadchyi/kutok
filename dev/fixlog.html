@@ -2087,12 +2087,13 @@
          iframe's document rather than floating over it — that way it scrolls
          with the content and stays on the element it marks.
 
-         Retried, not fired once: `load` fires when the HTML document is done,
-         but the app inside is a React SPA that mounts afterwards. At that
-         moment the body is still near-zero height, so a pin placed at y=900
-         lands past the end of the document and the scroll goes nowhere. The
-         retry re-places it as the page grows and stops once the body is tall
-         enough to actually hold it. */
+         Retried, not fired once: `load` fires when the HTML document itself is
+         parsed, but the wireframe inside still has images and fonts to load,
+         and layout keeps shifting for a beat after that. At that moment the
+         body can still be shorter than its final height, so a pin placed at
+         y=900 lands past the end of the document and the scroll goes nowhere.
+         The retry re-places it as the page grows and stops once the body is
+         tall enough to actually hold it. */
       function closeDrawer() {
         dr.hidden = true
         document.querySelectorAll('tr.is-current').forEach((el) => el.classList.remove('is-current'))
