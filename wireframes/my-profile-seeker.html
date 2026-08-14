@@ -13,10 +13,10 @@
      жодних власних правил вигляду. Тут лишається лише каркас вайрфрейму
      (.wf-*, навігатор) і базовий ресет; адресації popover тут немає (немає шита). ===== */
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: sans-serif; background: #e9e9e9; color: #333; line-height: 1.4; }
+  body { font-family: sans-serif; background: var(--bg-page); color: #333; line-height: 1.4; }
 
   .wf-shell { display: flex; align-items: flex-start; min-height: 100vh; }
-  .wf-stage { flex: 1 1 auto; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; padding: 28px 0; background: #e9e9e9; }
+  .wf-stage { flex: 1 1 auto; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; padding: 28px 0; background: var(--bg-page); }
 
   .wf-nav {
     position: sticky; top: 0; align-self: flex-start;
@@ -46,7 +46,7 @@
   .wf-nav-theme:focus-visible { outline: 2px solid #6E7B2E; outline-offset: 2px; }
   /* Сцена навколо макета теж темніє — інакше темний екран лежить на світлому
      полі й читається як помилка, а не як тема. Теж chrome, не продукт. */
-  html[data-theme="dark"] body { background: #12100D; }
+  html[data-theme="dark"] body { background: var(--bg-page); }
   html[data-theme="dark"] .wf-stage { background: #12100D; }
   .wf-nav details.role { margin-top: 6px; border-top: 1px solid #332E26; padding-top: 8px; }
   .wf-nav details.role:first-of-type { margin-top: 0; border-top: none; padding-top: 0; }
