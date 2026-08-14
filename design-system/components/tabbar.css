@@ -51,7 +51,10 @@
    мобільній пігулці. */
 @media (min-width: 67.5rem) {
   .tabbar {
-    grid-area: nav;
+    /* order, а не grid-area: оболонка на десктопі лишається flex-колонкою
+       (base.css), тож піднімається сама лише панель, а решта прямих нащадків
+       .app (шапка, .filterbar, main) тримає порядок розмітки. */
+    order: -1;
     position: sticky; top: 0; bottom: auto;
     margin: 0;
     flex-direction: row; align-items: center;
