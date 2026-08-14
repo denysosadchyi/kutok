@@ -23,14 +23,3 @@
    (login/verify retry-пари, verify-error результат): вертикальний flex, той самий
    ритм (10px), що й .state-actions, але без центрування й max-width. */
 .btn-stack { display: flex; flex-direction: column; gap: var(--space-10); }
-
-/* Вибір із двох рівнозначних варіантів (role-select): на телефоні — один під
-   одним, з --bp-tablet — поруч, щоб їх можна було порівняти одним поглядом
-   перед вибором (width-audit.md, role-select: «легше порівняти перед вибором»).
-   Окремий модифікатор, а не поведінка самого .btn-stack: у решті місць
-   (.btn-stack у станах помилки, verify-code, room, profile) стек — це
-   «головна дія + запасна», їх порівнювати не треба і в рядок ставити не можна. */
-@media (min-width: 47.5rem) {
-  .btn-stack--wide { flex-direction: row; align-items: stretch; }
-  .btn-stack--wide > * { flex: 1 1 0; min-width: 0; }
-}
