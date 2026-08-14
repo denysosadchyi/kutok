@@ -94,10 +94,19 @@ bash dev/build/build.sh
   верхньорівневих `require(` — не впаде в браузері.
 - Синтаксична валідність: `node -e "new Function(fs.readFileSync('dev/agentation.js','utf8'))"` —
   без `SyntaxError`.
-- Реальне монтування через `google-chrome --headless --dump-dom`: скрипт,
-  підключений усередину iframe з `/wireframes/index.html`, створює
-  `#agentation-root`; той самий скрипт усередині iframe з кореневого
-  `/index.html` — ні.
+- Реальне монтування через Chrome DevTools Protocol (headless): на
+  `/wireframes/listings.html` у DOM є і `#agentation-root`, і портал тулбара
+  `[data-agentation-toolbar]` — `position: fixed`, `visibility: visible`,
+  `z-index: 100000`; на кореневому `/index.html` немає нічого, а тулбар
+  натомість живе всередині iframe, як і задумано.
+
+  **Наявності `#agentation-root` як перевірки НЕ досить.** Контейнер створює
+  сам `entry.jsx` ДО `root.render()`, тож він з'являється навіть тоді, коли
+  рендер падає з помилкою — саме так перша збірка виглядала справною, а на
+  екрані не було нічого (`React is not defined`, див. коментар у `build.sh`).
+  Перевіряти треба портал `[data-agentation-toolbar]` і консоль на винятки.
+  Через постійну анімацію тулбара `--virtual-time-budget` не спрацьовує —
+  `--dump-dom` зависає, і саме тому перевірка йде через CDP.
 
 ---
 

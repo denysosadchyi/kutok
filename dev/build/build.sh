@@ -24,6 +24,11 @@ fi
   --minify \
   --format=iife \
   --target=es2020 \
+  `# JSX через react/jsx-runtime, а не React.createElement: entry.jsx не` \
+  `# імпортує React за іменем, і зі стандартним (classic) трансформом бандл` \
+  `# падав у браузері з "React is not defined" — мовчки, вже після того як` \
+  `# контейнер #agentation-root створено, тож зовні виглядало як "змонтувався".` \
+  --jsx=automatic \
   --define:process.env.NODE_ENV='"production"' \
   --loader:.js=jsx \
   --outfile=../agentation.js
