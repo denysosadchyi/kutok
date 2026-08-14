@@ -15,11 +15,11 @@
      ресет, (3) адресація нативних popover до конкретних anchor-name цієї
      сторінки — це не «вигляд» (той цілком у design-system/), а прив'язка тригер↔панель. ===== */
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: sans-serif; background: var(--bg-page); color: #333; line-height: 1.4; }
+  body { font-family: sans-serif; background: transparent; color: #333; line-height: 1.4; }
 
   /* ── Каркас вайрфрейму: дерево-навігація зліва + сцена з макетом ── */
   .wf-shell { display: flex; align-items: flex-start; min-height: 100vh; }
-  .wf-stage { flex: 1 1 auto; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; padding: 28px 0; background: var(--bg-page); }
+  .wf-stage { flex: 1 1 auto; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; background: transparent; }
 
   /* ── Бокова панель-навігатор: «покажчик каталогу» у мові Каталог 73 (темна chrome) ── */
   .wf-nav {
@@ -50,8 +50,6 @@
   .wf-nav-theme:focus-visible { outline: 2px solid #6E7B2E; outline-offset: 2px; }
   /* Сцена навколо макета теж темніє — інакше темний екран лежить на світлому
      полі й читається як помилка, а не як тема. Теж chrome, не продукт. */
-  html[data-theme="dark"] body { background: var(--bg-page); }
-  html[data-theme="dark"] .wf-stage { background: var(--bg-page); }
   .wf-nav details.role { margin-top: 6px; border-top: 1px solid #332E26; padding-top: 8px; }
   .wf-nav details.role:first-of-type { margin-top: 0; border-top: none; padding-top: 0; }
   .wf-nav details.role > summary { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; color: #9A9078; font-weight: 700; cursor: pointer; padding: 5px 5px; list-style: none; border-radius: 7px; }
