@@ -641,6 +641,43 @@ function setTheme(next) {
   try { paintFrame(frame.contentDocument); } catch (_) {}
 }
 
+// ── ширина макета: перевірка адаптиву без DevTools ──
+// Значення взяті від брейкпоінтів design-system/tokens.css (--bp-tablet 760,
+// --bp-desktop 1080), але не дорівнюють їм: на самому брейкпоінті видно межу,
+// а не розкладку. Тому кожна ширина — типовий пристрій *за* межею.
+const WIDTHS = [
+  { key: 'full', label: 'повна', title: 'На всю ширину в’юера' },
+  { key: '390',  label: '390',   title: 'Телефон — 390px (мобільна розкладка, база)' },
+  { key: '768',  label: '768',   title: 'Планшет — 768px (≥ --bp-tablet 760)' },
+  { key: '1280', label: '1280',  title: 'Десктоп — 1280px (≥ --bp-desktop 1080)' },
+];
+const WIDTH_KEY = 'kutok-shell-width';
+const mainEl = document.querySelector('main');
+const wsw = document.getElementById('wsw');
+let stageW = 'full';
+try {
+  const w = localStorage.getItem(WIDTH_KEY);
+  if (WIDTHS.some(x => x.key === w)) stageW = w;
+} catch (_) {}
+
+function setStageW(next) {
+  stageW = next;
+  mainEl.dataset.w = next;
+  mainEl.style.setProperty('--stage-w', next === 'full' ? '100%' : next + 'px');
+  try { localStorage.setItem(WIDTH_KEY, next); } catch (_) {}
+  for (const b of wsw.children) b.setAttribute('aria-pressed', String(b.dataset.w === next));
+}
+
+for (const w of WIDTHS) {
+  const b = el('button', null, w.label);
+  b.type = 'button';
+  b.dataset.w = w.key;
+  b.title = w.title;
+  b.addEventListener('click', () => setStageW(w.key));
+  wsw.appendChild(b);
+}
+setStageW(stageW);
+
 let stored = {};
 try { stored = JSON.parse(localStorage.getItem(STORE_KEY)) || {}; } catch (_) {}
 
