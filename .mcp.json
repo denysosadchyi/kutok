@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "agentation": {
+      "type": "stdio",
+      "command": "/home/den/kutok/dev/mcp/node_modules/.bin/agentation-mcp",
+      "args": [
+        "server"
+      ],
+      "env": {}
+    }
+  }
+}
