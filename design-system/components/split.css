@@ -1,0 +1,56 @@
+/* ── Дві панелі: майстер-деталь і форма + жива прев'ю ─────────────────────
+   Категорія «нова поведінка» з responsive/width-audit.md — єдина, що не просто
+   перекладає той самий вміст в колонки, а прибирає перехід «відкрив → назад».
+
+   Вмикається тільки з --bp-desktop (67.5rem). Аудит, примітка «Планшет vs
+   десктоп»: планшет-портрет замалий для двох панелей одночасно і свідомо
+   лишається однопанельним, як телефон. Тому до цього порогу друга панель не
+   існує (display:none), а не ховається візуально — щоб на телефоні її вміст
+   не читав скрін-рідер і не тягнув порожню секцію в потік.
+
+   Літерал 67.5rem у медіа-умові, а не var(--bp-desktop) — у @media-умові
+   custom property браузери ще не читають (та сама причина, що в base.css).
+
+   Два співвідношення колонок, бо це дві різні дії:
+   .split          — список зліва (вузький, --size-320), деталі справа: у
+                     списку сканують, у деталях читають. Ширше має бути те,
+                     що читають.
+   .split--preview — форма зліва (широка), прев'ю справа (--size-400 — рівно
+                     та ширина, на якій картку побачать у чужій стрічці).
+                     Прев'ю липне до верху: воно потрібне весь час, поки
+                     заповнюють поля, а не в кінці форми. */
+
+.split-detail { display: none; }
+
+@media (min-width: 67.5rem) {
+  .app--split > main.split {
+    display: grid;
+    grid-template-columns: minmax(0, var(--size-320)) minmax(0, 1fr);
+    gap: var(--grid-gap);
+    align-items: start;
+  }
+
+  .app--split > main.split--preview {
+    grid-template-columns: minmax(0, 1fr) minmax(0, var(--size-400));
+  }
+
+  .split-master { min-width: 0; }
+
+  .split-detail {
+    display: block; min-width: 0;
+    border-left: var(--border-1) solid var(--border-default);
+  }
+
+  /* Прев'ю картки — не панель деталей: межі зліва не має, вона тут читалась
+     би як «ще один екран», хоча це той самий екран, вид збоку. */
+  .split--preview .split-detail {
+    border-left: 0;
+    position: sticky; top: var(--space-24);
+  }
+
+  /* Підпис над прев'ю — пояснює, що це не частина форми, а її результат. */
+  .split-preview-label {
+    display: block; margin-bottom: var(--space-12);
+    font-size: var(--font-size-13); color: var(--text-muted);
+  }
+}

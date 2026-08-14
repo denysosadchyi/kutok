@@ -33,3 +33,4 @@ role-option.css
 consent.css
 legal-copy.css
 privacy-group.css
+split.css

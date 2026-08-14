@@ -1,2 +1,22 @@
 /* ── Стрічка (список карток/рядків, вертикальний) ── */
 .feed { list-style: none; padding: var(--space-12) var(--space-16) var(--space-22); display: flex; flex-direction: column; gap: var(--space-24); }
+
+/* Сітка карток на ширшому екрані — тільки там, де стрічка і є вмістом екрана
+   (.app--wide: listings, my-listings). У .app--split стрічка живе в лівій
+   панелі майстер-деталі й лишається одноколонковою — там колонки не потрібні,
+   там поруч стоїть панель деталей.
+   Кількість колонок — --col-count-tablet / --col-count-desktop із tokens.css,
+   зазор — той самий --grid-gap (24px), що й вертикальний ритм стрічки: картки
+   просто перетікають у колонки, новий ритм не заводиться. */
+@media (min-width: 47.5rem) {
+  .app--wide .feed {
+    display: grid;
+    grid-template-columns: repeat(var(--col-count-tablet), minmax(0, 1fr));
+    gap: var(--grid-gap);
+  }
+}
+@media (min-width: 67.5rem) {
+  .app--wide .feed {
+    grid-template-columns: repeat(var(--col-count-desktop), minmax(0, 1fr));
+  }
+}
