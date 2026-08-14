@@ -2441,7 +2441,11 @@
            annotation server and the ratings service are both optional, remote,
            and can be slow or firewalled — awaiting them before the first paint
            is what turned this page blank. Draw what is certain, then enrich. */
-        const mdRes = await fetch('/fixlog.md?t=' + Date.now())
+        /* './fixlog.md', not '/fixlog.md': ця сторінка лежить у dev/, поруч
+           із журналом, а не в корені сайту — абсолютний шлях від кореня тут
+           же й провалиться. Відносний шлях працює однаково, відкрий сторінку
+           хоч як http://<хост>:8901/dev/fixlog.html. */
+        const mdRes = await fetch('./fixlog.md?t=' + Date.now())
           .then((r) => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text() })
           .then((v) => ({ v }), (e) => ({ e: e.message }))
 
