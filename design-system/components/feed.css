@@ -9,10 +9,15 @@
 @media (min-width: 47.5rem) {
   .feed {
     display: grid;
-    grid-template-columns: repeat(var(--col-count-tablet), minmax(0, 1fr));
+    /* 2 = --col-count-tablet, 3 = --col-count-desktop (tokens.css). Літерали,
+       а не var(): всередині repeat() підстановка custom property парситься не
+       в кожному рушії, і якщо не спарситься — впаде вся декларація, а сітка
+       мовчки лишиться одноколонковою. Значення від цього ті самі. */
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--grid-gap);
+    align-items: start;
   }
 }
 @media (min-width: 67.5rem) {
-  .feed { grid-template-columns: repeat(var(--col-count-desktop), minmax(0, 1fr)); }
+  .feed { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
