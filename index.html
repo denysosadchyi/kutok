@@ -504,6 +504,28 @@ const ROLES = [
     { t: 'Чат', tag: ['RJ3', TAGS.related, 'RJ3 — почати розмову тільки якщо інтерес взаємний'], states: [
       ['chat.html', 'успіх'], ['chat-empty.html', 'порожній'], ['chat-loading.html', 'завантаження']]},
   ]},
+  // Периферія, виведена з активних 20: екрани лишились робочими у wireframes/_archive/,
+  // але далі (токени → дизайн-система → адаптив → анімація) їх не ведемо — вони не додають
+  // нової задачі дизайну. Правовий статус #9–#11 від цього не змінився.
+  { role: 'Архів · поза ключовими 20', screens: [
+    { t: 'Скарга на людину', tag: ['EJ2', TAGS.emo, 'EJ2 — застосовується симетрично: скаржитись може і шукач, і господар'], states: [
+      ['_archive/report.html', 'форма'], ['_archive/report-loading.html', 'завантаження'],
+      ['_archive/report-error.html', 'помилка'], ['_archive/report-sent.html', 'надіслано']]},
+    { t: 'Фото-в’юер', tag: ['RJ4', TAGS.related, 'RJ4 — прийти на зустріч підготовленим'], states: [
+      ['_archive/photo-viewer.html', 'успіх']]},
+    { t: 'Приватність', tag: ['безпека', TAGS.privacy, 'Налаштування приватності — рішення #1'], states: [
+      ['_archive/privacy-settings.html', 'успіх']]},
+    { t: 'Заблоковані', tag: ['безпека', TAGS.privacy, 'Рішення безпеки і приватності #4'], states: [
+      ['_archive/blocked.html', 'успіх'], ['_archive/blocked-empty.html', 'порожній']]},
+    { t: 'Керування акаунтом', tag: ['безпека', TAGS.privacy, 'Рішення безпеки і приватності #3'], states: [
+      ['_archive/account.html', 'успіх']]},
+    { t: 'Підтримка / звернення', tag: ['G', TAGS.infra, 'Інфраструктура — sitemap, рішення #10'], states: [
+      ['_archive/support.html', 'успіх'], ['_archive/support-loading.html', 'завантаження']]},
+    { t: 'Умови й Політика приватності', tag: ['G', TAGS.infra, 'Інфраструктура — sitemap, рішення #9'], states: [
+      ['_archive/legal.html', 'успіх']]},
+    { t: 'Відновлення доступу', tag: ['G', TAGS.infra, 'Інфраструктура — sitemap, рішення #11'], states: [
+      ['_archive/recovery.html', 'успіх']]},
+  ]},
 ];
 
 const GROUPS = [
