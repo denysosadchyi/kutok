@@ -394,6 +394,13 @@
   <div class="sh-item">
     <div class="sh-label">Таб-бар (шукач)</div>
     <footer class="tabbar">
+    <!-- Лого + розгорнутий пошук: видні лише на десктопі (tabbar.css) — там панель
+         угорі, а на телефоні бренд у шапці й пошук поповером за лупою. -->
+    <a class="tabbar-brand" href="../wireframes/listings.html" aria-label="Куток — на головну"><svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--color-brand)"/><path d="M18 3L21 3L21 6Z" fill="var(--bg-surface)"/></svg><span>Куток</span></a>
+    <form class="tabbar-search search-form" role="search" action="../wireframes/listings.html" method="get">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg>
+      <input type="search" name="q" placeholder="Пошук за назвою, районом…" aria-label="Пошук оголошень">
+    </form>
       <a class="active" href="#"><span class="tab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg></span><span class="tab-txt">Пошук</span></a>
       <a href="#"><span class="tab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8.5 8.5h7M8.5 12.5h7M8.5 16.5h4"/></svg><span class="tab-dot">2</span></span><span class="tab-txt">Заявки</span></a>
       <a href="#"><span class="tab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.6a8.6 8.6 0 1 0-7.5-4.4L3.4 20.6l4.5-1.1a8.56 8.56 0 0 0 4.1 1.1z"/></svg><span class="tab-dot">1</span></span><span class="tab-txt">Чати</span></a>

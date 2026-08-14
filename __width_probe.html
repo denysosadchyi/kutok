@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<title>Куток — Проєкт</title>
+<meta name="description" content="Навігація по всіх матеріалах проєкту Куток: проєктування, дизайн, документи, екрани.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  [hidden] { display: none !important; }
+
+  :root {
+    --paper:     oklch(97.5% 0.006 75);
+    --panel:     oklch(96.2% 0.007 75);
+    --ink:       oklch(25% 0.012 60);
+    --muted:     oklch(48% 0.015 65);
+    --faint:     oklch(62% 0.014 68);
+    --line:      oklch(90% 0.008 75);
+    --line-soft: oklch(93% 0.007 75);
+    --clay:      oklch(52% 0.115 40);
+    --clay-soft: oklch(94% 0.022 50);
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+    --nav-w: 286px;
+    /* направляюча гілки, у якій стоїть активна сторінка */
+    --rail-on: color-mix(in oklab, var(--clay) 38%, var(--line));
+    color-scheme: light;
+  }
+
+  /* Темна тема. Ключ той самий, що в екранів (`kutok-theme`), тож перемикач
+     один на весь проєкт. Свідомо застосована ТІЛЬКИ до `main` — ліва панель
+     завжди світла: вона не контент, а точка опори, і не повинна мигати
+     разом із ним. Через це темні ролі не дублюються для панелі. */
+  [data-theme="dark"] main {
+    --paper:     oklch(18% 0.008 60);
+    --panel:     oklch(22% 0.008 60);
+    --ink:       oklch(93% 0.007 75);
+    --muted:     oklch(72% 0.011 70);
+    --faint:     oklch(57% 0.011 70);
+    --line:      oklch(30% 0.008 60);
+    --line-soft: oklch(25.5% 0.008 60);
+    --clay:      oklch(72% 0.10 42);
+    --clay-soft: oklch(30% 0.035 45);
+    color-scheme: dark;
+  }
+
+  html, body { height: 100%; }
+  body {
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+    background: var(--paper);
+    display: flex;
+    overflow: hidden;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--clay); outline-offset: 1px; border-radius: 3px; }
+  ::selection { background: var(--clay-soft); }
+
+  /* ── Ліва панель ── */
+  nav {
+    flex: none; width: var(--nav-w); height: 100dvh;
+    overflow-y: auto; overscroll-behavior: contain;
+    background: var(--panel);
+    border-right: 1px solid var(--line);
+    padding: 0 18px 64px;
+    scroll-padding-top: 108px; /* активний пункт не пірнає під липку шапку */
+    scrollbar-width: thin;
+    scrollbar-color: var(--line) transparent;
+  }
+
+  /* Край скролу не обрізає дерево — гасимо його в колір панелі.
+     Оверлей поверх панелі, а не sticky всередині неї: sticky-дитина
+     обмежена content-box скролера і зупиняється, не дійшовши до краю. */
+  body::before {
+    content: ''; position: fixed; left: 0; bottom: 0; z-index: 3;
+    width: calc(var(--nav-w) - 1px); height: 44px; pointer-events: none;
+    background: linear-gradient(to top, var(--panel) 30%, transparent);
+  }
+
+  .brand {
+    display: block; margin: 0 -8px; padding: 22px 8px 8px;
+    font-weight: 800; font-size: 15.5px; letter-spacing: -.01em;
+    border-radius: 8px;
+  }
+  .brand:hover { background: var(--line-soft); }
+  .brand span {
+    display: block; font-family: var(--mono); font-size: 9px; font-weight: 400;
+    color: var(--muted); letter-spacing: .16em; margin-top: 4px;
+  }
+
+  /* фільтр + перемикач липнуть до верху панелі при скролі дерева */
+  .fwrap {
+    position: sticky; top: 0; z-index: 2;
+    margin: 14px -18px 0; padding: 10px 18px 10px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--line);
+    box-shadow: 0 6px 12px -10px oklch(25% 0.012 60 / .2);
+  }
+  /* поле пошуку: іконка зліва, підказка клавіші справа — обидві всередині рамки,
+     щоб поле лишалось одним об'єктом, а не полем із супутниками */
+  .field { position: relative; display: flex; align-items: center; }
+  .field .glass {
+    position: absolute; left: 9px; width: 13px; height: 13px;
+    color: var(--faint); pointer-events: none;
+    fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round;
+  }
+  .field:focus-within .glass { color: var(--clay); }
+  .filter {
+    width: 100%; padding: 7px 30px 7px 27px;
+    font: inherit; font-size: 12px;
+    border: 1px solid var(--line); border-radius: 8px;
+    background: var(--paper); color: var(--ink);
+    transition: border-color .15s ease, box-shadow .15s ease;
+  }
+  .filter::-webkit-search-cancel-button { display: none; }
+  .filter:hover { border-color: oklch(84% 0.01 70); }
+  .filter:focus {
+    outline: none; border-color: var(--clay);
+    box-shadow: 0 0 0 3px var(--clay-soft);
+  }
+  .filter::placeholder { color: var(--faint); }
+  .field kbd {
+    position: absolute; right: 8px; pointer-events: none;
+    font-family: var(--mono); font-size: 9.5px; line-height: 1; color: var(--faint);
+    border: 1px solid var(--line); border-radius: 4px; padding: 3px 5px 2px;
+    background: var(--panel);
+  }
+  .field:focus-within kbd, .field.has-value kbd { opacity: 0; }
+
+  /* Дві мови керування, не три: один сегментний перемикач (вибір режиму)
+     і привиди-дії поруч. Раніше кожен контрол мав свою рамку й висоту —
+     три різні афорданси на три сусідні кнопки. */
+  .tools { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin-top: 8px; }
+  .mode {
+    display: flex; flex: none; gap: 2px; padding: 2px; height: 24px;
+    border: 1px solid var(--line); border-radius: 8px; background: var(--paper);
+  }
+  .mode button {
+    font-family: var(--mono); font-size: 8.5px; letter-spacing: .04em; text-transform: uppercase;
+    color: var(--muted); padding: 0 7px; border-radius: 6px; white-space: nowrap;
+  }
+  .mode button:hover { color: var(--ink); }
+  .mode button[aria-pressed="true"] { color: var(--clay); background: var(--clay-soft); }
+
+  .ghost {
+    flex: none; display: grid; place-items: center; height: 24px;
+    border-radius: 7px; color: var(--faint);
+  }
+  .ghost:hover { color: var(--clay); background: var(--clay-soft); }
+  .theme-btn { width: 24px; }
+  .theme-btn svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .theme-btn .moon { display: none; }
+  [data-theme="dark"] .theme-btn .sun { display: none; }
+  [data-theme="dark"] .theme-btn .moon { display: block; }
+
+  .all-btn {
+    margin-left: auto; padding: 0 6px;
+    font-family: var(--mono); font-size: 8.5px;
+    text-transform: uppercase; letter-spacing: .04em; white-space: nowrap;
+  }
+
+  /* шеврон-індикатор згортання — спільний для всіх рівнів */
+  .chev { flex: none; width: 12px; height: 12px; color: var(--faint); }
+  .chev path { stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+  [aria-expanded] .chev { transform: rotate(0); }
+  [aria-expanded="false"] .chev { transform: rotate(-90deg); }
+  @media (prefers-reduced-motion: no-preference) {
+    .chev { transition: transform .2s cubic-bezier(.22, 1, .36, 1); }
+    .pg, .secs a, .sec-btn, .grp-btn, .all-btn { transition: color .15s ease, background .15s ease; }
+  }
+
+  /* Ритм не рівномірний навмисне: між деревами — пауза, всередині групи —
+     щільно. Так око читає межі раніше, ніж встигає прочитати підписи. */
+
+  /* ── Рівень 1: дерево (Проєктування / Дизайн) ── */
+  .sec { margin-top: 30px; }
+  .sec:first-of-type { margin-top: 20px; }
+  .sec-btn {
+    width: calc(100% + 6px); display: flex; align-items: center; gap: 7px;
+    font-size: 12px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase;
+    color: var(--ink); text-align: left;
+    padding: 5px 6px; margin-left: -6px; border-radius: 6px;
+  }
+  .sec-btn:hover { background: var(--line-soft); }
+  /* лічильник дерева — шум у спокої, сенс у пошуку: показуємо лише під фільтром */
+  .sec-btn .cnt {
+    margin-left: auto; font-family: var(--mono); font-size: 9px;
+    font-weight: 400; color: var(--faint); letter-spacing: 0;
+    opacity: 0; transition: opacity .15s ease;
+  }
+  nav[data-filtering] .sec-btn .cnt { opacity: 1; }
+  .sec-rule { height: 1px; background: var(--line); margin: 6px 0 4px; }
+  .sec-body { margin-left: 3px; }
+
+  /* ── Рівень 2: група етапу (Ресерч, Люди, Екрани…) ── */
+  .grp { margin-top: 15px; }
+  .grp-btn {
+    width: calc(100% + 6px); display: flex; align-items: baseline; gap: 7px;
+    font-family: var(--mono); font-size: 9.5px; font-weight: 600;
+    letter-spacing: .13em; text-transform: uppercase; color: var(--muted);
+    padding: 4px 6px; margin-left: -6px; border-radius: 6px; text-align: left;
+  }
+  .grp-btn .chev { align-self: center; }
+  .grp-btn:hover { color: var(--ink); background: var(--line-soft); }
+  .grp-btn.on { color: var(--ink); }
+  /* номер уроку — метадані групи: без рамки, це не клікабельний елемент */
+  .les {
+    margin-left: auto; flex: none;
+    font-family: var(--mono); font-size: 8.5px; letter-spacing: .08em;
+    color: var(--faint);
+  }
+  .grp-btn.on .les, .grp-btn:hover .les { color: var(--muted); }
+  .grp-body { margin-top: 3px; margin-left: 8px; }
+
+  /* ── Рядок сторінки. Один вертикальний ритм на всі типи рядків ── */
+  /* block, не flex: підсвітка збігу вставляє <mark> у середину назви,
+     а у flex-контейнері gap розриває слово навпіл */
+  .pg {
+    display: block;
+    font-size: 12.5px; font-weight: 600; color: var(--ink);
+    padding: 4px 8px; border-radius: 6px; line-height: 1.35;
+  }
+  .pg:hover { background: var(--line-soft); }
+  .pg.active { color: var(--clay); background: var(--clay-soft); }
+
+  /* пункт без артефакта — видно, що етап є, а роботи ще немає */
+  .ph {
+    display: block; font-size: 12px; font-weight: 500; color: var(--faint);
+    padding: 4px 8px; line-height: 1.35; cursor: default; font-style: italic;
+  }
+
+  /* секції активної сторінки — направляюча під початком її тексту */
+  .secs {
+    display: flex; flex-direction: column; gap: 1px;
+    margin: 2px 0 8px 19px; padding-left: 9px;
+    border-left: 1px solid var(--rail-on);
+  }
+  .secs a {
+    font-size: 11.5px; font-weight: 500; color: var(--muted);
+    padding: 4px 7px; border-radius: 5px; line-height: 1.35;
+  }
+  .secs a:hover { color: var(--ink); background: var(--line-soft); }
+  .secs a.active { color: var(--clay); background: var(--clay-soft); }
+  .secs .n { font-family: var(--mono); font-size: 9px; margin-right: 6px; opacity: .55; }
+
+  /* підсвітка збігу фільтра */
+  /* від'ємний margin гасить padding: підсвітка не зсуває сусідні літери */
+  .pg mark {
+    background: color-mix(in oklab, var(--clay) 22%, transparent); color: inherit;
+    border-radius: 2px; padding: 0 1px; margin: 0 -1px;
+  }
+
+  /* порожній результат пояснює, за чим шукає фільтр, і дає вихід одним кліком */
+  .nomatch { display: none; margin: 26px 0 0; font-size: 12px; line-height: 1.5; }
+  .nomatch b { display: block; font-size: 12.5px; font-weight: 700; color: var(--ink); }
+  .nomatch p { margin-top: 5px; color: var(--muted); }
+  .nomatch button {
+    margin-top: 10px; padding: 5px 9px; border-radius: 7px;
+    font-family: var(--mono); font-size: 9px; letter-spacing: .04em; text-transform: uppercase;
+    color: var(--clay); background: var(--clay-soft);
+  }
+  .nomatch button:hover { background: color-mix(in oklab, var(--clay) 18%, transparent); }
+
+  /* ── В'юер ── */
+  main { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; height: 100dvh; }
+  .bar {
+    flex: none; display: flex; align-items: center; gap: 12px;
+    padding: 9px 18px; border-bottom: 1px solid var(--line);
+    font-family: var(--mono); font-size: 11px; color: var(--muted);
+  }
+  .bar .path { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .bar .where { flex: none; color: var(--faint); }
+  .bar a.open {
+    flex: none; color: var(--clay); font-weight: 600;
+    padding: 3px 8px; border-radius: 6px;
+  }
+  .bar a.open:hover { background: var(--clay-soft); }
+
+  /* Перемикач ширини стоїть у тій самій панелі, що шлях і «відкрити окремо»:
+     одна смуга керування над макетом, а не другий ряд. Мова сегментного
+     контролу спільна з деревом (.mode) — той самий афорданс «вибір режиму». */
+  .wsw { margin-left: auto; }
+  .wsw button { min-width: 34px; justify-content: center; }
+
+  /* ── Сцена ──
+     Перемикач ширини звужує макет, і тільки. Ніякого полотна, рамки, радіуса
+     чи тіні під ним: усе це — ще один шар, який читається як другий фон і
+     заважає дивитись на сам макет. Фон один на всі режими — той самий, що на
+     «повній». Разом із shell-embed (прозорі html/body всередині) це дає рівно
+     два шари: сторінка в'юера і макет. */
+  .stage {
+    flex: 1 1 auto; min-height: 0;
+    display: flex;
+    justify-content: center;
+    justify-content: safe center; /* при переповненні не зрізає лівий край */
+    overflow: auto;
+    background: var(--paper);
+  }
+  /* Ширину беремо як є, без min(…, 100%): інакше «1280» у вузькому вікні тихо
+     давав би 1150 і перемикач брехав би — показував не ту ширину, яку обіцяє
+     кнопка. Не влазить — з'являється горизонтальний скрол сцени, і це чесно. */
+  iframe {
+    flex: none; width: var(--stage-w, 100%); height: 100%;
+    border: 0; background: transparent;
+    opacity: 0;
+  }
+  iframe.ready { opacity: 1; transition: opacity .12s ease; }
+
+  /* мобільний фолбек: панель зверху, згорнута */
+  @media (max-width: 760px) {
+    body::before { display: none; }
+    body { flex-direction: column; overflow: auto; }
+    nav { width: 100%; height: auto; max-height: 45dvh; border-right: 0; border-bottom: 1px solid var(--line); }
+    main { height: 55dvh; }
+  }
+</style>
+<script>
+// Тема — до першого паінту, інакше блимне світлим. Перший запуск бере
+// системну і одразу її записує: екрани читають саме localStorage.
+(function () {
+  try {
+    var t = localStorage.getItem('kutok-theme');
+    if (t !== 'dark' && t !== 'light') {
+      t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      localStorage.setItem('kutok-theme', t);
+    }
+    document.documentElement.setAttribute('data-theme', t);
+  } catch (e) {}
+})();
+</script>
+</head>
+<body>
+
+<nav id="nav" aria-label="Навігація проєктом"></nav>
+
+<main>
+  <div class="bar">
+    <span class="where" id="where"></span>
+    <span class="path" id="path"></span>
+    <div class="mode wsw" id="wsw" role="group" aria-label="Ширина макета"></div>
+    <a class="open" id="open" href="#" target="_blank" rel="noopener">відкрити окремо ↗</a>
+  </div>
+  <div class="stage">
+    <iframe id="frame" title="Сторінка проєкту"></iframe>
+  </div>
+</main>
+
+<script>
+// ─────────────────────────────────────────────────────────────
+// Джерело істини для навігації — GROUPS нижче.
+// Два дерева: ПРОЄКТУВАННЯ (рішення до візуалу) і ДИЗАЙН
+// (візуальна мова та її втілення). Той самий масив рендериться
+// у другому режимі — «за уроком» курсу.
+// .md і .css відкриваються через viewer.html: файл лишається
+// джерелом істини, HTML під нього не генеруємо.
+// ─────────────────────────────────────────────────────────────
+const md = p => 'viewer.html?f=' + p;
+
+const LESSONS = {
+  '01': 'Ресерч і бенчмарк',
+  '02': 'Персони і JTBD',
+  '03': 'Інформаційна архітектура',
+  '04': 'Прототипування і вайрфреймінг',
+  '05': 'Тон оф войс і мікрокопі',
+  '06': 'Концепт',
+  '07': 'Збірка UI',
+  '08': 'Design Tokens',
+  '09': 'Дизайн-система',
+  '10': 'Responsive',
+  '11': 'Анімація',
+  '12': 'Хендофф',
+};
+
+const SECTIONS = [
+  { id: 'start',  t: 'Старт' },
+  { id: 'proj',   t: 'Проєктування' },
+  { id: 'design', t: 'Дизайн' },
+];
+
+// Плоский список екранів. Ролі, стани і job-теги свідомо прибрані з дерева:
+// панель потрібна, щоб швидко відкрити екран, а не щоб переказувати карту —
+// карта живе в sitemap.md / ia.md, стани відкриваються з самого екрана.
+const SCREENS = [
+  ['Вхід (existing-user)',              'login.html'],
+  ['Вибір ролі',                        'role-select.html'],
+  ['Згода на дані + біометрію',         'consent.html'],
+  ['Верифікація · телефон',             'verify-phone.html'],
+  ['Верифікація · SMS-код',             'verify-code.html'],
+  ['Верифікація · селфі',               'verify-selfie.html'],
+  ['Верифікація · результат',           'verify.html'],
+  ['Стрічка / каталог',                 'listings.html'],
+  ['Мої заявки',                        'applications.html'],
+  ['Створення профілю · шукач',         'profile-create-seeker.html'],
+  ['Мій профіль · шукач',               'my-profile-seeker.html'],
+  ['Створення / редагування оголошення','room-create.html'],
+  ['Мої оголошення',                    'my-listings.html'],
+  ['Вхідні заявки / кандидати',         'candidates.html'],
+  ['Створення профілю · господар',      'profile-create-host.html'],
+  ['Мій профіль · господар',            'my-profile-host.html'],
+  ['Профіль іншої людини',              'profile.html'],
+  ['Оголошення кімнати',                'room.html'],
+  ['Список діалогів',                   'dialogs.html'],
+  ['Чат',                               'chat.html'],
+];
+
+// Периферія, виведена з активних 20 (крок 09). Файли робочі, лежать
+// у wireframes/_archive/ — але далі по етапах дизайну їх не ведемо.
+const ARCHIVE = [
+  ['Скарга на людину',            '_archive/report.html'],
+  ['Фото-в\u2019юер',                 '_archive/photo-viewer.html'],
+  ['Приватність',                 '_archive/privacy-settings.html'],
+  ['Заблоковані',                 '_archive/blocked.html'],
+  ['Керування акаунтом',          '_archive/account.html'],
+  ['Підтримка / звернення',       '_archive/support.html'],
+  ['Умови й Політика приватності','_archive/legal.html'],
+  ['Відновлення доступу',         '_archive/recovery.html'],
+];
+
+const wf = ([t, f]) => ({ t, f: 'wireframes/' + f });
+
+const GROUPS = [
+  // ── Старт: про проєкт загалом, поза етапами ──
+  { id: 'start', sec: 'start', t: 'Старт', items: [
+    { t: 'Огляд проєкту',      f: md('README.md') },
+    { t: 'Продуктовий бриф',   f: md('CLAUDE.md') },
+    { t: 'Бренд і принципи',   f: md('PRODUCT.md') },
+  ]},
+
+  // ── ПРОЄКТУВАННЯ: рішення до візуалу ──
+  { id: 'research', sec: 'proj', lesson: '01', t: 'Ресерч', items: [
+    { t: 'Ресерч (огляд)',       f: 'research/index.html' },
+    { t: 'Конкуренти',           f: md('research/competitors.md') },
+    { t: 'Скріни конкурентів',   f: md('research/screens.md') },
+  ]},
+  { id: 'people', sec: 'proj', lesson: '02', t: 'Люди', items: [
+    { t: 'Персони',              f: 'research/personas.html' },
+    { t: 'Jobs to Be Done',      f: 'research/jtbd.html' },
+    { t: 'Критика',              f: 'research/critique.html' },
+    { t: 'Гайд інтерв’ю',        f: md('research/interviews.md') },
+    { t: 'План ресерчу',         f: md('research/plan.md') },
+  ]},
+  { id: 'structure', sec: 'proj', lesson: '03', t: 'Структура', items: [
+    { t: 'Sitemap',                     f: 'research/sitemap.html' },
+    { t: 'User Flows',                  f: 'research/flows.html' },
+    { t: 'Інформаційна архітектура',    f: 'research/ia.html' },
+    { t: 'Аудит мапи',                  f: 'research/audit.html' },
+  ]},
+  { id: 'words', sec: 'proj', lesson: '05', t: 'Слова', items: [
+    { t: 'Голос',              f: 'research/voice.html' },
+    { t: 'Мікрокопі екранів',  f: md('wireframes/microcopy.md') },
+  ]},
+
+  // ── ДИЗАЙН: візуальна мова та її втілення ──
+  { id: 'concept', sec: 'design', lesson: '06', t: 'Концепт', items: [
+    { t: 'Три напрями мови',  f: 'concept/directions.html' },
+    { t: 'Концепт (повний)',  f: md('concept.md') },
+    { t: 'Референси',         f: md('concept/references.md') },
+  ]},
+  { id: 'basics', sec: 'design', lesson: '08', t: 'Основи · токени', items: [
+    { t: 'Мова дизайну',              f: md('DESIGN.md') },
+    { t: 'Токени (значення)',         f: md('design-system/tokens.css') },
+    { t: 'Аудит токенів',             f: md('tokens-audit.md') },
+  ]},
+  { id: 'components', sec: 'design', lesson: '07', t: 'Компоненти', items: [
+    { t: 'Кіт компонентів',        f: 'ui/kit.html' },
+    { t: 'Інвентар компонентів',   f: md('ui/inventory.md') },
+    { t: 'Оболонка застосунку',    f: 'ui/shell.html' },
+    { t: 'Конвенції екранів',      f: md('wireframes/_conventions.md') },
+  ]},
+  { id: 'screens', sec: 'design', lesson: '04', t: 'Екрани', items: [
+    { t: 'Індекс екранів',   f: 'wireframes/index.html' },
+    { t: 'Реєстр екранів',   f: md('wireframes/_screens.md') },
+    ...SCREENS.map(wf),
+  ]},
+  { id: 'archive', sec: 'design', lesson: '04', t: 'Архів · поза 20', items: ARCHIVE.map(wf) },
+  { id: 'adaptive', sec: 'design', lesson: '10', t: 'Адаптив', items: [
+    { t: 'Стрічка · desktop', f: 'wireframes/listings-desktop.html' },
+  ]},
+  { id: 'motion', sec: 'design', lesson: '11', t: 'Анімація', items: [
+    { t: 'Ще не робили' },
+  ]},
+  { id: 'dsys', sec: 'design', lesson: '09', t: 'Дизайн-система', items: [
+    { t: 'Ще не робили' },
+  ]},
+  { id: 'handoff', sec: 'design', lesson: '12', t: 'Хендофф', items: [
+    { t: 'Артефакти дизайну', f: md('DESIGN-artifacts.md') },
+    { t: 'Пакет передачі' },
+  ]},
+];
+
+/* Журнал правок — інструмент рев'ю, а не матеріал проєкту, тому його немає
+   в самому GROUPS. Він має сенс лише на локальному сервері (:8901), де nginx
+   вшиває тулбар анотацій у кожен макет і живуть сервери на 4747/4748. На
+   Vercel ані тулбара, ані тих серверів немає — пункт вів би в порожню
+   таблицю, яка вічно чекає на «Failed to fetch». Звідси перевірка порту,
+   а не ще один рядок у списку. */
+if (location.port === '8901') {
+  GROUPS.find(g => g.id === 'start').items.push({ t: 'Журнал правок', f: 'dev/fixlog.html' });
+}
+
+const HOME = md('README.md');
+
+const nav    = document.getElementById('nav');
+const frame  = document.getElementById('frame');
+const pathEl = document.getElementById('path');
+const whereEl = document.getElementById('where');
+const openEl = document.getElementById('open');
+
+// ── стан: режим дерева + згортання ──
+const STORE_KEY  = 'kutok-shell-nav';
+const MODE_KEY   = 'kutok-shell-mode';
+let mode = 'stage';
+try { mode = localStorage.getItem(MODE_KEY) === 'lesson' ? 'lesson' : 'stage'; } catch (_) {}
+
+// ── тема: спільний ключ з екранами, тож перемикач один на весь проєкт ──
+const THEME_KEY = 'kutok-theme';
+let theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+
+// сторінки-документи (research/*) кольори тримають у своїх :root-змінних
+// і про темну тему не знають — перемальовуємо їх звідси, щоб не правити 9 .html
+const DOC_DARK =
+  '[data-theme="dark"]{' +
+  '--paper:oklch(18% 0.008 60);--panel:oklch(22% 0.008 60);' +
+  '--ink:oklch(93% 0.007 75);--muted:oklch(72% 0.011 70);--faint:oklch(57% 0.011 70);' +
+  '--line:oklch(30% 0.008 60);--line-soft:oklch(25.5% 0.008 60);' +
+  '--clay:oklch(72% 0.10 42);--clay-soft:oklch(30% 0.035 45);color-scheme:dark}';
+
+function paintFrame(doc) {
+  if (!doc || !doc.documentElement) return;
+  doc.documentElement.setAttribute('data-theme', theme);
+  // екрани одягнені в design-system/ — там темна тема вже є, чужого не підсовуємо
+  if (doc.querySelector('link[href*="design-system"]') || doc.getElementById('shell-dark')) return;
+  const st = doc.createElement('style');
+  st.id = 'shell-dark';
+  st.textContent = DOC_DARK;
+  doc.head.appendChild(st);
+}
+
+// В обмеженій ширині макет має лежати рівно на одному тлі (полотні .stage),
+// без фону самого документа поміж ними. Знімаємо цей середній шар лише для
+// екранів (.app з design-system) — документи (research/*, viewer) фон
+// документа несуть самі і його чіпати не треба.
+function applyEmbedBg(doc) {
+  if (!doc || !doc.documentElement) return;
+  const isScreen = !!doc.querySelector('link[href*="design-system"]');
+  let st = doc.getElementById('shell-embed');
+  if (isScreen && stageW !== 'full') {
+    if (!st) {
+      st = doc.createElement('style');
+      st.id = 'shell-embed';
+      st.textContent = 'html,body{background:transparent!important}';
+      doc.head.appendChild(st);
+    }
+  } else if (st) {
+    st.remove();
+  }
+}
+
+function setTheme(next) {
+  theme = next;
+  document.documentElement.setAttribute('data-theme', theme);
+  try { localStorage.setItem(THEME_KEY, theme); } catch (_) {}
+  const b = nav.querySelector('.theme-btn');
+  if (b) {
+    b.title = theme === 'dark' ? 'Тема: темна — перемкнути на світлу' : 'Тема: світла — перемкнути на темну';
+    b.setAttribute('aria-label', b.title);
+  }
+  try { paintFrame(frame.contentDocument); } catch (_) {}
+}
+
+// ── ширина макета: перевірка адаптиву без DevTools ──
+// Значення взяті від брейкпоінтів design-system/tokens.css (--bp-tablet 760,
+// --bp-desktop 1080), але не дорівнюють їм: на самому брейкпоінті видно межу,
+// а не розкладку. Тому кожна ширина — типовий пристрій *за* межею.
+const WIDTHS = [
+  { key: 'full', label: 'повна', title: 'На всю ширину в’юера' },
+  { key: '390',  label: '390',   title: 'Телефон — 390px (мобільна розкладка, база)' },
+  { key: '768',  label: '768',   title: 'Планшет — 768px (≥ --bp-tablet 760)' },
+  { key: '1280', label: '1280',  title: 'Десктоп — 1280px (≥ --bp-desktop 1080)' },
+];
+const WIDTH_KEY = 'kutok-shell-width';
+const mainEl = document.querySelector('main');
+const wsw = document.getElementById('wsw');
+let stageW = 'full';
+try {
+  const w = localStorage.getItem(WIDTH_KEY);
+  if (WIDTHS.some(x => x.key === w)) stageW = w;
+} catch (_) {}
+
+function setStageW(next) {
+  stageW = next;
+  mainEl.dataset.w = next;
+  mainEl.style.setProperty('--stage-w', next === 'full' ? '100%' : next + 'px');
+  try { localStorage.setItem(WIDTH_KEY, next); } catch (_) {}
+  for (const b of wsw.children) b.setAttribute('aria-pressed', String(b.dataset.w === next));
+  try { applyEmbedBg(frame.contentDocument); } catch (_) {}
+}
+
+for (const w of WIDTHS) {
+  const b = el('button', null, w.label);
+  b.type = 'button';
+  b.dataset.w = w.key;
+  b.title = w.title;
+  b.addEventListener('click', () => setStageW(w.key));
+  wsw.appendChild(b);
+}
+setStageW(stageW);
+
+let stored = {};
+try { stored = JSON.parse(localStorage.getItem(STORE_KEY)) || {}; } catch (_) {}
+
+const collapsibles = new Map(); // id → { btn, body, def }
+const openState = {};           // намір користувача; фільтр і автопоказ його не чіпають
+
+function saveStore() {
+  const out = {};
+  for (const [id, c] of collapsibles)
+    if (openState[id] !== c.def) out[id] = openState[id];
+  // стан закритих гілок іншого режиму не втрачаємо
+  const keep = { ...stored, ...out };
+  for (const [id, c] of collapsibles) if (openState[id] === c.def) delete keep[id];
+  stored = keep;
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(keep)); } catch (_) {}
+}
+
+function applyOpen(id, open) {      // лише вигляд; намір лишається в openState
+  const c = collapsibles.get(id);
+  if (!c) return;
+  c.btn.setAttribute('aria-expanded', String(open));
+  c.body.hidden = !open;
+}
+
+function setOpen(id, open) {
+  if (!collapsibles.has(id)) return;
+  applyOpen(id, open);
+  openState[id] = open;
+  saveStore();
+}
+
+function isOpen(id) { return !!openState[id]; }
+
+const CHEV = '<svg class="chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>';
+
+function makeCollapsible(id, btn, body, def) {
+  const open = id in stored ? stored[id] : def;
+  btn.setAttribute('aria-expanded', String(open));
+  const cid = 'c-' + id.replace(/[^a-z0-9]+/gi, '-');
+  btn.setAttribute('aria-controls', cid);
+  body.id = cid;
+  body.hidden = !open;
+  collapsibles.set(id, { btn, body, def });
+  openState[id] = open;
+  btn.addEventListener('click', () => setOpen(id, btn.getAttribute('aria-expanded') !== 'true'));
+}
+
+// ── рендер панелі ──
+const navItems   = new Map();  // file → { pg, ancestors: [ids] }
+const filterables = [];        // { el, text, ids, isGroup?, groupId? }
+const secMeta    = [];         // те саме для верхніх дерев
+const secTitles  = new Map();  // sec-id → заголовок, для підпису в шапці
+
+let brand, filterEl, nomatch, allBtn;
+
+function el(tag, cls, html) {
+  const n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (html != null) n.innerHTML = html;
+  return n;
+}
+
+function addLink(container, t, f, ancestors, cls = 'pg') {
+  const a = el('a', cls);
+  a.href = '#' + f;
+  a.dataset.f = f;
+  a.dataset.l = t;
+  a.textContent = t;
+  container.appendChild(a);
+  navItems.set(f, { pg: a, ancestors });
+  return a;
+}
+
+function renderItems(items, body, ancestors, filterIds) {
+  for (const it of items) {
+    if (!it.f) {                       // етап є, артефакта ще немає
+      const ph = el('span', 'ph');
+      ph.dataset.l = it.t;
+      ph.textContent = it.t;
+      body.appendChild(ph);
+      filterables.push({ el: ph, text: it.t.toLowerCase(), ids: filterIds });
+      continue;
+    }
+    const a = addLink(body, it.t, it.f, ancestors);
+    filterables.push({ el: a, text: (it.t + ' ' + it.f).toLowerCase(), ids: filterIds });
+  }
+}
+
+function groupCount(g) {
+  return (g.items || []).filter(i => i.f).length;
+}
+
+// група як вузол 2-го рівня (режим «за етапом»)
+function renderGroup(g, parentIds, container) {
+  const gid = 'grp:' + g.id;
+  const box = el('div', 'grp');
+  const btn = el('button', 'grp-btn', CHEV + g.t +
+    (g.lesson ? `<span class="les">У${g.lesson}</span>` : ''));
+  btn.type = 'button';
+  if (g.lesson) btn.title = 'Урок ' + g.lesson + ' — ' + LESSONS[g.lesson];
+  const body = el('div', 'grp-body');
+  box.append(btn, body);
+  makeCollapsible(gid, btn, body, true);
+
+  const anc = [...parentIds, gid];
+  renderItems(g.items || [], body, anc, anc);
+
+  container.appendChild(box);
+  filterables.push({
+    el: box, ids: anc, isGroup: true, groupId: gid,
+    text: (g.t + ' ' + (g.lesson ? 'у' + g.lesson + ' урок ' + g.lesson + ' ' + LESSONS[g.lesson] : '')).toLowerCase(),
+  });
+}
+
+// верхнє дерево (режим «за етапом») або урок (режим «за уроком»)
+function renderSection(id, title, groups, asLesson) {
+  const secId = 'sec:' + mode + ':' + id;
+  secTitles.set(secId, title);
+  const sec = el('section', 'sec');
+  const total = groups.reduce((n, g) => n + groupCount(g), 0);
+  const btn = el('button', 'sec-btn', CHEV + title + `<span class="cnt">${total}</span>`);
+  btn.type = 'button';
+  sec.appendChild(btn);
+  sec.appendChild(el('div', 'sec-rule'));
+  const body = el('div', 'sec-body');
+  sec.appendChild(body);
+  makeCollapsible(secId, btn, body, true);
+
+  const anc = [secId];
+  if (asLesson) {
+    // урок = одна група, зайвий рівень не заводимо
+    renderItems(groups[0].items || [], body, anc, anc);
+  } else {
+    for (const g of groups) renderGroup(g, anc, body);
+  }
+  secMeta.push({ cnt: btn.querySelector('.cnt'), body, total });
+  return sec;
+}
+
+function buildNav() {
+  nav.innerHTML = '';
+  collapsibles.clear();
+  navItems.clear();
+  filterables.length = 0;
+  secMeta.length = 0;
+
+  const frag = document.createDocumentFragment();
+
+  brand = el('a', 'brand', 'Куток<span>ПРОЄКТ · ВСІ МАТЕРІАЛИ</span>');
+  brand.href = '#' + HOME;
+  brand.dataset.f = HOME;
+  frag.appendChild(brand);
+
+  const fwrap = el('div', 'fwrap');
+  const field = el('div', 'field',
+    '<svg class="glass" viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="4.6"/><path d="M10.4 10.4 14 14"/></svg>');
+  filterEl = el('input', 'filter');
+  filterEl.type = 'search';
+  filterEl.placeholder = 'Фільтр по дереву…';
+  filterEl.setAttribute('aria-label', 'Фільтр по дереву');
+  field.appendChild(filterEl);
+  const kbd = document.createElement('kbd');
+  kbd.textContent = '/';
+  field.appendChild(kbd);
+  fwrap.appendChild(field);
+
+  const tools = el('div', 'tools');
+  const modeBox = el('div', 'mode');
+  modeBox.setAttribute('role', 'group');
+  modeBox.setAttribute('aria-label', 'Групування дерева');
+  for (const [key, label] of [['stage', 'за етапом'], ['lesson', 'за уроком']]) {
+    const b = el('button', null, label);
+    b.type = 'button';
+    b.setAttribute('aria-pressed', String(mode === key));
+    b.addEventListener('click', () => setMode(key));
+    modeBox.appendChild(b);
+  }
+  tools.appendChild(modeBox);
+
+  const themeBtn = el('button', 'ghost theme-btn',
+    '<svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/>' +
+    '<path d="M12 2.6v2.2M12 19.2v2.2M4.2 12H2M22 12h-2.2M6.5 6.5 4.9 4.9M19.1 19.1l-1.6-1.6M17.5 6.5l1.6-1.6M4.9 19.1l1.6-1.6"/></svg>' +
+    '<svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.2A8.2 8.2 0 0 1 9.8 4a8.4 8.4 0 1 0 10.2 10.2z"/></svg>');
+  themeBtn.type = 'button';
+  themeBtn.title = theme === 'dark' ? 'Тема: темна — перемкнути на світлу' : 'Тема: світла — перемкнути на темну';
+  themeBtn.setAttribute('aria-label', themeBtn.title);
+  themeBtn.addEventListener('click', () => setTheme(theme === 'dark' ? 'light' : 'dark'));
+  tools.appendChild(themeBtn);
+
+  allBtn = el('button', 'ghost all-btn', 'згорнути');
+  allBtn.type = 'button';
+  allBtn.addEventListener('click', toggleAll);
+  tools.appendChild(allBtn);
+  fwrap.appendChild(tools);
+  frag.appendChild(fwrap);
+
+  if (mode === 'stage') {
+    for (const s of SECTIONS) {
+      const gs = GROUPS.filter(g => g.sec === s.id);
+      // дерево з однієї однойменної групи не подвоюємо заголовком
+      if (gs.length) frag.appendChild(renderSection(s.id, s.t, gs, gs.length === 1 && gs[0].t === s.t));
+    }
+  } else {
+    const start = GROUPS.filter(g => !g.lesson);
+    if (start.length) frag.appendChild(renderSection('start', 'Старт', start, start.length === 1));
+    // один урок може складатися з кількох груп (У04: «Екрани» + «Архів») —
+    // зводимо їх в одну секцію, інакше урок задвоївся б заголовком
+    const byLesson = new Map();
+    for (const g of GROUPS.filter(g => g.lesson)) {
+      if (!byLesson.has(g.lesson)) byLesson.set(g.lesson, []);
+      byLesson.get(g.lesson).push(g);
+    }
+    for (const l of [...byLesson.keys()].sort())
+      frag.appendChild(renderSection('l' + l, l + ' · ' + LESSONS[l], byLesson.get(l), byLesson.get(l).length === 1));
+  }
+
+  nomatch = el('div', 'nomatch',
+    '<b>Нічого не знайшлося</b>' +
+    '<p>Фільтр дивиться на назви, шляхи файлів, job-теги (RJ2, SJ1) і номери уроків (У04). ' +
+    'Спробуйте коротший запит.</p>');
+  const reset = el('button', null, 'скинути фільтр');
+  reset.type = 'button';
+  reset.addEventListener('click', () => { filterEl.value = ''; applyFilter(); filterEl.focus(); });
+  nomatch.appendChild(reset);
+  frag.appendChild(nomatch);
+
+  nav.appendChild(frag);
+
+  filterEl.addEventListener('input', applyFilter);
+  filterEl.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { filterEl.value = ''; applyFilter(); filterEl.blur(); }
+  });
+  syncAllBtn();
+}
+
+function branchIds() {
+  return [...collapsibles.keys()].filter(k => !k.startsWith('sec:'));
+}
+
+function toggleAll() {
+  const anyClosed = branchIds().some(k => !isOpen(k));
+  for (const k of branchIds()) { applyOpen(k, anyClosed); openState[k] = anyClosed; }
+  if (anyClosed) for (const k of collapsibles.keys())
+    if (k.startsWith('sec:')) { applyOpen(k, true); openState[k] = true; }
+  saveStore();
+  syncAllBtn();
+}
+
+function syncAllBtn() {
+  if (!allBtn) return;
+  allBtn.textContent = branchIds().some(k => !isOpen(k)) ? 'розгорнути' : 'згорнути';
+}
+
+function setMode(next) {
+  if (mode === next) return;
+  mode = next;
+  try { localStorage.setItem(MODE_KEY, mode); } catch (_) {}
+  const q = filterEl ? filterEl.value : '';
+  buildNav();
+  filterEl.value = q;
+  applyFilter();
+  markActive(openEl.dataset.f || HOME);
+  revealActive();
+  buildSecs(lastDoc, lastFile);
+}
+
+// ── фільтр ──
+function markLabel(el, q) {
+  const t = el.dataset.l;
+  const i = q ? t.toLowerCase().indexOf(q) : -1;
+  if (i < 0) {
+    if (el.firstElementChild) el.textContent = t;
+    return;
+  }
+  el.textContent = '';
+  el.append(t.slice(0, i));
+  const m = document.createElement('mark');
+  m.textContent = t.slice(i, i + q.length);
+  el.append(m, t.slice(i + q.length));
+}
+
+function applyFilter() {
+  const q = filterEl.value.trim().toLowerCase();
+  filterEl.parentElement.classList.toggle('has-value', !!q);
+  if (q) nav.dataset.filtering = '1'; else delete nav.dataset.filtering;
+  for (const e of nav.querySelectorAll('[data-l]')) markLabel(e, q);
+
+  if (!q) {
+    for (const it of filterables) it.el.hidden = false;
+    for (const id of collapsibles.keys()) applyOpen(id, openState[id]);
+    for (const s of secMeta) { s.cnt.textContent = s.total; s.body.parentElement.hidden = false; }
+    nav.querySelectorAll('.secs').forEach(s => { s.hidden = false; });
+    nomatch.style.display = 'none';
+    revealActive(false);
+    return;
+  }
+
+  let hits = 0;
+  const liveGroups = new Set();
+
+  for (const it of filterables) {
+    if (it.isGroup) continue;
+    const hit = it.text.includes(q);
+    it.el.hidden = !hit;
+    if (hit) {
+      hits++;
+      for (const id of it.ids) {
+        if (id.startsWith('grp:')) liveGroups.add(id);
+        applyOpen(id, true);
+      }
+    }
+  }
+  // блок секцій активної сторінки ховаємо разом із її рядком
+  nav.querySelectorAll('.secs').forEach(s => {
+    s.hidden = !!s.previousElementSibling && s.previousElementSibling.hidden;
+  });
+
+  for (const it of filterables) {
+    if (!it.isGroup) continue;
+    const grpHit = it.text.includes(q);
+    it.el.hidden = !grpHit && !liveGroups.has(it.groupId);
+    if (grpHit) {
+      for (const id of it.ids) applyOpen(id, true);
+      for (const child of it.el.querySelectorAll('.pg, .ph')) child.hidden = false;
+      hits++;
+    }
+  }
+
+  for (const s of secMeta) {
+    // рахуємо тільки те, що справді видно: сам рядок і жоден його предок не сховані
+    const vis = [...s.body.querySelectorAll('a[data-f]')]
+      .filter(a => !a.hidden && !a.closest('[hidden]')).length;
+    s.cnt.textContent = vis === s.total ? s.total : vis + '/' + s.total;
+    s.body.parentElement.hidden = ![...s.body.children].some(c => !c.hidden);
+  }
+  nomatch.style.display = hits ? 'none' : 'block';
+}
+
+function isTyping(el) {
+  return el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.isContentEditable);
+}
+document.addEventListener('keydown', e => {
+  if (e.key === '/' && !isTyping(document.activeElement)) {
+    e.preventDefault();
+    filterEl.focus();
+  }
+  if ((e.key === 'j' || e.key === 'k') && !isTyping(document.activeElement) && !e.metaKey && !e.ctrlKey) {
+    e.preventDefault();
+    step(e.key === 'j' ? 1 : -1);
+  }
+});
+
+// ── навігація ──
+let pendingHash = '';
+let targetFile = null;   // куди оболонка веде iframe (під час завантаження ≠ поточному документу)
+let lastDoc = null, lastFile = null;
+
+// оболонка може жити не в корені сервера — шляхи рахуємо від її теки
+const BASE = location.pathname.replace(/[^/]*$/, '');
+function toFile(pathname, search = '') {
+  const p = pathname.startsWith(BASE) ? pathname.slice(BASE.length) : pathname.replace(/^\//, '');
+  return p + search;
+}
+
+function currentFile() {
+  try {
+    const l = frame.contentWindow.location;
+    if (l.href === 'about:blank') return null;
+    return toFile(l.pathname, l.search);
+  } catch (_) { return null; }
+}
+
+function revealActive(scroll = true) {
+  const item = navItems.get(openEl.dataset.f);
+  if (!item) return;
+  for (const id of item.ancestors) applyOpen(id, true);   // показ, не намір
+  if (scroll) {
+    const act = nav.querySelector('.pg.active');
+    if (act) act.scrollIntoView({ block: 'nearest' });
+  }
+}
+
+function markActive(file) {
+  for (const e of nav.querySelectorAll('[data-f]'))
+    e.classList.toggle('active', e.dataset.f === file && e !== brand);
+
+  // гілка, у якій стоїть активна сторінка: заголовки предків темніють,
+  // їхня направляюча підсвічується. У чотирирівневому дереві це єдиний
+  // спосіб бачити «де я» не розгортаючи все.
+  for (const c of collapsibles.values()) {
+    c.btn.classList.remove('on');
+    c.body.classList.remove('on');
+  }
+  const item = navItems.get(file);
+  if (!item) return;
+  for (const id of item.ancestors) {
+    const c = collapsibles.get(id);
+    if (c) { c.btn.classList.add('on'); c.body.classList.add('on'); }
+  }
+}
+
+// підпис у шапці: де ми в дереві
+function whereOf(file) {
+  const item = navItems.get(file);
+  if (!item) return '';
+  for (const id of item.ancestors) {
+    if (id.startsWith('grp:')) {
+      const g = GROUPS.find(x => 'grp:' + x.id === id);
+      if (g) return g.t + (g.lesson ? ' · У' + g.lesson : '');
+    }
+  }
+  const sec = item.ancestors.find(i => i.startsWith('sec:'));
+  return sec ? (secTitles.get(sec) || '') : '';
+}
+
+function show(file, push = true) {
+  const cur = currentFile();
+  const inFlight = targetFile !== null && targetFile !== cur;
+  if (targetFile !== file) pendingHash = '';   // новий перехід скасовує чужий якір
+  targetFile = file;
+  if (cur !== file) {
+    frame.src = file;
+  } else if (inFlight) {
+    try { frame.contentWindow.stop(); } catch (_) {}
+  }
+  pathEl.textContent = '/' + file.replace(/^viewer\.html\?f=/, '');
+  whereEl.textContent = whereOf(file);
+  openEl.href = file;
+  openEl.dataset.f = file;
+  markActive(file);
+  // кнопка «назад» веде по історії перегляду; перший показ історію не засмічує
+  if (push && location.hash !== '#' + file)
+    history[location.hash ? 'pushState' : 'replaceState'](null, '', '#' + file);
+  revealActive();
+  syncAllBtn();
+}
+
+function goto(file, hash) {
+  if (hash && file === currentFile() && targetFile === file) {
+    try { frame.contentWindow.location.hash = hash; } catch (_) {}
+    show(file);
+    return;
+  }
+  show(file);                 // спершу перехід: він скидає чужий pendingHash…
+  pendingHash = hash || '';   // …а тоді ставимо свій якір
+}
+
+// j/k — крок по видимих сторінках дерева
+function step(dir) {
+  const list = [...nav.querySelectorAll('a[data-f]')]
+    .filter(a => a !== brand && !a.closest('[hidden]'));
+  if (!list.length) return;
+  const i = list.findIndex(a => a.dataset.f === openEl.dataset.f);
+  const next = list[Math.min(list.length - 1, Math.max(0, (i < 0 ? 0 : i + dir)))];
+  if (next) show(next.dataset.f);
+}
+
+nav.addEventListener('click', e => {
+  const a = e.target.closest('a[data-f]');
+  if (!a) return;
+  e.preventDefault();
+  show(a.dataset.f);
+});
+
+// ── секції активної сторінки: дзеркалимо її прихований сайдбар у ліву панель ──
+let secsObserver = null;
+
+function buildSecs(doc, file) {
+  nav.querySelectorAll('.secs').forEach(el => el.remove());
+  if (secsObserver) { secsObserver.disconnect(); secsObserver = null; }
+  if (!doc) return;
+
+  const inner = [...doc.querySelectorAll('.sidenav .nav-links a[href^="#"]')];
+  const item = navItems.get(file);
+  if (!inner.length || !item) return;
+
+  const box = el('div', 'secs');
+  const mirror = new Map();
+  for (const l of inner) {
+    const a = document.createElement('a');
+    const href = l.getAttribute('href');
+    a.href = href;
+    const numEl = l.querySelector('.n');
+    if (numEl) {
+      const n = el('span', 'n');
+      n.textContent = numEl.textContent;
+      a.appendChild(n);
+      a.appendChild(document.createTextNode(l.textContent.replace(numEl.textContent, '').trim()));
+    } else {
+      a.textContent = l.textContent.trim();
+    }
+    box.appendChild(a);
+    mirror.set(href, a);
+  }
+  item.pg.insertAdjacentElement('afterend', box);
+
+  box.addEventListener('click', e => {
+    const a = e.target.closest('a');
+    if (!a) return;
+    e.preventDefault();
+    const href = a.getAttribute('href');
+    try {
+      const win = frame.contentWindow;
+      if (win.location.hash === href) {
+        const t = win.document.querySelector(href);
+        if (t) t.scrollIntoView({ block: 'start' });
+      } else {
+        win.location.hash = href;
+      }
+    } catch (_) {}
+  });
+
+  // скролспай сторінки далі працює у прихованому сайдбарі — віддзеркалюємо клас
+  const sync = () => {
+    for (const l of inner) {
+      const mine = mirror.get(l.getAttribute('href'));
+      if (mine) mine.classList.toggle('active', l.classList.contains('active'));
+    }
+  };
+  secsObserver = new MutationObserver(sync);
+  for (const l of inner) secsObserver.observe(l, { attributes: true, attributeFilter: ['class'] });
+  sync();
+}
+
+// ── завантаження сторінки в iframe ──
+frame.addEventListener('load', () => {
+  const file = currentFile();
+  if (!file) { frame.classList.add('ready'); return; }
+  targetFile = file;                       // реальність перемогла (back/forward, програна гонка)
+  const doc = frame.contentDocument;
+  lastDoc = doc; lastFile = file;
+  paintFrame(doc);
+
+  // ховаємо власний сайдбар сторінки — панель у проєкті одна
+  if (doc && doc.querySelector('.sidenav, .wf-nav') && !doc.getElementById('shell-css')) {
+    const st = doc.createElement('style');
+    st.id = 'shell-css';
+    st.textContent =
+      '.sidenav{display:none!important}' +
+      '.shell{grid-template-columns:minmax(0,1fr)!important;gap:0!important}' +
+      '.wf-nav{display:none!important}';
+    doc.head.appendChild(st);
+  }
+
+  applyEmbedBg(doc);
+
+  // внутрішні переходи між сторінками ведемо через оболонку
+  if (doc && !doc.__shellHooked) {
+    doc.__shellHooked = true;
+    doc.addEventListener('click', e => {
+      const a = e.target.closest('a[href]');
+      if (!a) return;
+      const href = a.getAttribute('href') || '';
+      if (href.startsWith('#')) return;   // якорі лишаємо самій сторінці
+      const url = new URL(a.href, doc.baseURI);
+      const sameOrigin = url.origin === location.origin;
+      if (sameOrigin && /\.html$/.test(url.pathname) && a.target !== '_blank') {
+        e.preventDefault();
+        goto(toFile(url.pathname, url.search), url.hash);
+      } else if (url.protocol === 'http:' || url.protocol === 'https:') {
+        e.preventDefault();
+        window.open(url.href, '_blank', 'noopener');
+      }
+    });
+    doc.addEventListener('keydown', e => {
+      if (e.key === '/' && !isTyping(e.target)) { e.preventDefault(); filterEl.focus(); }
+    });
+    frame.contentWindow.addEventListener('pagehide', () => {
+      frame.classList.remove('ready');
+      setTimeout(() => frame.classList.add('ready'), 2500);   // запобіжник
+    });
+  }
+
+  show(file);
+  buildSecs(doc, file);
+
+  if (pendingHash) {
+    try { frame.contentWindow.location.hash = pendingHash; } catch (_) {}
+    pendingHash = '';
+  }
+  frame.classList.add('ready');
+});
+
+// в'юер будує зміст асинхронно (fetch), тобто вже після load — перечитуємо
+window.addEventListener('message', e => {
+  if (e.data !== 'kutok:toc' || e.source !== frame.contentWindow) return;
+  const f = currentFile();
+  if (f) buildSecs(frame.contentDocument, f);
+});
+
+// ── старт: hash або головна (жодних javascript:/зовнішніх URL) ──
+buildNav();
+const ALL_FILES = new Set([...nav.querySelectorAll('[data-f]')].map(e => e.dataset.f));
+
+// Дерево показує лише головні екрани, але стани (`-loading`, `-error`, `-empty`)
+// далі доступні: у них ходять із самих екранів, і перезавантаження такої адреси
+// не повинно викидати на головну. Тому крім файлів дерева пускаємо будь-який
+// .html усередині відомих тек — без `..`, схем і абсолютних шляхів.
+const SAFE_PATH = /^(wireframes|research|concept|ui|handoff)\/[A-Za-z0-9_\-/]+\.html$/;
+
+function fromHash() {
+  const f = decodeURIComponent(location.hash.slice(1));
+  if (ALL_FILES.has(f)) return f;
+  return !f.includes('..') && SAFE_PATH.test(f) ? f : HOME;
+}
+show(fromHash(), false);
+window.addEventListener('hashchange', () => show(fromHash(), false));
+window.addEventListener('popstate', () => show(fromHash(), false));
+</script>
+<script>
+(() => {
+  const probe = () => {
+    try {
+      const doc = frame.contentDocument;
+      const app = doc && doc.querySelector('.app');
+      if (!doc || !app || doc.readyState !== 'complete') return false;
+      const result = {
+        mode: stageW,
+        iframe: frame.getBoundingClientRect().width,
+        body: doc.body.getBoundingClientRect().width,
+        app: app.getBoundingClientRect().width,
+        main: mainEl.getBoundingClientRect().width
+      };
+      document.title = 'WIDTH_PROBE:' + JSON.stringify(result);
+      const out = document.createElement('pre');
+      out.id = 'width-probe-result';
+      out.textContent = JSON.stringify(result);
+      document.body.appendChild(out);
+      return true;
+    } catch (_) { return false; }
+  };
+  const timer = setInterval(() => { if (probe()) clearInterval(timer); }, 100);
+  setTimeout(() => { probe(); clearInterval(timer); }, 5000);
+})();
+</script>
+</body>
+</html>

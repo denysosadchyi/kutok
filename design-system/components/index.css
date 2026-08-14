@@ -24,27 +24,31 @@
 .app a:not(:where(.btn)) { color: inherit; text-decoration: none; }
 .app main { flex: 1 1 auto; }  /* навбар і FAB завжди внизу */
 
-/* ── Десктоп: таб-бар стає сайдбаром зліва, шапка звужується в колонку контенту ──
+/* ── Десктоп: таб-бар стає верхньою панеллю, шапка й контент — під нею ──
    responsive/width-audit.md (DESIGN.md §7): один поріг на всю оболонку —
    той самий --bp-desktop із tokens.css (67.5rem/1080px). Тут — літерал:
    у значенні медіа-умови (не в декларації) custom property браузери ще не
-   читають. Grid замість flex-row: .app-head і main та .tabbar лишаються
-   прямими нащадками .app рівно в тому самому DOM-порядку, що й на мобільному
-   (жоден екран не міняється) — area-розкладка розводить їх по колонках без
+   читають. Grid замість flex: .app-head, main і .tabbar лишаються прямими
+   нащадками .app рівно в тому самому DOM-порядку, що й на мобільному (жоден
+   екран не міняється) — area-розкладка піднімає навігацію нагору без
    переставляння розмітки. .app-head дістає area в header.css, .tabbar —
-   у tabbar.css: кожен компонент сам відповідає за свою половину. */
+   у tabbar.css: кожен компонент сам відповідає за свою половину.
+
+   Було: сайдбар зліва ("nav head" / "nav main"). Стало: горизонтальна панель
+   у першому ряду — на десктопі меню очікують угорі, а не збоку, і смуга на всю
+   ширину віддає контенту всю колонку (правка з тулбара, 2026-08-14). */
 @media (min-width: 67.5rem) {
   .app {
     display: grid;
-    grid-template-columns: max-content 1fr;
-    grid-template-rows: auto 1fr; /* ряд шапки — рівно висота вмісту, не
-      частка від min-height: 100vh. Без цього ряд без явного розміру бере
-      частку зайвої висоти (grid default align-content: stretch розтягує
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr; /* ряди панелі й шапки — рівно висота
+      вмісту, не частка від min-height: 100vh. Без цього ряд без явного розміру
+      бере частку зайвої висоти (grid default align-content: stretch розтягує
       auto-ряди на всю висоту .app) — і .app-head--back (flex-direction:
       column, justify-content: space-between з базового .app-head)
       розсуває бренд-рядок і back+заголовок на всю ту висоту замість того,
       щоб лишитись компактним зверху. */
-    grid-template-areas: "nav head" "nav main";
+    grid-template-areas: "nav" "head" "main";
     max-width: var(--container-max);
     min-height: 100vh;
   }
@@ -126,13 +130,17 @@
   font-size: var(--font-size-18); line-height: 1.2; letter-spacing: -.01em; color: var(--text-primary);
 }
 
-/* ── Десктоп: шапка звужується в колонку контенту (сайдбар зліва, base.css) ──
+/* ── Десктоп: шапка лягає під верхню панель навігації (base.css) ──
    Обидва варіанти шапки (.app-head сам собою й .app-head--back як модифікатор
-   того самого класу) більше не тягнуться на всю ширину оболонки — лише на
-   колонку "head" поруч із навігацією; той самий поріг --bp-desktop, що
-   в base.css/tabbar.css. */
+   того самого класу) стають другим рядом сітки — під смугою меню; той самий
+   поріг --bp-desktop, що в base.css/tabbar.css. Липкість віддано панелі:
+   два sticky з top:0 в сусідніх рядах наїжджали б один на одного. */
 @media (min-width: 67.5rem) {
-  .app-head { grid-area: head; }
+  .app-head { grid-area: head; position: static; }
+  /* Бренд і пошук на десктопі живуть у верхній панелі (tabbar.css) — у шапці
+     вони б дублювались, тому тут ховаються. Розмітка на екранах не міняється:
+     та сама шапка сама віддає ці два елементи панелі при переході через поріг. */
+  .head-brand-row, .app-head > .head-btn { display: none; }
 }
 
 /* ── search.css ────────────────────────────────────────────────────────────── */
@@ -190,38 +198,79 @@
   font-size: var(--font-size-10); font-weight: var(--font-weight-700); line-height: var(--size-15); text-align: center; border-radius: var(--radius-999);
 }
 
-/* ── Десктоп: та сама навігація, сайдбаром зліва замість пігулки знизу ──
+/* Лого і поле пошуку живуть у розмітці таб-бару, але на телефоні їх немає:
+   там бренд у шапці, а пошук — поповер за кнопкою-лупою. Правило стоїть ПІСЛЯ
+   `.tabbar a` навмисно — специфічність однакова, вирішує порядок. */
+.tabbar-brand, .tabbar-search { display: none; }
+
+/* ── Десктоп: та сама навігація, верхньою панеллю замість пігулки знизу ──
    responsive/width-audit.md (DESIGN.md §7) називає це «нова поведінка» —
    ширина відкриває розкладку, якої на телефоні немає. Той самий поріг
    --bp-desktop, що в base.css/header.css (тут — літерал, з тієї самої
    причини: у @media-умові custom property не читається).
 
-   Список пунктів, іконки, лейблі, лічильники — ті самі елементи з тієї самої
-   розмітки (жоден екран не змінено), лише вертикальний стек замість
-   горизонтального ряду. Кольорові ролі не чіпаються: --bg-navbar,
-   --on-navbar, --bg-navbar-active, --on-navbar-active, --bg-navbar-badge,
-   --on-navbar-badge лишаються тими самими — тому активний стан, hover,
-   focus-visible і лічильник виглядають однаково в обох темах, як і на
-   мобільному (перевизначені в tokens.css [data-theme="dark"], не тут). */
+   Композиція звична для десктопу: лого зліва, поле пошуку поруч, пункти меню
+   по центру, «Профіль» притиснутий вправо (двома auto-margin — на .tabbar-search
+   і на останньому пункті — група пунктів центрується в тому, що лишилось).
+
+   Смуга НЕ оливкова: на всю ширину вгорі олива стає найяскравішою площиною
+   екрана й перетягує увагу з контенту — та сама причина, з якої темна тема
+   вивела навбар з --color-brand в окрему роль. Тому тут панель читає --bg-surface
+   (виступ над канвасом) + --border-default знизу, а пункти — --text-primary
+   і --color-brand на активному. Ролі --bg-navbar/--on-navbar лишаються
+   мобільній пігулці. */
 @media (min-width: 67.5rem) {
   .tabbar {
     grid-area: nav;
     position: sticky; top: 0; bottom: auto;
-    align-self: stretch;
     margin: 0;
-    flex-direction: column; align-items: stretch;
+    flex-direction: row; align-items: center;
     gap: var(--space-4);
     border-radius: 0;
-    padding: var(--space-20) var(--space-12);
+    border-bottom: var(--border-1) solid var(--border-default);
+    background: var(--bg-surface); background-image: var(--grain-1);
+    padding: var(--space-10) var(--space-20);
   }
   .tabbar a {
     flex: none;
     flex-direction: row; justify-content: flex-start;
-    gap: var(--space-10);
-    padding: var(--space-10) var(--space-14);
+    gap: var(--space-8);
+    padding: var(--space-8) var(--space-14);
+    color: var(--text-primary);
   }
-  .tabbar a:focus-visible { outline-offset: -2px; }
+  .tabbar a:hover { background: var(--bg-neutral); }
+  .tabbar a.active { background: var(--bg-neutral); color: var(--color-brand); }
+  .tabbar a.active .tab-ico { color: var(--color-brand); }
+  .tabbar a:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: -2px; }
+  /* «Профіль» — останній пункт, місце для нього на десктопі праворуч. */
+  .tabbar a:last-child { margin-left: auto; }
   .tab-txt { font-size: var(--font-size-13); }
+  /* Лічильник переїхав з темної смуги на світлу поверхню — ролі навбару тут
+     злилися б з фоном, тому бере суцільний бренд і його інверсію. */
+  .tab-dot { background: var(--bg-brand-solid); color: var(--on-brand-solid); }
+
+  /* Лого — те саме, що в шапці (.brand-mark + вордмарк), лише в панелі. */
+  .tabbar-brand {
+    display: inline-flex; align-items: center; gap: var(--space-8);
+    padding: var(--space-8) var(--space-10);
+    color: var(--color-brand);
+    font-family: var(--font-family-1); font-weight: var(--font-weight-700);
+    font-size: var(--font-size-16); letter-spacing: -.02em;
+  }
+  .tabbar-brand .brand-mark { width: var(--size-18); height: var(--size-18); }
+
+  /* Пошук більше не ховається за кнопкою-лупою: на десктопі є ширина, щоб
+     тримати поле розгорнутим просто в панелі (кнопку в шапці ховає header.css).
+     Вигляд успадковано від .search-form — тут лише місце і розмір. */
+  .tabbar-search {
+    display: flex;
+    flex: 0 1 var(--size-320);
+    margin-right: auto; margin-left: var(--space-12);
+    border: var(--border-1) solid var(--border-default); border-radius: var(--radius-999);
+    padding: var(--space-7) var(--space-14);
+    background: var(--bg-page);
+  }
+  .tabbar-search input { font-size: var(--font-size-13); }
 }
 
 /* ── menu.css ────────────────────────────────────────────────────────────── */
