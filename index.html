@@ -1169,13 +1169,20 @@ window.addEventListener('message', e => {
   if (f) buildSecs(frame.contentDocument, f);
 });
 
-// ── старт: hash або головна (тільки файли з дерева — жодних javascript:/зовнішніх URL) ──
+// ── старт: hash або головна (жодних javascript:/зовнішніх URL) ──
 buildNav();
 const ALL_FILES = new Set([...nav.querySelectorAll('[data-f]')].map(e => e.dataset.f));
 
+// Дерево показує лише головні екрани, але стани (`-loading`, `-error`, `-empty`)
+// далі доступні: у них ходять із самих екранів, і перезавантаження такої адреси
+// не повинно викидати на головну. Тому крім файлів дерева пускаємо будь-який
+// .html усередині відомих тек — без `..`, схем і абсолютних шляхів.
+const SAFE_PATH = /^(wireframes|research|concept|ui|handoff)\/[A-Za-z0-9_\-/]+\.html$/;
+
 function fromHash() {
   const f = decodeURIComponent(location.hash.slice(1));
-  return ALL_FILES.has(f) ? f : HOME;
+  if (ALL_FILES.has(f)) return f;
+  return !f.includes('..') && SAFE_PATH.test(f) ? f : HOME;
 }
 show(fromHash(), false);
 window.addEventListener('hashchange', () => show(fromHash(), false));
