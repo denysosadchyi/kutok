@@ -274,18 +274,24 @@
     padding: 9px 18px; border-bottom: 1px solid var(--line);
     font-family: var(--mono); font-size: 11px; color: var(--muted);
   }
+  /* Три зони рівної ваги: шлях зліва, перемикач по центру, дія справа.
+     Бічні зони — flex: 1 1 0 з однаковою базою, тому центр стоїть по центру
+     смуги, а не «десь між сусідами»: інакше довгий шлях зсував би перемикач
+     і той плавав би при кожній зміні сторінки. */
+  .bar-side { flex: 1 1 0; min-width: 0; display: flex; align-items: center; gap: 12px; }
+  .bar-side--end { justify-content: flex-end; }
   .bar .path { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .bar .where { flex: none; color: var(--faint); }
   .bar a.open {
     flex: none; color: var(--clay); font-weight: 600;
-    padding: 3px 8px; border-radius: 6px;
+    padding: 3px 8px; border-radius: 6px; white-space: nowrap;
   }
   .bar a.open:hover { background: var(--clay-soft); }
 
   /* Перемикач ширини стоїть у тій самій панелі, що шлях і «відкрити окремо»:
      одна смуга керування над макетом, а не другий ряд. Мова сегментного
      контролу спільна з деревом (.mode) — той самий афорданс «вибір режиму». */
-  .wsw { margin-left: auto; }
+  .wsw { flex: none; }
   .wsw button { min-width: 34px; justify-content: center; }
 
   /* ── Сцена ──
