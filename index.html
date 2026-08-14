@@ -1149,6 +1149,8 @@ frame.addEventListener('load', () => {
     doc.head.appendChild(st);
   }
 
+  applyEmbedBg(doc);
+
   // внутрішні переходи між сторінками ведемо через оболонку
   if (doc && !doc.__shellHooked) {
     doc.__shellHooked = true;
