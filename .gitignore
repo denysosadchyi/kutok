@@ -1,2 +1,6 @@
 .vercel/
 .vercel
+
+# Agentation toolbar — збірка локальна (node_modules важкий і не потрібен
+# нікому крім машини, що перезбирає dev/agentation.js через dev/build/build.sh)
+dev/build/node_modules/
