@@ -2,7 +2,7 @@
 <html lang="uk">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Створення профілю · Куток</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -70,6 +70,8 @@
 /* Тема застосовується ДО першого паінту, щоб не було спалаху світлої теми. */
 (function(){try{var t=localStorage.getItem('kutok-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </script>
+<link rel="stylesheet" href="wf-shell-responsive.css">
+<script src="wf-shell-responsive.js" defer></script>
 </head>
 <body>
 <div class="wf-shell">
@@ -319,7 +321,7 @@
   </nav>
 
   <div class="wf-stage">
-<div class="app app--flow">
+<div class="app app--flow app--preview">
 
   <header class="app-head">
     <div>
@@ -350,6 +352,15 @@
         <button class="btn btn--primary btn--block" type="submit">Зберегти і розмістити кімнату</button>
       </div>
     </form>
+    <aside class="form-preview" aria-label="Попередній вигляд профілю">
+      <p class="form-preview-title">Так профіль виглядатиме для шукачів</p>
+      <section class="profile-hero">
+        <img class="avatar" src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=320&h=320&fit=crop&auto=format&q=70" alt="Фото профілю — Олена, 28" loading="lazy">
+        <h2 class="profile-name" id="profile-preview-name">Олена, 28</h2>
+        <span class="badge">телефон ✓ · фото після звірки</span>
+      </section>
+      <p class="hint">Господиня · створення оголошення буде наступним кроком</p>
+    </aside>
   </main>
 
   <footer class="tabbar">
@@ -381,6 +392,17 @@
   </div>
 </div>
 <script>
+  (function () {
+    var name = document.getElementById('name');
+    var age = document.getElementById('age');
+    var previewName = document.getElementById('profile-preview-name');
+    function syncProfilePreview() {
+      previewName.textContent = (name.value.trim() || 'Без імені') + (age.value ? ', ' + age.value : '');
+    }
+    [name, age].forEach(function (control) {
+      control.addEventListener('input', syncProfilePreview);
+    });
+  }());
   function wfNavToggleAll(open) {
     document.querySelectorAll('.wf-nav details').forEach(function (d) { d.open = open; });
   }

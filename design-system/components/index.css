@@ -77,6 +77,54 @@
     max-width: var(--container-narrow);
     margin-inline: auto;
   }
+
+  /* Архетип «каталог» (.app--catalog) навмисно без правил тут: `.list`
+     (my-listings/candidates/applications/dialogs) уже грідиться загально в
+     list.css з --bp-tablet (repeat(auto-fit, minmax(22rem,1fr))) — без
+     прив'язки до жодного класу оболонки. Перша версія цього кроку додала тут
+     ще один, вужчий грід на самому --bp-desktop (repeat(2, ...)) — вищий за
+     специфічністю, тож він мовчки перебивав кращий загальний на десктопі.
+     Клас .app--catalog лишається на екранах-каталогах (розмітка/семантика),
+     `.feed` (listings/my-listings-фото) грідиться так само загально в
+     feed.css. Дублювати тут нема що. */
+
+  /* ── Архетип «деталь» (.app--detail): міра читання + друга колонка ──
+     room/profile/my-profile-seeker/my-profile-host (edit-стани лишаються на
+     .app--flow — редагування є формою, той самий клас, що й
+     profile-create та room-create). Довгий текст (опис, секції) тримає
+     --measure-read у колонці читання зліва; супутнє — фото профілю з
+     бейджем і метром (.profile-hero, уже є в усіх profile та my-profile
+     файлах) або ціна й факти кімнати (.section--aside — клас додано вручну
+     лише в room*.html, де немає готового .profile-hero) стає другою
+     колонкою праворуч і липне (position: sticky), щоб не гортати до неї
+     разом з довгим текстом. */
+  .app--detail main {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) var(--detail-aside-w);
+    align-items: start;
+    gap: var(--grid-gap);
+  }
+  .app--detail main > :not(.profile-hero):not(.section--aside) {
+    grid-column: 1;
+  }
+  .app--detail main > .profile-hero,
+  .app--detail main > .section--aside {
+    grid-column: 2;
+    position: sticky;
+    top: var(--space-88);
+  }
+  .app--detail main p:not([class]),
+  .app--detail main .muted-note {
+    max-width: var(--measure-read);
+  }
+
+  /* Архетип «чат» (.app--chat) навмисно без правил тут: він уже мав повну
+     реалізацію в chat.css (grid master-detail, .chat-desktop-panel) з
+     попереднього кроку — лише не був увімкнений, бо жоден екран не носив
+     клас .app--chat і не було визначено токен --chat-rail-w, який те
+     правило читає. Цей крок довизначив токен (tokens.css) і розніс клас
+     (усі dialogs*/chat*.html) — писати тут другий, простіший grid означало
+     б два конкуруючих правила на той самий .app--chat. */
 }
 
 /* 1px тут — частина канонічної ідіоми приховування для скрін-рідерів
@@ -565,6 +613,83 @@
 .section { padding: var(--space-20) var(--space-22); border-bottom: var(--border-1) solid var(--border-default); }
 .section:last-child { border-bottom: none; }
 
+/* ── Продуктові flow-композиції ──
+   Базовий .app--flow лишається вузьким і лінійним. Модифікатори нижче
+   вмикають ширину тільки там, де вона допомагає конкретній дії: порівняти
+   дві ролі, швидше відредагувати пов'язану пару полів або побачити майбутню
+   картку до публікації. На телефоні DOM-порядок і одна колонка не змінюються. */
+.form-preview { display: none; }
+.form-preview-title {
+  margin: 0 0 var(--space-14);
+  font-size: var(--font-size-13);
+  font-weight: var(--font-weight-700);
+  color: var(--text-muted);
+}
+
+@media (min-width: 47.5rem) {
+  .app--compare > .app-head,
+  .app--compare > main,
+  .app--edit > .app-head,
+  .app--edit > main {
+    width: 100%;
+    max-width: 47rem;
+    margin-inline: auto;
+  }
+
+  .app--compare .btn-stack {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+    gap: var(--grid-gap);
+  }
+  .app--compare .role-option { min-height: 9rem; }
+
+  .app--edit form > .section:has(> .field + .field) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-18) var(--grid-gap);
+  }
+  .app--edit form > .section:has(> .field + .field) > .field {
+    margin-top: 0;
+  }
+  .app--edit form > .section:has(> .field + .field) > .field:has(textarea),
+  .app--edit form > .section:has(> .field + .field) > .field:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 67.5rem) {
+  .app--preview > .app-head,
+  .app--preview > main {
+    width: 100%;
+    max-width: var(--container-max);
+    margin-inline: auto;
+  }
+  .app--preview > main {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) var(--detail-aside-w);
+    align-items: start;
+    gap: var(--grid-gap);
+    padding-inline: var(--space-16);
+  }
+  .app--preview > main > form { min-width: 0; }
+  .app--preview > main > .form-preview {
+    display: block;
+    position: sticky;
+    top: var(--space-88);
+    padding: var(--space-18);
+    border: var(--border-1) solid var(--border-default);
+    border-radius: var(--radius-22);
+    background: var(--bg-surface);
+  }
+  .form-preview .profile-hero { padding: 0; }
+  .form-preview .card-title { max-width: none; }
+}
+
+@media (max-width: 47.499rem) {
+  .app--compare .role-option { min-height: var(--size-96); }
+}
+
 /* ── profile-hero.css ────────────────────────────────────────────────────────────── */
 /* ── Профіль-герой (аватар + ім'я + біо + бейдж + edit-link + метр, центровано) ── */
 .profile-hero {
@@ -700,6 +825,26 @@
 /* ── segment.css ────────────────────────────────────────────────────────────── */
 /* ── Панель фільтра над стрічкою (сегмент живе тут) ── (listings 1:1) */
 .filterbar { padding: var(--space-14) var(--space-16) var(--space-8); display: flex; flex-direction: column; gap: var(--space-10); }
+.filters-form { display: flex; flex-direction: column; gap: var(--space-10); }
+.filters-inline { display: none; }
+
+/* На десктопі основні фільтри не ховаються за FAB: користувач бачить активні
+   обмеження разом із результатами й може змінити їх одним проходом клавіатури.
+   Мобільний bottom-sheet лишається єдиним компактним сценарієм до порогу. */
+@media (min-width: 67.5rem) {
+  .app--catalog .filterbar { padding-bottom: var(--space-14); }
+  .app--catalog .filters-form {
+    display: grid;
+    grid-template-columns: minmax(18rem, 1fr) repeat(3, minmax(9rem, .65fr)) auto;
+    align-items: end;
+    gap: var(--space-10);
+  }
+  .app--catalog .filters-inline { display: contents; }
+  .app--catalog .filters-inline .field { gap: var(--space-4); }
+  .app--catalog .filters-inline .fsel { height: var(--size-44); }
+  .app--catalog .filters-inline .btn { min-height: var(--size-44); white-space: nowrap; }
+  .app--catalog > .fab { display: none; }
+}
 
 /* ── Сегмент типу ── (listings 1:1) */
 .seg { display: flex; gap: var(--space-3); padding: var(--space-4); background: var(--bg-neutral); border: none; border-radius: var(--radius-999); }
@@ -834,6 +979,88 @@
    нейтральний пульс замість кольору (та сама умова, що й .sk-line: ширина/висота — inline per-instance) */
 .sk-msg { align-self: flex-start; max-width: 78%; height: var(--size-38); border-radius: var(--radius-18); }
 
+/* ── Master-detail для діалогів ──
+   На телефоні файли лишаються окремими екранами: dialogs = список, chat = розмова.
+   На desktop статична демо-копія другої панелі утворює звичний месенджер. */
+.chat-desktop-panel { display: none; }
+
+@media (max-width: 47.499rem) {
+  .app--chat {
+    width: 100%;
+    max-width: 100%;
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
+  }
+  .app--chat > main { min-height: 0; overflow-y: auto; }
+  .app--chat > .app-head > :first-child { min-width: 0; }
+  .app--chat .list { width: 100%; }
+  .app--chat .row { width: 100%; margin-inline: 0; }
+  .app--chat .row-body { overflow: hidden; }
+  .app--chat .row-side { max-width: 5.5rem; }
+  .app--chat .chat-thread { width: 100%; max-width: 100%; overflow-x: hidden; }
+  .app--chat .msg { overflow-wrap: anywhere; }
+  .app--chat > .composer { flex: 0 0 auto; }
+  .app--chat > .tabbar { position: static; flex: 0 0 auto; margin-top: auto; }
+  .app--chat .btn--sm { min-height: var(--size-44); }
+}
+
+@media (min-width: 67.5rem) {
+  .app--chat {
+    display: grid;
+    grid-template-columns: minmax(20rem, var(--chat-rail-w)) minmax(0, 1fr);
+    grid-template-rows: auto auto auto minmax(18rem, 1fr) auto;
+    align-items: stretch;
+    min-height: 100dvh;
+  }
+
+  .app--chat > .tabbar { grid-column: 1 / -1; grid-row: 1; order: initial; }
+  .app--chat > .search-popover { grid-column: 1 / -1; }
+
+  /* dialogs*.html: основний DOM є master-панеллю. */
+  .app--chat:not(:has(> .app-head--back)) > .app-head { grid-column: 1; grid-row: 2; }
+  .app--chat:not(:has(> .app-head--back)) > main { grid-column: 1; grid-row: 3 / 6; max-width: none; min-width: 0; }
+
+  /* chat*.html: основний DOM є detail-панеллю. */
+  .app--chat > .app-head--back { grid-column: 2; grid-row: 2; }
+  .app--chat > .app-head--back ~ .pad { grid-column: 2; grid-row: 3; }
+  .app--chat > .app-head--back ~ main { grid-column: 2; grid-row: 4; width: 100%; max-width: none; min-width: 0; margin: 0; }
+  .app--chat > .app-head--back ~ .composer { grid-column: 2; grid-row: 5; }
+
+  .chat-desktop-panel {
+    display: flex;
+    min-width: 0;
+    min-height: 0;
+    background: var(--bg-page);
+    background-image: var(--grain-1);
+  }
+  .chat-desktop-panel--detail {
+    grid-column: 2;
+    grid-row: 2 / 6;
+    flex-direction: column;
+    border-left: var(--border-1) solid var(--border-default);
+  }
+  .chat-desktop-panel--master {
+    grid-column: 1;
+    grid-row: 2 / 6;
+    flex-direction: column;
+    border-right: var(--border-1) solid var(--border-default);
+  }
+  .chat-desktop-panel .app-head { position: static; }
+  .chat-desktop-panel .list {
+    display: block;
+    padding-inline: var(--space-16);
+  }
+  .chat-desktop-panel .row { min-height: calc(var(--size-44) + var(--space-24)); }
+  .chat-desktop-panel .row[aria-current="page"] { background: var(--bg-neutral); }
+  .chat-desktop-panel .chat-thread { flex: 1 1 auto; width: 100%; max-width: 46rem; margin-inline: auto; }
+  .chat-desktop-panel .composer { position: sticky; bottom: 0; }
+  .chat-desktop-panel .state-main { width: 100%; }
+
+  /* На desktop повернення до списку не потрібне: master завжди перед очима. */
+  .app--chat > .app-head--back .head-back { display: none; }
+}
+
 /* ── gallery.css ────────────────────────────────────────────────────────────── */
 /* ── Повноекранний фото-в'юер ── винесено з photo-viewer.html (аудит 2026-07-29) */
 .gallery-bar { display: flex; align-items: center; justify-content: space-between; padding: var(--space-16) var(--space-16) var(--space-10); }
@@ -859,9 +1086,10 @@
 
 /* ── role-option.css ────────────────────────────────────────────────────────────── */
 /* ── Опції вибору ролі ── винесено з role-select.html (аудит 2026-07-29) */
-.role-option { display: flex; flex-direction: column; gap: var(--space-4); width: 100%; padding: var(--space-18) var(--space-20); border: var(--border-1-5) solid var(--border-default); border-radius: var(--radius-12); background: var(--bg-surface); text-align: left; }
+.role-option { display: flex; flex-direction: column; justify-content: center; gap: var(--space-6); width: 100%; padding: var(--space-18) var(--space-20); border: var(--border-1-5) solid var(--border-default); border-radius: var(--radius-12); background: var(--bg-surface); text-align: left; }
 .role-option:hover { background: var(--bg-neutral); }
-.role-option-title { font-family: var(--font-family-1); font-weight: var(--font-weight-700); font-size: 1.0625rem; letter-spacing: -.01em; color: var(--text-primary); }
+.role-option:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: var(--space-2); }
+.role-option-title { font-family: var(--font-family-1); font-weight: var(--font-weight-700); font-size: var(--font-size-18); letter-spacing: -.01em; color: var(--text-primary); }
 .role-option-sub { font-size: var(--font-size-13); color: var(--text-muted); }
 .role-note { margin-top: var(--space-16); text-align: center; }
 

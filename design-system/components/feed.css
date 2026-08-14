@@ -14,7 +14,7 @@
        в кожному рушії, і якщо не спарситься — впаде вся декларація, а сітка
        мовчки лишиться одноколонковою. Значення від цього ті самі. */
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--grid-gap);
+    gap: var(--grid-row-gap) var(--grid-gap);
     align-items: start;
   }
 }

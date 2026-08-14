@@ -2,3 +2,80 @@
 .pad { padding: var(--space-14) var(--space-16); }
 .section { padding: var(--space-20) var(--space-22); border-bottom: var(--border-1) solid var(--border-default); }
 .section:last-child { border-bottom: none; }
+
+/* ── Продуктові flow-композиції ──
+   Базовий .app--flow лишається вузьким і лінійним. Модифікатори нижче
+   вмикають ширину тільки там, де вона допомагає конкретній дії: порівняти
+   дві ролі, швидше відредагувати пов'язану пару полів або побачити майбутню
+   картку до публікації. На телефоні DOM-порядок і одна колонка не змінюються. */
+.form-preview { display: none; }
+.form-preview-title {
+  margin: 0 0 var(--space-14);
+  font-size: var(--font-size-13);
+  font-weight: var(--font-weight-700);
+  color: var(--text-muted);
+}
+
+@media (min-width: 47.5rem) {
+  .app--compare > .app-head,
+  .app--compare > main,
+  .app--edit > .app-head,
+  .app--edit > main {
+    width: 100%;
+    max-width: 47rem;
+    margin-inline: auto;
+  }
+
+  .app--compare .btn-stack {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+    gap: var(--grid-gap);
+  }
+  .app--compare .role-option { min-height: 9rem; }
+
+  .app--edit form > .section:has(> .field + .field) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-18) var(--grid-gap);
+  }
+  .app--edit form > .section:has(> .field + .field) > .field {
+    margin-top: 0;
+  }
+  .app--edit form > .section:has(> .field + .field) > .field:has(textarea),
+  .app--edit form > .section:has(> .field + .field) > .field:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 67.5rem) {
+  .app--preview > .app-head,
+  .app--preview > main {
+    width: 100%;
+    max-width: var(--container-max);
+    margin-inline: auto;
+  }
+  .app--preview > main {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) var(--detail-aside-w);
+    align-items: start;
+    gap: var(--grid-gap);
+    padding-inline: var(--space-16);
+  }
+  .app--preview > main > form { min-width: 0; }
+  .app--preview > main > .form-preview {
+    display: block;
+    position: sticky;
+    top: var(--space-88);
+    padding: var(--space-18);
+    border: var(--border-1) solid var(--border-default);
+    border-radius: var(--radius-22);
+    background: var(--bg-surface);
+  }
+  .form-preview .profile-hero { padding: 0; }
+  .form-preview .card-title { max-width: none; }
+}
+
+@media (max-width: 47.499rem) {
+  .app--compare .role-option { min-height: var(--size-96); }
+}

@@ -70,6 +70,54 @@
     max-width: var(--container-narrow);
     margin-inline: auto;
   }
+
+  /* Архетип «каталог» (.app--catalog) навмисно без правил тут: `.list`
+     (my-listings/candidates/applications/dialogs) уже грідиться загально в
+     list.css з --bp-tablet (repeat(auto-fit, minmax(22rem,1fr))) — без
+     прив'язки до жодного класу оболонки. Перша версія цього кроку додала тут
+     ще один, вужчий грід на самому --bp-desktop (repeat(2, ...)) — вищий за
+     специфічністю, тож він мовчки перебивав кращий загальний на десктопі.
+     Клас .app--catalog лишається на екранах-каталогах (розмітка/семантика),
+     `.feed` (listings/my-listings-фото) грідиться так само загально в
+     feed.css. Дублювати тут нема що. */
+
+  /* ── Архетип «деталь» (.app--detail): міра читання + друга колонка ──
+     room/profile/my-profile-seeker/my-profile-host (edit-стани лишаються на
+     .app--flow — редагування є формою, той самий клас, що й
+     profile-create та room-create). Довгий текст (опис, секції) тримає
+     --measure-read у колонці читання зліва; супутнє — фото профілю з
+     бейджем і метром (.profile-hero, уже є в усіх profile та my-profile
+     файлах) або ціна й факти кімнати (.section--aside — клас додано вручну
+     лише в room*.html, де немає готового .profile-hero) стає другою
+     колонкою праворуч і липне (position: sticky), щоб не гортати до неї
+     разом з довгим текстом. */
+  .app--detail main {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) var(--detail-aside-w);
+    align-items: start;
+    gap: var(--grid-gap);
+  }
+  .app--detail main > :not(.profile-hero):not(.section--aside) {
+    grid-column: 1;
+  }
+  .app--detail main > .profile-hero,
+  .app--detail main > .section--aside {
+    grid-column: 2;
+    position: sticky;
+    top: var(--space-88);
+  }
+  .app--detail main p:not([class]),
+  .app--detail main .muted-note {
+    max-width: var(--measure-read);
+  }
+
+  /* Архетип «чат» (.app--chat) навмисно без правил тут: він уже мав повну
+     реалізацію в chat.css (grid master-detail, .chat-desktop-panel) з
+     попереднього кроку — лише не був увімкнений, бо жоден екран не носив
+     клас .app--chat і не було визначено токен --chat-rail-w, який те
+     правило читає. Цей крок довизначив токен (tokens.css) і розніс клас
+     (усі dialogs*/chat*.html) — писати тут другий, простіший grid означало
+     б два конкуруючих правила на той самий .app--chat. */
 }
 
 /* 1px тут — частина канонічної ідіоми приховування для скрін-рідерів

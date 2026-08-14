@@ -210,6 +210,13 @@
   --grid-gap: 1.5rem;        /* 24px — той самий зазор, що spacing.feed-gap
                                  (DESIGN.md): картки просто перетікають у
                                  колонки з тим самим проміжком, не новим. */
+  --grid-row-gap: 2.5rem;    /* 40px — вертикаль між рядами сітки більша за
+                                 --grid-gap: у колонках сусід збоку відділений
+                                 ще й порожнім полем сторінки, а зверху/знизу
+                                 картки стоять впритул одна над одною, і при
+                                 однаковому зазорі ряди злипаються в суцільну
+                                 стрічку. Тільки для сітки (--bp-tablet+);
+                                 одноколонкова стрічка лишається на --space-24. */
   --container-max: 68.75rem; /* 1100px — .device на --bp-tablet+ у
                                  listings-desktop.html; єдина стеля ширини,
                                  --bp-desktop лише міняє кількість колонок
@@ -221,6 +228,27 @@
                                  за комфортною мірою і погляд без якоря. */
   --col-count-tablet: 2;     /* ul.feed 1fr 1fr від --bp-tablet */
   --col-count-desktop: 3;    /* ul.feed 1fr 1fr 1fr від --bp-desktop */
+
+  /* ── Десктопні правила формування контенту (архетипи екрана, --bp-desktop) ──
+     На --container-max (1100px) одна колонка на всю ширину — головна скарга
+     власника; але «більше повітря обабіч» не однаково лікує кожен тип
+     екрана, тому три геометричні токени під три архетипи (design-system/
+     components/base.css, .app--catalog / .app--detail / .app--chat);
+     .app--flow (форма) вже має свою стелю — --container-narrow вище. */
+  --measure-read: 38rem;     /* 608px — міра читання довгого тексту в архетипі
+                                 «деталь» (room, profile): --container-max
+                                 розтягує абзац в один рядок через всю ширину,
+                                 --measure-read тримає комфортні ~70–75
+                                 символів незалежно від стелі колонки. */
+  --detail-aside-w: 21rem;   /* 336px — друга колонка архетипу «деталь»: фото
+                                 профілю з бейджем і метром (.profile-hero)
+                                 або ціна й факти кімнати (.section--aside) —
+                                 супутнє йде поруч з текстом, а не над ним. */
+  --chat-rail-w: 26rem;      /* 416px — ширина колонки в архетипі «чат»
+                                 (dialogs.html/chat.html): список розмов
+                                 ліворуч, вікно листування праворуч, обидва
+                                 на цій ширині — класичний месенджер-клієнт,
+                                 не стрічка на всю --container-max. */
 
   /* ── Зерно паперу (значення без змін, лише переназвані) ── */
   --grain-1: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.35' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='0.13'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); /* було --grain, темний шум 13% */

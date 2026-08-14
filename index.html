@@ -2,7 +2,7 @@
 <html lang="uk">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <title>Куток — Проєкт</title>
 <meta name="description" content="Навігація по всіх матеріалах проєкту Куток: проєктування, дизайн, документи, екрани.">
@@ -274,6 +274,7 @@
     padding: 9px 18px; border-bottom: 1px solid var(--line);
     font-family: var(--mono); font-size: 11px; color: var(--muted);
   }
+  .nav-toggle, .nav-close, .nav-scrim { display: none; }
   /* Три зони рівної ваги: шлях зліва, перемикач по центру, дія справа.
      Бічні зони — flex: 1 1 0 з однаковою базою, тому центр стоїть по центру
      смуги, а не «десь між сусідами»: інакше довгий шлях зсував би перемикач
@@ -329,12 +330,86 @@
   }
   iframe.ready { opacity: 1; transition: opacity .12s ease; }
 
-  /* мобільний фолбек: панель зверху, згорнута */
+  /* На вузькому екрані дерево стає drawer, а макет займає весь viewport.
+     Ширина, збережена десктопним перемикачем, тут свідомо не застосовується:
+     мобільний браузер має показувати мобільний макет, а не його фрагмент. */
   @media (max-width: 760px) {
     body::before { display: none; }
-    body { flex-direction: column; overflow: auto; }
-    nav { width: 100%; height: auto; max-height: 45dvh; border-right: 0; border-bottom: 1px solid var(--line); }
-    main { height: 55dvh; }
+    body { display: block; overflow: hidden; }
+    main { width: 100%; height: 100dvh; }
+
+    nav {
+      --drawer-left: max(18px, env(safe-area-inset-left));
+      --drawer-right: max(18px, env(safe-area-inset-right));
+      position: fixed; inset: 0 auto 0 0; z-index: 20;
+      width: min(340px, calc(100vw - 40px)); height: 100dvh;
+      padding: 0 var(--drawer-right) max(64px, env(safe-area-inset-bottom)) var(--drawer-left);
+      border-right: 1px solid var(--line); border-bottom: 0;
+      transform: translateX(-101%); visibility: hidden;
+      transition: transform .22s cubic-bezier(.22, 1, .36, 1), visibility 0s linear .22s;
+    }
+    body.nav-open nav {
+      transform: translateX(0); visibility: visible;
+      transition-delay: 0s;
+    }
+    nav .brand { padding-top: max(22px, calc(env(safe-area-inset-top) + 14px)); padding-right: 48px; }
+    nav .fwrap {
+      margin-right: calc(-1 * var(--drawer-right)); margin-left: calc(-1 * var(--drawer-left));
+      padding-right: var(--drawer-right); padding-left: var(--drawer-left);
+    }
+    nav .filter, nav .pg, nav .ph, nav .secs a { min-height: 44px; }
+    nav .pg, nav .ph, nav .secs a { padding-top: 10px; padding-bottom: 10px; }
+    nav .sec-btn, nav .grp-btn { min-height: 44px; }
+    nav .mode { height: 50px; min-height: 50px; }
+    nav .ghost, nav .nomatch button { height: 44px; min-height: 44px; }
+    nav .mode button { min-width: 44px; min-height: 44px; }
+    nav .theme-btn { width: 44px; }
+
+    .nav-close {
+      position: absolute; top: max(10px, env(safe-area-inset-top)); right: 10px; z-index: 3;
+      display: grid; place-items: center; width: 44px; height: 44px;
+      border-radius: 8px; color: var(--muted);
+    }
+    .nav-close:hover, .nav-close:active { color: var(--clay); background: var(--clay-soft); }
+    .nav-close svg, .nav-toggle svg {
+      width: 18px; height: 18px; fill: none; stroke: currentColor;
+      stroke-width: 1.8; stroke-linecap: round;
+    }
+    .nav-scrim {
+      position: fixed; inset: 0; z-index: 15; display: block;
+      width: 100%; height: 100%; border-radius: 0;
+      background: oklch(18% 0.008 60 / .48);
+      opacity: 0; visibility: hidden; cursor: default;
+      transition: opacity .18s ease, visibility 0s linear .18s;
+    }
+    body.nav-open .nav-scrim { opacity: 1; visibility: visible; transition-delay: 0s; }
+
+    .bar {
+      display: grid; grid-template-columns: 44px minmax(0, 1fr) auto;
+      gap: 8px; min-height: calc(56px + env(safe-area-inset-top));
+      padding: max(6px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) 6px max(10px, env(safe-area-inset-left));
+    }
+    .nav-toggle {
+      display: grid; place-items: center; width: 44px; height: 44px;
+      border-radius: 8px; color: var(--ink);
+    }
+    .nav-toggle:hover, .nav-toggle:active { color: var(--clay); background: var(--clay-soft); }
+    .bar-side { gap: 0; }
+    .bar-side:first-of-type { min-width: 0; }
+    .bar-side--end { flex: none; }
+    .bar .where, .wsw, .stage-px { display: none; }
+    .bar a.open { min-height: 44px; display: inline-flex; align-items: center; padding: 0 8px; }
+    .stage { width: 100%; overscroll-behavior: contain; }
+    iframe { width: 100%; max-width: 100%; }
+  }
+
+  @media (max-width: 420px) {
+    .bar a.open { font-size: 0; }
+    .bar a.open::after { content: 'окремо ↗'; font-size: 10px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    nav, .nav-scrim { transition: none !important; }
   }
 </style>
 <script>
@@ -355,9 +430,13 @@
 <body>
 
 <nav id="nav" aria-label="Навігація проєктом"></nav>
+<button class="nav-scrim" id="navScrim" type="button" tabindex="-1" aria-label="Закрити навігацію"></button>
 
 <main>
   <div class="bar">
+    <button class="nav-toggle" id="navToggle" type="button" aria-controls="nav" aria-expanded="false" aria-label="Відкрити навігацію">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5.5h14M3 10h14M3 14.5h14"/></svg>
+    </button>
     <span class="bar-side">
       <span class="where" id="where"></span>
       <span class="path" id="path"></span>
@@ -533,6 +612,33 @@ const frame  = document.getElementById('frame');
 const pathEl = document.getElementById('path');
 const whereEl = document.getElementById('where');
 const openEl = document.getElementById('open');
+const navToggle = document.getElementById('navToggle');
+const navScrim = document.getElementById('navScrim');
+const mobileShell = matchMedia('(max-width: 760px)');
+let navOpen = false;
+
+function setNavOpen(open, restoreFocus = false) {
+  navOpen = mobileShell.matches && open;
+  document.body.classList.toggle('nav-open', navOpen);
+  navToggle.setAttribute('aria-expanded', String(navOpen));
+  navToggle.setAttribute('aria-label', navOpen ? 'Закрити навігацію' : 'Відкрити навігацію');
+  if (mobileShell.matches) {
+    nav.toggleAttribute('inert', !navOpen);
+    nav.setAttribute('aria-hidden', String(!navOpen));
+    mainEl.toggleAttribute('inert', navOpen);
+  } else {
+    nav.removeAttribute('inert');
+    nav.removeAttribute('aria-hidden');
+    mainEl.removeAttribute('inert');
+  }
+  if (navOpen) requestAnimationFrame(() => nav.querySelector('.nav-close')?.focus());
+  else if (restoreFocus) requestAnimationFrame(() => navToggle.focus());
+}
+
+function syncShellMode() { setNavOpen(false); showStageW(); }
+navToggle.addEventListener('click', () => setNavOpen(!navOpen, navOpen));
+navScrim.addEventListener('click', () => setNavOpen(false, true));
+mobileShell.addEventListener('change', syncShellMode);
 
 // ── стан: режим дерева + згортання ──
 const STORE_KEY  = 'kutok-shell-nav';
@@ -798,6 +904,13 @@ function buildNav() {
 
   const frag = document.createDocumentFragment();
 
+  const closeBtn = el('button', 'nav-close',
+    '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 4.5l11 11M15.5 4.5l-11 11"/></svg>');
+  closeBtn.type = 'button';
+  closeBtn.setAttribute('aria-label', 'Закрити навігацію');
+  closeBtn.addEventListener('click', () => setNavOpen(false, true));
+  frag.appendChild(closeBtn);
+
   brand = el('a', 'brand', 'Куток<span>ПРОЄКТ · ВСІ МАТЕРІАЛИ</span>');
   brand.href = '#' + HOME;
   brand.dataset.f = HOME;
@@ -992,9 +1105,27 @@ function isTyping(el) {
   return el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.isContentEditable);
 }
 document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && navOpen) {
+    e.preventDefault();
+    setNavOpen(false, true);
+    return;
+  }
+  if (e.key === 'Tab' && navOpen) {
+    const focusable = [...nav.querySelectorAll('a[href], button:not([disabled]), input:not([disabled])')]
+      .filter(el => !el.closest('[hidden]') && el.getClientRects().length);
+    if (focusable.length) {
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  }
   if (e.key === '/' && !isTyping(document.activeElement)) {
     e.preventDefault();
-    filterEl.focus();
+    if (mobileShell.matches && !navOpen) {
+      setNavOpen(true);
+      requestAnimationFrame(() => filterEl.focus());
+    } else filterEl.focus();
   }
   if ((e.key === 'j' || e.key === 'k') && !isTyping(document.activeElement) && !e.metaKey && !e.ctrlKey) {
     e.preventDefault();
@@ -1112,6 +1243,7 @@ nav.addEventListener('click', e => {
   if (!a) return;
   e.preventDefault();
   show(a.dataset.f);
+  if (mobileShell.matches) setNavOpen(false);
 });
 
 // ── секції активної сторінки: дзеркалимо її прихований сайдбар у ліву панель ──
@@ -1190,7 +1322,7 @@ frame.addEventListener('load', () => {
     st.textContent =
       '.sidenav{display:none!important}' +
       '.shell{grid-template-columns:minmax(0,1fr)!important;gap:0!important}' +
-      '.wf-nav{display:none!important}';
+      '.wf-nav,.wf-nav-toggle{display:none!important}';
     doc.head.appendChild(st);
   }
 
@@ -1242,6 +1374,7 @@ window.addEventListener('message', e => {
 
 // ── старт: hash або головна (жодних javascript:/зовнішніх URL) ──
 buildNav();
+syncShellMode();
 const ALL_FILES = new Set([...nav.querySelectorAll('[data-f]')].map(e => e.dataset.f));
 
 // Дерево показує лише головні екрани, але стани (`-loading`, `-error`, `-empty`)

@@ -2,7 +2,7 @@
 <html lang="uk">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Чат · порожній · Куток</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -74,6 +74,8 @@
 /* Тема застосовується ДО першого паінту, щоб не було спалаху світлої теми. */
 (function(){try{var t=localStorage.getItem('kutok-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </script>
+<link rel="stylesheet" href="wf-shell-responsive.css">
+<script src="wf-shell-responsive.js" defer></script>
 </head>
 <body>
 <div class="wf-shell">
@@ -323,7 +325,7 @@
   </nav>
 
   <div class="wf-stage">
-<div class="app">
+<div class="app app--chat">
 
   <header class="app-head app-head--back">
     <div class="head-back-wrap">
@@ -368,6 +370,14 @@
     <input type="text" name="msg" placeholder="Напишіть повідомлення" aria-label="Повідомлення">
     <button class="send" type="submit" aria-label="Надіслати"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l16-7-7 16-2.5-6.5L4 12z"/></svg></button>
   </form>
+
+  <aside class="chat-desktop-panel chat-desktop-panel--master" aria-label="Список розмов">
+    <header class="app-head"><div><div class="head-brand-row"><svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--color-brand)"/><path d="M18 3L21 3L21 6Z" fill="var(--bg-surface)"/></svg><div class="head-brand">Куток</div></div><h2 class="head-word">Чати</h2><p class="head-sub">Розмови після взаємного інтересу.</p></div></header>
+    <ul class="list">
+      <li><a class="row" href="chat.html" aria-current="page"><img class="avatar avatar--sm" src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=120&amp;h=120&amp;fit=crop&amp;auto=format&amp;q=70" alt="Фото — Олена" loading="lazy"><span class="row-body"><span class="row-title">Олена</span><span class="row-meta">Кімната на Подолі</span><span class="row-meta row-preview">Ще немає повідомлень</span></span><span class="row-side"><span class="row-time">зараз</span></span></a></li>
+      <li><a class="row" href="chat.html"><img class="avatar avatar--sm" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120&amp;h=120&amp;fit=crop&amp;auto=format&amp;q=70" alt="Фото — Сергій" loading="lazy"><span class="row-body"><span class="row-title">Сергій</span><span class="row-meta">Кімната на Оболоні</span><span class="row-meta row-preview">Дякую, домовились — до зустрічі в суботу</span></span><span class="row-side"><span class="row-time">учора</span></span></a></li>
+    </ul>
+  </aside>
 
   <footer class="tabbar">
     <!-- Лого + розгорнутий пошук: видні лише на десктопі (tabbar.css) — там панель

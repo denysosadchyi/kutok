@@ -2,7 +2,7 @@
 <html lang="uk">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Створення профілю · Куток</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -68,6 +68,8 @@
 /* Тема застосовується ДО першого паінту, щоб не було спалаху світлої теми. */
 (function(){try{var t=localStorage.getItem('kutok-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </script>
+<link rel="stylesheet" href="wf-shell-responsive.css">
+<script src="wf-shell-responsive.js" defer></script>
 </head>
 <body>
 <div class="wf-shell">
@@ -317,7 +319,7 @@
   </nav>
 
   <div class="wf-stage">
-<div class="app app--flow">
+<div class="app app--flow app--preview">
 
   <header class="app-head">
     <div>
@@ -359,6 +361,15 @@
         <button class="btn btn--primary btn--block" type="submit">Зберегти і почати пошук</button>
       </div>
     </form>
+    <aside class="form-preview" aria-label="Попередній вигляд профілю">
+      <p class="form-preview-title">Так профіль виглядатиме в каталозі</p>
+      <section class="profile-hero">
+        <img class="avatar" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=320&h=320&fit=crop&auto=format&q=70" alt="Фото профілю — Аня, 23" loading="lazy">
+        <h2 class="profile-name" id="profile-preview-name">Аня, 23</h2>
+        <span class="badge">телефон ✓ · фото після звірки</span>
+      </section>
+      <p class="hint" id="profile-preview-meta">Поділ · бюджет до 8 000 ₴/міс</p>
+    </aside>
   </main>
 
   <footer class="tabbar">
@@ -390,6 +401,23 @@
   </div>
 </div>
 <script>
+  (function () {
+    var name = document.getElementById('name');
+    var age = document.getElementById('age');
+    var district = document.getElementById('dist');
+    var budget = document.getElementById('budget');
+    var previewName = document.getElementById('profile-preview-name');
+    var previewMeta = document.getElementById('profile-preview-meta');
+    function syncProfilePreview() {
+      previewName.textContent = (name.value.trim() || 'Без імені') + (age.value ? ', ' + age.value : '');
+      var formattedBudget = budget.value ? new Intl.NumberFormat('uk-UA').format(Number(budget.value)) + ' ₴/міс' : 'бюджет не вказано';
+      previewMeta.textContent = district.value + ' · бюджет до ' + formattedBudget;
+    }
+    [name, age, district, budget].forEach(function (control) {
+      control.addEventListener('input', syncProfilePreview);
+      control.addEventListener('change', syncProfilePreview);
+    });
+  }());
   function wfNavToggleAll(open) {
     document.querySelectorAll('.wf-nav details').forEach(function (d) { d.open = open; });
   }

@@ -1,5 +1,25 @@
 /* ── Панель фільтра над стрічкою (сегмент живе тут) ── (listings 1:1) */
 .filterbar { padding: var(--space-14) var(--space-16) var(--space-8); display: flex; flex-direction: column; gap: var(--space-10); }
+.filters-form { display: flex; flex-direction: column; gap: var(--space-10); }
+.filters-inline { display: none; }
+
+/* На десктопі основні фільтри не ховаються за FAB: користувач бачить активні
+   обмеження разом із результатами й може змінити їх одним проходом клавіатури.
+   Мобільний bottom-sheet лишається єдиним компактним сценарієм до порогу. */
+@media (min-width: 67.5rem) {
+  .app--catalog .filterbar { padding-bottom: var(--space-14); }
+  .app--catalog .filters-form {
+    display: grid;
+    grid-template-columns: minmax(18rem, 1fr) repeat(3, minmax(9rem, .65fr)) auto;
+    align-items: end;
+    gap: var(--space-10);
+  }
+  .app--catalog .filters-inline { display: contents; }
+  .app--catalog .filters-inline .field { gap: var(--space-4); }
+  .app--catalog .filters-inline .fsel { height: var(--size-44); }
+  .app--catalog .filters-inline .btn { min-height: var(--size-44); white-space: nowrap; }
+  .app--catalog > .fab { display: none; }
+}
 
 /* ── Сегмент типу ── (listings 1:1) */
 .seg { display: flex; gap: var(--space-3); padding: var(--space-4); background: var(--bg-neutral); border: none; border-radius: var(--radius-999); }

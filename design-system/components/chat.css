@@ -27,3 +27,85 @@
 /* ── Скелетон-бульбашка (chat-loading) ── реальна форма/вирівнювання msg--in/msg--out,
    нейтральний пульс замість кольору (та сама умова, що й .sk-line: ширина/висота — inline per-instance) */
 .sk-msg { align-self: flex-start; max-width: 78%; height: var(--size-38); border-radius: var(--radius-18); }
+
+/* ── Master-detail для діалогів ──
+   На телефоні файли лишаються окремими екранами: dialogs = список, chat = розмова.
+   На desktop статична демо-копія другої панелі утворює звичний месенджер. */
+.chat-desktop-panel { display: none; }
+
+@media (max-width: 47.499rem) {
+  .app--chat {
+    width: 100%;
+    max-width: 100%;
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
+  }
+  .app--chat > main { min-height: 0; overflow-y: auto; }
+  .app--chat > .app-head > :first-child { min-width: 0; }
+  .app--chat .list { width: 100%; }
+  .app--chat .row { width: 100%; margin-inline: 0; }
+  .app--chat .row-body { overflow: hidden; }
+  .app--chat .row-side { max-width: 5.5rem; }
+  .app--chat .chat-thread { width: 100%; max-width: 100%; overflow-x: hidden; }
+  .app--chat .msg { overflow-wrap: anywhere; }
+  .app--chat > .composer { flex: 0 0 auto; }
+  .app--chat > .tabbar { position: static; flex: 0 0 auto; margin-top: auto; }
+  .app--chat .btn--sm { min-height: var(--size-44); }
+}
+
+@media (min-width: 67.5rem) {
+  .app--chat {
+    display: grid;
+    grid-template-columns: minmax(20rem, var(--chat-rail-w)) minmax(0, 1fr);
+    grid-template-rows: auto auto auto minmax(18rem, 1fr) auto;
+    align-items: stretch;
+    min-height: 100dvh;
+  }
+
+  .app--chat > .tabbar { grid-column: 1 / -1; grid-row: 1; order: initial; }
+  .app--chat > .search-popover { grid-column: 1 / -1; }
+
+  /* dialogs*.html: основний DOM є master-панеллю. */
+  .app--chat:not(:has(> .app-head--back)) > .app-head { grid-column: 1; grid-row: 2; }
+  .app--chat:not(:has(> .app-head--back)) > main { grid-column: 1; grid-row: 3 / 6; max-width: none; min-width: 0; }
+
+  /* chat*.html: основний DOM є detail-панеллю. */
+  .app--chat > .app-head--back { grid-column: 2; grid-row: 2; }
+  .app--chat > .app-head--back ~ .pad { grid-column: 2; grid-row: 3; }
+  .app--chat > .app-head--back ~ main { grid-column: 2; grid-row: 4; width: 100%; max-width: none; min-width: 0; margin: 0; }
+  .app--chat > .app-head--back ~ .composer { grid-column: 2; grid-row: 5; }
+
+  .chat-desktop-panel {
+    display: flex;
+    min-width: 0;
+    min-height: 0;
+    background: var(--bg-page);
+    background-image: var(--grain-1);
+  }
+  .chat-desktop-panel--detail {
+    grid-column: 2;
+    grid-row: 2 / 6;
+    flex-direction: column;
+    border-left: var(--border-1) solid var(--border-default);
+  }
+  .chat-desktop-panel--master {
+    grid-column: 1;
+    grid-row: 2 / 6;
+    flex-direction: column;
+    border-right: var(--border-1) solid var(--border-default);
+  }
+  .chat-desktop-panel .app-head { position: static; }
+  .chat-desktop-panel .list {
+    display: block;
+    padding-inline: var(--space-16);
+  }
+  .chat-desktop-panel .row { min-height: calc(var(--size-44) + var(--space-24)); }
+  .chat-desktop-panel .row[aria-current="page"] { background: var(--bg-neutral); }
+  .chat-desktop-panel .chat-thread { flex: 1 1 auto; width: 100%; max-width: 46rem; margin-inline: auto; }
+  .chat-desktop-panel .composer { position: sticky; bottom: 0; }
+  .chat-desktop-panel .state-main { width: 100%; }
+
+  /* На desktop повернення до списку не потрібне: master завжди перед очима. */
+  .app--chat > .app-head--back .head-back { display: none; }
+}

@@ -1,6 +1,7 @@
 /* ── Опції вибору ролі ── винесено з role-select.html (аудит 2026-07-29) */
-.role-option { display: flex; flex-direction: column; gap: var(--space-4); width: 100%; padding: var(--space-18) var(--space-20); border: var(--border-1-5) solid var(--border-default); border-radius: var(--radius-12); background: var(--bg-surface); text-align: left; }
+.role-option { display: flex; flex-direction: column; justify-content: center; gap: var(--space-6); width: 100%; padding: var(--space-18) var(--space-20); border: var(--border-1-5) solid var(--border-default); border-radius: var(--radius-12); background: var(--bg-surface); text-align: left; }
 .role-option:hover { background: var(--bg-neutral); }
-.role-option-title { font-family: var(--font-family-1); font-weight: var(--font-weight-700); font-size: 1.0625rem; letter-spacing: -.01em; color: var(--text-primary); }
+.role-option:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: var(--space-2); }
+.role-option-title { font-family: var(--font-family-1); font-weight: var(--font-weight-700); font-size: var(--font-size-18); letter-spacing: -.01em; color: var(--text-primary); }
 .role-option-sub { font-size: var(--font-size-13); color: var(--text-muted); }
 .role-note { margin-top: var(--space-16); text-align: center; }

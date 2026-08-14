@@ -2,7 +2,7 @@
 <html lang="uk">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Чати · завантаження · Куток</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -74,6 +74,8 @@
 /* Тема застосовується ДО першого паінту, щоб не було спалаху світлої теми. */
 (function(){try{var t=localStorage.getItem('kutok-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </script>
+<link rel="stylesheet" href="wf-shell-responsive.css">
+<script src="wf-shell-responsive.js" defer></script>
 </head>
 <body>
 <div class="wf-shell">
@@ -323,7 +325,7 @@
   </nav>
 
   <div class="wf-stage">
-<div class="app">
+<div class="app app--chat">
 
   <header class="app-head">
     <div>
@@ -378,6 +380,21 @@
       </li>
     </ul>
   </main>
+
+  <aside class="chat-desktop-panel chat-desktop-panel--detail" aria-label="Завантаження розмови" aria-busy="true">
+    <header class="app-head app-head--back" aria-hidden="true">
+      <div class="person-row" style="width:100%;">
+        <span class="avatar avatar--sm ph sk"></span>
+        <span style="flex:1;"><span class="sk sk-line" style="width:32%; height:14px;"></span><span class="sk sk-line" style="width:48%;"></span></span>
+      </div>
+    </header>
+    <div class="chat-thread" aria-hidden="true">
+      <span class="sk sk-msg" style="width:60%;"></span>
+      <span class="sk sk-msg" style="align-self:flex-end; width:50%;"></span>
+      <span class="sk sk-msg" style="width:70%; height:56px;"></span>
+    </div>
+    <div class="composer" aria-hidden="true"><span class="sk sk-line" style="flex:1; height:44px; border-radius:999px;"></span><span class="avatar avatar--sm ph sk"></span></div>
+  </aside>
 
   <footer class="tabbar">
     <!-- Лого + розгорнутий пошук: видні лише на десктопі (tabbar.css) — там панель
