@@ -1,0 +1,258 @@
+/* LOCAL ONLY — `src/dev/` is git-excluded, so this file exists on this
+   machine and nowhere else. It is imported by FixLog.local.tsx.
+
+   Styling rules of the repo apply even though this is dev tooling, because
+   breaking them here would still teach the wrong pattern to whoever reads it
+   next: no hex, no rgb(), no raw px. Every colour, radius, gap and font size
+   comes from tokens.css, which index.html already loads globally.
+
+   Two places where a token does not exist and the escape is deliberate:
+
+   - Hairlines use the CSS keyword `thin` instead of 1px. tokens.css has no
+     border-width token, and `thin` is the one way to draw a hairline without
+     writing a px literal.
+   - z-index values are unitless integers, not lengths, so they are not a px
+     violation. 900 sits under AntD's drawer layer (1000) on purpose: when the
+     drawer is open its mask must cover the trigger, not fight it.
+
+   Class prefix `fxl-` and no element selectors: local CSS in this project is
+   still global CSS (there is no module system here), so naming is the only
+   isolation there is. */
+
+/* ── Trigger ────────────────────────────────────────────────────────────
+   Bottom-LEFT, immovably. The Agentation toolbar owns the bottom-right of
+   every screen; two floating controls in one corner means one of them is
+   unclickable. */
+.fxl-trigger {
+  position: fixed;
+  left: var(--space-16);
+  bottom: var(--space-16);
+  z-index: 900;
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+  padding: var(--space-8) var(--space-14);
+
+  border: thin solid var(--line);
+  border-radius: var(--pill);
+  background: var(--bg);
+  box-shadow: var(--shadow-md);
+
+  color: var(--ink-2);
+  font: var(--fw-semibold) var(--fs-micro) / 1 var(--font-base);
+  cursor: pointer;
+  transition:
+    color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out);
+}
+.fxl-trigger:hover {
+  color: var(--brand-ink);
+  border-color: var(--brand);
+}
+.fxl-trigger__n {
+  min-width: 1.5em;
+  padding: 0 var(--space-5);
+  border-radius: var(--pill);
+  background: var(--brand-tint);
+  color: var(--brand-ink);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+/* Nothing open yet and nothing pending — the badge would be a zero shouting
+   for attention it has not earned. */
+.fxl-trigger__n:empty {
+  display: none;
+}
+
+/* ── Drawer body ────────────────────────────────────────────────────── */
+.fxl {
+  font-family: var(--font-base);
+  color: var(--ink);
+}
+
+.fxl__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-8) var(--space-16);
+  margin-bottom: var(--space-20);
+}
+.fxl__counts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8);
+}
+.fxl__spacer {
+  flex: 1 1 auto;
+}
+.fxl__err {
+  width: 100%;
+  padding: var(--space-10) var(--space-12);
+  border: thin solid var(--danger);
+  border-radius: var(--radius-sm);
+  background: var(--danger-soft);
+  color: var(--danger);
+  font-size: var(--fs-caption);
+}
+.fxl__empty {
+  padding: var(--space-40) 0;
+  color: var(--muted);
+  font-size: var(--fs-sm);
+  text-align: center;
+}
+
+/* ── List ───────────────────────────────────────────────────────────── */
+.fxl__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-10);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fxl-row {
+  padding: var(--space-14) var(--space-16);
+  border: thin solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--bg);
+}
+/* Status is carried by a left rail as well as the pill: scanning a long list
+   for "what is still open" should not require reading any words. */
+.fxl-row--new {
+  border-left: var(--space-3) solid var(--warn);
+}
+.fxl-row--wip {
+  border-left: var(--space-3) solid var(--info);
+}
+.fxl-row--done {
+  border-left: var(--space-3) solid var(--success);
+  background: var(--bg-3);
+}
+
+.fxl-row__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-8);
+  margin-bottom: var(--space-8);
+}
+.fxl-row__route {
+  padding: var(--space-2) var(--space-6);
+  border-radius: var(--radius-xs);
+  background: var(--bg-soft);
+  color: var(--ink-2);
+  font-size: var(--fs-micro);
+  font-weight: var(--fw-semibold);
+  word-break: break-all;
+}
+.fxl-row__time {
+  color: var(--muted);
+  font-size: var(--fs-micro);
+  font-variant-numeric: tabular-nums;
+}
+.fxl-row__text {
+  margin: 0;
+  color: var(--ink);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-body);
+}
+.fxl-row__did {
+  margin: var(--space-6) 0 0;
+  color: var(--ink-3);
+  font-size: var(--fs-caption);
+  line-height: var(--lh-body);
+}
+.fxl-row__did code,
+.fxl-row__text code {
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-xs);
+  background: var(--bg-soft);
+  font-size: 0.92em;
+}
+
+/* ── Pills ──────────────────────────────────────────────────────────── */
+.fxl-pill {
+  flex: 0 0 auto;
+  padding: var(--space-3) var(--space-8);
+  border-radius: var(--pill);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.fxl-pill--new {
+  background: var(--warn-soft);
+  color: var(--warn);
+}
+.fxl-pill--wip {
+  background: var(--info-soft);
+  color: var(--info);
+}
+.fxl-pill--done {
+  background: var(--success-soft);
+  color: var(--success);
+}
+
+/* Which route handled a finished fix. Same vocabulary as fixlog.html's route
+   column, so the two viewers read alike. */
+.fxl-lane {
+  flex: 0 0 auto;
+  padding: var(--space-2) var(--space-8);
+  border-radius: var(--pill);
+  border: thin solid var(--line);
+  background: var(--neutral-soft);
+  color: var(--neutral);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-semibold);
+  white-space: nowrap;
+}
+.fxl-lane--opencode {
+  border-color: var(--brand-soft);
+  background: var(--brand-soft-2);
+  color: var(--brand-ink);
+}
+.fxl-lane--agent {
+  border-color: var(--line);
+  background: var(--bg-soft);
+  color: var(--ink-3);
+}
+
+/* ── Rating (done rows only) ────────────────────────────────────────── */
+.fxl-rate {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-8) var(--space-12);
+  margin-top: var(--space-12);
+  padding-top: var(--space-12);
+  border-top: thin solid var(--line);
+}
+.fxl-rate__stars {
+  font-size: var(--fs-body);
+}
+.fxl-rate__note {
+  flex: 1 1 var(--space-180);
+  min-width: var(--space-180);
+}
+/* Reserves the widest state's room so stars do not jump sideways when the
+   text flips saving → saved. */
+.fxl-rate__state {
+  flex: 0 0 auto;
+  min-width: var(--space-72);
+  font-size: var(--fs-micro);
+  font-weight: var(--fw-semibold);
+}
+.fxl-rate__state--saving {
+  color: var(--muted);
+}
+.fxl-rate__state--saved {
+  color: var(--success);
+}
+/* A failed POST has to be loud. The whole point of the ratings service is
+   that the verdict survives the page; a silent failure is a lost verdict. */
+.fxl-rate__state--error {
+  color: var(--danger);
+}
