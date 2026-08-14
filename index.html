@@ -592,6 +592,7 @@ function setStageW(next) {
   mainEl.style.setProperty('--stage-w', next === 'full' ? '100%' : next + 'px');
   try { localStorage.setItem(WIDTH_KEY, next); } catch (_) {}
   for (const b of wsw.children) b.setAttribute('aria-pressed', String(b.dataset.w === next));
+  try { applyEmbedBg(frame.contentDocument); } catch (_) {}
 }
 
 for (const w of WIDTHS) {
