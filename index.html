@@ -622,7 +622,22 @@ function setStageW(next) {
   try { localStorage.setItem(WIDTH_KEY, next); } catch (_) {}
   for (const b of wsw.children) b.setAttribute('aria-pressed', String(b.dataset.w === next));
   try { applyEmbedBg(frame.contentDocument); } catch (_) {}
+  showStageW();
 }
+
+/* Показує ширину, яку макет має НАСПРАВДІ, і підсвічує, коли вона не дотягує
+   до десктопного брейкпоінта. Читаємо з живого iframe, а не з обраного режиму:
+   у «повній» число залежить від вікна й від того, згорнута панель чи ні, тож
+   вирахувати його наперед не можна. */
+const BP_DESKTOP = 1080;
+function showStageW() {
+  const px = Math.round(frame.getBoundingClientRect().width);
+  if (!px) return;
+  const below = px < BP_DESKTOP;
+  stagePxEl.textContent = below ? `${px}px · до десктопу ${BP_DESKTOP}` : `${px}px`;
+  stagePxEl.toggleAttribute('data-below', below);
+}
+addEventListener('resize', showStageW);
 
 for (const w of WIDTHS) {
   const b = el('button', null, w.label);
