@@ -39,9 +39,9 @@
    --bp-desktop, що в base.css/header.css (тут — літерал, з тієї самої
    причини: у @media-умові custom property не читається).
 
-   Композиція звична для десктопу: лого зліва, поле пошуку поруч, пункти меню
-   по центру, «Профіль» притиснутий вправо (двома auto-margin — на .tabbar-search
-   і на останньому пункті — група пунктів центрується в тому, що лишилось).
+   Композиція звична для десктопу: лого зліва, пункти меню по центру, а праворуч
+   пара «пошук + Профіль» — поле стоїть зліва від «Профілю». Група пунктів
+   центрується двома auto-margin: після лого і перед пошуком.
 
    Смуга НЕ оливкова: на всю ширину вгорі олива стає найяскравішою площиною
    екрана й перетягує увагу з контенту — та сама причина, з якої темна тема
@@ -75,8 +75,10 @@
   .tabbar a.active { background: var(--bg-neutral); color: var(--color-brand); }
   .tabbar a.active .tab-ico { color: var(--color-brand); }
   .tabbar a:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: -2px; }
-  /* «Профіль» — останній пункт, місце для нього на десктопі праворуч. */
-  .tabbar a:last-child { margin-left: auto; }
+  /* «Профіль» — останній пункт, місце для нього на десктопі праворуч; поле
+     пошуку стоїть одразу зліва від нього (order нижче), тому auto-margin
+     переїхав на .tabbar-search — інакше він розірвав би цю пару. */
+  .tabbar a:last-child { order: 2; }
   .tab-txt { font-size: var(--font-size-13); }
   /* Лічильник переїхав з темної смуги на світлу поверхню — ролі навбару тут
      злилися б з фоном, тому бере суцільний бренд і його інверсію. */
@@ -89,6 +91,8 @@
     color: var(--color-brand);
     font-family: var(--font-family-1); font-weight: var(--font-weight-700);
     font-size: var(--font-size-16); letter-spacing: -.02em;
+    /* Перший з двох auto-margin, що центрують групу пунктів. */
+    margin-right: auto;
   }
   .tabbar-brand .brand-mark { width: var(--size-18); height: var(--size-18); }
 
@@ -97,8 +101,11 @@
      Вигляд успадковано від .search-form — тут лише місце і розмір. */
   .tabbar > .tabbar-search {
     display: flex;
-    flex: 0 1 var(--size-320);
-    margin-right: auto; margin-left: var(--space-12);
+    /* Вужче за колишні 320: поле стоїть у правій парі з «Профілем», а не
+       розтягує ліву половину панелі. */
+    flex: 0 1 var(--size-220);
+    order: 1;
+    margin-left: auto; margin-right: var(--space-12);
     border: var(--border-1) solid var(--border-default); border-radius: var(--radius-999);
     padding: var(--space-7) var(--space-14);
     background: var(--bg-page);
