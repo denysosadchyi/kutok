@@ -172,7 +172,7 @@
   [aria-expanded="false"] .chev { transform: rotate(-90deg); }
   @media (prefers-reduced-motion: no-preference) {
     .chev { transition: transform .2s cubic-bezier(.22, 1, .36, 1); }
-    .pg, .st, .tag, .secs a, .sec-btn, .grp-btn, .role-btn, .tw, .all-btn { transition: color .15s ease, background .15s ease; }
+    .pg, .secs a, .sec-btn, .grp-btn, .all-btn { transition: color .15s ease, background .15s ease; }
   }
 
   /* Ритм не рівномірний навмисне: між деревами — пауза, всередині групи —
@@ -209,8 +209,7 @@
   .grp-btn .chev { align-self: center; }
   .grp-btn:hover { color: var(--ink); background: var(--line-soft); }
   .grp-btn.on { color: var(--ink); }
-  /* номер уроку — метадані групи, не клікабельний тег: без рамки, щоб
-     не читався як .tag поруч в тому самому дереві */
+  /* номер уроку — метадані групи: без рамки, це не клікабельний елемент */
   .les {
     margin-left: auto; flex: none;
     font-family: var(--mono); font-size: 8.5px; letter-spacing: .08em;
@@ -250,64 +249,9 @@
   .secs a.active { color: var(--clay); background: var(--clay-soft); }
   .secs .n { font-family: var(--mono); font-size: 9px; margin-right: 6px; opacity: .55; }
 
-  /* ── Рівень 3: роль (усередині «Екрани») ── */
-  .role { margin-top: 8px; }
-  .role-btn {
-    width: calc(100% + 6px); display: flex; align-items: center; gap: 7px;
-    font-size: 11px; font-weight: 700; letter-spacing: .05em;
-    text-transform: uppercase; color: var(--muted);
-    padding: 5px 6px; margin-left: -6px; border-radius: 6px; text-align: left;
-  }
-  .role-btn:hover { color: var(--ink); background: var(--line-soft); }
-  .role-btn.on { color: var(--ink); }
-  .role-btn .cnt {
-    margin-left: auto; font-family: var(--mono); font-size: 9px;
-    font-weight: 400; color: var(--faint); letter-spacing: 0;
-  }
-  /* Направляюча є там, де глибина справжня: 13 екранів × стани — єдине місце,
-     де без неї губиш, у чиїй гілці стоїш. Гілка активної сторінки підсвічена. */
-  .role-body {
-    margin: 2px 0 4px 3px; padding-left: 7px;
-    border-left: 1px solid var(--line);
-  }
-  .role-body.on { border-left-color: var(--rail-on); }
-
-  /* ── Рівень 4: екран (шеврон + назва + job-тег) ── */
-  .screen { margin: 0; }
-  .scr-row { display: flex; align-items: flex-start; }
-  .tw {
-    flex: none; display: grid; place-items: center;
-    width: 20px; height: 24px; border-radius: 5px; color: var(--faint);
-  }
-  .tw:hover { color: var(--clay); background: var(--clay-soft); }
-  .tw.void { visibility: hidden; }
-  .scr-row .pg { flex: 1 1 auto; min-width: 0; font-size: 12px; padding: 4px 7px; }
-  .tag {
-    flex: none; align-self: flex-start; margin-top: 5px; /* по першому рядку назви */
-    font-family: var(--mono); font-size: 8.5px; letter-spacing: .06em;
-    text-transform: uppercase; color: var(--faint);
-    border: 1px solid var(--line); border-radius: 4px;
-    padding: 1px 5px; margin-left: 4px;
-  }
-  .tag:hover { color: var(--clay); border-color: var(--clay-soft); background: var(--clay-soft); }
-
-  /* стани екрана: направляюча по осі тексту назви */
-  .states {
-    display: flex; flex-direction: column; gap: 1px;
-    margin: 1px 0 6px 27px; padding-left: 7px;
-    border-left: 1px solid var(--line);
-  }
-  .states.on { border-left-color: var(--rail-on); }
-  .st {
-    display: block; font-size: 11.5px; font-weight: 500; color: var(--muted);
-    padding: 4px 7px; border-radius: 5px; line-height: 1.35;
-  }
-  .st:hover { color: var(--ink); background: var(--line-soft); }
-  .st.active { color: var(--clay); background: var(--clay-soft); font-weight: 600; }
-
   /* підсвітка збігу фільтра */
   /* від'ємний margin гасить padding: підсвітка не зсуває сусідні літери */
-  .pg mark, .st mark {
+  .pg mark {
     background: color-mix(in oklab, var(--clay) 22%, transparent); color: inherit;
     border-radius: 2px; padding: 0 1px; margin: 0 -1px;
   }
@@ -686,8 +630,7 @@ function makeCollapsible(id, btn, body, def) {
 
 // ── рендер панелі ──
 const navItems   = new Map();  // file → { pg, ancestors: [ids] }
-const filterables = [];        // { el, text, ids, isGroup?, groupId?, isRole?, roleId? }
-const roleMeta   = [];         // { cnt, body, total } — чесний лічильник при фільтрі
+const filterables = [];        // { el, text, ids, isGroup?, groupId? }
 const secMeta    = [];         // те саме для верхніх дерев
 const secTitles  = new Map();  // sec-id → заголовок, для підпису в шапці
 
@@ -726,79 +669,8 @@ function renderItems(items, body, ancestors, filterIds) {
   }
 }
 
-function renderRoles(roles, body, ancestors, filterIds) {
-  roles.forEach((r, ri) => {
-    const roleId = 'role:' + ri;
-    const roleEl = el('div', 'role');
-    const rBtn = el('button', 'role-btn', CHEV + r.role + `<span class="cnt">${r.screens.length}</span>`);
-    rBtn.type = 'button';
-    const rBody = el('div', 'role-body');
-    roleEl.append(rBtn, rBody);
-    makeCollapsible(roleId, rBtn, rBody, true);
-
-    for (const s of r.screens) {
-      const mainFile = 'wireframes/' + s.states[0][0];
-      const screenId = 'screen:' + mainFile;
-      const scr = el('div', 'screen');
-      const row = el('div', 'scr-row');
-
-      const tw = el('button', 'tw', CHEV);
-      tw.type = 'button';
-      tw.setAttribute('aria-label', 'Стани екрана «' + s.t + '»');
-      row.appendChild(tw);
-
-      const a = el('a', 'pg');
-      a.href = '#' + mainFile;
-      a.dataset.f = mainFile;
-      a.dataset.l = s.t;
-      a.textContent = s.t;
-      row.appendChild(a);
-
-      if (s.tag) {
-        const [label, href, title] = s.tag;
-        const [tf, th] = href.split('#');
-        const tag = el('a', 'tag');
-        tag.href = '#' + tf;
-        tag.dataset.f = tf;
-        tag.dataset.h = th ? '#' + th : '';
-        tag.title = title;
-        tag.textContent = label;
-        row.appendChild(tag);
-      }
-      scr.appendChild(row);
-
-      const states = el('div', 'states');
-      let text = (s.t + ' ' + mainFile + ' ' + (s.tag ? s.tag[0] + ' ' + s.tag[2] : '')).toLowerCase();
-      const scrAnc = [...ancestors, roleId, screenId];
-      for (const [sf, sl] of s.states) {
-        const file = 'wireframes/' + sf;
-        addLink(states, sl, file, scrAnc, 'st');
-        text += ' ' + (sl + ' ' + file).toLowerCase();
-      }
-      scr.appendChild(states);
-      navItems.get(mainFile).pg = a;   // головний стан підсвічуємо і на рядку екрана
-
-      if (s.states.length > 1) {
-        makeCollapsible(screenId, tw, states, false);
-      } else {
-        tw.classList.add('void');
-        tw.tabIndex = -1;
-        states.hidden = true;
-      }
-
-      filterables.push({ el: scr, text, ids: [...filterIds, roleId, screenId] });
-      rBody.appendChild(scr);
-    }
-    body.appendChild(roleEl);
-    filterables.push({ el: roleEl, text: r.role.toLowerCase(), ids: [...filterIds, roleId], isRole: true, roleId });
-    roleMeta.push({ cnt: rBtn.querySelector('.cnt'), body: rBody, total: r.screens.length });
-  });
-}
-
 function groupCount(g) {
-  let n = (g.items || []).filter(i => i.f).length;
-  if (g.roles) for (const r of g.roles) for (const s of r.screens) n += s.states.length;
-  return n;
+  return (g.items || []).filter(i => i.f).length;
 }
 
 // група як вузол 2-го рівня (режим «за етапом»)
@@ -815,7 +687,6 @@ function renderGroup(g, parentIds, container) {
 
   const anc = [...parentIds, gid];
   renderItems(g.items || [], body, anc, anc);
-  if (g.roles) renderRoles(g.roles, body, anc, anc);
 
   container.appendChild(box);
   filterables.push({
@@ -841,9 +712,7 @@ function renderSection(id, title, groups, asLesson) {
   const anc = [secId];
   if (asLesson) {
     // урок = одна група, зайвий рівень не заводимо
-    const g = groups[0];
-    renderItems(g.items || [], body, anc, anc);
-    if (g.roles) renderRoles(g.roles, body, anc, anc);
+    renderItems(groups[0].items || [], body, anc, anc);
   } else {
     for (const g of groups) renderGroup(g, anc, body);
   }
@@ -856,7 +725,6 @@ function buildNav() {
   collapsibles.clear();
   navItems.clear();
   filterables.length = 0;
-  roleMeta.length = 0;
   secMeta.length = 0;
 
   const frag = document.createDocumentFragment();
@@ -918,9 +786,15 @@ function buildNav() {
   } else {
     const start = GROUPS.filter(g => !g.lesson);
     if (start.length) frag.appendChild(renderSection('start', 'Старт', start, start.length === 1));
-    const byLesson = GROUPS.filter(g => g.lesson).sort((a, b) => a.lesson.localeCompare(b.lesson));
-    for (const g of byLesson)
-      frag.appendChild(renderSection('l' + g.lesson, g.lesson + ' · ' + LESSONS[g.lesson], [g], true));
+    // один урок може складатися з кількох груп (У04: «Екрани» + «Архів») —
+    // зводимо їх в одну секцію, інакше урок задвоївся б заголовком
+    const byLesson = new Map();
+    for (const g of GROUPS.filter(g => g.lesson)) {
+      if (!byLesson.has(g.lesson)) byLesson.set(g.lesson, []);
+      byLesson.get(g.lesson).push(g);
+    }
+    for (const l of [...byLesson.keys()].sort())
+      frag.appendChild(renderSection('l' + l, l + ' · ' + LESSONS[l], byLesson.get(l), byLesson.get(l).length === 1));
   }
 
   nomatch = el('div', 'nomatch',
@@ -997,7 +871,6 @@ function applyFilter() {
   if (!q) {
     for (const it of filterables) it.el.hidden = false;
     for (const id of collapsibles.keys()) applyOpen(id, openState[id]);
-    for (const r of roleMeta) r.cnt.textContent = r.total;
     for (const s of secMeta) { s.cnt.textContent = s.total; s.body.parentElement.hidden = false; }
     nav.querySelectorAll('.secs').forEach(s => { s.hidden = false; });
     nomatch.style.display = 'none';
@@ -1006,16 +879,15 @@ function applyFilter() {
   }
 
   let hits = 0;
-  const liveRoles = new Set(), liveGroups = new Set();
+  const liveGroups = new Set();
 
   for (const it of filterables) {
-    if (it.isRole || it.isGroup) continue;
+    if (it.isGroup) continue;
     const hit = it.text.includes(q);
     it.el.hidden = !hit;
     if (hit) {
       hits++;
       for (const id of it.ids) {
-        if (id.startsWith('role:')) liveRoles.add(id);
         if (id.startsWith('grp:')) liveGroups.add(id);
         applyOpen(id, true);
       }
@@ -1027,24 +899,12 @@ function applyFilter() {
   });
 
   for (const it of filterables) {
-    if (!it.isRole) continue;
-    const roleHit = it.text.includes(q);
-    it.el.hidden = !roleHit && !liveRoles.has(it.roleId);
-    if (roleHit) {
-      for (const id of it.ids) { applyOpen(id, true); if (id.startsWith('grp:')) liveGroups.add(id); }
-      const c = collapsibles.get(it.roleId);
-      if (c) for (const child of c.body.querySelectorAll('.screen')) child.hidden = false;
-      hits++;
-    }
-  }
-
-  for (const it of filterables) {
     if (!it.isGroup) continue;
     const grpHit = it.text.includes(q);
     it.el.hidden = !grpHit && !liveGroups.has(it.groupId);
     if (grpHit) {
       for (const id of it.ids) applyOpen(id, true);
-      for (const child of it.el.querySelectorAll('.pg, .ph, .role, .screen')) child.hidden = false;
+      for (const child of it.el.querySelectorAll('.pg, .ph')) child.hidden = false;
       hits++;
     }
   }
@@ -1055,10 +915,6 @@ function applyFilter() {
       .filter(a => !a.hidden && !a.closest('[hidden]')).length;
     s.cnt.textContent = vis === s.total ? s.total : vis + '/' + s.total;
     s.body.parentElement.hidden = ![...s.body.children].some(c => !c.hidden);
-  }
-  for (const r of roleMeta) {
-    const vis = r.body.querySelectorAll('.screen:not([hidden])').length;
-    r.cnt.textContent = vis === r.total ? r.total : vis + '/' + r.total;
   }
   nomatch.style.display = hits ? 'none' : 'block';
 }
@@ -1102,14 +958,14 @@ function revealActive(scroll = true) {
   if (!item) return;
   for (const id of item.ancestors) applyOpen(id, true);   // показ, не намір
   if (scroll) {
-    const act = nav.querySelector('.pg.active, .st.active');
+    const act = nav.querySelector('.pg.active');
     if (act) act.scrollIntoView({ block: 'nearest' });
   }
 }
 
 function markActive(file) {
   for (const e of nav.querySelectorAll('[data-f]'))
-    e.classList.toggle('active', e.dataset.f === file && e !== brand && !e.classList.contains('tag'));
+    e.classList.toggle('active', e.dataset.f === file && e !== brand);
 
   // гілка, у якій стоїть активна сторінка: заголовки предків темніють,
   // їхня направляюча підсвічується. У чотирирівневому дереві це єдиний
@@ -1175,7 +1031,7 @@ function goto(file, hash) {
 // j/k — крок по видимих сторінках дерева
 function step(dir) {
   const list = [...nav.querySelectorAll('a[data-f]')]
-    .filter(a => a !== brand && !a.classList.contains('tag') && !a.closest('[hidden]'));
+    .filter(a => a !== brand && !a.closest('[hidden]'));
   if (!list.length) return;
   const i = list.findIndex(a => a.dataset.f === openEl.dataset.f);
   const next = list[Math.min(list.length - 1, Math.max(0, (i < 0 ? 0 : i + dir)))];
@@ -1183,8 +1039,6 @@ function step(dir) {
 }
 
 nav.addEventListener('click', e => {
-  const tag = e.target.closest('.tag');
-  if (tag) { e.preventDefault(); goto(tag.dataset.f, tag.dataset.h); return; }
   const a = e.target.closest('a[data-f]');
   if (!a) return;
   e.preventDefault();
