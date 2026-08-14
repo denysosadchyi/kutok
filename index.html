@@ -309,6 +309,9 @@
     border: 1px solid var(--line);
     border-radius: 14px 14px 0 0;
     box-shadow: 0 18px 40px -28px oklch(25% 0.012 60 / .55);
+    /* прибираємо шар фону самого iframe — між полотном .stage і макетом
+       (.app) не має бути ще одного тла; .app несе своє (див. shell-embed). */
+    background: transparent;
   }
   iframe.ready { opacity: 1; transition: opacity .12s ease; }
 
