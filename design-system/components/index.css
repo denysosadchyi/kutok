@@ -24,6 +24,16 @@
 .app a:not(:where(.btn)) { color: inherit; text-decoration: none; }
 .app main { flex: 1 1 auto; }  /* навбар і FAB завжди внизу */
 
+/* ── Планшет: макет займає ширину, а не лишається мобільною колонкою ──
+   --bp-tablet (47.5rem/760px) з tokens.css — поріг «розкладка ширше»
+   (DESIGN.md §7, responsive/width-audit.md). Стеля — --container-max, той
+   самий, що на десктопі: ширшає вміст, а не стеля.
+   Літерал у медіа-умові з тієї ж причини, що нижче для --bp-desktop:
+   у @media-умові custom property браузери не читають. */
+@media (min-width: 47.5rem) {
+  .app { max-width: var(--container-max); }
+}
+
 /* ── Десктоп: таб-бар стає верхньою панеллю, шапка й контент — під нею ──
    responsive/width-audit.md (DESIGN.md §7): один поріг на всю оболонку —
    той самий --bp-desktop із tokens.css (67.5rem/1080px). Тут — літерал:
@@ -298,6 +308,22 @@
 /* ── feed.css ────────────────────────────────────────────────────────────── */
 /* ── Стрічка (список карток/рядків, вертикальний) ── */
 .feed { list-style: none; padding: var(--space-12) var(--space-16) var(--space-22); display: flex; flex-direction: column; gap: var(--space-24); }
+
+/* Стрічка в колонки, щойно макет отримав ширину (--bp-tablet / --bp-desktop).
+   Кількість колонок і зазор — --col-count-tablet / --col-count-desktop /
+   --grid-gap із tokens.css: значення перенесені з wireframes/listings-desktop.html,
+   нових рішень тут немає. Без цього розтягнутий макет дає картки на всю
+   ширину — «тягнеться», але читається гірше, ніж на телефоні. */
+@media (min-width: 47.5rem) {
+  .feed {
+    display: grid;
+    grid-template-columns: repeat(var(--col-count-tablet), minmax(0, 1fr));
+    gap: var(--grid-gap);
+  }
+}
+@media (min-width: 67.5rem) {
+  .feed { grid-template-columns: repeat(var(--col-count-desktop), minmax(0, 1fr)); }
+}
 
 /* ── card.css ────────────────────────────────────────────────────────────── */
 /* ── Каталог-картка оголошення ── (listings 1:1) */

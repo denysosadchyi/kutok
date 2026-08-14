@@ -17,6 +17,16 @@
 .app a:not(:where(.btn)) { color: inherit; text-decoration: none; }
 .app main { flex: 1 1 auto; }  /* навбар і FAB завжди внизу */
 
+/* ── Планшет: макет займає ширину, а не лишається мобільною колонкою ──
+   --bp-tablet (47.5rem/760px) з tokens.css — поріг «розкладка ширше»
+   (DESIGN.md §7, responsive/width-audit.md). Стеля — --container-max, той
+   самий, що на десктопі: ширшає вміст, а не стеля.
+   Літерал у медіа-умові з тієї ж причини, що нижче для --bp-desktop:
+   у @media-умові custom property браузери не читають. */
+@media (min-width: 47.5rem) {
+  .app { max-width: var(--container-max); }
+}
+
 /* ── Десктоп: таб-бар стає верхньою панеллю, шапка й контент — під нею ──
    responsive/width-audit.md (DESIGN.md §7): один поріг на всю оболонку —
    той самий --bp-desktop із tokens.css (67.5rem/1080px). Тут — літерал:
