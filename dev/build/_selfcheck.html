@@ -1,0 +1,26 @@
+<!doctype html><html><body>
+<iframe src="/wireframes/index.html" style="width:1000px;height:800px" id="fscreen"></iframe>
+<iframe src="/index.html" style="width:1000px;height:800px" id="fshell"></iframe>
+<script>
+function checkFrame(id, cb){
+  var f = document.getElementById(id);
+  f.onload = function(){
+    var doc = f.contentDocument;
+    var s = doc.createElement('script');
+    s.src = '/dev/agentation.js';
+    doc.body.appendChild(s);
+    setTimeout(function(){
+      cb(!!doc.getElementById('agentation-root'));
+    }, 1200);
+  };
+}
+var results = {};
+checkFrame('fscreen', function(r){ results.screen = r; maybeDone(); });
+checkFrame('fshell', function(r){ results.shell = r; maybeDone(); });
+function maybeDone(){
+  if ('screen' in results && 'shell' in results) {
+    document.title = 'screen=' + results.screen + ' shell=' + results.shell;
+  }
+}
+</script>
+</body></html>
