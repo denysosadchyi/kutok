@@ -48,5 +48,9 @@ gap для `onboarding-gaps.md`, а не неявне рішення в реал
 | Поверхня | Посилання | Статус |
 |---|---|---|
 | Репозиторій | [github.com/denysosadchyi/kutok](https://github.com/denysosadchyi/kutok) | доступний |
-| Showcase (GitHub Pages) | — | **pending until deployment**; URL не зафіксовано |
-| Product | [kutok.vercel.app](https://kutok.vercel.app/) | перевірений |
+| Showcase (GitHub Pages) | [denysosadchyi.github.io/kutok/](https://denysosadchyi.github.io/kutok/) | planned |
+| Product (GitHub Pages) | [denysosadchyi.github.io/kutok/wireframes/listings.html](https://denysosadchyi.github.io/kutok/wireframes/listings.html) | planned |
+| Product mirror | [kutok.vercel.app](https://kutok.vercel.app/) | existing mirror |
+
+Планові GitHub Pages URL стануть live лише після merge в `main` і успішного Pages workflow; цей
+документ не стверджує їхню поточну HTTP-доступність.
