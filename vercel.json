@@ -1,1 +1,13 @@
-{}
+{
+  "functions": {
+    "api/readme.mjs": {
+      "includeFiles": "README.md"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/README.md",
+      "destination": "/api/readme"
+    }
+  ]
+}

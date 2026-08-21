@@ -1,31 +1,70 @@
 # Куток
 
-Куток — mobile-first вебзастосунок для безпечного пошуку кімнати або співмешканця в Києві, де в чинній мові «Каталог 73» Аня гортає спокійний упорядкований каталог і спершу бачить докази довіри до людини, а вже тоді вирішує, чи починати контакт; обґрунтування — у [concept.md](./concept.md).
+**Куток** — mobile-first прототип сервісу для безпечного пошуку кімнати або співмешканця в Києві. Він допомагає зробити перший контакт із незнайомою людиною менш ризикованим: спочатку показує зрозумілі докази довіри, а вже потім пропонує почати розмову.
 
-## Запуск
+Демо: [kutok.vercel.app](https://kutok.vercel.app/) · Реліз: [v1.0](https://github.com/denysosadchyi/kutok/releases/tag/v1.0) · Репозиторій: [denysosadchyi/kutok](https://github.com/denysosadchyi/kutok)
 
-Проєкт статичний: з кореня репозиторію виконайте `python3 -m http.server 8000`, а потім відкрийте [http://localhost:8000/](http://localhost:8000/). Для перегляду опублікованої версії доступний [kutok.vercel.app](https://kutok.vercel.app/); npm-скрипт для запуску застосунку не потрібен.
+> Це статичний інтерактивний прототип і handoff-пакет, а не production-застосунок: тут немає API, бази даних чи справжньої верифікації.
 
-## Маршрут продукту
+## Що вже є
 
-Почніть із [research/](./research/index.html) та [research.md](./research/research.md), а структуру рішень перевіряйте в [flows.md](./flows.md), [sitemap.md](./sitemap.md) і [ia.md](./ia.md). Голос, назви термінів і дій фіксує [voice.md](./voice.md), а точні рядки UI — [wireframes/microcopy.md](./wireframes/microcopy.md).
+- Каталог кімнат і людей, фільтри, деталі профілю та оголошення; для каталогу розрізнено вузький фільтр, cold start, loading і технічну помилку.
+- Шлях довіри: телефон + селфі, розшифрований verification badge, повнота профілю та зрозумілий gate перед першим контактом.
+- Взаємний інтерес як умова чату, заявки для шукача, кандидати для господаря, створення й керування оголошенням.
+- 20 активних екранів і 60 сторінок зі станами; архівні екрани збережені як робочі посилання, але не є активним дизайн-периметром. Деталі — у [переліку екранів](./wireframes/_screens.md) та [описі архіву](./wireframes/_archive/README.md).
 
-## Екрани
+## Продуктова ідея
 
-[Wireframes](./wireframes/index.html) — робочий набір екранів і їхніх станів; критерій активних 20 та архів задано в [wireframes/_screens.md](./wireframes/_screens.md). Спільні правила файлів і станів містить [wireframes/_conventions.md](./wireframes/_conventions.md).
+Куток не стилізує пошук житла під маркетплейс чи дейтинг. Його мова — **ясна, спокійна, точна**: людина важливіша за метраж, сигнали довіри не бувають «німими», а інтерфейс не створює штучної терміновості.
 
-## Дизайн-система й showcase
+У центрі — дві сторони однієї тривоги: шукач не хоче потрапити до шахрая чи небезпечного сусіда, а господар не хоче впустити незнайому людину додому. Тому каталог можна переглядати без верифікації, але контакт відкривається лише після неї, а чат — лише за взаємного інтересу. Повна продуктова рамка — у [PRODUCT.md](./PRODUCT.md), логіка рішень — у [concept.md](./concept.md), а сценарії — у [flows.md](./flows.md).
 
-[DESIGN.md](./DESIGN.md) описує візуальні правила, [tokens.css](./design-system/tokens.css) — примітивні й semantic-токени, а [components/](./design-system/components/) — реалізації компонентів. Живу документацію компонентів відкривайте в [design-system/docs/](./design-system/docs/index.html), а практичний showcase оболонки й кіт — у [ui/shell.html](./ui/shell.html) та [ui/kit.html](./ui/kit.html).
+## Де шукати потрібне
 
-## Адаптив і рух
+| Завдання | Почати тут |
+| --- | --- |
+| Зрозуміти продукт, аудиторію і межі MVP | [PRODUCT.md](./PRODUCT.md), [research](./research/research.md), [sitemap.md](./sitemap.md) |
+| Простежити користувацький шлях і стани | [flows.md](./flows.md), [поведінкова специфікація](./handoff/behavior.md) |
+| Переглянути активні екрани | [wireframes](./wireframes/index.html), [перелік екранів](./wireframes/_screens.md) |
+| Змінити точний UI-текст або тон | [microcopy](./wireframes/microcopy.md), [voice.md](./voice.md) |
+| Працювати з токенами й компонентами | [дизайн-система](./design-system/README.md), [DESIGN.md](./DESIGN.md) |
+| Передати проєкт у реалізацію | [handoff-пакет](./handoff/README.md), [мапа екранів](./handoff/map.md) |
 
-[responsive/width-audit.md](./responsive/width-audit.md) фіксує ширинні рішення й перевірки адаптиву. [animations/motion-inventory.md](./animations/motion-inventory.md) — інвентар руху: які переходи допустимі, де вони застосовуються та як враховується reduced motion.
+## Локальний перегляд
 
-## Handoff
+Проєкт не потребує npm-залежностей чи збірки. З кореня репозиторію:
 
-[Handoff-пакет](./handoff/README.md) задає порядок онбордингу; відкриті питання — в [onboarding-gaps.md](./handoff/onboarding-gaps.md), а підтверджені flow — в [behavior.md](./handoff/behavior.md). [map.md](./handoff/map.md) зводить активні екрани з компонентами, токенами та точними джерелами мікрокопі, а [a11y.md](./handoff/a11y.md) — доступнісні вимоги й точки перевірки.
+```bash
+python3 -m http.server 8000
+```
 
-## Контекст
+Потім відкрийте [http://localhost:8000/](http://localhost:8000/) — навігатор усіх артефактів — або одразу [активний каталог](http://localhost:8000/wireframes/listings.html). Для CSS-компонентів після змін у `design-system/components/` виконайте:
 
-[PRODUCT.md](./PRODUCT.md) — продуктовий контекст, [CLAUDE.md](./CLAUDE.md) — правила ведення артефактів, а [DESIGN-artifacts.md](./DESIGN-artifacts.md) — правила їхнього візуального подання. Змінюйте документи-джерела, а не їхні presentation-рендери, якщо конкретний артефакт не визначає інакше.
+```bash
+bash design-system/components/build.sh
+```
+
+## Дизайн, адаптивність і доступність
+
+Візуальна мова «Каталог 73» поєднує паперову фактуру, оливковий бренд, кобальтову дію та виразну видавничу типографіку — без градієнтів, зайвих тіней і декоративного шуму. Правила, токени й компонентні рішення описані в [DESIGN.md](./DESIGN.md), а живий каталог компонентів доступний у [design-system/docs](./design-system/docs/index.html).
+
+Інтерфейс mobile-first: широкий екран не просто розтягує макет, а додає доречні режими — сітку каталогу, master–detail для деталей і чатів, live preview у формах. Межі й обґрунтування зафіксовано у [width audit](./responsive/width-audit.md).
+
+Базовий контракт доступності: семантична розмітка, видимий focus, контраст WCAG 2.1 AA, touch-target від 44px і підтримка `prefers-reduced-motion`. Точки перевірки — у [a11y handoff](./handoff/a11y.md); рух використовується лише для пояснення зв’язку, статусу або відповіді на дію — див. [motion inventory](./animations/motion-inventory.md).
+
+## Handoff і межі реалізації
+
+Починайте з [handoff/README.md](./handoff/README.md): він дає порядок читання, статичні перевірки та критерій передачі. [behavior.md](./handoff/behavior.md) відділяє підтверджений контракт від демонстраційних переходів і явно фіксує невирішені питання — їх не варто тихо «додумувати» в коді.
+
+Поточні documented debts охоплюють канонічний first run і дві ролі, контракт verification/біометрії, state machine заявок, поведінку помилок чату, lifecycle оголошень, async policy та safety-операції. Повний реєстр D-01—D-12 і вплив кожного рішення — у [behavior.md](./handoff/behavior.md); питання, які потрібно закрити до продуктової реалізації, — у [onboarding gaps](./handoff/onboarding-gaps.md).
+
+## Як вносити зміни
+
+Перед правкою визначте джерело істини, а не редагуйте відображення навмання:
+
+- продуктове рішення й flow: [PRODUCT.md](./PRODUCT.md), [flows.md](./flows.md), [sitemap.md](./sitemap.md);
+- точна мова інтерфейсу: [voice.md](./voice.md) і [microcopy](./wireframes/microcopy.md);
+- дизайн: [DESIGN.md](./DESIGN.md), [токени](./design-system/tokens.css) та компоненти в [`design-system/components/`](./design-system/components/);
+- екранний HTML/CSS і прототипні переходи: [wireframes](./wireframes/index.html) та їхня [карта](./handoff/map.md).
+
+Не підміняйте empty технічною помилкою, не обходьте verification gate, не відкривайте чат до взаємного інтересу й не перетворюйте prototype-only навігацію на доменний контракт. Перед передаванням змін виконайте `git diff --check`; додаткові статичні перевірки зібрані в [handoff-пакеті](./handoff/README.md).
