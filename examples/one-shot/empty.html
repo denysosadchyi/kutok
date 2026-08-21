@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Немає доступних відгуків — Куток</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Lora:wght@600;700&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../design-system/index.css">
+  <link rel="stylesheet" href="../../wireframes/wf-shell-responsive.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="../../wireframes/wf-shell-responsive.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body data-state="empty">
+  <nav class="one-shot-switcher" aria-label="Стани one-shot прикладу">
+    <div><strong>RJ5 · навігація прикладу</strong><span>14-денне вікно та двостороння публікація — продуктові припущення [?].</span></div>
+    <ul>
+      <li><a href="index.html">Форма</a></li>
+      <li><a href="loading.html?static=1">Завантаження</a></li>
+      <li><a href="success.html">Готово</a></li>
+      <li><a href="error.html">Помилка</a></li>
+      <li><a href="empty.html" aria-current="page">Порожньо</a></li>
+    </ul>
+  </nav>
+
+  <div class="app app--flow app--compact review-flow">
+    <header class="app-head app-head--back">
+      <div class="head-back-wrap">
+        <div class="head-brand-row">
+          <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--color-brand)"/><path d="M18 3L21 3L21 6Z" fill="var(--bg-surface)"/></svg>
+          <div class="head-brand">Куток</div>
+        </div>
+        <div class="head-back-row">
+          <a class="head-back" href="../../wireframes/my-profile-seeker.html" aria-label="Назад до профілю">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+          </a>
+          <h1 class="head-title">Відгуки</h1>
+        </div>
+      </div>
+    </header>
+
+    <main class="state-main review-empty-main">
+      <div class="state-block">
+        <div class="state-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3.5h14v17H5z"/><path d="M8.5 8h7M8.5 12h5M8.5 16h3"/></svg>
+        </div>
+        <h2 class="state-title">Немає доступних відгуків</h2>
+        <p class="state-text">Відгук можна залишити після підтвердженого спільного проживання.</p>
+        <div class="state-actions">
+          <a class="btn btn--primary" href="../../wireframes/dialogs.html">Перейти до чатів</a>
+          <a class="btn btn--ghost" href="../../wireframes/my-profile-seeker.html">До профілю</a>
+        </div>
+      </div>
+    </main>
+
+    <footer class="tabbar" data-product-nav aria-label="Основна навігація"></footer>
+  </div>
+</body>
+</html>

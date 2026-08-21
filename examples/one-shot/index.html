@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Відгук після спільного проживання — Куток</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Lora:wght@600;700&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../design-system/index.css">
+  <link rel="stylesheet" href="../../wireframes/wf-shell-responsive.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="../../wireframes/wf-shell-responsive.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body data-state="form">
+  <nav class="one-shot-switcher" aria-label="Стани one-shot прикладу">
+    <div><strong>RJ5 · навігація прикладу</strong><span>14-денне вікно та двостороння публікація — продуктові припущення [?].</span></div>
+    <ul>
+      <li><a href="index.html" aria-current="page">Форма</a></li>
+      <li><a href="loading.html?static=1">Завантаження</a></li>
+      <li><a href="success.html">Готово</a></li>
+      <li><a href="error.html">Помилка</a></li>
+      <li><a href="empty.html">Порожньо</a></li>
+    </ul>
+  </nav>
+
+  <div class="app app--flow app--preview review-flow">
+    <header class="app-head app-head--back">
+      <div class="head-back-wrap">
+        <div class="head-brand-row">
+          <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--color-brand)"/><path d="M18 3L21 3L21 6Z" fill="var(--bg-surface)"/></svg>
+          <div class="head-brand">Куток</div>
+        </div>
+        <div class="head-back-row">
+          <a class="head-back" href="../../wireframes/my-profile-seeker.html" aria-label="Назад до профілю">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+          </a>
+          <h1 class="head-title">Відгук після спільного проживання</h1>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <form action="loading.html" method="get" data-review-form>
+        <input type="hidden" name="submitted" value="1">
+        <section class="section" aria-labelledby="review-context-title">
+          <h2 class="overline" id="review-context-title">Про кого відгук</h2>
+          <div class="review-context">
+            <div class="avatar avatar--md ph" aria-hidden="true">О</div>
+            <div class="review-context-copy">
+              <strong class="review-context-name">Олена, 28</strong>
+              <span class="review-context-meta">Спільне проживання підтверджено</span>
+              <span class="status-pill review-window">Відгук доступний до 16 серпня</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="field">
+            <label for="review">Твій відгук</label>
+            <textarea id="review" rows="6" required data-review-input aria-describedby="review-hint review-error" placeholder="Наприклад: як ви домовлялися про оплату, побут і спільний простір."></textarea>
+            <p class="hint review-form-note" id="review-hint">Пиши лише про досвід спільного проживання. Відгук буде прив’язано до профілю Олени.</p>
+            <p class="review-field-error" id="review-error" data-review-error role="alert" hidden>Додай текст відгуку, щоб продовжити.</p>
+          </div>
+        </section>
+
+        <section class="section">
+          <button class="btn btn--primary btn--block" type="submit">Надіслати відгук</button>
+        </section>
+      </form>
+
+      <aside class="form-preview" aria-label="Попередній вигляд відгуку">
+        <p class="form-preview-title">Попередній вигляд у профілі</p>
+        <article class="review">
+          <p class="review-meta">Аня · серпень 2026</p>
+          <p class="review-text review-preview-text" data-review-preview>Текст відгуку з’явиться тут.</p>
+        </article>
+      </aside>
+    </main>
+
+    <footer class="tabbar" data-product-nav aria-label="Основна навігація"></footer>
+  </div>
+</body>
+</html>

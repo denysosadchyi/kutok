@@ -1,0 +1,237 @@
+/* Локальна композиція one-shot. Значення читаються лише з чинних токенів Кутка. */
+html {
+  background: var(--bg-page);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg-neutral);
+  color: var(--text-primary);
+  font-family: var(--font-family-2);
+}
+
+.one-shot-switcher,
+.one-shot-switcher * {
+  box-sizing: border-box;
+}
+
+.one-shot-switcher {
+  position: relative;
+  z-index: 10;
+  width: min(100%, var(--container-max));
+  margin-inline: auto;
+  padding: var(--space-10) var(--space-16);
+  border-bottom: var(--border-1) solid var(--border-default);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  font-family: var(--font-family-2);
+}
+
+.one-shot-switcher strong,
+.one-shot-switcher span {
+  display: block;
+}
+
+.one-shot-switcher strong {
+  font-size: var(--font-size-13);
+}
+
+.one-shot-switcher span {
+  margin-top: var(--space-2);
+  color: var(--text-muted);
+  font-size: var(--font-size-11);
+}
+
+.one-shot-switcher ul {
+  display: flex;
+  gap: var(--space-6);
+  margin: var(--space-10) 0 0;
+  padding: 0;
+  overflow-x: auto;
+  list-style: none;
+}
+
+.one-shot-switcher a {
+  display: inline-flex;
+  min-height: var(--size-44);
+  align-items: center;
+  padding-inline: var(--space-14);
+  border-radius: var(--radius-999);
+  color: var(--text-primary);
+  font-size: var(--font-size-13);
+  font-weight: var(--font-weight-600);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.one-shot-switcher a:hover,
+.one-shot-switcher a[aria-current="page"] {
+  background: var(--bg-neutral);
+  color: var(--color-brand);
+}
+
+.one-shot-switcher a:focus-visible {
+  outline: var(--border-2) solid var(--color-action);
+  outline-offset: var(--space-2);
+}
+
+.review-flow {
+  min-height: calc(100vh - var(--size-96));
+}
+
+.review-context {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  padding: var(--space-14);
+  border: var(--border-1) solid var(--border-default);
+  border-radius: var(--radius-16);
+  background: var(--bg-neutral);
+}
+
+.review-context .avatar {
+  flex: 0 0 auto;
+  border-radius: var(--radius-16);
+}
+
+.review-context-copy {
+  min-width: 0;
+}
+
+.review-context-name {
+  display: block;
+  font-size: var(--font-size-16);
+  font-weight: var(--font-weight-700);
+}
+
+.review-context-meta {
+  display: block;
+  margin-top: var(--space-2);
+  color: var(--text-muted);
+  font-size: var(--font-size-13);
+}
+
+.review-window {
+  display: inline-flex;
+  margin-top: var(--space-10);
+}
+
+.review-form-note {
+  margin: var(--space-10) 0 0;
+}
+
+.review-field-error {
+  margin: var(--space-6) 0 0;
+  color: var(--color-danger);
+  font-size: var(--font-size-13);
+}
+
+.field textarea[aria-invalid="true"] {
+  outline-color: var(--color-danger);
+}
+
+.review-preview-text {
+  min-height: var(--size-96);
+  white-space: pre-wrap;
+}
+
+.review-preview-text.is-updating {
+  animation: review-preview-update var(--dur-fast) var(--ease-standard);
+}
+
+@keyframes review-preview-update {
+  from {
+    opacity: .55;
+    transform: translateY(var(--move-sm));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.review-result {
+  padding: var(--space-20) var(--space-22);
+}
+
+.review-result .banner {
+  margin-bottom: var(--space-20);
+}
+
+.review-result .review {
+  padding: var(--space-16) 0;
+}
+
+.review-loading-card {
+  padding: var(--space-20) var(--space-22);
+}
+
+.review-loading-card .review-context {
+  margin-bottom: var(--space-22);
+}
+
+.review-loading-lines {
+  padding: var(--space-16) 0 var(--space-22);
+}
+
+.review-loading-lines .sk-line + .sk-line {
+  margin-top: var(--space-10);
+}
+
+.review-sk-name {
+  width: var(--size-106);
+}
+
+.review-sk-meta {
+  width: var(--size-220);
+}
+
+.review-sk-label {
+  width: 34%;
+}
+
+.review-sk-long {
+  width: 92%;
+}
+
+.review-sk-medium {
+  width: 78%;
+}
+
+.review-empty-main .state-icon svg,
+.review-success-icon svg,
+.review-error-icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@media (min-width: 47.5rem) {
+  .one-shot-switcher {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--space-20);
+  }
+
+  .one-shot-switcher ul {
+    margin-top: 0;
+  }
+}
+
+@media (min-width: 67.5rem) {
+  .review-flow.app--preview > main {
+    padding-top: var(--space-24);
+  }
+
+  .review-flow .form-preview {
+    top: var(--size-88);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .review-preview-text.is-updating {
+    animation: none;
+  }
+}

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Надсилання відгуку — Куток</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Lora:wght@600;700&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../design-system/index.css">
+  <link rel="stylesheet" href="../../wireframes/wf-shell-responsive.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="../../wireframes/wf-shell-responsive.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body data-state="loading">
+  <nav class="one-shot-switcher" aria-label="Стани one-shot прикладу">
+    <div><strong>RJ5 · навігація прикладу</strong><span>14-денне вікно та двостороння публікація — продуктові припущення [?].</span></div>
+    <ul>
+      <li><a href="index.html">Форма</a></li>
+      <li><a href="loading.html?static=1" aria-current="page">Завантаження</a></li>
+      <li><a href="success.html">Готово</a></li>
+      <li><a href="error.html">Помилка</a></li>
+      <li><a href="empty.html">Порожньо</a></li>
+    </ul>
+  </nav>
+
+  <div class="app app--flow app--compact review-flow">
+    <header class="app-head app-head--back">
+      <div class="head-back-wrap">
+        <div class="head-brand-row">
+          <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--color-brand)"/><path d="M18 3L21 3L21 6Z" fill="var(--bg-surface)"/></svg>
+          <div class="head-brand">Куток</div>
+        </div>
+        <div class="head-back-row">
+          <a class="head-back" href="index.html" aria-label="Назад до відгуку">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+          </a>
+          <h1 class="head-title">Надсилання відгуку</h1>
+        </div>
+      </div>
+    </header>
+
+    <main class="review-loading-card" aria-busy="true" aria-live="polite">
+      <div class="review-context" aria-hidden="true">
+        <span class="avatar avatar--md sk"></span>
+        <span class="review-context-copy">
+          <span class="sk sk-line review-sk-name"></span>
+          <span class="sk sk-line review-sk-meta"></span>
+        </span>
+      </div>
+      <div class="review-loading-lines" aria-hidden="true">
+        <span class="sk sk-line review-sk-label"></span>
+        <span class="sk sk-line review-sk-long"></span>
+        <span class="sk sk-line review-sk-medium"></span>
+      </div>
+      <p class="hint">Надсилаємо відгук…</p>
+      <button class="btn btn--primary btn--block" type="button" disabled>Надсилаємо відгук…</button>
+    </main>
+
+    <footer class="tabbar" data-product-nav aria-label="Основна навігація"></footer>
+  </div>
+</body>
+</html>
