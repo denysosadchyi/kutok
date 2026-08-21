@@ -1,8 +1,18 @@
 /* ── Скелетон завантаження ── (listings-loading 1:1) */
-@keyframes sk-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .45; } }
-.sk { background: var(--bg-pressed); animation: sk-pulse 1.4s ease-in-out infinite; }
-.sk-photo { width: 100%; aspect-ratio: 4 / 3; border-radius: var(--radius-26); }
+/* Рівний повтор повідомляє, що конкретний вміст ще завантажується. */
+@keyframes sk-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .55; }
+}
+.sk {
+  background: var(--bg-pressed);
+  animation: sk-pulse calc(var(--dur-slow) * 4) var(--ease-standard) infinite;
+  transition: opacity var(--dur-base) var(--ease-exit);
+}
+/* Додати клас усім `.sk` у заглушці перед заміною її справжнім вмістом. */
+.sk--leaving { animation: none; opacity: 0; }
+.sk-photo { width: 100%; aspect-ratio: 4 / 3; border-radius: var(--radius-18); }
 .sk-body { padding: var(--space-13) var(--space-2) 0; display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-14); }
-.sk-title { width: 62%; height: var(--size-26); border-radius: var(--radius-8); }
-.sk-price { width: 26%; height: var(--size-26); border-radius: var(--radius-8); }
-.sk-line { display: block; height: var(--size-12); border-radius: var(--radius-6); margin: var(--space-6) 0; } /* рядок тексту, що вантажиться; ширина — inline per-instance */
+.sk-title { width: 62%; height: var(--size-26); border-radius: var(--radius-6); }
+.sk-price { width: 26%; height: var(--size-26); border-radius: var(--radius-6); }
+.sk-line { display: block; height: var(--size-12); border-radius: var(--radius-4); margin: var(--space-6) 0; } /* рядок тексту, що вантажиться; ширина — inline per-instance */

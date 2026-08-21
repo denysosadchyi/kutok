@@ -2,9 +2,14 @@
    ЧАТ
    ══════════════════════════════════════════════════════════════════════════ */
 .chat-thread { display: flex; flex-direction: column; gap: var(--space-8); padding: var(--space-14) var(--space-16); }
-.msg { max-width: 78%; padding: var(--space-10) var(--space-13); border-radius: var(--radius-18); font-size: var(--font-size-16); line-height: 1.4; }
-.msg--in { align-self: flex-start; background: var(--bg-surface); color: var(--text-primary); border-bottom-left-radius: var(--radius-6); }
-.msg--out { align-self: flex-end; background: var(--color-action); color: var(--on-action); border-bottom-right-radius: var(--radius-6); }
+.msg { max-width: 78%; padding: var(--space-10) var(--space-13); border-radius: var(--radius-12); font-size: var(--font-size-16); line-height: 1.4; }
+.msg--in { align-self: flex-start; background: var(--bg-surface); color: var(--text-primary); border-bottom-left-radius: var(--radius-4); }
+.msg--out { align-self: flex-end; background: var(--color-action); color: var(--on-action); border-bottom-right-radius: var(--radius-4); }
+.msg--sent { animation: message-sent-enter var(--dur-base) var(--ease-enter); }
+@keyframes message-sent-enter {
+  from { opacity: 0; transform: translateY(var(--move-sm)); }
+  to { opacity: 1; transform: translateY(0); }
+}
 .composer {
   display: flex; align-items: center; gap: var(--space-8); padding: var(--space-10) var(--space-12);
   border-top: var(--border-1) solid var(--border-default); background: var(--bg-page); background-image: var(--grain-1);
@@ -19,14 +24,16 @@
   flex-shrink: 0; width: var(--size-44); height: var(--size-44); border-radius: var(--radius-999); border: none;
   background: var(--color-action); color: var(--on-action); cursor: pointer;
   display: inline-flex; align-items: center; justify-content: center;
+  transition: transform var(--dur-fast) var(--ease-standard);
 }
 .composer .send svg { width: var(--size-20); height: var(--size-20); }
 .composer .send:hover { filter: brightness(1.08); }
-.composer .send:active { filter: brightness(.9); }
+.composer .send:active { filter: brightness(.9); transform: translateY(calc(var(--move-sm) / 2)); }
+.composer .send:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: var(--space-2); }
 
 /* ── Скелетон-бульбашка (chat-loading) ── реальна форма/вирівнювання msg--in/msg--out,
    нейтральний пульс замість кольору (та сама умова, що й .sk-line: ширина/висота — inline per-instance) */
-.sk-msg { align-self: flex-start; max-width: 78%; height: var(--size-38); border-radius: var(--radius-18); }
+.sk-msg { align-self: flex-start; max-width: 78%; height: var(--size-38); border-radius: var(--radius-12); }
 
 /* ── Master-detail для діалогів ──
    На телефоні файли лишаються окремими екранами: dialogs = список, chat = розмова.
@@ -89,6 +96,12 @@
     flex-direction: column;
     border-left: var(--border-1) solid var(--border-default);
   }
+  /* API-стан додається в момент вибору розмови: detail приходить з боку
+     master-списку, тому перехід пояснює зв'язок між рядком і листуванням.
+     Без .is-entering панель з'являється звичайно, без page-load анімації. */
+  .chat-desktop-panel--detail.is-entering {
+    animation: chat-detail-enter var(--dur-slow) var(--ease-enter);
+  }
   .chat-desktop-panel--master {
     grid-column: 1;
     grid-row: 2 / 6;
@@ -108,4 +121,9 @@
 
   /* На desktop повернення до списку не потрібне: master завжди перед очима. */
   .app--chat > .app-head--back .head-back { display: none; }
+}
+
+@keyframes chat-detail-enter {
+  from { opacity: 0; transform: translateX(calc(var(--move-md) * -1)); }
+  to { opacity: 1; transform: translateX(0); }
 }

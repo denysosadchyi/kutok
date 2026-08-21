@@ -86,7 +86,7 @@
     <a class="wf-nav-kit-link" href="kit.html">Кіт компонентів →</a>
     <button type="button" class="wf-nav-theme" onclick="wfToggleTheme()" aria-pressed="false">Темна тема</button>
     <div class="wf-nav-tools">
-      <input type="text" class="wf-nav-filter" placeholder="Фільтр за назвою…" oninput="wfNavFilter(this.value)">
+      <input type="text" class="wf-nav-filter" aria-label="Фільтр макетів за назвою" placeholder="Фільтр за назвою…" oninput="wfNavFilter(this.value)">
       <div class="wf-nav-toggle-all">
         <button type="button" onclick="wfNavToggleAll(true)">Розгорнути все</button>
         <button type="button" onclick="wfNavToggleAll(false)">Згорнути все</button>
@@ -329,6 +329,12 @@
 
   <header class="app-head">
     <div>
+      <nav class="breadcrumbs" aria-label="Хлібні крихти">
+        <ol>
+          <li><a href="listings.html">Куток</a></li>
+          <li aria-current="page">Заявки</li>
+        </ol>
+      </nav>
       <div class="head-brand-row"><svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--color-brand)"/><path d="M18 3L21 3L21 6Z" fill="var(--bg-surface)"/></svg><div class="head-brand">Куток</div></div>
       <h1 class="head-word">Заявки</h1>
       <p class="head-sub">Хто хоче підселитися у кімнату «Кімната на Подолі».</p>
@@ -341,16 +347,16 @@
   <div id="search-popover" class="search-popover" popover>
     <form class="search-form" role="search" action="listings.html" method="get">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg>
-      <input type="search" name="q" placeholder="Пошук за назвою, районом…" aria-label="Пошук оголошень">
+      <input type="search" name="q" placeholder="Пошук" aria-label="Пошук оголошень">
     </form>
   </div>
 
 
-  <main>
-    <div class="pad">
+  <main class="operation-main">
+    <div class="operation-toolbar">
       <p class="counter">Кандидатів: <b>3</b></p>
     </div>
-    <ul class="list">
+    <ul class="list operation-list">
       <li>
         <a class="row" href="profile.html">
           <img class="avatar avatar--sm" src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=120&h=120&fit=crop&auto=format&q=70" alt="Фото — Артем, 26" loading="lazy">
@@ -402,7 +408,7 @@
     <a class="tabbar-brand" href="listings.html" aria-label="Куток — на головну"><svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--color-brand)"/><path d="M18 3L21 3L21 6Z" fill="var(--bg-surface)"/></svg><span>Куток</span></a>
     <form class="tabbar-search search-form" role="search" action="listings.html" method="get">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg>
-      <input type="search" name="q" placeholder="Пошук за назвою, районом…" aria-label="Пошук оголошень">
+      <input type="search" name="q" placeholder="Пошук" aria-label="Пошук оголошень">
     </form>
     <a href="listings.html">
       <span class="tab-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg></span>

@@ -26,7 +26,10 @@
   .sh-note { font-size: var(--font-size-11); color: var(--text-muted); margin-top: 10px; line-height: 1.4; }
   .sh-stack { display: flex; flex-direction: column; gap: 12px; }
   .sh-inline { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
-  .sh-onphoto { position: relative; width: 100%; aspect-ratio: 16 / 8; border-radius: var(--radius-26); overflow: hidden; background: var(--bg-surface); }
+  /* У вітрині preview показаний статично: на екрані він стає sidebar-ом лише
+     разом з .app--preview у desktop-композиції. */
+  .sh-form-preview { display: block; position: static; padding: var(--space-18); border: var(--border-1) solid var(--border-default); border-radius: var(--radius-16); background: var(--bg-surface); }
+  .sh-onphoto { position: relative; width: 100%; aspect-ratio: 16 / 8; border-radius: var(--radius-18); overflow: hidden; background: var(--bg-surface); }
   .sh-onphoto img { width: 100%; height: 100%; object-fit: cover; display: block; }
   /* хедери/таб-бар у вітрині показуємо статично (без sticky), щоб не липли */
   .sh-item .app-head, .sh-item .tabbar, .sh-item .composer { position: static; margin-left: 0; margin-right: 0; }
@@ -100,7 +103,7 @@
     <a class="wf-nav-kit-link" href="kit.html">Кіт компонентів →</a>
     <button type="button" class="wf-nav-theme" onclick="wfToggleTheme()" aria-pressed="false">Темна тема</button>
     <div class="wf-nav-tools">
-      <input type="text" class="wf-nav-filter" placeholder="Фільтр за назвою…" oninput="wfNavFilter(this.value)">
+      <input type="text" class="wf-nav-filter" aria-label="Фільтр макетів за назвою" placeholder="Фільтр за назвою…" oninput="wfNavFilter(this.value)">
       <div class="wf-nav-toggle-all">
         <button type="button" onclick="wfNavToggleAll(true)">Розгорнути все</button>
         <button type="button" onclick="wfNavToggleAll(false)">Згорнути все</button>
@@ -176,12 +179,12 @@
               </ul>
             </details>
           </li>
-          
-          
-          
-          
-          
-          
+
+
+
+
+
+
         </ul>
       </details>
       <details class="role" open>
@@ -311,8 +314,8 @@
               </ul>
             </details>
           </li>
-          
-          
+
+
           <li class="screen">
             <details>
               <summary>Список діалогів <a class="job-tag" href="../research/jtbd.html#related" title="RJ3 — почати розмову тільки якщо інтерес взаємний">RJ3</a></summary>
@@ -364,6 +367,12 @@
     <div class="sh-label">Шапка · шар 1 — вордмарк (первинний таб)</div>
     <header class="app-head">
       <div>
+      <nav class="breadcrumbs" aria-label="Хлібні крихти">
+        <ol>
+          <li><a href="listings.html">Куток</a></li>
+          <li aria-current="page">Пошук</li>
+        </ol>
+      </nav>
         <div class="head-brand-row"><svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--color-brand)"/><path d="M18 3L21 3L21 6Z" fill="var(--bg-surface)"/></svg><div class="head-brand">Куток</div></div>
         <h1 class="head-word">Пошук</h1>
         <p class="head-sub">Кімнати й сусіди в Києві, між своїми</p>
@@ -378,6 +387,12 @@
     <div class="sh-label">Шапка · шар 2 — назад + заголовок (вторинний екран, зі змістом → з пошуком)</div>
     <header class="app-head app-head--back">
       <div class="head-back-wrap">
+      <nav class="breadcrumbs" aria-label="Хлібні крихти">
+        <ol>
+          <li><a href="listings.html">Куток</a></li>
+          <li aria-current="page">Оголошення кімнати</li>
+        </ol>
+      </nav>
         <div class="head-brand-row"><svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--color-brand)"/><path d="M18 3L21 3L21 6Z" fill="var(--bg-surface)"/></svg><div class="head-brand">Куток</div></div>
         <div class="head-back-row">
           <a class="head-back" href="#" aria-label="До списку"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a>
@@ -399,7 +414,7 @@
     <a class="tabbar-brand" href="../wireframes/listings.html" aria-label="Куток — на головну"><svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--color-brand)"/><path d="M18 3L21 3L21 6Z" fill="var(--bg-surface)"/></svg><span>Куток</span></a>
     <form class="tabbar-search search-form" role="search" action="../wireframes/listings.html" method="get">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg>
-      <input type="search" name="q" placeholder="Пошук за назвою, районом…" aria-label="Пошук оголошень">
+      <input type="search" name="q" placeholder="Пошук" aria-label="Пошук оголошень">
     </form>
       <a class="active" href="#"><span class="tab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg></span><span class="tab-txt">Пошук</span></a>
       <a href="#"><span class="tab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8.5 8.5h7M8.5 12.5h7M8.5 16.5h4"/></svg><span class="tab-dot">2</span></span><span class="tab-txt">Заявки</span></a>
@@ -417,7 +432,7 @@
     <div class="search-popover">
       <form class="search-form" role="search">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg>
-        <input type="search" placeholder="Пошук за назвою, районом…" aria-label="Пошук оголошень">
+        <input type="search" placeholder="Пошук" aria-label="Пошук оголошень">
       </form>
     </div>
   </div>
@@ -632,7 +647,7 @@
   </div>
 
   <div class="sh-item">
-    <div class="sh-label">Випадний список (кастомна стрілка)</div>
+    <div class="sh-label">Випадний список (button + listbox)</div>
     <label class="fsel"><select aria-label="Район"><option selected>Поділ</option><option>Оболонь</option><option>Позняки</option></select></label>
   </div>
 
@@ -679,6 +694,24 @@
       <button class="photo-slot" aria-label="Додати фото"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
       <button class="photo-slot" aria-label="Додати фото"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
     </div>
+  </div>
+
+  <div class="sh-item">
+    <div class="sh-label">Попередній вигляд форми на desktop</div>
+    <aside class="form-preview sh-form-preview" aria-label="Попередній вигляд оголошення">
+      <p class="form-preview-title">Так оголошення виглядатиме в каталозі</p>
+      <article class="card">
+        <div class="card-photo">
+          <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800&h=600&fit=crop&auto=format&q=70" alt="Фото кімнати в оголошенні" loading="lazy">
+          <span class="place"><span class="t">Поділ</span></span>
+        </div>
+        <div class="card-body">
+          <div class="card-main"><h2 class="card-title">Світла кімната біля метро</h2></div>
+          <p class="card-price"><span class="amount">9 500 ₴</span><span class="per">на місяць</span></p>
+        </div>
+      </article>
+      <p class="hint">Після публікації картка з’явиться в пошуку.</p>
+    </aside>
   </div>
 
   <div class="sh-item">

@@ -100,6 +100,12 @@
   .doc { padding: 34px 0 120px; max-width: 74ch; }
   .doc > :first-child { margin-top: 0; }
 
+  /* CSS і plain-text — не проза: код має використовувати ширину робочої
+     області, тоді як Markdown лишається в читабельній мірі 74ch. */
+  .code-mode .shell { max-width: none; }
+  .code-mode .doc { width: 100%; max-width: none; }
+  .code-mode .doc pre { width: 100%; }
+
   .doc h1 {
     font-size: 30px; font-weight: 800; line-height: 1.18; letter-spacing: -.022em;
     margin: 0 0 22px;
@@ -202,6 +208,7 @@ const raw = new URLSearchParams(location.search).get('f') || '';
 const file = raw.replace(/^\/+/, '');
 const ok = file && !file.includes('..') && !/^[a-z]+:/i.test(file) && /\.(md|css|txt)$/i.test(file);
 const dir = file.replace(/[^/]*$/, '');           // тека файлу — база для його посилань
+const isCode = /\.(css|txt)$/i.test(file);
 
 function fail(title, detail) {
   docEl.innerHTML = '';
@@ -213,6 +220,20 @@ function fail(title, detail) {
   p.textContent = detail;
   b.append(t, p);
   docEl.appendChild(b);
+}
+
+// Завжди декодуємо source як UTF-8, незалежно від Content-Type сервера.
+// Це тримає кириличні коментарі в CSS/MD читабельними навіть на простому
+// статичному сервері, який не додає charset до текстової відповіді.
+function utf8(response) {
+  if (!response.ok) throw new Error(response.status + ' ' + response.statusText);
+  return response.arrayBuffer().then(bytes => {
+    try {
+      return new TextDecoder('utf-8', { fatal: true }).decode(bytes);
+    } catch (_) {
+      throw new Error('Відповідь не є коректним UTF-8');
+    }
+  });
 }
 
 // ── резолв посилань відносно теки .md-файлу (в'юер може жити не в корені сервера) ──
@@ -382,9 +403,9 @@ if (!ok) {
 } else {
   srcEl.textContent = '/' + file;
   fetch(file)
-    .then(r => { if (!r.ok) throw new Error(r.status + ' ' + r.statusText); return r.text(); })
+    .then(utf8)
     .then(text => {
-      const isCode = /\.css$/i.test(file);
+      document.body.classList.toggle('code-mode', isCode);
       const html = isCode
         ? '<h1 id="h1">' + esc(file.split('/').pop()) + '</h1>' +
           '<p class="meta">' + text.split('\n').length + ' рядків · перегляд без редагування</p>' +

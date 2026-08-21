@@ -86,7 +86,7 @@
     <a class="wf-nav-kit-link" href="kit.html">Кіт компонентів →</a>
     <button type="button" class="wf-nav-theme" onclick="wfToggleTheme()" aria-pressed="false">Темна тема</button>
     <div class="wf-nav-tools">
-      <input type="text" class="wf-nav-filter" placeholder="Фільтр за назвою…" oninput="wfNavFilter(this.value)">
+      <input type="text" class="wf-nav-filter" aria-label="Фільтр макетів за назвою" placeholder="Фільтр за назвою…" oninput="wfNavFilter(this.value)">
       <div class="wf-nav-toggle-all">
         <button type="button" onclick="wfNavToggleAll(true)">Розгорнути все</button>
         <button type="button" onclick="wfNavToggleAll(false)">Згорнути все</button>
@@ -329,6 +329,12 @@
 
   <header class="app-head">
     <div>
+      <nav class="breadcrumbs" aria-label="Хлібні крихти">
+        <ol>
+          <li><a href="listings.html">Куток</a></li>
+          <li aria-current="page">Заявки</li>
+        </ol>
+      </nav>
       <div class="head-brand-row"><svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--color-brand)"/><path d="M18 3L21 3L21 6Z" fill="var(--bg-surface)"/></svg><div class="head-brand">Куток</div></div>
       <h1 class="head-word">Заявки</h1>
       <p class="head-sub">Надіслані запити «Хочу познайомитись» і їхній стан.</p>
@@ -341,51 +347,32 @@
   <div id="search-popover" class="search-popover" popover>
     <form class="search-form" role="search" action="listings.html" method="get">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg>
-      <input type="search" name="q" placeholder="Пошук за назвою, районом…" aria-label="Пошук оголошень">
+      <input type="search" name="q" placeholder="Пошук" aria-label="Пошук оголошень">
     </form>
   </div>
 
 
-  <main>
-    <ul class="list">
-      <li>
-        <div class="row row--muted">
-          <img class="avatar avatar--sm" src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=120&h=120&fit=crop&auto=format&q=70" alt="Фото — Олена" loading="lazy">
-          <span class="row-body">
-            <span class="row-meta" style="margin-top:0;">Кімната на Подолі</span>
-            <span class="row-title">Олена</span>
-            <span class="row-meta">Взаємний інтерес — чат відкрито</span>
-            <span class="badge"><span class="badge-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>телефон, фото</span>
-          </span>
-          <span class="status-pill status-pill--success">перенесено в чат<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
-        </div>
-      </li>
-      <li>
-        <a class="row" href="room.html">
-          <img class="avatar avatar--sm" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120&h=120&fit=crop&auto=format&q=70" alt="Фото — Сергій" loading="lazy">
-          <span class="row-body">
-            <span class="row-meta" style="margin-top:0;">Кімната на Оболоні</span>
-            <span class="row-title">Сергій</span>
-            <span class="row-meta">Очікує відповіді · надіслано 2 дні тому</span>
-            <span class="badge"><span class="badge-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>телефон, фото</span>
-          </span>
-          <span class="status-pill">очікує</span>
-        </a>
-        <span class="row-actions"><button type="button" class="btn btn--ghost btn--sm">Відкликати заявку</button></span>
-      </li>
-      <li>
-        <a class="row" href="profile.html">
-          <img class="avatar avatar--sm" src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=120&h=120&fit=crop&auto=format&q=70" alt="Фото — Артем, 26" loading="lazy">
-          <span class="row-body">
-            <span class="row-meta" style="margin-top:0;">сусід</span>
-            <span class="row-title">Артем, 26</span>
-            <span class="row-meta">Заявку відхилено</span>
-            <span class="badge"><span class="badge-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>телефон, фото</span>
-          </span>
-          <span class="status-pill status-pill--rejected">відхилено</span>
-        </a>
-      </li>
-    </ul>
+  <main class="operation-main">
+    <div class="operation-table-wrap" tabindex="0">
+  <table class="operation-table">
+    <caption class="sr-only">Надіслані заявки та їхній стан</caption>
+    <thead><tr><th scope="col">Заявка</th><th scope="col">Стан</th><th scope="col">Дія</th></tr></thead>
+    <tbody>
+      <tr class="operation-table__row--muted">
+        <td><a class="operation-table__person" href="chat.html"><img class="avatar avatar--sm" src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=120&h=120&fit=crop&auto=format&q=70" alt="Фото — Олена" loading="lazy"><span><span class="row-meta">Кімната на Подолі</span><span class="row-title">Олена</span><span class="row-meta">Взаємний інтерес — чат відкрито</span><span class="badge">телефон, фото</span></span></a></td>
+        <td><span class="status-pill status-pill--success">перенесено в чат</span></td><td><a class="btn btn--ghost btn--sm" href="chat.html">Відкрити чат</a></td>
+      </tr>
+      <tr>
+        <td><a class="operation-table__person" href="room.html"><img class="avatar avatar--sm" src="https://images.unsplash.com/photo-1500648767791-00dcc99443e?w=120&h=120&fit=crop&auto=format&q=70" alt="Фото — Сергій" loading="lazy"><span><span class="row-meta">Кімната на Оболоні</span><span class="row-title">Сергій</span><span class="row-meta">Очікує відповіді · надіслано 2 дні тому</span><span class="badge">телефон, фото</span></span></a></td>
+        <td><span class="status-pill">очікує</span></td><td><button type="button" class="btn btn--ghost btn--sm">Відкликати заявку</button></td>
+      </tr>
+      <tr>
+        <td><a class="operation-table__person" href="profile.html"><img class="avatar avatar--sm" src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=120&h=120&fit=crop&auto=format&q=70" alt="Фото — Артем, 26" loading="lazy"><span><span class="row-meta">сусід</span><span class="row-title">Артем, 26</span><span class="row-meta">Заявку відхилено</span><span class="badge">телефон, фото</span></span></a></td>
+        <td><span class="status-pill status-pill--rejected">відхилено</span></td><td><a class="btn btn--ghost btn--sm" href="profile.html">Переглянути профіль</a></td>
+      </tr>
+    </tbody>
+  </table>
+    </div>
   </main>
 
   <footer class="tabbar">
@@ -394,7 +381,7 @@
     <a class="tabbar-brand" href="listings.html" aria-label="Куток — на головну"><svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--color-brand)"/><path d="M18 3L21 3L21 6Z" fill="var(--bg-surface)"/></svg><span>Куток</span></a>
     <form class="tabbar-search search-form" role="search" action="listings.html" method="get">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg>
-      <input type="search" name="q" placeholder="Пошук за назвою, районом…" aria-label="Пошук оголошень">
+      <input type="search" name="q" placeholder="Пошук" aria-label="Пошук оголошень">
     </form>
     <a href="listings.html">
       <span class="tab-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg></span>

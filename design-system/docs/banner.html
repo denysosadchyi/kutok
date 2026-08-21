@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Банер · Компоненти · Куток</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../index.css">
+<link rel="stylesheet" href="docs.css">
+<script src="docs-nav.js" defer></script>
+</head>
+<body class="docs">
+<div class="docs-shell">
+
+<nav class="docs-nav" data-docs-nav aria-label="Дизайн-система">
+  <a class="docs-nav-home" href="index.html">Куток · дизайн-система</a>
+</nav>
+
+<main class="docs-main">
+
+  <p class="docs-crumb"><a href="index.html">Компоненти</a> / Зворотний зв'язок</p>
+  <p class="docs-eyebrow">Зворотний зв'язок</p>
+  <h1 class="docs-title">Банер</h1>
+  <p class="docs-lede">Повідомлення, що переривають екран заради помилки, успіху чи важливої інформації — і одне з небагатьох місць, де на поверхні системи з'являється рамка.</p>
+  <div class="docs-meta"><code>.banner</code><code>.banner--enter</code><code>.banner-ic</code><code>.banner--error</code><code>.banner--success</code><code>.banner--info</code></div>
+
+  <section class="docs-sec" id="anatomy">
+    <h2>Анатомія</h2>
+    <p class="docs-sec-hint">Банер помилки з реальним текстом екрана верифікації коду.</p>
+    <div class="docs-anatomy">
+      <div class="docs-stage">
+        <div style="width:min(100%,360px);">
+          <div class="banner banner--error"><span class="banner-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16h.01"/></svg></span>Код невірний. Перевірте цифри й спробуйте ще раз.</div>
+        </div>
+      </div>
+      <ol class="docs-legend">
+        <li><b>Поверхня з рамкою</b><span>(<code>.banner</code>) — <code>--bg-surface</code> + <code>--border-default</code> завтовшки 1.5px. Банеру треба візуально перервати сторінку, тому це одна з небагатьох поверхонь системи з видимою рамкою, а не лише тоном фону.</span></li>
+        <li><b>Іконка-сигнал</b><span>(<code>.banner-ic</code>) — 20px, колір задає лише модифікатор: <code>--color-danger</code> для помилки, <code>--color-brand</code> для успіху, <code>--color-action</code> для інфо.</span></li>
+        <li><b>Текст повідомлення</b><span>завжди <code>--text-primary</code>, ніколи не фарбується — сигнал несе виключно іконка, тому повідомлення лишається однаково спокійним і читабельним незалежно від тяжкості.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="motion">
+    <h2>Живий стан: повідомлення зʼявляється після дії</h2>
+    <p class="docs-sec-hint">Анімація тут має роботу: коротко підтверджує помилку або показує результат чи поточний статус. Для статичного банера клас <code>.banner--enter</code> не додають.</p>
+    <div class="docs-stage" data-banner-demo>
+      <div style="width:min(100%,420px); display:flex; flex-direction:column; gap:var(--space-14);">
+        <div style="display:flex; flex-wrap:wrap; gap:var(--space-8);">
+          <button class="btn btn--ghost btn--sm" type="button" data-banner-show="error">Показати помилку</button>
+          <button class="btn btn--ghost btn--sm" type="button" data-banner-show="success">Показати результат</button>
+          <button class="btn btn--ghost btn--sm" type="button" data-banner-show="info">Показати статус</button>
+        </div>
+        <div aria-live="polite" data-banner-live></div>
+        <template data-banner-template="error"><div class="banner banner--error banner--enter" role="alert"><span class="banner-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16h.01"/></svg></span>Не вдалося надіслати заявку. Перевір зʼєднання і спробуй ще.</div></template>
+        <template data-banner-template="success"><div class="banner banner--success banner--enter"><span class="banner-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9"/></svg></span>Скаргу надіслано. Розглянемо протягом 48 годин.</div></template>
+        <template data-banner-template="info"><div class="banner banner--info banner--enter"><span class="banner-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg></span>Не вдалось підтвердити автоматично. Заявку передано на ручну перевірку — зазвичай до 24 годин.</div></template>
+      </div>
+    </div>
+    <p class="docs-example-note">Помилка входить за <code>--dur-fast</code> з майже непомітним зсувом; результат і статус — за <code>--dur-base</code> та <code>--move-sm</code>. Усі переходи анімують лише прозорість і transform.</p>
+  </section>
+
+  <section class="docs-sec" id="variants">
+    <h2>Варіанти й розміри</h2>
+    <p class="docs-sec-hint">Три модифікатори за змістом, з реальними текстами продукту.</p>
+    <div class="docs-variants">
+      <div class="docs-example docs-example--wide">
+        <p class="docs-example-label">Помилка (<code>.banner--error</code>)</p>
+        <div class="docs-example-body">
+          <div class="banner banner--error"><span class="banner-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16h.01"/></svg></span>Код невірний. Перевірте цифри й спробуйте ще раз.</div>
+        </div>
+        <p class="docs-example-note">Помаранч тут — саме та мікроскопічна доза, про яку каже DESIGN.md: колір лише на 20px іконці, ніколи на всій поверхні.</p>
+      </div>
+      <div class="docs-example docs-example--wide">
+        <p class="docs-example-label">Успіх (<code>.banner--success</code>)</p>
+        <div class="docs-example-body">
+          <div class="banner banner--success"><span class="banner-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9"/></svg></span>Скаргу надіслано. Розглянемо протягом 48 годин.</div>
+        </div>
+      </div>
+      <div class="docs-example docs-example--wide">
+        <p class="docs-example-label">Інфо (<code>.banner--info</code>)</p>
+        <div class="docs-example-body">
+          <div class="banner banner--info"><span class="banner-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg></span>Не вдалось підтвердити автоматично. Заявку передано на ручну перевірку — зазвичай до 24 годин.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="usage">
+    <h2>Коли вживати</h2>
+    <p class="docs-copy">Банер з'являється там, де екран мусить сказати щось поза звичайним потоком контенту: помилка форми (<code>login-error</code>, <code>verify-code-error</code>, <code>verify-phone-error</code>, <code>verify-selfie-error</code>, <code>profile-error</code>, <code>room-error</code>, <code>room-create-error</code>, <code>profile-create-host-error</code>, <code>profile-create-seeker-error</code>, <code>report-error</code>), підтвердження дії (<code>report-sent</code>) або статус, що потребує уваги без тривоги (<code>verify-pending</code>, <code>candidates-empty</code>). Додай <code>.banner--enter</code> лише тоді, коли банер вставлено як наслідок дії або зміни статусу; статична поява екрана не анімується. Це один з двох компонентів системи з рамкою, і рамка тут функціональна, а не декоративна — банер має виглядати інакше за картку чи поле форми, щоб око зупинилось. Помаранчева іконка в <code>.banner--error</code> — єдине місце поза лічильниками таб-бару, де <code>--color-danger</code> взагалі торкається кольору тексту чи іконки; сама поверхня банера завжди нейтральна.</p>
+    <div class="docs-where">
+      <span>verify-code-error / verify-phone-error / verify-selfie-error</span>
+      <span>login-error</span>
+      <span>profile-error / room-error</span>
+      <span>report-sent</span>
+      <span>verify-pending</span>
+      <span>candidates-empty</span>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="dodont">
+    <h2>Правило і антиправило</h2>
+    <div class="docs-dodont">
+      <div class="docs-do">
+        <span class="docs-do-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg>Так</span>
+        <div class="docs-do-stage">
+          <div class="banner banner--error"><span class="banner-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16h.01"/></svg></span>Код невірний. Перевірте цифри й спробуйте ще раз.</div>
+        </div>
+        <p>Колір несе лише маленька іконка — <strong>20px</strong> на нейтральній поверхні. Текст лишається <code>--text-primary</code>, тому повідомлення читається спокійно навіть у стані помилки.</p>
+      </div>
+      <div class="docs-dont">
+        <span class="docs-dont-tag">✕ Ні</span>
+        <div class="docs-dont-stage">
+          <div class="banner" style="background:var(--color-danger); color:var(--on-action); border-color:transparent;"><span class="banner-ic" style="color:var(--on-action);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16h.01"/></svg></span>Код невірний. Перевірте цифри й спробуйте ще раз.</div>
+        </div>
+        <p>Заливати всю поверхню помаранчем — звичний патерн деінде, але суперечить <strong>«Правилу трьох голосів»</strong> DESIGN.md: помаранч лишається мікроскопічним сигналом на лічильниках таб-бару, а заповнений банер конкурував би з тим самим значенням.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="responsive">
+    <h2>Адаптив у макетах</h2>
+    <p class="docs-sec-hint">Помилка або статус лишаються частиною одного лінійного завдання на будь-якій ширині. На телефоні банер стоїть над полем, на планшеті та десктопі не стає окремою панеллю: ширина лише додає повітря навколо форми або деталі.</p>
+    <div class="docs-responsive" data-mobile="../../wireframes/verify-code-error.html" data-tablet="../../wireframes/profile-error.html" data-desktop="../../wireframes/room-error.html"></div>
+  </section>
+
+  <div class="docs-foot">
+    <a href="state.html">← Порожній стан</a>
+    <a href="index.html">Усі компоненти</a>
+    <a href="skeleton.html">Скелетон завантаження →</a>
+  </div>
+
+</main>
+</div>
+<script>
+  (function () {
+    var demo = document.querySelector('[data-banner-demo]');
+    if (!demo) return;
+
+    var live = demo.querySelector('[data-banner-live]');
+    demo.querySelectorAll('[data-banner-show]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        var template = demo.querySelector('[data-banner-template="' + button.dataset.bannerShow + '"]');
+        live.replaceChildren(template.content.cloneNode(true));
+      });
+    });
+  }());
+</script>
+<script src="docs-responsive.js"></script>
+</body>
+</html>

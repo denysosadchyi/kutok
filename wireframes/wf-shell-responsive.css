@@ -26,7 +26,7 @@
     padding-bottom: max(1.75rem, env(safe-area-inset-bottom)) !important;
     transform: translateX(-102%);
     visibility: hidden;
-    transition: transform .22s cubic-bezier(.22, 1, .36, 1), visibility 0s .22s;
+    transition: transform .22s cubic-bezier(.22, 1, .36, 1);
   }
 
   .wf-nav-toggle {
@@ -66,7 +66,6 @@
   body.wf-nav-open .wf-nav {
     transform: translateX(0);
     visibility: visible;
-    transition-delay: 0s;
   }
 }
 

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Юридичний текст · Компоненти · Куток</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../index.css">
+<link rel="stylesheet" href="docs.css">
+<script src="docs-nav.js" defer></script>
+</head>
+<body class="docs">
+<div class="docs-shell">
+
+<nav class="docs-nav" data-docs-nav aria-label="Дизайн-система">
+  <a class="docs-nav-home" href="index.html">Куток · дизайн-система</a>
+</nav>
+
+<main class="docs-main">
+
+  <p class="docs-crumb"><a href="index.html">Компоненти</a> / Разове</p>
+  <p class="docs-eyebrow">Разовий екран</p>
+  <h1 class="docs-title">Юридичний текст</h1>
+  <p class="docs-lede">Найменший компонент у системі: лише ритм абзаців для тексту, який людина повинна змогти дочитати, а не проскролити.</p>
+  <div class="docs-meta"><code>.legal-copy</code><code>.overline</code></div>
+
+  <section class="docs-sec" id="anatomy">
+    <h2>Анатомія</h2>
+    <p class="docs-sec-hint">Розділ «Умови використання» з <code>legal.html</code>, повністю.</p>
+    <div class="docs-anatomy">
+      <div class="docs-stage">
+        <div style="max-width:400px;">
+          <h2 class="overline">Умови використання</h2>
+          <div class="legal-copy">
+            <p>Куток — сервіс для пошуку співмешканців і підселення у вільні кімнати в Києві. Реєструючись, ви підтверджуєте, що вам виповнилось 18 років і що інформація в профілі (ім'я, вік, фото) відповідає дійсності.</p>
+            <p>Заборонено створювати фейкові профілі, розміщувати оголошення про кімнати, якими ви не розпоряджаєтесь, і використовувати чат для реклами чи розсилок. За порушення акаунт може бути обмежено або видалено.</p>
+            <p>Куток є посередником між шукачем і господарем: ми не є стороною договору оренди і не відповідаємо за домовленості між користувачами після знайомства в застосунку.</p>
+          </div>
+        </div>
+      </div>
+      <ol class="docs-legend">
+        <li><b>Заголовок розділу</b><span>(<code>.overline</code>, описаний на <a href="text.html">text.html</a>) — титрує кожен юридичний документ («Умови використання» / «Політика приватності») над його текстом.</span></li>
+        <li><b>Текст</b><span>(<code>.legal-copy p</code>) — line-height 1.55 замість системних 1.5, відступ між абзацами <code>--space-13</code>. Це весь компонент: жодного власного кольору, розміру чи шрифту, крім цих двох правил.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="variants">
+    <h2>Варіанти й розміри</h2>
+    <p class="docs-sec-hint">Обидва документи <code>legal.html</code> — той самий компонент, різний текст.</p>
+    <div class="docs-variants">
+      <div class="docs-example docs-example--wide">
+        <p class="docs-example-label">Умови використання</p>
+        <div class="docs-example-body">
+          <div>
+            <h2 class="overline" style="margin:0 0 8px;">Умови використання</h2>
+            <div class="legal-copy">
+              <p>Куток — сервіс для пошуку співмешканців і підселення у вільні кімнати в Києві. Реєструючись, ви підтверджуєте, що вам виповнилось 18 років і що інформація в профілі (ім'я, вік, фото) відповідає дійсності.</p>
+              <p>Заборонено створювати фейкові профілі, розміщувати оголошення про кімнати, якими ви не розпоряджаєтесь, і використовувати чат для реклами чи розсилок. За порушення акаунт може бути обмежено або видалено.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="docs-example docs-example--wide">
+        <p class="docs-example-label">Політика приватності</p>
+        <div class="docs-example-body">
+          <div>
+            <h2 class="overline" style="margin:0 0 8px;">Політика приватності</h2>
+            <div class="legal-copy">
+              <p>Для верифікації акаунта Куток обробляє номер телефону (підтвердження через SMS-код) і фотографію обличчя — селфі, яке звіряється з фото профілю один раз, щоб підтвердити, що за профілем стоїть реальна людина. Ці дані не публікуються і не передаються третім особам.</p>
+              <p>Дані профілю зберігаються, поки акаунт активний. Селфі та результат звірки зберігаються 90 днів після верифікації, потім видаляються автоматично.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="usage">
+    <h2>Коли вживати</h2>
+    <p class="docs-copy"><code>.legal-copy</code> вживається винятково на <code>legal.html</code>, куди обгортає повний текст двох документів — Умов використання й Політики приватності. Це не окремий стиль, а мінімальна поправка до звичайної типографіки: той самий шрифт і кегль body-тексту всюди в системі, лише трохи просторіший міжрядковий інтервал для довгого суцільного читання. Компонент навмисно відрізняється від <a href="consent.html">«Блоку згоди»</a> — там `.legal-links` лише вказує на ці документи двома короткими лінками, тут — власне їхній текст, який людина відкриває, коли хоче прочитати повністю, а не просто натиснути «Погоджуюсь».</p>
+    <div class="docs-where">
+      <span>legal — обидва розділи документа</span>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="dodont">
+    <h2>Правило і антиправило</h2>
+    <div class="docs-dodont">
+      <div class="docs-do">
+        <span class="docs-do-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg>Так</span>
+        <div class="docs-do-stage">
+          <div class="legal-copy" style="max-width:280px;">
+            <p style="font-size:var(--font-size-16);">Дані профілю зберігаються, поки акаунт активний. Селфі та результат звірки зберігаються 90 днів після верифікації.</p>
+          </div>
+        </div>
+        <p>Той самий 16px body-розмір, що й усюди в системі — лише вища <code>line-height</code>, щоб довгий текст читався без втоми.</p>
+      </div>
+      <div class="docs-dont">
+        <span class="docs-dont-tag">✕ Ні</span>
+        <div class="docs-dont-stage">
+          <div style="max-width:280px;">
+            <p style="font-size:13px; line-height:1.4; color:var(--text-muted); margin:0;">Дані профілю зберігаються, поки акаунт активний. Селфі та результат звірки зберігаються 90 днів після верифікації.</p>
+          </div>
+        </div>
+        <p>Зменшений кегль «щоб влізло більше» стискає саме той текст, який і так найлегше проскролити не читаючи — це працює проти мети сторінки: людина повинна змогти прочитати, на що вона погоджується.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="responsive">
+    <h2>Адаптив у макетах</h2>
+    <p class="docs-sec-hint">Довгий юридичний текст тримає обмежену довжину рядка незалежно від екрана. На планшеті й десктопі документ не розтягується разом з полотном, бо це погіршило б читання.</p>
+    <div class="docs-responsive" data-mobile="../../wireframes/_archive/legal.html" data-tablet="../../wireframes/_archive/legal.html" data-desktop="../../wireframes/_archive/legal.html"></div>
+  </section>
+
+  <div class="docs-foot">
+    <a href="consent.html">← Блок згоди</a>
+    <a href="index.html">Усі компоненти</a>
+    <a href="thumb-strip.html">Стрічка мініатюр →</a>
+  </div>
+
+</main>
+</div>
+<script src="docs-responsive.js"></script>
+</body>
+</html>

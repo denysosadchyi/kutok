@@ -1,10 +1,20 @@
 /* ── Банер ── структура сірих банерів, вигляд із мови (без тіней, папір + рамка) */
+@keyframes banner-error-enter {
+  from { opacity: 0; transform: translateY(calc(var(--move-sm) / -2)); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes banner-status-enter {
+  from { opacity: 0; transform: translateY(var(--move-sm)); }
+  to { opacity: 1; transform: translateY(0); }
+}
 .banner {
   display: flex; align-items: flex-start; gap: var(--space-10);
-  padding: var(--space-13) var(--space-14); border-radius: var(--radius-12);
+  padding: var(--space-13) var(--space-14); border-radius: var(--radius-8);
   border: var(--border-1-5) solid var(--border-default); background: var(--bg-surface);
   font-size: var(--font-size-13); color: var(--text-primary); line-height: 1.4;
 }
+.banner--error.banner--enter { animation: banner-error-enter var(--dur-fast) var(--ease-standard) both; }
+.banner:is(.banner--success, .banner--info).banner--enter { animation: banner-status-enter var(--dur-base) var(--ease-enter) both; }
 .banner-ic { flex-shrink: 0; width: var(--size-20); height: var(--size-20); color: var(--text-muted); margin-top: var(--space-1); }
 .banner-ic svg { width: 100%; height: 100%; display: block; }
 .banner--error .banner-ic { color: var(--color-danger); }

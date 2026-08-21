@@ -1,13 +1,13 @@
 /* ── Аватар / фото-плейсхолдер ── */
 .avatar-link { display: block; } /* лінк-обгортка аватара → фото-в'юер */
 .avatar {
-  width: var(--size-106); height: var(--size-106); border-radius: var(--radius-30);
+  width: var(--size-106); height: var(--radius-20);
   object-fit: cover; display: block; background: var(--bg-surface);
 }
 .avatar--md { width: var(--size-64); height: var(--size-64); }
 .avatar--sm { width: var(--size-44); height: var(--size-44); }
 .thumb {
-  width: 100%; aspect-ratio: 4 / 3; border-radius: var(--radius-26);
+  width: 100%; aspect-ratio: 4 / 3; border-radius: var(--radius-18);
   object-fit: cover; display: block; background: var(--bg-surface);
 }
 /* текстовий плейсхолдер (сірі вайрфрейми) */

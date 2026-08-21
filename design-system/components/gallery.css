@@ -1,14 +1,17 @@
 /* ── Повноекранний фото-в'юер ── винесено з photo-viewer.html (аудит 2026-07-29) */
 .gallery-bar { display: flex; align-items: center; justify-content: space-between; padding: var(--space-16) var(--space-16) var(--space-10); }
 .gallery-close {
-    width: var(--size-38); height: var(--size-38); border-radius: var(--radius-999); border: var(--border-1-5) solid var(--border-default);
+    width: var(--size-44); height: var(--size-44); border-radius: var(--radius-999); border: var(--border-1-5) solid var(--border-default);
     background: transparent; color: var(--text-primary); display: inline-flex; align-items: center; justify-content: center;
+    transition: transform var(--dur-fast) var(--ease-standard);
   }
 .gallery-close:hover { background: var(--bg-neutral); }
+.gallery-close:active { transform: translateY(calc(var(--move-sm) / 2)); }
+.gallery-close:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: var(--space-2); }
 .gallery-close svg { width: var(--size-15); height: var(--size-15); }
 .gallery-viewer { padding: var(--space-6) var(--space-16) 0; }
-.gallery-photo { width: 100%; aspect-ratio: 4 / 5; border-radius: var(--radius-26); object-fit: cover; display: block; background: var(--bg-surface); }
+.gallery-photo { width: 100%; aspect-ratio: 4 / 5; border-radius: var(--radius-18); object-fit: cover; display: block; background: var(--bg-surface); }
 .gallery-strip { list-style: none; display: flex; gap: var(--space-8); padding: var(--space-14) var(--space-16) var(--space-22); }
 .gallery-strip li { flex: 0 0 auto; }
-.gallery-thumb { width: var(--size-60); height: var(--size-60); border-radius: var(--radius-8); object-fit: cover; display: block; border: var(--border-1-5) solid transparent; }
+.gallery-thumb { width: var(--size-60); height: var(--size-60); border-radius: var(--radius-6); object-fit: cover; display: block; border: var(--border-1-5) solid transparent; }
 .gallery-thumb--current { border-color: var(--color-action); }

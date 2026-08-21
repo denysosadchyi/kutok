@@ -1,5 +1,28 @@
 /* ── Стрічка мініатюр кімнати ── винесено з room*.html, де дублювалась у 3 файлах */
 .thumb-strip { display: flex; gap: var(--space-8); margin-top: var(--space-8); }
 .thumb-strip a { display: block; flex: 0 0 auto; }
-.thumb-strip img { width: var(--size-64); height: var(--size-48); border-radius: var(--radius-8); object-fit: cover; display: block; background: var(--bg-surface); }
-.thumb-strip .sk { width: var(--size-64); height: var(--size-48); border-radius: var(--radius-8); }
+.thumb-strip img { width: var(--size-64); height: var(--size-48); border-radius: var(--radius-6); object-fit: cover; display: block; background: var(--bg-surface); }
+.thumb-strip .sk { width: var(--size-64); height: var(--size-48); border-radius: var(--radius-6); }
+
+@media (min-width: 67.5rem) {
+  .app--detail .section--media .thumb {
+    aspect-ratio: 16 / 10;
+  }
+  .app--detail .section--media .thumb-strip {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-10);
+    margin-top: var(--space-10);
+  }
+  .app--detail .section--media .thumb-strip a,
+  .app--detail .section--media .thumb-strip img,
+  .app--detail .section--media .thumb-strip .sk {
+    width: 100%;
+  }
+  .app--detail .section--media .thumb-strip img,
+  .app--detail .section--media .thumb-strip .sk {
+    height: auto;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-8);
+  }
+}

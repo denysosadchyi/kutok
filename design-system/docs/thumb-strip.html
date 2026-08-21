@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Стрічка мініатюр · Компоненти · Куток</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../index.css">
+<link rel="stylesheet" href="docs.css">
+<script src="docs-nav.js" defer></script>
+</head>
+<body class="docs">
+<div class="docs-shell">
+
+<nav class="docs-nav" data-docs-nav aria-label="Дизайн-система">
+  <a class="docs-nav-home" href="index.html">Куток · дизайн-система</a>
+</nav>
+
+<main class="docs-main">
+
+  <p class="docs-crumb"><a href="index.html">Компоненти</a> / Разове</p>
+  <p class="docs-eyebrow">Разовий екран</p>
+  <h1 class="docs-title">Стрічка мініатюр</h1>
+  <p class="docs-lede">Малі й навмисно не такі круглі, як герой-фото над ними — стрічка читається як «ще з цього ж набору», не як окрема галерея.</p>
+  <div class="docs-meta"><code>.thumb-strip</code><code>.thumb</code></div>
+
+  <section class="docs-sec" id="anatomy">
+    <h2>Анатомія</h2>
+    <p class="docs-sec-hint">Герой-фото кімнати й стрічка мініатюр під ним — так, як вони стоять на <code>room.html</code>.</p>
+    <div class="docs-anatomy">
+      <div class="docs-stage">
+        <div style="width:min(100%,300px);">
+          <a href="#"><img class="thumb" src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800&h=600&fit=crop&auto=format&q=70" alt="Фото кімнати в 2-к квартирі на Поділі" style="width:100%; display:block;" loading="lazy"></a>
+          <div class="thumb-strip">
+            <a href="#"><img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=200&h=150&fit=crop&auto=format&q=70" alt="Фото кімнати, ракурс 2" loading="lazy"></a>
+            <a href="#"><img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=200&h=150&fit=crop&auto=format&q=70" alt="Фото кімнати, ракурс 3" loading="lazy"></a>
+            <a href="#"><img src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=200&h=150&fit=crop&auto=format&q=70" alt="Фото кімнати, ракурс 4" loading="lazy"></a>
+          </div>
+        </div>
+      </div>
+      <ol class="docs-legend">
+        <li><b>Герой-фото</b><span>(<code>.thumb</code>, описаний на <a href="avatar.html">avatar.html</a>) — велике фото 4:3, радіус 26px, одне на екран.</span></li>
+        <li><b>Стрічка</b><span>(<code>.thumb-strip</code>) — горизонтальний ряд, відступ <code>--space-8</code> між елементами, зверху <code>--space-8</code> від герой-фото.</span></li>
+        <li><b>Мініатюра</b><span>(<code>.thumb-strip img</code>) — 64×48px, радіус 8px, <code>object-fit:cover</code>; кожна — лінк, що відкриває <a href="gallery.html">фото-в'юер</a> на своєму індексі.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="variants">
+    <h2>Варіанти й розміри</h2>
+    <p class="docs-sec-hint">Заповнена стрічка й стан завантаження — той самий розмір 64×48px в обох.</p>
+    <div class="docs-variants">
+      <div class="docs-example docs-example--wide">
+        <p class="docs-example-label">Заповнена стрічка (3 фото)</p>
+        <div class="docs-example-body">
+          <div class="thumb-strip">
+            <a href="#"><img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=200&h=150&fit=crop&auto=format&q=70" alt="" loading="lazy"></a>
+            <a href="#"><img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=200&h=150&fit=crop&auto=format&q=70" alt="" loading="lazy"></a>
+            <a href="#"><img src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=200&h=150&fit=crop&auto=format&q=70" alt="" loading="lazy"></a>
+          </div>
+        </div>
+      </div>
+      <div class="docs-example docs-example--wide">
+        <p class="docs-example-label">Завантаження (<code>.thumb-strip .sk</code>, <a href="skeleton.html">skeleton.html</a>)</p>
+        <div class="docs-example-body">
+          <div class="thumb-strip">
+            <div class="sk"></div>
+            <div class="sk"></div>
+            <div class="sk"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="usage">
+    <h2>Коли вживати</h2>
+    <p class="docs-copy"><code>.thumb-strip</code> вживається винятково на <code>room.html</code> та його станах, одразу під герой-фото кімнати (<code>.thumb</code>) — дає шукачу переглянути решту фото, не залишаючи сторінку оголошення. Кожна мініатюра — лінк у <a href="gallery.html">повноекранний фото-в'юер</a>, відкритий на індексі своєї мініатюри. Компонент винесено в спільний клас зі трьох дубльованих інлайн-копій у різних станах <code>room*.html</code>, саме щоб радіус і розмір лишались однаковими всюди, де стрічка з'являється — а не розсинхронізовувались по копіях.</p>
+    <div class="docs-where">
+      <span>room — під герой-фото</span>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="dodont">
+    <h2>Правило і антиправило</h2>
+    <div class="docs-dodont">
+      <div class="docs-do">
+        <span class="docs-do-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg>Так</span>
+        <div class="docs-do-stage">
+          <div class="thumb-strip">
+            <a href="#"><img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=200&h=150&fit=crop&auto=format&q=70" alt="" loading="lazy"></a>
+            <a href="#"><img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=200&h=150&fit=crop&auto=format&q=70" alt="" loading="lazy"></a>
+          </div>
+        </div>
+        <p>Мініатюри з радіусом 8px — помітно менші й «тупіші», ніж 26px герой-фото над ними, тож одразу читаються як другорядний, менший елемент.</p>
+      </div>
+      <div class="docs-dont">
+        <span class="docs-dont-tag">✕ Ні</span>
+        <div class="docs-dont-stage">
+          <div style="display:flex; gap:var(--space-8);">
+            <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=200&h=150&fit=crop&auto=format&q=70" alt="" style="width:64px; height:48px; border-radius:var(--radius-18); object-fit:cover; display:block;" loading="lazy">
+            <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=200&h=150&fit=crop&auto=format&q=70" alt="" style="width:64px; height:48px; border-radius:var(--radius-18); object-fit:cover; display:block;" loading="lazy">
+          </div>
+        </div>
+        <p>Радіус 26px, той самий, що в герой-фото, стирає різницю між головним фото й дрібними прев'ю — а саме ця різниця сигналізує, яке фото на екрані головне, а які — лише перегляд решти набору.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="responsive">
+    <h2>Адаптив у макетах</h2>
+    <p class="docs-sec-hint">На телефоні стрічка мініатюр лишається горизонтальною під головним фото. На планшеті вона отримує більше видимих прев’ю, а на десктопі переходить у вертикальну стрічку поруч із великим фото.</p>
+    <div class="docs-responsive" data-mobile="../../wireframes/room.html" data-tablet="../../wireframes/room-loading.html" data-desktop="../../wireframes/room-error.html"></div>
+  </section>
+
+  <div class="docs-foot">
+    <a href="legal-copy.html">← Юридичний текст</a>
+    <a href="index.html">Усі компоненти</a>
+    <a href="gallery.html">Фото-в'юер →</a>
+  </div>
+
+</main>
+</div>
+<script src="docs-responsive.js"></script>
+</body>
+</html>

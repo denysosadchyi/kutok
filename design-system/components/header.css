@@ -3,8 +3,16 @@
   position: sticky; top: 0; z-index: 5;
   background: var(--bg-page); background-image: var(--grain-1);
   padding: var(--space-20) var(--space-18) var(--space-12);
+  border-bottom: var(--border-1) solid var(--border-default);
   display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-12);
 }
+.breadcrumbs { margin-bottom: var(--space-8); color: var(--text-muted); font-size: var(--font-size-11); }
+.breadcrumbs ol { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-6); margin: 0; padding: 0; list-style: none; }
+.breadcrumbs li { display: inline-flex; align-items: center; min-width: 0; }
+.breadcrumbs li + li::before { content: "/"; margin-right: var(--space-6); color: var(--border-strong); }
+.breadcrumbs a { text-decoration: underline; text-underline-offset: .16em; }
+.breadcrumbs a:hover { color: var(--color-brand); }
+.breadcrumbs a:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: var(--space-2); }
 /* Знак бренду — квадрат-«зразок» зі загнутим кутом (дослівно «куток» + дог-ір
    каталожної сторінки). Пласкі два тони, без градієнта й тіні: олива = лице
    картки, --bg-surface = зворотний бік паперу, що показався в згині. */
@@ -26,10 +34,11 @@
   display: inline-flex; align-items: center; justify-content: center;
   border: var(--border-1-5) solid var(--color-brand); border-radius: var(--radius-999);
   background: transparent; color: var(--color-brand); cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease-standard);
 }
 .head-btn svg { width: var(--size-18); height: var(--size-18); }
 .head-btn:hover { background: var(--bg-brand-solid); color: var(--on-brand-solid); }
-.head-btn:active { filter: brightness(.92); }
+.head-btn:active { filter: brightness(.92); transform: translateY(calc(var(--move-sm) / 2)); }
 .head-btn:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: var(--space-2); }
 
 /* ── Хедер · варіант B: назад + заголовок (вторинні екрани) ──
@@ -52,16 +61,23 @@
   display: inline-flex; align-items: center; justify-content: center;
   border: var(--border-1-5) solid var(--color-brand); border-radius: var(--radius-999);
   background: transparent; color: var(--color-brand);
+  transition: transform var(--dur-fast) var(--ease-standard);
 }
 .head-back svg { width: var(--size-16); height: var(--size-16); }
 .head-back:hover { background: var(--bg-brand-solid); color: var(--on-brand-solid); }
-.head-back:active { filter: brightness(.92); }
+.head-back:active { filter: brightness(.92); transform: translateY(calc(var(--move-sm) / 2)); }
 .head-back:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: var(--space-2); }
 .head-title {
   flex: 1 1 auto; min-width: 0; text-align: center;
   font-family: var(--font-family-1); font-weight: var(--font-weight-700);
   font-size: var(--font-size-18); line-height: 1.2; letter-spacing: -.01em; color: var(--text-primary);
 }
+
+/* Контекстна шапка для flow-екранів без глобального tabbar (вхід і вибір
+   ролі). На телефоні її не показуємо: там бренд уже живе в app-head. На
+   desktop це повноширокий перший ряд оболонки, візуально споріднений із
+   desktop tabbar, але без навігаційних пунктів, яких у цього маршруту немає. */
+.desktop-bar { display: none; }
 
 /* ── Десктоп: шапка лягає під верхню панель навігації (base.css) ──
    Обидва варіанти шапки (.app-head сам собою й .app-head--back як модифікатор
@@ -70,7 +86,50 @@
    Липкість віддано панелі:
    два sticky з top:0 в сусідніх рядах наїжджали б один на одного. */
 @media (min-width: 67.5rem) {
-  .app-head { position: static; }
+  .app > .desktop-bar {
+    order: -1;
+    width: 100%;
+    min-height: var(--size-56);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-16);
+    padding: var(--space-10) var(--space-20);
+    border-bottom: var(--border-1) solid var(--border-default);
+    background: var(--bg-surface);
+    background-image: var(--grain-1);
+  }
+  .desktop-bar-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-8);
+    color: var(--color-brand);
+    font-family: var(--font-family-1);
+    font-size: var(--font-size-16);
+    font-weight: var(--font-weight-700);
+    letter-spacing: -.02em;
+  }
+  .desktop-bar-brand .brand-mark { width: var(--size-18); height: var(--size-18); }
+  .desktop-bar-context {
+    color: var(--text-muted);
+    font-size: var(--font-size-13);
+    font-weight: var(--font-weight-600);
+  }
+
+  /* desktop-bar already carries the route identity; do not repeat the small
+     brand row inside the mobile-oriented app-head. */
+  .app:has(> .desktop-bar) > .app-head .head-brand-row { display: none; }
+  /* The desktop tabbar is the first sticky row. Keep the page header in the
+     same scroll context, directly beneath it, so long wireframes retain both
+     navigation and context without covering content. */
+  .app:has(> .tabbar) > .app-head {
+    position: sticky;
+    top: var(--size-56);
+    z-index: 4;
+  }
+  /* Desktop navigation already identifies the route, so keep the remaining
+     page title compact across every layout that reuses this header. */
+  .head-word { font-size: var(--font-size-28); }
   /* Бренд і пошук на десктопі живуть у верхній панелі (tabbar.css) — у шапці
      вони б дублювались, тому тут ховаються. Розмітка на екранах не міняється:
      та сама шапка сама віддає ці два елементи панелі при переході через поріг. */
@@ -79,4 +138,64 @@
      в шапці (правка з тулбара, login.html). */
   .app:has(> .tabbar) .head-brand-row,
   .app:has(> .tabbar) .app-head > .head-btn { display: none; }
+
+  /* На desktop глобальна панель уже тримає орієнтацію між розділами. Кругла
+     стрілка є мобільним history-патерном і тут лише дублює «Пошук / Заявки /
+     Чати / Профіль». Вторинна шапка стає тихим контекстним рядком: заголовок
+     зліва, без штучного центрування навколо неіснуючої кнопки. */
+  .app:has(> .tabbar) > .app-head--back {
+    display: block;
+    padding: var(--space-18) var(--space-22);
+    border-bottom: var(--border-1) solid var(--border-default);
+  }
+  .app:has(> .tabbar) > .app-head--back .head-back-wrap {
+    display: block;
+    width: 100%;
+  }
+  .app:has(> .tabbar) > .app-head--back .head-back-row {
+    width: 100%;
+    min-height: var(--size-44);
+  }
+  .app:has(> .tabbar) > .app-head--back .head-title {
+    text-align: left;
+    font-size: var(--font-size-22);
+    line-height: 1.15;
+  }
+
+  /* Detail, catalog і chat не потребують локального «назад»: активний розділ
+     видно у верхній навігації, а список доступний тим самим пунктом меню. */
+  .app:has(> .tabbar):not(.app--flow):not(.app--preview) > .app-head--back .head-back {
+    display: none;
+  }
+
+  /* У формі посилання означає не history, а безпечний вихід без збереження.
+     Зберігаємо дію, але називаємо її прямо і прибираємо мобільну стрілку. */
+  .app:has(> .tabbar):is(.app--flow, .app--preview) > .app-head--back .head-back-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+  }
+  .app:has(> .tabbar):is(.app--flow, .app--preview) > .app-head--back .head-title {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .app:has(> .tabbar):is(.app--flow, .app--preview) > .app-head--back .head-back {
+    grid-column: 2;
+    grid-row: 1;
+    width: auto;
+    min-width: var(--size-44);
+    padding: 0 var(--space-14);
+    border-color: var(--border-default);
+    border-radius: var(--radius-8);
+    color: var(--text-primary);
+    font-size: var(--font-size-13);
+    font-weight: var(--font-weight-600);
+  }
+  .app:has(> .tabbar):is(.app--flow, .app--preview) > .app-head--back .head-back svg {
+    display: none;
+  }
+  .app:has(> .tabbar):is(.app--flow, .app--preview) > .app-head--back .head-back::after {
+    content: attr(aria-label);
+    white-space: nowrap;
+  }
 }

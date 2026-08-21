@@ -88,7 +88,7 @@
     <a class="wf-nav-kit-link" href="kit.html">Кіт компонентів →</a>
     <button type="button" class="wf-nav-theme" onclick="wfToggleTheme()" aria-pressed="false">Темна тема</button>
     <div class="wf-nav-tools">
-      <input type="text" class="wf-nav-filter" placeholder="Фільтр за назвою…" oninput="wfNavFilter(this.value)">
+      <input type="text" class="wf-nav-filter" aria-label="Фільтр макетів за назвою" placeholder="Фільтр за назвою…" oninput="wfNavFilter(this.value)">
       <div class="wf-nav-toggle-all">
         <button type="button" onclick="wfNavToggleAll(true)">Розгорнути все</button>
         <button type="button" onclick="wfNavToggleAll(false)">Згорнути все</button>
@@ -331,6 +331,12 @@
 
   <header class="app-head">
     <div>
+      <nav class="breadcrumbs" aria-label="Хлібні крихти">
+        <ol>
+          <li><a href="listings.html">Куток</a></li>
+          <li aria-current="page">Профіль</li>
+        </ol>
+      </nav>
       <div class="head-brand-row"><svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--color-brand)"/><path d="M18 3L21 3L21 6Z" fill="var(--bg-surface)"/></svg><div class="head-brand">Куток</div></div>
       <h1 class="head-word">Профіль</h1>
       <p class="head-sub">Так тебе бачать господарі</p>
@@ -343,11 +349,11 @@
   <div id="search-popover" class="search-popover" popover>
     <form class="search-form" role="search" action="listings.html" method="get">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg>
-      <input type="search" name="q" placeholder="Пошук за назвою, районом…" aria-label="Пошук оголошень">
+      <input type="search" name="q" placeholder="Пошук" aria-label="Пошук оголошень">
     </form>
   </div>
 
-  <main>
+  <main class="profile-hub">
     <section class="profile-hero">
       <a class="avatar-link" href="_archive/photo-viewer.html">
         <img class="avatar" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=320&h=320&fit=crop&auto=format&q=70" alt="Фото профілю — Аня, 23" loading="lazy">
@@ -379,11 +385,13 @@
     </section>
 
     <nav class="menu-list" aria-label="Налаштування профілю">
+      <h2 class="menu-group-title">Роль</h2>
       <a class="menu-row" href="profile-create-host.html">
         <span class="menu-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V9.5L12 4l8 5.5V21"/><path d="M9.5 21v-6h5v6"/></svg></span>
         <span class="menu-txt">Здаєте кімнату? Стати господарем</span>
         <span class="menu-chev" aria-hidden="true"></span>
       </a>
+      <h2 class="menu-group-title">Безпека й акаунт</h2>
       <a class="menu-row" href="_archive/privacy-settings.html">
         <span class="menu-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg></span>
         <span class="menu-txt">Налаштування приватності</span>
@@ -399,6 +407,7 @@
         <span class="menu-txt">Керування акаунтом</span>
         <span class="menu-chev" aria-hidden="true"></span>
       </a>
+      <h2 class="menu-group-title">Допомога та умови</h2>
       <a class="menu-row" href="_archive/support.html">
         <span class="menu-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M9.6 9.4a2.5 2.5 0 1 1 3.4 2.4c-.7.4-1 .8-1 1.6"/><path d="M12 16.4h.01"/></svg></span>
         <span class="menu-txt">Підтримка</span>
@@ -419,7 +428,7 @@
     <a class="tabbar-brand" href="listings.html" aria-label="Куток — на головну"><svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--color-brand)"/><path d="M18 3L21 3L21 6Z" fill="var(--bg-surface)"/></svg><span>Куток</span></a>
     <form class="tabbar-search search-form" role="search" action="listings.html" method="get">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg>
-      <input type="search" name="q" placeholder="Пошук за назвою, районом…" aria-label="Пошук оголошень">
+      <input type="search" name="q" placeholder="Пошук" aria-label="Пошук оголошень">
     </form>
     <a href="listings.html">
       <span class="tab-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg></span>

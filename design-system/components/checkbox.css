@@ -5,9 +5,11 @@
   flex-shrink: 0; width: var(--size-22); height: var(--size-22); margin-top: var(--space-1);
   /* --border-control, не --border-default: порожній квадратик — єдиний носій
      контролу, тож його межа підпадає під WCAG 1.4.11 (3:1). Див. tokens.css. */
-  border: var(--border-1-5) solid var(--border-control); border-radius: var(--radius-7); background: var(--bg-page);
-  display: inline-flex; align-items: center; justify-content: center; color: transparent;
+  border: var(--border-1-5) solid var(--border-control); border-radius: var(--radius-4); background: var(--bg-page);
+  display: inline-flex; align-items: center; justify-content: center; color: transparent; outline: var(--border-2) solid transparent; outline-offset: var(--space-2);
+  transition: transform var(--dur-fast) var(--ease-standard);
 }
 .chk-box svg { width: var(--size-13); height: var(--size-13); }
 .chk-line input:checked + .chk-box { background: var(--color-action); border-color: var(--color-action); color: var(--on-action); }
-.chk-line input:focus-visible + .chk-box { outline: var(--border-2) solid var(--color-action); outline-offset: var(--space-2); }
+.chk-line:active .chk-box { transform: translateY(calc(var(--move-sm) / 2)); }
+.chk-line input:focus-visible + .chk-box { outline-color: var(--color-action); }

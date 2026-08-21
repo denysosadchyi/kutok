@@ -1,8 +1,13 @@
 /* ── Порожній стан ── (стани listings 1:1) */
+@keyframes state-error-enter {
+  from { opacity: 0; transform: translateY(calc(var(--move-sm) / -2)); }
+  to { opacity: 1; transform: translateY(0); }
+}
 .state-main { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: center; } /* вертикальне центрування .state-block у main */
 .state-block { display: flex; flex-direction: column; align-items: center; text-align: center; padding: var(--space-32) var(--space-28); }
+.state-block--error-enter { animation: state-error-enter var(--dur-fast) var(--ease-standard) both; }
 .state-icon {
-  width: var(--size-88); height: var(--size-88); border-radius: var(--radius-30); background: var(--bg-empty-icon);
+  width: var(--size-88); height: var(--size-88); border-radius: var(--radius-20); background: var(--bg-empty-icon);
   display: flex; align-items: center; justify-content: center; color: var(--color-brand); margin-bottom: var(--space-22);
 }
 .state-icon svg { width: var(--size-44); height: var(--size-44); }

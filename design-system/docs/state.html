@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Порожній стан · Компоненти · Куток</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../index.css">
+<link rel="stylesheet" href="docs.css">
+<script src="docs-nav.js" defer></script>
+</head>
+<body class="docs">
+<div class="docs-shell">
+
+<nav class="docs-nav" data-docs-nav aria-label="Дизайн-система">
+  <a class="docs-nav-home" href="index.html">Куток · дизайн-система</a>
+</nav>
+
+<main class="docs-main">
+
+  <p class="docs-crumb"><a href="index.html">Компоненти</a> / Зворотний зв'язок</p>
+  <p class="docs-eyebrow">Зворотний зв'язок</p>
+  <h1 class="docs-title">Порожній стан</h1>
+  <p class="docs-lede">Порожньо — не помилка: іконка, заголовок і текст пояснюють чому, а кнопки з'являються лише там, де з порожнечею дійсно можна щось зробити.</p>
+  <div class="docs-meta"><code>.state-main</code><code>.state-block</code><code>.state-block--error-enter</code><code>.state-icon</code><code>.state-title</code><code>.state-text</code><code>.state-actions</code></div>
+
+  <section class="docs-sec" id="anatomy">
+    <h2>Анатомія</h2>
+    <p class="docs-sec-hint">Стан «нічого не знайшлось» — найповніший з двох, з іконкою, текстом і двома кнопками.</p>
+    <div class="docs-anatomy">
+      <div class="docs-stage">
+        <div class="state-block" style="padding:0; max-width:280px;">
+          <div class="state-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18l-7 8v5l-4 2v-7L3 5z"/></svg></div>
+          <h2 class="state-title">Нічого не знайшлось</h2>
+          <p class="state-text">За такими умовами оголошень зараз немає. Спробуй ширший район чи більший бюджет — і покажемо більше.</p>
+          <div class="state-actions">
+            <button class="btn btn--primary">Послабити фільтри</button>
+            <button class="btn btn--ghost">Скинути всі фільтри</button>
+          </div>
+        </div>
+      </div>
+      <ol class="docs-legend">
+        <li><b>Іконка</b><span>(<code>.state-icon</code>) — 88px м'який квадрат, тло <code>--bg-empty-icon</code>, оливковий контурний символ (лійка / будинок / хмара — залежно від причини порожнечі).</span></li>
+        <li><b>Заголовок і текст</b><span>(<code>.state-title</code>, Unbounded 700 22px) + (<code>.state-text</code>, до 32 символів у рядку) — коротко називають причину й дають орієнтир, що робити далі.</span></li>
+        <li><b>Дії</b><span>(<code>.state-actions</code>) — вертикальний стек <a href="button.html">кнопок</a> (<code>.btn</code>/<code>.btn--primary</code>/<code>.btn--ghost</code>), до 300px завширшки; присутній лише коли дія реально щось змінює.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="motion">
+    <h2>Живий стан: помилка після завантаження</h2>
+    <p class="docs-sec-hint">Порожній стан не анімується сам по собі. Виняток — новий error-стан після невдалого завантаження: короткий перехід показує статус процесу, а не прикрашає порожню сторінку.</p>
+    <div class="docs-stage" data-state-demo>
+      <div style="width:min(100%,300px); display:flex; flex-direction:column; align-items:center; gap:var(--space-16);">
+        <button class="btn btn--ghost btn--sm" type="button" data-state-show>Показати помилку завантаження</button>
+        <div aria-live="polite" data-state-live></div>
+        <template data-state-template><div class="state-block state-block--error-enter" style="padding:0;"><div class="state-icon" style="width:var(--size-56); height:var(--size-56); margin-bottom:var(--space-14);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:var(--size-28); height:var(--size-28);"><path d="M6.5 19H17a4 4 0 0 0 1.2-7.8A6 6 0 0 0 8 7.6"/><path d="M4 4l16 16"/></svg></div><h2 class="state-title" style="font-size:var(--font-size-16);">Не вдалося завантажити</h2><p class="state-text" style="margin-bottom:0;">Перевір зʼєднання і спробуй ще раз.</p></div></template>
+      </div>
+    </div>
+    <p class="docs-example-note">API <code>.state-block--error-enter</code> використовує <code>--dur-fast</code>, <code>--ease-standard</code> і лише opacity + короткий зсув із <code>--move-sm</code>.</p>
+  </section>
+
+  <section class="docs-sec" id="variants">
+    <h2>Варіанти й розміри</h2>
+    <p class="docs-sec-hint">Дві реальні форми з <code>ui/kit.html</code>: із діями й без.</p>
+    <div class="docs-variants">
+      <div class="docs-example docs-example--wide">
+        <p class="docs-example-label">Нема результатів — з діями</p>
+        <div class="docs-example-body">
+          <div class="state-block" style="padding:var(--space-24) 0;">
+            <div class="state-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18l-7 8v5l-4 2v-7L3 5z"/></svg></div>
+            <h2 class="state-title">Нічого не знайшлось</h2>
+            <p class="state-text">За такими умовами оголошень зараз немає. Спробуй ширший район чи більший бюджет — і покажемо більше.</p>
+            <div class="state-actions">
+              <button class="btn btn--primary">Послабити фільтри</button>
+              <button class="btn btn--ghost">Скинути всі фільтри</button>
+            </div>
+          </div>
+        </div>
+        <p class="docs-example-note">Кількість у фільтрі відома («0 оголошень») — тому є що послабити, і кнопки дають конкретну дію.</p>
+      </div>
+      <div class="docs-example docs-example--wide">
+        <p class="docs-example-label">Cold-start — без дій</p>
+        <div class="docs-example-body">
+          <div class="state-block" style="padding:var(--space-24) 0;">
+            <div class="state-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V9.5L12 4l8 5.5V21"/><path d="M9.5 21v-6h5v6"/></svg></div>
+            <h2 class="state-title">У Києві поки немає оголошень</h2>
+            <p class="state-text">Ми щойно запустились — перші господарі та шукачі ще додають кімнати й профілі. Спробуй зайти трохи згодом.</p>
+          </div>
+        </div>
+        <p class="docs-example-note">Ринку ще нема взагалі — фільтр послаблювати нічого, тому <code>.state-actions</code> відсутній повністю, а не з порожньою кнопкою-заглушкою.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="usage">
+    <h2>Коли вживати</h2>
+    <p class="docs-copy"><code>.state-block</code> вживається на дев'яти екранах з інвентарю системи: <code>listings-empty</code>, <code>listings-empty-coldstart</code>, <code>listings-error</code>, <code>applications-empty</code>, <code>blocked-empty</code>, <code>candidates-empty</code>, <code>chat-empty</code>, <code>dialogs-empty</code>, <code>my-listings-empty</code> — будь-де список, стрічка чи тред можуть легітимно виявитись порожніми. Іконка та текст завжди пояснюють <strong>чому</strong> порожньо, а не просто констатують факт. Статичний empty/error-екран не анімується; <code>.state-block--error-enter</code> додають лише до нового error-стану, що замінює завантаження. Стан <code>-loading</code> цього компонента не використовує — для нього окремий <a href="skeleton.html">скелетон завантаження</a>, бо порожньо й «ще вантажиться» — це різні повідомлення користувачу. Лічильник у сегмент-контролі теж різниться залежно від причини: «0» коли кількість дійсно відома (вузький фільтр, cold-start), і взагалі відсутній, коли кількість невідома (помилка, завантаження).</p>
+    <div class="docs-where">
+      <span>listings-empty</span>
+      <span>listings-empty-coldstart</span>
+      <span>listings-error</span>
+      <span>applications-empty</span>
+      <span>blocked-empty</span>
+      <span>candidates-empty</span>
+      <span>chat-empty</span>
+      <span>dialogs-empty</span>
+      <span>my-listings-empty</span>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="dodont">
+    <h2>Правило і антиправило</h2>
+    <div class="docs-dodont">
+      <div class="docs-do">
+        <span class="docs-do-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg>Так</span>
+        <div class="docs-do-stage">
+          <div class="state-block" style="padding:0; max-width:240px;">
+            <div class="state-icon" style="width:56px; height:56px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="width:28px; height:28px;"><path d="M4 21V9.5L12 4l8 5.5V21"/><path d="M9.5 21v-6h5v6"/></svg></div>
+            <h2 class="state-title" style="font-size:var(--font-size-16);">У Києві поки немає оголошень</h2>
+            <p class="state-text" style="margin-bottom:0;">Перші господарі й шукачі ще додають кімнати. Спробуй зайти трохи згодом.</p>
+          </div>
+        </div>
+        <p>Cold-start чесно без кнопок — ринку ще немає, і жодна дія тут не змінить результат, а порожня кнопка лише створила б враження, що щось можна натиснути.</p>
+      </div>
+      <div class="docs-dont">
+        <span class="docs-dont-tag">✕ Ні</span>
+        <div class="docs-dont-stage">
+          <div class="state-block" style="padding:0; max-width:240px;">
+            <div class="state-icon" style="width:56px; height:56px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="width:28px; height:28px;"><path d="M4 21V9.5L12 4l8 5.5V21"/><path d="M9.5 21v-6h5v6"/></svg></div>
+            <h2 class="state-title" style="font-size:var(--font-size-16);">У Києві поки немає оголошень</h2>
+            <p class="state-text">Перші господарі й шукачі ще додають кімнати.</p>
+            <div class="state-actions"><button class="btn btn--primary btn--sm">Оновити</button></div>
+          </div>
+        </div>
+        <p>Кнопка «Оновити» на cold-start — фейкова дія: ринок не з'явиться від натискання, вона лише вчить людину тицяти кнопки, що нічого не роблять, і підриває довіру до кнопок деінде в системі.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="responsive">
+    <h2>Адаптив у макетах</h2>
+    <p class="docs-sec-hint">Порожній стан тримається в центрі вільного простору: на телефоні займає одну колонку, а на планшеті й десктопі лишається змістовним блоком у ширшому каталозі — без розтягування тексту чи кнопок на всю ширину.</p>
+    <div class="docs-responsive" data-mobile="../../wireframes/listings-empty.html" data-tablet="../../wireframes/listings-empty.html" data-desktop="../../wireframes/listings-empty.html"></div>
+  </section>
+
+  <div class="docs-foot">
+    <a href="gallery.html">← Фото-в'юер</a>
+    <a href="index.html">Усі компоненти</a>
+    <a href="banner.html">Банер →</a>
+  </div>
+
+</main>
+</div>
+<script>
+  (function () {
+    var demo = document.querySelector('[data-state-demo]');
+    if (!demo) return;
+
+    var live = demo.querySelector('[data-state-live]');
+    var template = demo.querySelector('[data-state-template]');
+    demo.querySelector('[data-state-show]').addEventListener('click', function () {
+      live.replaceChildren(template.content.cloneNode(true));
+    });
+  }());
+</script>
+<script src="docs-responsive.js"></script>
+</body>
+</html>

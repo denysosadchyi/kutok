@@ -17,6 +17,12 @@
 .app a:not(:where(.btn)) { color: inherit; text-decoration: none; }
 .app main { flex: 1 1 auto; }  /* навбар і FAB завжди внизу */
 
+/* Room detail keeps its mobile reading order in the DOM. The two desktop
+   layout groups do not introduce an extra visual panel until the wide grid
+   is available. */
+.app--room-detail .detail-main,
+.app--room-detail .detail-rail { display: contents; }
+
 /* ── Планшет: макет займає ширину, а не лишається мобільною колонкою ──
    --bp-tablet (47.5rem/760px) з tokens.css — поріг «розкладка ширше»
    (DESIGN.md §7, responsive/width-audit.md). Стеля — --container-max, той
@@ -51,6 +57,9 @@
     max-width: var(--container-max);
     min-height: 100vh;
   }
+
+  /* Detail screens use the whole wireframe stage for their desktop split. */
+  .app--detail { max-width: none; }
 
   /* Екрани-потоки (.app--flow): контент не розтягується на всю стелю .app, а
      стоїть вузькою колонкою по центру — --container-narrow. Шапка й main разом,
@@ -111,6 +120,98 @@
     max-width: var(--measure-read);
   }
 
+  /* Детальна сторінка на desktop читається як editorial spread: головний
+     матеріал іде широкою колонкою, рішення та довіра — компактною рейкою.
+     Явні ролі секцій не дають DOM-порядку мобільної сторінки випадково
+     перетворити wide layout на одну довгу розтягнуту стрічку. */
+  .app--detail:is(.app--room-detail, .app--person-detail) main {
+    grid-template-columns: minmax(0, 1.65fr) minmax(18rem, .75fr);
+    column-gap: var(--space-32);
+    row-gap: 0;
+
+    padding: var(--space-24) var(--space-22) var(--space-32);
+  }
+  .app--detail:is(.app--room-detail, .app--person-detail) main > .section,
+  .app--detail:is(.app--room-detail, .app--person-detail) main > .profile-hero {
+    min-width: 0;
+    padding: var(--space-22) 0 var(--space-24);
+  }
+  .app--detail:is(.app--room-detail, .app--person-detail) main > .profile-hero,
+  .app--detail:is(.app--room-detail, .app--person-detail) main > .section--aside {
+    position: static;
+  }
+
+  /* Room: the full-width detail shell is necessary for other desktop
+     archetypes, but it makes a gallery unreadably broad in a wide viewer.
+     The room's editorial spread is therefore bounded as one unit, including
+     its context header. One rail owns the price, trust signal and action so
+     the primary decision never jumps between independent sticky blocks. */
+  .app--room-detail > .app-head {
+    padding-inline: max(var(--space-22), calc((100% - var(--container-max)) / 2));
+  }
+  .app--room-detail main {
+    width: min(100%, var(--container-max));
+    margin-inline: auto;
+  }
+  .app--room-detail main > .section--media {
+    grid-column: 1;
+    grid-row: 1;
+    padding-top: 0;
+  }
+  .app--room-detail main > .detail-main {
+    grid-column: 1;
+    grid-row: 2;
+    display: block;
+    min-width: 0;
+  }
+  .app--room-detail main > .detail-main > .section {
+    min-width: 0;
+    padding: var(--space-22) 0 var(--space-24);
+  }
+  .app--room-detail main > .detail-rail {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    display: block;
+    align-self: start;
+    position: sticky;
+    top: var(--space-88);
+    overflow: hidden;
+    border: var(--border-1) solid var(--border-default);
+    border-radius: var(--radius-16);
+    background: var(--bg-surface);
+  }
+  .app--room-detail .detail-rail > .section {
+    min-width: 0;
+    padding: var(--space-20) var(--space-22);
+  }
+  .app--room-detail .detail-rail > .section--aside .card-title { max-width: none; }
+  .app--room-detail .detail-rail > .section--aside .amount { margin-top: var(--space-8); }
+  .app--room-detail .detail-rail > .section--aside .facts { margin-top: var(--space-18); }
+  .app--detail:is(.app--room-detail, .app--person-detail) main > .section--actions {
+    align-self: start;
+    border-bottom: 0;
+  }
+
+  /* Profile: identity leads the support rail, while bio, constraints and
+     reviews stay in the reading column. CTA lands beside the decision facts. */
+  .app--person-detail main > .profile-hero {
+    grid-column: 2;
+    grid-row: 1;
+    align-items: flex-start;
+    text-align: left;
+    padding: var(--space-24);
+    border: 0;
+    border-radius: var(--radius-16);
+    background: var(--bg-surface);
+  }
+  .app--person-detail main > .section--intro { grid-column: 1; grid-row: 1; }
+  .app--person-detail main > .section--facts { grid-column: 1; grid-row: 2; }
+  .app--person-detail main > .section--reviews { grid-column: 1; grid-row: 3; }
+  .app--person-detail main > .profile-hero + .section--intro ~ .section--actions {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
   /* Архетип «чат» (.app--chat) навмисно без правил тут: він уже мав повну
      реалізацію в chat.css (grid master-detail, .chat-desktop-panel) з
      попереднього кроку — лише не був увімкнений, бо жоден екран не носив
@@ -127,4 +228,16 @@
 .sr-only {
   position: absolute; width: 1px; height: 1px; overflow: hidden;
   clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+}
+
+/* Рух ніколи не є єдиним носієм стану: за Reduce Motion компоненти одразу
+   показують свій кінцевий стан, а не лишають прихований або проміжний кадр. */
+@media (prefers-reduced-motion: reduce) {
+  :where(.app, .kit-demo, .docs),
+  :where(.app, .kit-demo, .docs) *,
+  :where(.app, .kit-demo, .docs) *::before,
+  :where(.app, .kit-demo, .docs) *::after {
+    animation: none !important;
+    transition: none !important;
+  }
 }

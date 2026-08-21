@@ -4,18 +4,30 @@
    поверхнею замість того, щоб інвертуватись у найяскравішу площину екрана
    (критика теми 2026-07-29). */
 .tabbar {
-  position: sticky; bottom: calc(var(--space-8) + env(safe-area-inset-bottom));
-  margin: auto var(--space-8) calc(var(--space-8) + env(safe-area-inset-bottom));
+  /* Footer іде після main у DOM, тож sticky з'являвся лише наприкінці стрічки.
+     На мобільному сценарії навігація має бути доступна протягом усього скролу. */
+  position: fixed; z-index: 5; left: 50%;
+  width: min(calc(100% - var(--space-16)), var(--container-max));
+  transform: translateX(-50%);
+  bottom: calc(var(--space-8) + env(safe-area-inset-bottom));
+  margin: 0;
   background: var(--bg-navbar); background-image: var(--grain-2);
   display: flex; gap: var(--space-2); border-radius: var(--radius-999); padding: var(--space-6);
+}
+/* Fixed navigation no longer reserves a flex row: keep the last control and
+   card clear of it. Chat is an app-like viewport shell with its own static bar. */
+.app:has(> .tabbar):not(.app--chat) > main {
+  padding-bottom: calc(var(--size-88) + env(safe-area-inset-bottom));
 }
 .tabbar a {
   flex: 1; display: flex; flex-direction: column; align-items: center; gap: var(--space-3);
   padding: var(--space-8) var(--space-4) var(--space-7); position: relative; color: var(--on-navbar); border-radius: var(--radius-999);
+  transition: transform var(--dur-fast) var(--ease-standard);
 }
 .tabbar a.active { background: var(--bg-navbar-active); color: var(--on-navbar-active); font-weight: var(--font-weight-700); }
 .tabbar a.active .tab-ico { color: var(--on-navbar-active); }
 .tabbar a:focus-visible { outline: var(--border-2) solid var(--on-navbar); outline-offset: -3px; }
+.tabbar a:active { transform: translateY(calc(var(--move-sm) / 2)); }
 .tab-ico { position: relative; width: var(--size-22); height: var(--size-22); }
 .tab-ico svg { width: 100%; height: 100%; display: block; }
 .tab-txt { font-size: var(--font-size-11); }
@@ -25,6 +37,11 @@
      темній смузі в обох темах і тому не перевертається разом зі сторінкою. */
   background: var(--bg-navbar-badge); color: var(--on-navbar-badge);
   font-size: var(--font-size-10); font-weight: var(--font-weight-700); line-height: var(--size-15); text-align: center; border-radius: var(--radius-999);
+}
+.tab-dot--new { animation: tab-notification-enter var(--dur-base) var(--ease-enter); }
+@keyframes tab-notification-enter {
+  from { opacity: 0; transform: translateY(calc(var(--move-sm) * -1)); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* Лого і поле пошуку живуть у розмітці таб-бару, але на телефоні їх немає:
@@ -51,6 +68,9 @@
    мобільній пігулці. */
 @media (min-width: 67.5rem) {
   .tabbar {
+    z-index: 5;
+    width: auto;
+    transform: none;
     /* order, а не grid-area: оболонка на десктопі лишається flex-колонкою
        (base.css), тож піднімається сама лише панель, а решта прямих нащадків
        .app (шапка, .filterbar, main) тримає порядок розмітки. */
@@ -64,6 +84,7 @@
     background: var(--bg-surface); background-image: var(--grain-1);
     padding: var(--space-10) var(--space-20);
   }
+  .app:has(> .tabbar):not(.app--chat) > main { padding-bottom: 0; }
   .tabbar a {
     flex: none;
     flex-direction: row; justify-content: flex-start;
@@ -72,6 +93,8 @@
     color: var(--text-primary);
   }
   .tabbar a:hover { background: var(--bg-neutral); }
+  /* Бренд — ідентифікатор панелі, не навігаційний пункт: hover не фарбує лого. */
+  .tabbar > .tabbar-brand:hover { background: transparent; }
   .tabbar a.active { background: var(--bg-neutral); color: var(--color-brand); }
   .tabbar a.active .tab-ico { color: var(--color-brand); }
   .tabbar a:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: -2px; }
@@ -101,12 +124,13 @@
      Вигляд успадковано від .search-form — тут лише місце і розмір. */
   .tabbar > .tabbar-search {
     display: flex;
-    /* Вужче за колишні 320: поле стоїть у правій парі з «Профілем», а не
-       розтягує ліву половину панелі. */
-    flex: 0 1 var(--size-220);
+    /* 180px тримають короткий запит компактним у правій парі з «Профілем»,
+       а не розтягують ліву половину панелі. */
+    flex: 0 1 var(--size-180);
+    min-width: 0;
     order: 1;
     margin-left: auto; margin-right: var(--space-12);
-    border: var(--border-1) solid var(--border-default); border-radius: var(--radius-999);
+    border: none; border-radius: var(--radius-999);
     padding: var(--space-7) var(--space-14);
     background: var(--bg-page);
   }

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Група приватності · Компоненти · Куток</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../index.css">
+<link rel="stylesheet" href="docs.css">
+<script src="docs-nav.js" defer></script>
+</head>
+<body class="docs">
+<div class="docs-shell">
+
+<nav class="docs-nav" data-docs-nav aria-label="Дизайн-система">
+  <a class="docs-nav-home" href="index.html">Куток · дизайн-система</a>
+</nav>
+
+<main class="docs-main">
+
+  <p class="docs-crumb"><a href="index.html">Компоненти</a> / Форми</p>
+  <p class="docs-eyebrow">Утилітарний компонент</p>
+  <h1 class="docs-title">Група приватності</h1>
+  <p class="docs-lede">Семантичний <code>&lt;fieldset&gt;</code>, з якого прибрано все, що браузер додає сам — щоб група читалась як звичайний контент, не як вкладена рамка.</p>
+  <div class="docs-meta"><code>.privacy-group</code></div>
+
+  <section class="docs-sec" id="anatomy">
+    <h2>Анатомія</h2>
+    <p class="docs-sec-hint">У компонента майже немає власного вигляду — його робота полягає в тому, щоб СКАСУВАТИ типовий вигляд <code>&lt;fieldset&gt;</code>, а не додати новий.</p>
+    <div class="docs-anatomy">
+      <div class="docs-stage">
+        <fieldset class="privacy-group" style="width:100%; max-width:340px;">
+          <legend class="overline">Хто бачить моє фото до взаємного інтересу</legend>
+          <label class="radio-option"><input type="radio" name="anat-photo"><span class="radio-dot"></span><span class="opt-text"><span class="opt-title">Усім видно</span><span class="opt-hint">Фото відкрите одразу в картці й профілі.</span></span></label>
+          <label class="radio-option"><input type="radio" name="anat-photo" checked><span class="radio-dot"></span><span class="opt-text"><span class="opt-title">Розмито, доки не буде взаємного інтересу</span><span class="opt-hint">Чітке фото відкриється, коли ви обоє натиснете «Хочу познайомитись».</span></span></label>
+        </fieldset>
+      </div>
+      <ol class="docs-legend">
+        <li><b>Скинутий <code>&lt;fieldset&gt;</code></b><span>(<code>.privacy-group</code>) — <code>border: none; padding: 0; margin: 0;</code>: без цього браузер сам домальовує рамку й відступ, які конфліктують з плоскою, безрамковою системою.</span></li>
+        <li><b>Заголовок групи</b><span><code>&lt;legend class="overline"&gt;</code> — той самий стиль оверлайну, що й у секцій сторінки (див. <a href="text.html">текст</a>), скринрідер оголошує його як ім'я групи.</span></li>
+        <li><b>Вміст групи</b><span>завжди список <a href="radio.html"><code>.radio-option</code></a> — сама група ніякого візуального стилю опціям не додає.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="variants">
+    <h2>Варіанти й розміри</h2>
+    <p class="docs-sec-hint">Два реальні екземпляри з privacy-settings.html — той самий патерн, повторюваний для будь-якого невеликого приватність-рішення.</p>
+    <div class="docs-variants">
+      <div class="docs-example docs-example--wide">
+        <p class="docs-example-label">Видимість фото</p>
+        <div class="docs-example-body" style="width:100%;">
+          <fieldset class="privacy-group" style="width:100%;">
+            <legend class="overline">Хто бачить моє фото до взаємного інтересу</legend>
+            <label class="radio-option"><input type="radio" name="var-photo"><span class="radio-dot"></span><span class="opt-text"><span class="opt-title">Усім видно</span><span class="opt-hint">Фото відкрите одразу в картці й профілі.</span></span></label>
+            <label class="radio-option"><input type="radio" name="var-photo" checked><span class="radio-dot"></span><span class="opt-text"><span class="opt-title">Розмито, доки не буде взаємного інтересу</span><span class="opt-hint">Чітке фото відкриється, коли ви обоє натиснете «Хочу познайомитись».</span></span></label>
+          </fieldset>
+        </div>
+      </div>
+      <div class="docs-example docs-example--wide">
+        <p class="docs-example-label">Видимість віку</p>
+        <div class="docs-example-body" style="width:100%;">
+          <fieldset class="privacy-group" style="width:100%;">
+            <legend class="overline">Показувати мій вік у картці</legend>
+            <label class="radio-option"><input type="radio" name="var-age" checked><span class="radio-dot"></span><span class="opt-text"><span class="opt-title">Так</span><span class="opt-hint">Вік буде видно поруч з іменем у стрічці й профілі.</span></span></label>
+            <label class="radio-option"><input type="radio" name="var-age"><span class="radio-dot"></span><span class="opt-text"><span class="opt-title">Ні</span><span class="opt-hint">Вік прихований для інших, лишається лише у вашому профілі.</span></span></label>
+          </fieldset>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="usage">
+    <h2>Коли вживати</h2>
+    <p class="docs-copy">Виключно на <code>privacy-settings.html</code>, по одному <code>.privacy-group</code> на кожне окреме рішення приватності — зараз два: видимість фото й видимість віку. Компонент завжди йде в парі з <a href="radio.html"><code>.radio-option</code></a> усередині й <code>.overline</code>-заголовком як <code>&lt;legend&gt;</code>. Власного вигляду в нього немає — уся робота зроблена наперед, тим, що <code>&lt;fieldset&gt;</code> і <code>&lt;legend&gt;</code> взагалі семантично використані, а не замінені на <code>&lt;div&gt;</code> з <code>&lt;h2&gt;</code>.</p>
+    <div class="docs-where">
+      <span>privacy-settings — видимість фото</span>
+      <span>privacy-settings — видимість віку</span>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="dodont">
+    <h2>Правило і антиправило</h2>
+    <div class="docs-dodont">
+      <div class="docs-do">
+        <span class="docs-do-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg>Так</span>
+        <div class="docs-do-stage">
+          <fieldset class="privacy-group" style="width:100%;">
+            <legend class="overline">Показувати мій вік у картці</legend>
+            <label class="radio-option"><input type="radio" name="do-age" checked><span class="radio-dot"></span><span class="opt-text"><span class="opt-title">Так</span></span></label>
+          </fieldset>
+        </div>
+        <p>Реальний <code>&lt;fieldset&gt;</code>+<code>&lt;legend&gt;</code> для згрупованих радіо-опцій: скринрідер оголошує назву групи, коли фокус входить у перший радіо-баттон.</p>
+      </div>
+      <div class="docs-dont">
+        <span class="docs-dont-tag">✕ Ні</span>
+        <div class="docs-dont-stage">
+          <div style="width:100%;">
+            <p class="overline" style="margin:0 0 8px;">Показувати мій вік у картці</p>
+            <label class="radio-option"><input type="radio" name="dont-age" checked><span class="radio-dot"></span><span class="opt-text"><span class="opt-title">Так</span></span></label>
+          </div>
+        </div>
+        <p>Пропускати <code>&lt;fieldset&gt;</code>/<code>&lt;legend&gt;</code> і просто ставити радіо-опції під звичайним <code>&lt;p&gt;</code> чи <code>&lt;h2&gt;</code>. Візуально для зрячого користувача різниці немає, але людина зі скринрідером, проходячи табом по радіо-кнопках, втрачає контекст «ці кнопки — одна група про X», який пара fieldset+legend дає безкоштовно.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="responsive">
+    <h2>Адаптив у макетах</h2>
+    <p class="docs-sec-hint">Кожне приватність-рішення лишається окремою групою радіо-опцій. Ширина не ставить питання та відповіді в колонки, щоб вибір читався як одна послідовна дія.</p>
+    <div class="docs-responsive" data-mobile="../../wireframes/_archive/privacy-settings.html" data-tablet="../../wireframes/_archive/privacy-settings.html" data-desktop="../../wireframes/_archive/privacy-settings.html"></div>
+  </section>
+
+  <div class="docs-foot">
+    <a href="radio.html">← Радіо-список</a>
+    <a href="index.html">Усі компоненти</a>
+    <a href="photo-upload.html">Ряд завантаження фото →</a>
+  </div>
+
+</main>
+</div>
+<script src="docs-responsive.js"></script>
+</body>
+</html>

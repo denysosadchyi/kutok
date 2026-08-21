@@ -39,11 +39,12 @@
   display: flex; align-items: center; gap: var(--space-12);
   padding: var(--space-14) var(--space-10);
   margin-inline: calc(-1 * var(--space-10));
-  border-radius: var(--radius-12);
+  border-radius: var(--radius-8);
   color: var(--text-primary); text-decoration: none;
-  transition: background var(--duration-1) var(--easing-1);
+  transition: transform var(--dur-fast) var(--ease-standard);
 }
 .row:hover { background: var(--bg-neutral); }
+.row:active { transform: translateY(calc(var(--move-sm) / 2)); }
 .row:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: -2px; }
 .row--muted .row-title, .row--muted .row-meta { color: var(--text-muted); } /* стан «завершено/неактивне» — семантика, не сирий opacity */
 .row-body { flex: 1; min-width: 0; display: block; }
@@ -57,6 +58,11 @@
   background: var(--color-action); color: var(--on-action);
   font-size: var(--font-size-10); font-weight: var(--font-weight-700); line-height: var(--size-18); text-align: center;
 }
+.row-unread--new { animation: row-unread-enter var(--dur-base) var(--ease-enter); }
+@keyframes row-unread-enter {
+  from { opacity: 0; transform: translateY(calc(var(--move-sm) * -1)); }
+  to { opacity: 1; transform: translateY(0); }
+}
 .row-actions { display: flex; gap: var(--space-8); margin-top: var(--space-10); padding-bottom: var(--space-14); }
 .row-body .badge { margin-top: var(--space-6); }
 
@@ -64,3 +70,69 @@
 .person-row { display: flex; align-items: center; gap: var(--space-10); }
 .person-name { display: block; font-size: var(--font-size-16); font-weight: var(--font-weight-600); color: var(--text-primary); }
 .person-sub { display: block; font-size: var(--font-size-13); color: var(--text-muted); margin-top: var(--space-2); }
+
+/* Операційні списки: статус і рішення залишаються в одному блоці,
+   а desktop дає дві колонки однакової щільності замість довгих рядків. */
+.operation-toolbar { padding: var(--space-14) var(--space-16); }
+
+.operation-table-wrap { margin: 0 var(--space-16); overflow-x: auto; border-bottom: var(--border-1) solid var(--border-default); }
+.operation-table-wrap:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: var(--space-4); }
+.operation-table { width: 100%; min-width: 40rem; border-collapse: collapse; text-align: left; }
+.operation-table th { padding: var(--space-12) var(--space-10); border-bottom: var(--border-1) solid var(--border-default); color: var(--text-muted); font-size: var(--font-size-11); font-weight: var(--font-weight-700); letter-spacing: .08em; text-transform: uppercase; }
+.operation-table th:nth-child(2) { width: 10.5rem; }
+.operation-table th:last-child { width: 11.5rem; }
+.operation-table td { padding: var(--space-14) var(--space-10); border-bottom: var(--border-1) solid var(--border-default); vertical-align: middle; }
+.operation-table tbody tr:last-child td { border-bottom: none; }
+.operation-table__person { display: flex; align-items: center; gap: var(--space-12); min-width: 19rem; color: var(--text-primary); text-decoration: none; }
+.operation-table__person > span { min-width: 0; }
+.operation-table__person .row-meta:first-child { margin-top: 0; }
+.operation-table__person .badge { margin-top: var(--space-6); }
+.operation-table__person { transition: transform var(--dur-fast) var(--ease-standard); }
+.operation-table__person:active { transform: translateY(calc(var(--move-sm) / 2)); }
+.operation-table__person:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: var(--space-4); border-radius: var(--radius-8); }
+.operation-table__row--muted .row-title, .operation-table__row--muted .row-meta { color: var(--text-muted); }
+.operation-table td:last-child { white-space: nowrap; }
+
+
+@media (max-width: 47.499rem) {
+  .wf-nav { display: none; }
+  .wf-shell, .wf-stage { width: 100%; min-width: 0; }
+  .app--catalog { width: 100%; max-width: 100%; min-width: 0; overflow-x: hidden; }
+  .operation-main, .operation-main .operation-list { width: 100%; min-width: 0; }
+  .operation-main .row { width: 100%; margin-inline: 0; }
+  .operation-main .row-body { overflow: hidden; }
+  .operation-main .row-side,
+  .operation-main .status-pill { max-width: 7.5rem; }
+  .operation-main .btn--sm { min-height: var(--size-44); }
+}
+
+
+@media (min-width: 67.5rem) {
+  .operation-main { padding: 0 var(--space-20) var(--space-32); }
+  .operation-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-20);
+    padding: var(--space-12) 0 var(--space-20);
+    border-bottom: var(--border-1) solid var(--border-default);
+  }
+  .operation-toolbar .btn { width: auto; min-width: var(--size-220); }
+  .app--catalog .operation-main .operation-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 var(--grid-gap);
+    padding: var(--space-12) 0 0;
+  }
+  .app--catalog .operation-main .operation-list > li {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: var(--space-8) var(--space-4) var(--space-16);
+    border: none;
+    border-top: var(--border-1) solid var(--border-default);
+    border-radius: 0;
+  }
+  .operation-list .row { min-height: calc(var(--size-44) + var(--space-12)); }
+  .operation-list .row-actions { margin-top: auto; padding-left: calc(var(--size-44) + var(--space-12)); }
+}

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Опції вибору ролі · Компоненти · Куток</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../index.css">
+<link rel="stylesheet" href="docs.css">
+<script src="docs-nav.js" defer></script>
+</head>
+<body class="docs">
+<div class="docs-shell">
+
+<nav class="docs-nav" data-docs-nav aria-label="Дизайн-система">
+  <a class="docs-nav-home" href="index.html">Куток · дизайн-система</a>
+</nav>
+
+<main class="docs-main">
+
+  <p class="docs-crumb"><a href="index.html">Компоненти</a> / Разове</p>
+  <p class="docs-eyebrow">Разовий патерн — тільки один екран</p>
+  <h1 class="docs-title">Опції вибору ролі</h1>
+  <p class="docs-lede">Пара великих кнопок-опцій «Шукаю кімнату» / «Здаю або підселяю кімнату» — перший вибір після реєстрації, і єдине місце в системі, де ця розмітка існує.</p>
+  <div class="docs-meta"><code>.role-option</code><code>.role-option-title</code><code>.role-option-sub</code><code>.role-note</code></div>
+
+  <section class="docs-sec" id="anatomy">
+    <h2>Анатомія</h2>
+    <p class="docs-sec-hint">Та сама пара, що стоїть на <code>role-select.html</code>, усередині <code>.btn-stack</code>.</p>
+    <div class="docs-anatomy">
+      <div class="docs-stage">
+        <div style="width:100%; max-width:320px;">
+          <div class="btn-stack">
+            <a class="role-option" href="#" style="pointer-events:none; text-decoration:none;">
+              <span class="role-option-title">Шукаю кімнату</span>
+              <span class="role-option-sub">Переглядати оголошення й людей, надсилати заявки</span>
+            </a>
+            <a class="role-option" href="#" style="pointer-events:none; text-decoration:none;">
+              <span class="role-option-title">Здаю або підселяю кімнату</span>
+              <span class="role-option-sub">Розмістити оголошення, переглядати кандидатів</span>
+            </a>
+          </div>
+          <p class="hint role-note">Можна поєднувати обидві ролі — другу додасте пізніше з кабінету.</p>
+        </div>
+      </div>
+      <ol class="docs-legend">
+        <li><b>Прямокутник</b><span>(<code>.role-option</code>) — рамка <code>--border-default</code> 1.5px, радіус 12px. Це радіус родини полів (<code>field</code>), не піґулок: опція — велика тапабельна картка вибору, не маленький контрол.</span></li>
+        <li><b>Заголовок</b><span>(<code>.role-option-title</code>) — <code>var(--font-family-1)</code> (Unbounded), вага 700: одне з небагатьох місць поза хедером/великими заголовками, де використано дисплейний шрифт, а не Inter.</span></li>
+        <li><b>Підпис</b><span>(<code>.role-option-sub</code>) — приглушений опис дії, <code>--text-muted</code>, 13px.</span></li>
+        <li><b>Підказка</b><span>(<code>.role-note</code>) — центрований <code>.hint</code> під парою, знімає тривогу «а що як помилюсь»: роль не остаточна.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="variants">
+    <h2>Варіанти й розміри</h2>
+    <p class="docs-sec-hint">Пара фіксована — компонент не має незалежних розмірів чи станів, лише два конкретні тексти й ховер-тло.</p>
+    <div class="docs-variants">
+      <div class="docs-example docs-example--wide">
+        <p class="docs-example-label">Пара — виробнича розмітка</p>
+        <div class="docs-example-body">
+          <div class="btn-stack" style="width:100%; max-width:320px;">
+            <a class="role-option" href="#" style="pointer-events:none; text-decoration:none;">
+              <span class="role-option-title">Шукаю кімнату</span>
+              <span class="role-option-sub">Переглядати оголошення й людей, надсилати заявки</span>
+            </a>
+            <a class="role-option" href="#" style="pointer-events:none; text-decoration:none;">
+              <span class="role-option-title">Здаю або підселяю кімнату</span>
+              <span class="role-option-sub">Розмістити оголошення, переглядати кандидатів</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="docs-example">
+        <p class="docs-example-label">Одна опція — ізольовано (тло при ховері)</p>
+        <div class="docs-example-body" style="width:100%;">
+          <a class="role-option" href="#" style="max-width:260px; pointer-events:none; text-decoration:none;">
+            <span class="role-option-title">Шукаю кімнату</span>
+            <span class="role-option-sub">Переглядати оголошення й людей, надсилати заявки</span>
+          </a>
+        </div>
+        <p class="docs-example-note">Ховер — тло змінюється з <code>--bg-surface</code> на <code>--bg-neutral</code>, без рамки чи тіні.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="motion">
+    <h2>Мікровзаємодія</h2>
+    <p class="docs-sec-hint">Наведи, натисни або перейди Tab: опція дає <strong>відповідь</strong> про прийнятий вибір ролі перед переходом в онбординг.</p>
+    <div class="docs-stage" style="width:100%;"><button type="button" class="role-option" style="max-width:320px;"><span class="role-option-title">Шукаю кімнату</span><span class="role-option-sub">Переглядати оголошення й людей</span></button></div>
+    <p class="docs-copy">Тло та короткий press використовують <code>--dur-fast</code>, <code>--ease-standard</code> і <code>calc(var(--move-sm) / 2)</code>; фокус лишається окремим видимим станом.</p>
+  </section>
+
+  <section class="docs-sec" id="usage">
+    <h2>Коли вживати</h2>
+    <p class="docs-copy">Опції вибору ролі стоять <strong>виключно на <code>role-select.html</code></strong> — першому екрані одразу після реєстрації, до того, як у людини взагалі з'явився профіль. Саме тому це не <a href="card.html">.card</a>: <code>ui/inventory.md</code> прямо називає їх «кнопками-опціями, не картками» — на цьому кроці ще немає фото, ціни чи бейджа верифікації, які веде каталожна картка, є лише бінарний вибір «шукаю» чи «здаю». Радіус 12px (родина полів, а не піґулок) підкреслює, що це велика форма-рішення, а не маленький контрол чи елемент стрічки.</p>
+    <div class="docs-where">
+      <span>role-select — перший екран після реєстрації</span>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="dodont">
+    <h2>Правило і антиправило</h2>
+    <div class="docs-dodont">
+      <div class="docs-do">
+        <span class="docs-do-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg>Так</span>
+        <div class="docs-do-stage">
+          <a class="role-option" href="#" style="max-width:220px; pointer-events:none; text-decoration:none;">
+            <span class="role-option-title">Шукаю кімнату</span>
+            <span class="role-option-sub">Переглядати оголошення й людей, надсилати заявки</span>
+          </a>
+        </div>
+        <p>Проста бордерована пряма з заголовком і підписом, радіус 12px — той самий, що й у полів форми. Вибір ролі — акт налаштування акаунта, а не перегляд контенту.</p>
+      </div>
+      <div class="docs-dont">
+        <span class="docs-dont-tag">✕ Ні</span>
+        <div class="docs-dont-stage">
+          <div class="card" style="max-width:220px; padding:var(--space-14);">
+            <span class="role-option-title">Шукаю кімнату</span>
+          </div>
+        </div>
+        <p>Ставити роль у <code>.card</code> — картку каталогу з фото й ціною. <code>ui/inventory.md</code> явно розводить ці два компоненти: картка означає «це можна гортати й порівнювати», а вибір ролі — одноразове рішення на старті, без жодного контенту для порівняння.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="responsive">
+    <h2>Адаптив у макетах</h2>
+    <p class="docs-sec-hint">Вибір ролі завжди показує обидві рівноцінні опції для порівняння. На телефоні вони йдуть послідовно, а на ширшому полотні розкладка дає більше простору для їхніх відмінностей, не змінюючи вагу вибору.</p>
+    <div class="docs-responsive" data-mobile="../../wireframes/role-select.html" data-tablet="../../wireframes/role-select.html" data-desktop="../../wireframes/role-select.html"></div>
+  </section>
+
+  <div class="docs-foot">
+    <a href="sheet.html">← Боттом-шит</a>
+    <a href="index.html">Усі компоненти</a>
+    <a href="consent.html">Блок згоди →</a>
+  </div>
+
+</main>
+</div>
+<script src="docs-responsive.js"></script>
+</body>
+</html>

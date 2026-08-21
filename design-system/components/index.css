@@ -24,6 +24,12 @@
 .app a:not(:where(.btn)) { color: inherit; text-decoration: none; }
 .app main { flex: 1 1 auto; }  /* навбар і FAB завжди внизу */
 
+/* Room detail keeps its mobile reading order in the DOM. The two desktop
+   layout groups do not introduce an extra visual panel until the wide grid
+   is available. */
+.app--room-detail .detail-main,
+.app--room-detail .detail-rail { display: contents; }
+
 /* ── Планшет: макет займає ширину, а не лишається мобільною колонкою ──
    --bp-tablet (47.5rem/760px) з tokens.css — поріг «розкладка ширше»
    (DESIGN.md §7, responsive/width-audit.md). Стеля — --container-max, той
@@ -58,6 +64,9 @@
     max-width: var(--container-max);
     min-height: 100vh;
   }
+
+  /* Detail screens use the whole wireframe stage for their desktop split. */
+  .app--detail { max-width: none; }
 
   /* Екрани-потоки (.app--flow): контент не розтягується на всю стелю .app, а
      стоїть вузькою колонкою по центру — --container-narrow. Шапка й main разом,
@@ -118,6 +127,98 @@
     max-width: var(--measure-read);
   }
 
+  /* Детальна сторінка на desktop читається як editorial spread: головний
+     матеріал іде широкою колонкою, рішення та довіра — компактною рейкою.
+     Явні ролі секцій не дають DOM-порядку мобільної сторінки випадково
+     перетворити wide layout на одну довгу розтягнуту стрічку. */
+  .app--detail:is(.app--room-detail, .app--person-detail) main {
+    grid-template-columns: minmax(0, 1.65fr) minmax(18rem, .75fr);
+    column-gap: var(--space-32);
+    row-gap: 0;
+
+    padding: var(--space-24) var(--space-22) var(--space-32);
+  }
+  .app--detail:is(.app--room-detail, .app--person-detail) main > .section,
+  .app--detail:is(.app--room-detail, .app--person-detail) main > .profile-hero {
+    min-width: 0;
+    padding: var(--space-22) 0 var(--space-24);
+  }
+  .app--detail:is(.app--room-detail, .app--person-detail) main > .profile-hero,
+  .app--detail:is(.app--room-detail, .app--person-detail) main > .section--aside {
+    position: static;
+  }
+
+  /* Room: the full-width detail shell is necessary for other desktop
+     archetypes, but it makes a gallery unreadably broad in a wide viewer.
+     The room's editorial spread is therefore bounded as one unit, including
+     its context header. One rail owns the price, trust signal and action so
+     the primary decision never jumps between independent sticky blocks. */
+  .app--room-detail > .app-head {
+    padding-inline: max(var(--space-22), calc((100% - var(--container-max)) / 2));
+  }
+  .app--room-detail main {
+    width: min(100%, var(--container-max));
+    margin-inline: auto;
+  }
+  .app--room-detail main > .section--media {
+    grid-column: 1;
+    grid-row: 1;
+    padding-top: 0;
+  }
+  .app--room-detail main > .detail-main {
+    grid-column: 1;
+    grid-row: 2;
+    display: block;
+    min-width: 0;
+  }
+  .app--room-detail main > .detail-main > .section {
+    min-width: 0;
+    padding: var(--space-22) 0 var(--space-24);
+  }
+  .app--room-detail main > .detail-rail {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    display: block;
+    align-self: start;
+    position: sticky;
+    top: var(--space-88);
+    overflow: hidden;
+    border: var(--border-1) solid var(--border-default);
+    border-radius: var(--radius-16);
+    background: var(--bg-surface);
+  }
+  .app--room-detail .detail-rail > .section {
+    min-width: 0;
+    padding: var(--space-20) var(--space-22);
+  }
+  .app--room-detail .detail-rail > .section--aside .card-title { max-width: none; }
+  .app--room-detail .detail-rail > .section--aside .amount { margin-top: var(--space-8); }
+  .app--room-detail .detail-rail > .section--aside .facts { margin-top: var(--space-18); }
+  .app--detail:is(.app--room-detail, .app--person-detail) main > .section--actions {
+    align-self: start;
+    border-bottom: 0;
+  }
+
+  /* Profile: identity leads the support rail, while bio, constraints and
+     reviews stay in the reading column. CTA lands beside the decision facts. */
+  .app--person-detail main > .profile-hero {
+    grid-column: 2;
+    grid-row: 1;
+    align-items: flex-start;
+    text-align: left;
+    padding: var(--space-24);
+    border: 0;
+    border-radius: var(--radius-16);
+    background: var(--bg-surface);
+  }
+  .app--person-detail main > .section--intro { grid-column: 1; grid-row: 1; }
+  .app--person-detail main > .section--facts { grid-column: 1; grid-row: 2; }
+  .app--person-detail main > .section--reviews { grid-column: 1; grid-row: 3; }
+  .app--person-detail main > .profile-hero + .section--intro ~ .section--actions {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
   /* Архетип «чат» (.app--chat) навмисно без правил тут: він уже мав повну
      реалізацію в chat.css (grid master-detail, .chat-desktop-panel) з
      попереднього кроку — лише не був увімкнений, бо жоден екран не носив
@@ -136,14 +237,34 @@
   clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
 }
 
+/* Рух ніколи не є єдиним носієм стану: за Reduce Motion компоненти одразу
+   показують свій кінцевий стан, а не лишають прихований або проміжний кадр. */
+@media (prefers-reduced-motion: reduce) {
+  :where(.app, .kit-demo, .docs),
+  :where(.app, .kit-demo, .docs) *,
+  :where(.app, .kit-demo, .docs) *::before,
+  :where(.app, .kit-demo, .docs) *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
 /* ── header.css ────────────────────────────────────────────────────────────── */
 /* ── Хедер · варіант A: видавничий вордмарк (первинні таби) ── (listings 1:1) */
 .app-head {
   position: sticky; top: 0; z-index: 5;
   background: var(--bg-page); background-image: var(--grain-1);
   padding: var(--space-20) var(--space-18) var(--space-12);
+  border-bottom: var(--border-1) solid var(--border-default);
   display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-12);
 }
+.breadcrumbs { margin-bottom: var(--space-8); color: var(--text-muted); font-size: var(--font-size-11); }
+.breadcrumbs ol { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-6); margin: 0; padding: 0; list-style: none; }
+.breadcrumbs li { display: inline-flex; align-items: center; min-width: 0; }
+.breadcrumbs li + li::before { content: "/"; margin-right: var(--space-6); color: var(--border-strong); }
+.breadcrumbs a { text-decoration: underline; text-underline-offset: .16em; }
+.breadcrumbs a:hover { color: var(--color-brand); }
+.breadcrumbs a:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: var(--space-2); }
 /* Знак бренду — квадрат-«зразок» зі загнутим кутом (дослівно «куток» + дог-ір
    каталожної сторінки). Пласкі два тони, без градієнта й тіні: олива = лице
    картки, --bg-surface = зворотний бік паперу, що показався в згині. */
@@ -165,10 +286,11 @@
   display: inline-flex; align-items: center; justify-content: center;
   border: var(--border-1-5) solid var(--color-brand); border-radius: var(--radius-999);
   background: transparent; color: var(--color-brand); cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease-standard);
 }
 .head-btn svg { width: var(--size-18); height: var(--size-18); }
 .head-btn:hover { background: var(--bg-brand-solid); color: var(--on-brand-solid); }
-.head-btn:active { filter: brightness(.92); }
+.head-btn:active { filter: brightness(.92); transform: translateY(calc(var(--move-sm) / 2)); }
 .head-btn:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: var(--space-2); }
 
 /* ── Хедер · варіант B: назад + заголовок (вторинні екрани) ──
@@ -191,16 +313,23 @@
   display: inline-flex; align-items: center; justify-content: center;
   border: var(--border-1-5) solid var(--color-brand); border-radius: var(--radius-999);
   background: transparent; color: var(--color-brand);
+  transition: transform var(--dur-fast) var(--ease-standard);
 }
 .head-back svg { width: var(--size-16); height: var(--size-16); }
 .head-back:hover { background: var(--bg-brand-solid); color: var(--on-brand-solid); }
-.head-back:active { filter: brightness(.92); }
+.head-back:active { filter: brightness(.92); transform: translateY(calc(var(--move-sm) / 2)); }
 .head-back:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: var(--space-2); }
 .head-title {
   flex: 1 1 auto; min-width: 0; text-align: center;
   font-family: var(--font-family-1); font-weight: var(--font-weight-700);
   font-size: var(--font-size-18); line-height: 1.2; letter-spacing: -.01em; color: var(--text-primary);
 }
+
+/* Контекстна шапка для flow-екранів без глобального tabbar (вхід і вибір
+   ролі). На телефоні її не показуємо: там бренд уже живе в app-head. На
+   desktop це повноширокий перший ряд оболонки, візуально споріднений із
+   desktop tabbar, але без навігаційних пунктів, яких у цього маршруту немає. */
+.desktop-bar { display: none; }
 
 /* ── Десктоп: шапка лягає під верхню панель навігації (base.css) ──
    Обидва варіанти шапки (.app-head сам собою й .app-head--back як модифікатор
@@ -209,7 +338,50 @@
    Липкість віддано панелі:
    два sticky з top:0 в сусідніх рядах наїжджали б один на одного. */
 @media (min-width: 67.5rem) {
-  .app-head { position: static; }
+  .app > .desktop-bar {
+    order: -1;
+    width: 100%;
+    min-height: var(--size-56);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-16);
+    padding: var(--space-10) var(--space-20);
+    border-bottom: var(--border-1) solid var(--border-default);
+    background: var(--bg-surface);
+    background-image: var(--grain-1);
+  }
+  .desktop-bar-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-8);
+    color: var(--color-brand);
+    font-family: var(--font-family-1);
+    font-size: var(--font-size-16);
+    font-weight: var(--font-weight-700);
+    letter-spacing: -.02em;
+  }
+  .desktop-bar-brand .brand-mark { width: var(--size-18); height: var(--size-18); }
+  .desktop-bar-context {
+    color: var(--text-muted);
+    font-size: var(--font-size-13);
+    font-weight: var(--font-weight-600);
+  }
+
+  /* desktop-bar already carries the route identity; do not repeat the small
+     brand row inside the mobile-oriented app-head. */
+  .app:has(> .desktop-bar) > .app-head .head-brand-row { display: none; }
+  /* The desktop tabbar is the first sticky row. Keep the page header in the
+     same scroll context, directly beneath it, so long wireframes retain both
+     navigation and context without covering content. */
+  .app:has(> .tabbar) > .app-head {
+    position: sticky;
+    top: var(--size-56);
+    z-index: 4;
+  }
+  /* Desktop navigation already identifies the route, so keep the remaining
+     page title compact across every layout that reuses this header. */
+  .head-word { font-size: var(--font-size-28); }
   /* Бренд і пошук на десктопі живуть у верхній панелі (tabbar.css) — у шапці
      вони б дублювались, тому тут ховаються. Розмітка на екранах не міняється:
      та сама шапка сама віддає ці два елементи панелі при переході через поріг. */
@@ -218,19 +390,92 @@
      в шапці (правка з тулбара, login.html). */
   .app:has(> .tabbar) .head-brand-row,
   .app:has(> .tabbar) .app-head > .head-btn { display: none; }
+
+  /* На desktop глобальна панель уже тримає орієнтацію між розділами. Кругла
+     стрілка є мобільним history-патерном і тут лише дублює «Пошук / Заявки /
+     Чати / Профіль». Вторинна шапка стає тихим контекстним рядком: заголовок
+     зліва, без штучного центрування навколо неіснуючої кнопки. */
+  .app:has(> .tabbar) > .app-head--back {
+    display: block;
+    padding: var(--space-18) var(--space-22);
+    border-bottom: var(--border-1) solid var(--border-default);
+  }
+  .app:has(> .tabbar) > .app-head--back .head-back-wrap {
+    display: block;
+    width: 100%;
+  }
+  .app:has(> .tabbar) > .app-head--back .head-back-row {
+    width: 100%;
+    min-height: var(--size-44);
+  }
+  .app:has(> .tabbar) > .app-head--back .head-title {
+    text-align: left;
+    font-size: var(--font-size-22);
+    line-height: 1.15;
+  }
+
+  /* Detail, catalog і chat не потребують локального «назад»: активний розділ
+     видно у верхній навігації, а список доступний тим самим пунктом меню. */
+  .app:has(> .tabbar):not(.app--flow):not(.app--preview) > .app-head--back .head-back {
+    display: none;
+  }
+
+  /* У формі посилання означає не history, а безпечний вихід без збереження.
+     Зберігаємо дію, але називаємо її прямо і прибираємо мобільну стрілку. */
+  .app:has(> .tabbar):is(.app--flow, .app--preview) > .app-head--back .head-back-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+  }
+  .app:has(> .tabbar):is(.app--flow, .app--preview) > .app-head--back .head-title {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .app:has(> .tabbar):is(.app--flow, .app--preview) > .app-head--back .head-back {
+    grid-column: 2;
+    grid-row: 1;
+    width: auto;
+    min-width: var(--size-44);
+    padding: 0 var(--space-14);
+    border-color: var(--border-default);
+    border-radius: var(--radius-8);
+    color: var(--text-primary);
+    font-size: var(--font-size-13);
+    font-weight: var(--font-weight-600);
+  }
+  .app:has(> .tabbar):is(.app--flow, .app--preview) > .app-head--back .head-back svg {
+    display: none;
+  }
+  .app:has(> .tabbar):is(.app--flow, .app--preview) > .app-head--back .head-back::after {
+    content: attr(aria-label);
+    white-space: nowrap;
+  }
 }
 
 /* ── search.css ────────────────────────────────────────────────────────────── */
 /* ── Поповер пошуку ── (listings 1:1) */
 .search-popover {
   width: min(var(--size-320), calc(100vw - var(--space-32)));
-  border: var(--border-1) solid var(--border-default); border-radius: var(--radius-14);
+  border: var(--border-1) solid var(--border-default); border-radius: var(--radius-10);
   background: var(--bg-surface); padding: var(--space-10);
+}
+.search-popover[popover] {
+  opacity: 0;
+  transform: translateY(calc(var(--move-sm) * -1));
+  transition: opacity var(--dur-base) var(--ease-exit), transform var(--dur-base) var(--ease-exit);
+}
+.search-popover[popover]:popover-open {
+  opacity: 1;
+  transform: translateY(0);
+  transition-timing-function: var(--ease-enter);
+}
+@starting-style {
+  .search-popover[popover]:popover-open { opacity: 0; transform: translateY(calc(var(--move-sm) * -1)); }
 }
 .search-form {
   display: flex; align-items: center; gap: var(--space-8);
   background: var(--bg-surface);
-  border-radius: var(--radius-12); padding: var(--space-9) var(--space-12);
+  border-radius: var(--radius-8); padding: var(--space-9) var(--space-12);
 }
 .search-form svg { width: var(--size-16); height: var(--size-16); color: var(--text-muted); flex-shrink: 0; }
 .search-form input {
@@ -252,18 +497,30 @@
    поверхнею замість того, щоб інвертуватись у найяскравішу площину екрана
    (критика теми 2026-07-29). */
 .tabbar {
-  position: sticky; bottom: calc(var(--space-8) + env(safe-area-inset-bottom));
-  margin: auto var(--space-8) calc(var(--space-8) + env(safe-area-inset-bottom));
+  /* Footer іде після main у DOM, тож sticky з'являвся лише наприкінці стрічки.
+     На мобільному сценарії навігація має бути доступна протягом усього скролу. */
+  position: fixed; z-index: 5; left: 50%;
+  width: min(calc(100% - var(--space-16)), var(--container-max));
+  transform: translateX(-50%);
+  bottom: calc(var(--space-8) + env(safe-area-inset-bottom));
+  margin: 0;
   background: var(--bg-navbar); background-image: var(--grain-2);
   display: flex; gap: var(--space-2); border-radius: var(--radius-999); padding: var(--space-6);
+}
+/* Fixed navigation no longer reserves a flex row: keep the last control and
+   card clear of it. Chat is an app-like viewport shell with its own static bar. */
+.app:has(> .tabbar):not(.app--chat) > main {
+  padding-bottom: calc(var(--size-88) + env(safe-area-inset-bottom));
 }
 .tabbar a {
   flex: 1; display: flex; flex-direction: column; align-items: center; gap: var(--space-3);
   padding: var(--space-8) var(--space-4) var(--space-7); position: relative; color: var(--on-navbar); border-radius: var(--radius-999);
+  transition: transform var(--dur-fast) var(--ease-standard);
 }
 .tabbar a.active { background: var(--bg-navbar-active); color: var(--on-navbar-active); font-weight: var(--font-weight-700); }
 .tabbar a.active .tab-ico { color: var(--on-navbar-active); }
 .tabbar a:focus-visible { outline: var(--border-2) solid var(--on-navbar); outline-offset: -3px; }
+.tabbar a:active { transform: translateY(calc(var(--move-sm) / 2)); }
 .tab-ico { position: relative; width: var(--size-22); height: var(--size-22); }
 .tab-ico svg { width: 100%; height: 100%; display: block; }
 .tab-txt { font-size: var(--font-size-11); }
@@ -273,6 +530,11 @@
      темній смузі в обох темах і тому не перевертається разом зі сторінкою. */
   background: var(--bg-navbar-badge); color: var(--on-navbar-badge);
   font-size: var(--font-size-10); font-weight: var(--font-weight-700); line-height: var(--size-15); text-align: center; border-radius: var(--radius-999);
+}
+.tab-dot--new { animation: tab-notification-enter var(--dur-base) var(--ease-enter); }
+@keyframes tab-notification-enter {
+  from { opacity: 0; transform: translateY(calc(var(--move-sm) * -1)); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* Лого і поле пошуку живуть у розмітці таб-бару, але на телефоні їх немає:
@@ -299,6 +561,9 @@
    мобільній пігулці. */
 @media (min-width: 67.5rem) {
   .tabbar {
+    z-index: 5;
+    width: auto;
+    transform: none;
     /* order, а не grid-area: оболонка на десктопі лишається flex-колонкою
        (base.css), тож піднімається сама лише панель, а решта прямих нащадків
        .app (шапка, .filterbar, main) тримає порядок розмітки. */
@@ -312,6 +577,7 @@
     background: var(--bg-surface); background-image: var(--grain-1);
     padding: var(--space-10) var(--space-20);
   }
+  .app:has(> .tabbar):not(.app--chat) > main { padding-bottom: 0; }
   .tabbar a {
     flex: none;
     flex-direction: row; justify-content: flex-start;
@@ -320,6 +586,8 @@
     color: var(--text-primary);
   }
   .tabbar a:hover { background: var(--bg-neutral); }
+  /* Бренд — ідентифікатор панелі, не навігаційний пункт: hover не фарбує лого. */
+  .tabbar > .tabbar-brand:hover { background: transparent; }
   .tabbar a.active { background: var(--bg-neutral); color: var(--color-brand); }
   .tabbar a.active .tab-ico { color: var(--color-brand); }
   .tabbar a:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: -2px; }
@@ -349,12 +617,13 @@
      Вигляд успадковано від .search-form — тут лише місце і розмір. */
   .tabbar > .tabbar-search {
     display: flex;
-    /* Вужче за колишні 320: поле стоїть у правій парі з «Профілем», а не
-       розтягує ліву половину панелі. */
-    flex: 0 1 var(--size-220);
+    /* 180px тримають короткий запит компактним у правій парі з «Профілем»,
+       а не розтягують ліву половину панелі. */
+    flex: 0 1 var(--size-180);
+    min-width: 0;
     order: 1;
     margin-left: auto; margin-right: var(--space-12);
-    border: var(--border-1) solid var(--border-default); border-radius: var(--radius-999);
+    border: none; border-radius: var(--radius-999);
     padding: var(--space-7) var(--space-14);
     background: var(--bg-page);
   }
@@ -367,9 +636,11 @@
 .menu-row {
   display: flex; align-items: center; gap: var(--space-13); padding: var(--space-15) 0;
   border-bottom: var(--border-1) solid var(--border-default); color: var(--text-primary); text-decoration: none;
+  transition: transform var(--dur-fast) var(--ease-standard);
 }
 .menu-row:last-child { border-bottom: none; }
 .menu-row:hover { background: var(--bg-neutral); }
+.menu-row:active { transform: translateY(calc(var(--move-sm) / 2)); }
 /* Фірмове кільце фокуса — до цього рядок покладався на дефолт браузера й був
    єдиним інтерактивним елементом системи без спільної мови фокуса
    (аудит /impeccable, 2026-07-29). Offset усередину, як у .row. */
@@ -382,9 +653,202 @@
   border-right: var(--border-1-5) solid var(--text-muted); transform: rotate(45deg); flex-shrink: 0;
 }
 
+.menu-group-title { display: none; }
+
+@media (max-width: 47.499rem) {
+  .menu-row { min-height: var(--size-44); }
+}
+
+@media (min-width: 67.5rem) {
+  .profile-hub .menu-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--grid-gap);
+    padding: var(--space-24) var(--space-20) 0;
+  }
+  .profile-hub .menu-group-title {
+    display: block;
+    grid-column: 1 / -1;
+    margin: var(--space-18) 0 var(--space-4);
+    color: var(--text-muted);
+    font-size: var(--font-size-11);
+    font-weight: var(--font-weight-700);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  .profile-hub .menu-group-title:first-child { margin-top: 0; }
+  .profile-hub .menu-row {
+    min-height: calc(var(--size-44) + var(--space-12));
+    padding-inline: var(--space-8);
+    border-top: var(--border-1) solid var(--border-default);
+    border-bottom: none;
+  }
+  .profile-hub .menu-row:hover { border-radius: var(--radius-8); }
+}
+
 /* ── feed.css ────────────────────────────────────────────────────────────── */
 /* ── Стрічка (список карток/рядків, вертикальний) ── */
 .feed { list-style: none; padding: var(--space-12) var(--space-16) var(--space-22); display: flex; flex-direction: column; gap: var(--space-24); }
+.catalog-workspace { display: contents; }
+.catalog-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-12);
+  padding: var(--space-16) var(--space-16) 0;
+}
+.catalog-heading h2 {
+  font-size: var(--font-size-18);
+  line-height: 1.2;
+  letter-spacing: -.01em;
+}
+.view-switch {
+  display: inline-flex;
+  flex: 0 0 auto;
+  padding: var(--space-3);
+  border-radius: var(--radius-999);
+  background: var(--bg-surface);
+}
+.view-switch-btn {
+  width: var(--size-44);
+  height: var(--size-44);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: var(--radius-999);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease-standard);
+}
+.view-switch-btn svg { width: var(--size-18); height: var(--size-18); }
+.view-switch-btn:hover { color: var(--text-primary); }
+.view-switch-btn:active { transform: translateY(calc(var(--move-sm) / 2)); }
+.view-switch-btn.is-active { background: var(--bg-brand-solid); color: var(--on-brand-solid); }
+.view-switch-btn:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: var(--space-2); }
+
+/* Альтернатива карткам — щільні рядки для порівняння назви, локації й ціни.
+   На телефоні це не стиснена таблиця: фото, назва, район, перевірка й ціна
+   читаються в одному tap-рядку. Семантика лишається списком посилань: кожен
+   рядок і далі має одну чітку дію. */
+.feed.feed--table { gap: 0; }
+.feed.feed--table > li { border-bottom: var(--border-1) solid var(--border-default); }
+.listing-table-head { display: none; }
+.feed.feed--table .card {
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  grid-template-columns: var(--size-84) minmax(0, 1fr) max-content;
+  grid-template-areas:
+    "photo listing price"
+    "photo district price"
+    "photo verification price";
+  align-items: center;
+  column-gap: var(--space-12);
+  row-gap: var(--space-5);
+  padding: var(--space-12) 0;
+  min-height: var(--size-88);
+}
+.feed.feed--table .card-photo { display: contents; }
+.feed.feed--table .card-photo img {
+  grid-area: photo;
+  width: var(--size-84);
+  height: var(--size-84);
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: var(--radius-8);
+}
+.feed.feed--table .card--person .card-photo { display: contents; padding: 0; }
+.feed.feed--table .person-card__backdrop { display: none; }
+.feed.feed--table .person-card__avatar { border-radius: var(--radius-999); }
+.feed.feed--table .place {
+  position: static;
+  grid-area: district;
+  min-width: 0;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--text-muted);
+}
+.feed.feed--table .place .t {
+  display: -webkit-box;
+  overflow: hidden;
+  white-space: normal;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.feed.feed--table .badge--on-photo {
+  display: inline-flex;
+  position: static;
+  grid-area: verification;
+  min-width: 0;
+  max-width: 100%;
+  padding-inline: 0;
+  background: transparent;
+  white-space: normal;
+}
+.feed.feed--table .card-body { display: contents; }
+.feed.feed--table .card-main { grid-area: listing; min-width: 0; }
+.feed.feed--table .card-title {
+  display: -webkit-box;
+  overflow: hidden;
+  max-width: none;
+  font-size: var(--font-size-16);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.feed.feed--table .card-price { grid-area: price; align-self: center; }
+.feed.feed--table .amount { font-size: var(--font-size-16); }
+
+/* Планшет має досить ширини для заголовків, але не для desktop-п'яти колонок.
+   Тому це три осмислені колонки з двома мета-рядками, а не горизонтальний
+   скрол або дрібний desktop-рядок. */
+@media (min-width: 47.5rem) and (max-width: 67.4375rem) {
+  .app--catalog .catalog-results .feed.feed--table {
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    gap: 0;
+    padding-top: var(--space-10);
+  }
+  .app--catalog .catalog-results .feed.feed--table > li {
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    align-self: stretch;
+  }
+  .app--catalog .catalog-results .feed.feed--table .listing-table-head {
+    display: grid;
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    grid-template-columns: var(--size-84) minmax(0, 1fr) max-content;
+    gap: var(--space-12);
+    padding: var(--space-10) 0;
+    color: var(--text-muted);
+    font-size: var(--font-size-11);
+    font-weight: 700;
+    letter-spacing: .08em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+  .app--catalog .catalog-results .feed.feed--table .listing-table-head > span:nth-child(1) { grid-column: 1; }
+  .app--catalog .catalog-results .feed.feed--table .listing-table-head > span:nth-child(2) { grid-column: 2; }
+  .app--catalog .catalog-results .feed.feed--table .listing-table-head > span:nth-child(3),
+  .app--catalog .catalog-results .feed.feed--table .listing-table-head > span:nth-child(4) { display: none; }
+  .app--catalog .catalog-results .feed.feed--table .listing-table-head > span:nth-child(5) { grid-column: 3; }
+  .app--catalog .catalog-results .feed.feed--table > li > .card {
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    grid-template-columns: var(--size-84) minmax(0, 1fr) max-content;
+    column-gap: var(--space-12);
+    padding-inline: 0;
+  }
+}
 
 /* Стрічка в колонки, щойно макет отримав ширину (--bp-tablet / --bp-desktop).
    Кількість колонок і зазор — --col-count-tablet / --col-count-desktop /
@@ -405,18 +869,261 @@
 }
 @media (min-width: 67.5rem) {
   .feed { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+  /* Каталог на великому екрані — робоча зона вибору, а не мобільна стрічка,
+     розтягнута на три колонки. Фільтри лишаються в полі зору, результати мають
+     власний заголовок і достатню ширину для швидкого порівняння фото та ціни. */
+  .app--catalog .catalog-workspace {
+    display: grid;
+    width: 100%;
+    min-width: 0;
+    grid-template-columns: 18rem minmax(0, 1fr) auto;
+    grid-template-areas:
+      "filters heading segment"
+      "filters feed feed";
+    align-items: start;
+    column-gap: var(--space-28);
+    padding: var(--space-24) var(--space-22) var(--space-32);
+  }
+  .app--catalog .catalog-workspace > .filterbar {
+    display: contents;
+  }
+  .app--catalog .catalog-workspace > .filterbar .filters-form {
+    display: contents;
+  }
+  .app--catalog .catalog-workspace > .filterbar .filters-inline {
+    grid-area: filters;
+    grid-row: 1 / -1;
+    position: sticky;
+    top: var(--space-88);
+    align-self: start;
+    max-height: calc(100vh - var(--space-88) - var(--space-24));
+    overflow-y: auto;
+    padding: var(--space-16);
+    background: var(--bg-neutral);
+    border-radius: var(--radius-16);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-13);
+  }
+  .app--catalog .catalog-workspace > .filterbar .filter-summary {
+    margin: var(--space-3) 0 0;
+    padding-top: var(--space-13);
+    border-top: var(--border-1) solid var(--border-default);
+    color: var(--text-muted);
+    font-size: var(--font-size-13);
+    line-height: 1.4;
+  }
+  .app--catalog .catalog-workspace > .filterbar .seg {
+    grid-area: segment;
+    position: sticky;
+    top: var(--space-88);
+    align-self: start;
+    justify-self: end;
+    width: fit-content;
+    max-width: 100%;
+  }
+  .app--catalog .catalog-workspace > .filterbar .seg label {
+    min-height: var(--size-44);
+    padding-inline: var(--space-14);
+  }
+  .app--catalog .catalog-results {
+    display: contents;
+    width: 100%;
+    min-width: 0;
+  }
+  .app--catalog .catalog-results .catalog-heading {
+    grid-area: heading;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-20);
+    min-height: var(--size-44);
+    padding: 0 var(--space-2) var(--space-16);
+  }
+  .catalog-heading h2 {
+    font-size: var(--font-size-22);
+    line-height: 1.12;
+    letter-spacing: -.02em;
+  }
+  .app--catalog .catalog-results .feed {
+    grid-area: feed;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-32) var(--space-22);
+    padding: var(--space-22) 0 0;
+  }
+  .app--catalog .catalog-results .feed.feed--table {
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    gap: 0;
+    padding-top: var(--space-10);
+  }
+  .app--catalog .catalog-results .feed.feed--table > li {
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    align-self: stretch;
+  }
+  .app--catalog .catalog-results .feed.feed--table .listing-table-head {
+    display: grid;
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    grid-template-columns: var(--size-106) minmax(12rem, 1.4fr) minmax(10rem, 1fr) minmax(8.5rem, .9fr) minmax(9rem, .8fr);
+    grid-template-areas: "photo listing district verification price";
+    align-items: center;
+    gap: var(--space-18);
+    padding: var(--space-10) var(--space-12);
+    color: var(--text-muted);
+    font-size: var(--font-size-11);
+    font-weight: 700;
+    letter-spacing: .08em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+  .app--catalog .catalog-results .feed.feed--table .listing-table-head > span:nth-child(1) { grid-area: photo; }
+  .app--catalog .catalog-results .feed.feed--table .listing-table-head > span:nth-child(2) { grid-area: listing; }
+  .app--catalog .catalog-results .feed.feed--table .listing-table-head > span:nth-child(3) { grid-area: district; }
+  .app--catalog .catalog-results .feed.feed--table .listing-table-head > span:nth-child(4) { grid-area: verification; }
+  .app--catalog .catalog-results .feed.feed--table .listing-table-head > span:nth-child(5) { grid-area: price; }
+  .app--catalog .catalog-results .feed.feed--table .card {
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    grid-template-columns: var(--size-106) minmax(12rem, 1.4fr) minmax(10rem, 1fr) minmax(8.5rem, .9fr) minmax(9rem, .8fr);
+    grid-template-areas: "photo listing district verification price";
+    grid-template-rows: minmax(var(--size-106), auto);
+    gap: var(--space-18);
+    padding: var(--space-10) var(--space-12);
+    min-height: calc(var(--size-106) + var(--space-20));
+    border-radius: var(--radius-16);
+  }
+  .app--catalog .catalog-results .feed.feed--table .card-photo { display: contents; }
+  .app--catalog .catalog-results .feed.feed--table .card-photo img {
+    grid-area: photo;
+    grid-column: 1;
+    grid-row: 1;
+    width: var(--size-106);
+    height: var(--size-106);
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: var(--radius-8);
+  }
+  .app--catalog .catalog-results .feed.feed--table .card--person .person-card__backdrop { display: none; }
+  .app--catalog .catalog-results .feed.feed--table .card--person .person-card__avatar { height: var(--size-106); border-radius: var(--radius-999); }
+  .app--catalog .catalog-results .feed.feed--table .place {
+    position: static;
+    grid-area: district;
+    grid-column: 3;
+    grid-row: 1;
+    align-self: center;
+    min-width: 0;
+    max-width: 100%;
+    margin: 0;
+    padding-inline: 0;
+    background: transparent;
+  }
+  .app--catalog .catalog-results .feed.feed--table .place .t {
+    display: -webkit-box;
+    overflow: hidden;
+    white-space: normal;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+  .app--catalog .catalog-results .feed.feed--table .badge--on-photo {
+    display: inline-flex;
+    position: static;
+    grid-area: verification;
+    grid-column: 4;
+    grid-row: 1;
+    align-self: center;
+    min-width: 0;
+    max-width: 100%;
+    white-space: normal;
+  }
+  .app--catalog .catalog-results .feed.feed--table .card-body { display: contents; }
+  .app--catalog .catalog-results .feed.feed--table .card-main {
+    grid-area: listing;
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 0;
+    align-self: center;
+  }
+  .app--catalog .catalog-results .feed.feed--table .card-title {
+    display: -webkit-box;
+    overflow: hidden;
+    max-width: none;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+  .app--catalog .catalog-results .feed.feed--table .card-price {
+    grid-area: price;
+    grid-column: 5;
+    grid-row: 1;
+    align-self: center;
+  }
+  .app--catalog .catalog-results .feed.feed--table .card-title { font-size: var(--font-size-18); }
+  .app--catalog .catalog-workspace > .state-main {
+    grid-area: feed;
+    min-width: 0;
+    min-height: 32rem;
+    padding: 0;
+  }
+}
+
+/* Три картки в каталозі потребують ширшої сцени: на --container-max фільтр-
+   рейка й сегмент залишають для результатів замало місця. Розширюємо лише
+   каталог на широкому desktop і фіксуємо розумний мінімум треку картки;
+   звичайний desktop лишається двоколонковим. Табличний режим вище має власні
+   правила і не потрапляє під цей селектор. */
+@media (min-width: 90rem) {
+  .app--catalog {
+    max-width: 90rem;
+  }
+  .app--catalog .catalog-results .feed:not(.feed--table) {
+    grid-template-columns: repeat(3, minmax(12rem, 1fr));
+  }
 }
 
 /* ── card.css ────────────────────────────────────────────────────────────── */
 /* ── Каталог-картка оголошення ── (listings 1:1) */
 .card { display: block; }
-.card:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: var(--space-3); border-radius: var(--radius-20); }
+.card:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: var(--space-3); border-radius: var(--radius-14); }
+
+@media (min-width: 67.5rem) {
+  .card {
+    padding: var(--space-12);
+    border-radius: var(--radius-20);
+  }
+
+  .card:focus-visible { border-radius: var(--radius-20); }
+  .card-body { padding-inline: 0; }
+}
+
+@media (min-width: 67.5rem) and (hover: hover) {
+  .card:hover { background: var(--bg-surface); }
+}
+
 .card-photo {
   position: relative; width: 100%; aspect-ratio: 4 / 3;
-  border-radius: var(--radius-26); overflow: hidden; background: var(--bg-surface);
+  border-radius: var(--radius-18); overflow: hidden; background: var(--bg-surface);
 }
 .card-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.card:active .card-photo { filter: brightness(.97); }
+.card-photo { transition: transform var(--dur-fast) var(--ease-standard); }
+.card:active .card-photo { filter: brightness(.97); transform: translateY(calc(var(--move-sm) / 2)); }
+.card--person .card-photo { display: grid; place-items: center; padding-block: var(--space-16); isolation: isolate; }
+.card-photo .person-card__backdrop {
+  position: absolute; inset: 0; z-index: -1;
+  filter: blur(var(--space-12)) brightness(.58); transform: scale(1.08);
+}
+.card-photo .person-card__avatar {
+  width: calc(75% - var(--space-16) - var(--space-16));
+  height: auto; aspect-ratio: 1; border-radius: var(--radius-999);
+  object-fit: cover;
+}
 .card-body { padding: var(--space-13) var(--space-2) 0; display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-14); }
 .card-main { min-width: 0; }
 .card-title {
@@ -451,7 +1158,7 @@
   background: var(--bg-surface); border-radius: var(--radius-999);
   padding: var(--space-5) var(--space-13) var(--space-5) var(--space-6); font-size: var(--font-size-11); font-weight: var(--font-weight-600); color: var(--text-primary);
 }
-.badge--on-photo { position: absolute; right: var(--space-12); bottom: var(--space-12); padding: var(--space-4) var(--space-12) var(--space-4) var(--space-5); }
+.badge--on-photo { position: absolute; right: var(--space-12); bottom: var(--space-12); background: transparent; padding: var(--space-4) var(--space-12) var(--space-4) var(--space-5); }
 .badge-check {
   width: var(--size-19); height: var(--size-19); border-radius: var(--radius-999); flex-shrink: 0;
   /* Пара «суцільний бренд + гліф», що НЕ перевертається темою: у світлій і
@@ -468,13 +1175,13 @@
 /* ── Аватар / фото-плейсхолдер ── */
 .avatar-link { display: block; } /* лінк-обгортка аватара → фото-в'юер */
 .avatar {
-  width: var(--size-106); height: var(--size-106); border-radius: var(--radius-30);
+  width: var(--size-106); height: var(--radius-20);
   object-fit: cover; display: block; background: var(--bg-surface);
 }
 .avatar--md { width: var(--size-64); height: var(--size-64); }
 .avatar--sm { width: var(--size-44); height: var(--size-44); }
 .thumb {
-  width: 100%; aspect-ratio: 4 / 3; border-radius: var(--radius-26);
+  width: 100%; aspect-ratio: 4 / 3; border-radius: var(--radius-18);
   object-fit: cover; display: block; background: var(--bg-surface);
 }
 /* текстовий плейсхолдер (сірі вайрфрейми) */
@@ -486,12 +1193,17 @@
 
 /* ── status-pill.css ────────────────────────────────────────────────────────────── */
 /* ── Статус-піґулка ── (заявки/оголошення: «очікує», «відхилено», «активне»…) */
+@keyframes status-pill-enter {
+  from { opacity: 0; transform: translateY(var(--move-sm)); }
+  to { opacity: 1; transform: translateY(0); }
+}
 .status-pill {
   display: inline-flex; align-items: center; gap: var(--space-4); flex-shrink: 0;
   padding: var(--space-3) var(--space-10); border-radius: var(--radius-999);
   background: var(--bg-neutral); color: var(--text-muted);
   font-size: var(--font-size-11); font-weight: var(--font-weight-600); white-space: nowrap;
 }
+.status-pill--enter { animation: status-pill-enter var(--dur-base) var(--ease-enter) both; }
 .status-pill svg { width: var(--size-10); height: var(--size-10); }
 .status-pill--success { color: var(--color-action); font-weight: var(--font-weight-700); } /* кобальт = дія/результат, той самий голос що ціна й CTA */
 .status-pill--rejected { color: var(--text-muted); text-decoration: line-through; text-decoration-color: var(--text-muted); text-decoration-thickness: var(--border-1-5); }
@@ -540,11 +1252,12 @@
   display: flex; align-items: center; gap: var(--space-12);
   padding: var(--space-14) var(--space-10);
   margin-inline: calc(-1 * var(--space-10));
-  border-radius: var(--radius-12);
+  border-radius: var(--radius-8);
   color: var(--text-primary); text-decoration: none;
-  transition: background var(--duration-1) var(--easing-1);
+  transition: transform var(--dur-fast) var(--ease-standard);
 }
 .row:hover { background: var(--bg-neutral); }
+.row:active { transform: translateY(calc(var(--move-sm) / 2)); }
 .row:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: -2px; }
 .row--muted .row-title, .row--muted .row-meta { color: var(--text-muted); } /* стан «завершено/неактивне» — семантика, не сирий opacity */
 .row-body { flex: 1; min-width: 0; display: block; }
@@ -558,6 +1271,11 @@
   background: var(--color-action); color: var(--on-action);
   font-size: var(--font-size-10); font-weight: var(--font-weight-700); line-height: var(--size-18); text-align: center;
 }
+.row-unread--new { animation: row-unread-enter var(--dur-base) var(--ease-enter); }
+@keyframes row-unread-enter {
+  from { opacity: 0; transform: translateY(calc(var(--move-sm) * -1)); }
+  to { opacity: 1; transform: translateY(0); }
+}
 .row-actions { display: flex; gap: var(--space-8); margin-top: var(--space-10); padding-bottom: var(--space-14); }
 .row-body .badge { margin-top: var(--space-6); }
 
@@ -565,6 +1283,72 @@
 .person-row { display: flex; align-items: center; gap: var(--space-10); }
 .person-name { display: block; font-size: var(--font-size-16); font-weight: var(--font-weight-600); color: var(--text-primary); }
 .person-sub { display: block; font-size: var(--font-size-13); color: var(--text-muted); margin-top: var(--space-2); }
+
+/* Операційні списки: статус і рішення залишаються в одному блоці,
+   а desktop дає дві колонки однакової щільності замість довгих рядків. */
+.operation-toolbar { padding: var(--space-14) var(--space-16); }
+
+.operation-table-wrap { margin: 0 var(--space-16); overflow-x: auto; border-bottom: var(--border-1) solid var(--border-default); }
+.operation-table-wrap:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: var(--space-4); }
+.operation-table { width: 100%; min-width: 40rem; border-collapse: collapse; text-align: left; }
+.operation-table th { padding: var(--space-12) var(--space-10); border-bottom: var(--border-1) solid var(--border-default); color: var(--text-muted); font-size: var(--font-size-11); font-weight: var(--font-weight-700); letter-spacing: .08em; text-transform: uppercase; }
+.operation-table th:nth-child(2) { width: 10.5rem; }
+.operation-table th:last-child { width: 11.5rem; }
+.operation-table td { padding: var(--space-14) var(--space-10); border-bottom: var(--border-1) solid var(--border-default); vertical-align: middle; }
+.operation-table tbody tr:last-child td { border-bottom: none; }
+.operation-table__person { display: flex; align-items: center; gap: var(--space-12); min-width: 19rem; color: var(--text-primary); text-decoration: none; }
+.operation-table__person > span { min-width: 0; }
+.operation-table__person .row-meta:first-child { margin-top: 0; }
+.operation-table__person .badge { margin-top: var(--space-6); }
+.operation-table__person { transition: transform var(--dur-fast) var(--ease-standard); }
+.operation-table__person:active { transform: translateY(calc(var(--move-sm) / 2)); }
+.operation-table__person:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: var(--space-4); border-radius: var(--radius-8); }
+.operation-table__row--muted .row-title, .operation-table__row--muted .row-meta { color: var(--text-muted); }
+.operation-table td:last-child { white-space: nowrap; }
+
+
+@media (max-width: 47.499rem) {
+  .wf-nav { display: none; }
+  .wf-shell, .wf-stage { width: 100%; min-width: 0; }
+  .app--catalog { width: 100%; max-width: 100%; min-width: 0; overflow-x: hidden; }
+  .operation-main, .operation-main .operation-list { width: 100%; min-width: 0; }
+  .operation-main .row { width: 100%; margin-inline: 0; }
+  .operation-main .row-body { overflow: hidden; }
+  .operation-main .row-side,
+  .operation-main .status-pill { max-width: 7.5rem; }
+  .operation-main .btn--sm { min-height: var(--size-44); }
+}
+
+
+@media (min-width: 67.5rem) {
+  .operation-main { padding: 0 var(--space-20) var(--space-32); }
+  .operation-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-20);
+    padding: var(--space-12) 0 var(--space-20);
+    border-bottom: var(--border-1) solid var(--border-default);
+  }
+  .operation-toolbar .btn { width: auto; min-width: var(--size-220); }
+  .app--catalog .operation-main .operation-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 var(--grid-gap);
+    padding: var(--space-12) 0 0;
+  }
+  .app--catalog .operation-main .operation-list > li {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: var(--space-8) var(--space-4) var(--space-16);
+    border: none;
+    border-top: var(--border-1) solid var(--border-default);
+    border-radius: 0;
+  }
+  .operation-list .row { min-height: calc(var(--size-44) + var(--space-12)); }
+  .operation-list .row-actions { margin-top: auto; padding-left: calc(var(--size-44) + var(--space-12)); }
+}
 
 /* ── review.css ────────────────────────────────────────────────────────────── */
 /* ── Відгук (карточка відгуку в профілі) ── структура з profile.html, вигляд із мови */
@@ -634,6 +1418,16 @@
 }
 
 @media (min-width: 47.5rem) {
+  /* Короткі auth/verify кроки лишаються одним сфокусованим маршрутом.
+     --measure-read дає достатньо місця довгим поясненням згоди, але не
+     перетворює телефонне поле чи код на смугу через весь desktop. */
+  .app--compact > .app-head,
+  .app--compact > main {
+    width: 100%;
+    max-width: var(--measure-read);
+    margin-inline: auto;
+  }
+
   .app--compare > .app-head,
   .app--compare > main,
   .app--edit > .app-head,
@@ -663,6 +1457,15 @@
   .app--edit form > .section:has(> .field + .field) > .field:last-child:nth-child(odd) {
     grid-column: 1 / -1;
   }
+
+  /* У довгій формі повноширинна CTA виглядає як ще одне поле. Дія завершує
+     маршрут по правому краю основної колонки; підказка стану тримає ту саму
+     міру. На телефоні btn--block лишається повноширинною. */
+  .app--edit form > .section:last-child > :where(.btn, .btn-stack, .hint) {
+    width: 100%;
+    max-width: 22rem;
+    margin-left: auto;
+  }
 }
 
 @media (min-width: 67.5rem) {
@@ -686,7 +1489,7 @@
     top: var(--space-88);
     padding: var(--space-18);
     border: var(--border-1) solid var(--border-default);
-    border-radius: var(--radius-22);
+    border-radius: var(--radius-16);
     background: var(--bg-surface);
   }
   .form-preview .profile-hero { padding: 0; }
@@ -712,18 +1515,57 @@
 .profile-hero .btn { margin-top: var(--space-12); }
 .profile-hero .meter-block { margin-top: var(--space-22); }
 
+/* Desktop account hub: summary ліворуч є опорою, а не mobile hero,
+   випадково виштовхнутим у правий кут. */
+@media (max-width: 47.499rem) {
+  .wf-nav { display: none; }
+  .wf-shell, .wf-stage { width: 100%; min-width: 0; }
+  .app--detail { width: 100%; max-width: 100%; min-width: 0; overflow-x: hidden; }
+  .app--detail > .app-head > :first-child,
+  .app--detail > main,
+  .profile-hub > .profile-hero { width: 100%; min-width: 0; }
+  .profile-hub .profile-bio { overflow-wrap: anywhere; }
+  .profile-hub .meter-block { max-width: 100%; }
+}
+
+@media (min-width: 67.5rem) {
+  .app--detail main.profile-hub {
+    grid-template-columns: minmax(20rem, 23rem) minmax(0, 1fr);
+    gap: 0 var(--grid-gap);
+    padding: var(--space-20) var(--space-22) var(--space-32);
+  }
+  .app--detail main.profile-hub > .profile-hero {
+    grid-column: 1;
+    grid-row: 1 / span 8;
+    position: sticky;
+    top: calc(var(--size-60) + var(--space-20));
+    align-items: flex-start;
+    text-align: left;
+    padding: var(--space-24);
+    border-radius: var(--radius-16);
+    background: var(--bg-neutral);
+  }
+  .app--detail main.profile-hub > .profile-hero .avatar { width: var(--size-106); height: var(--size-106); }
+  .app--detail main.profile-hub > .profile-hero .profile-name { margin-top: var(--space-18); }
+  .app--detail main.profile-hub > .profile-hero .profile-bio { max-width: 30ch; }
+  .app--detail main.profile-hub > .profile-hero .meter-block { max-width: none; }
+  .app--detail main.profile-hub > :not(.profile-hero) { grid-column: 2; }
+  .profile-hub > .section { padding-inline: var(--space-20); }
+}
+
 /* ── button.css ────────────────────────────────────────────────────────────── */
 /* ── Кнопки ── (один API; консолідує .btn/.primary/.ghost/sheet-apply/edit-link) */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: var(--space-7);
-  height: var(--size-48); padding: 0 var(--space-18); border-radius: var(--radius-12);
+  height: var(--size-48); padding: 0 var(--space-18); border-radius: var(--radius-8);
   border: var(--border-1-5) solid var(--border-default); background: transparent; color: var(--text-primary);
   font: inherit; font-size: var(--font-size-16); font-weight: var(--font-weight-600);
-  cursor: pointer; text-decoration: none;
+  cursor: pointer; text-decoration: none; outline: var(--border-2) solid transparent; outline-offset: var(--space-2);
+  transition: transform var(--dur-fast) var(--ease-standard);
 }
 .btn:hover { background: var(--bg-neutral); }
-.btn:active { background: var(--bg-pressed); }
-.btn:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: var(--space-2); }
+.btn:active { background: var(--bg-pressed); transform: translateY(calc(var(--move-sm) / 2)); }
+.btn:focus-visible { outline-color: var(--color-action); }
 .btn--primary { border: none; background: var(--color-action); color: var(--on-action); font-weight: var(--font-weight-700); }
 .btn--primary:hover { background: var(--color-action); filter: brightness(1.08); }
 .btn--primary:active { filter: brightness(.92); }
@@ -748,34 +1590,83 @@
 }
 .field input, .field textarea, .field select {
   width: 100%; border: none; background: var(--bg-surface);
-  border-radius: var(--radius-12); padding: var(--space-12) var(--space-13);
+  border-radius: var(--radius-8); padding: var(--space-12) var(--space-13);
   font: inherit; font-size: var(--font-size-16); color: var(--text-primary);
+  outline: var(--border-2) solid transparent; outline-offset: var(--space-1);
 }
 .field input, .field select { height: var(--size-48); padding: 0 var(--space-13); }
 .field textarea { min-height: var(--size-96); resize: vertical; line-height: 1.45; }
 .field input::placeholder, .field textarea::placeholder { color: var(--text-muted); }
-.field input:focus, .field textarea:focus, .field select:focus { outline: var(--border-2) solid var(--color-action); outline-offset: var(--space-1); }
+.field input:focus, .field textarea:focus, .field select:focus { outline-color: var(--color-action); }
 
-/* ── Кастомний select ── (listings .fsel, борт прибрано 2026-07-24) */
+/* ── select.css ────────────────────────────────────────────────────────────── */
+/* ── Кастомний select ──
+   JS прогресивно покращує наявний .fsel > select. Нативний select лишається
+   джерелом значення для form submission та існуючих change-обробників. */
 .fsel {
   position: relative; display: flex; align-items: center; min-width: 0; width: 100%;
-  background: var(--bg-surface);
-  border-radius: var(--radius-12); padding: 0 var(--space-30) 0 var(--space-13); height: var(--size-48);
+  min-height: var(--size-48); padding: 0; background: var(--bg-surface); border-radius: var(--radius-8);
 }
-.fsel select {
+.fsel > select {
   appearance: none; -webkit-appearance: none; -moz-appearance: none;
-  border: none; background: transparent; font: inherit;
-  font-size: var(--font-size-16); font-weight: var(--font-weight-600); color: var(--text-primary); cursor: pointer;
-  flex: 1; min-width: 0; padding: 0;
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  width: 100%; min-width: 0; min-height: var(--size-48); border: none; background: transparent;
+  padding: 0 var(--space-30) 0 var(--space-13); font: inherit; font-size: var(--font-size-16);
+  font-weight: var(--font-weight-600); color: var(--text-primary); cursor: pointer;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; outline: var(--border-2) solid transparent; outline-offset: var(--space-1);
 }
-.fsel::after {
-  content: ""; position: absolute; right: var(--space-14); top: 50%; margin-top: -5px;
-  width: var(--size-8); height: var(--size-8);
-  border-right: var(--border-1-5) solid var(--text-muted); border-bottom: var(--border-1-5) solid var(--text-muted);
-  transform: rotate(45deg); pointer-events: none;
+.fsel > select:focus { outline-color: var(--color-action); }
+.fsel.is-enhanced > select {
+  position: absolute; inline-size: 1px; block-size: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
 }
-.fsel:focus-within { outline: var(--border-2) solid var(--color-action); outline-offset: var(--space-1); }
+.fsel-button {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--space-12);
+  width: 100%; min-height: var(--size-48); border: 0; border-radius: var(--radius-8);
+  padding: 0 var(--space-13); background: transparent; color: var(--text-primary); font: inherit;
+  font-size: var(--font-size-16); font-weight: var(--font-weight-600); text-align: left; cursor: pointer; outline: var(--border-2) solid transparent; outline-offset: var(--space-1);
+  transition: transform var(--dur-fast) var(--ease-standard);
+}
+.fsel-button__text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fsel-button__chevron {
+  flex: 0 0 auto; width: var(--size-8); height: var(--size-8); margin-inline-end: var(--space-2);
+  border-inline-end: var(--border-1-5) solid var(--text-muted); border-block-end: var(--border-1-5) solid var(--text-muted);
+  transform: translateY(calc(var(--move-sm) / -4)) rotate(45deg); transition: transform var(--dur-fast) var(--ease-standard);
+}
+.fsel-button[aria-expanded="true"] .fsel-button__chevron { transform: translateY(calc(var(--move-sm) / 2)) rotate(225deg); }
+.fsel-button:hover { background: var(--bg-neutral); }
+.fsel-button:active { transform: translateY(calc(var(--move-sm) / 2)); }
+.fsel-button:disabled { color: var(--text-muted); cursor: not-allowed; }
+.fsel-button:focus-visible { outline-color: var(--color-action); }
+.fsel-listbox {
+  position: fixed; z-index: 30; box-sizing: border-box; display: flex; flex-direction: column; gap: var(--space-2);
+  margin: 0; padding: var(--space-6); overflow: auto; border: 0; border-radius: var(--radius-10);
+  background: var(--bg-surface); color: var(--text-primary); list-style: none;
+}
+.fsel-listbox[hidden] { display: none; }
+.fsel-listbox:not([hidden]) { animation: fsel-listbox-enter var(--dur-base) var(--ease-enter); }
+.fsel-option {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--space-12);
+  width: 100%; min-height: var(--size-44); border: 0; border-radius: var(--radius-6); padding: var(--space-10) var(--space-12);
+  background: transparent; color: var(--text-primary); font: inherit; font-size: var(--font-size-16); text-align: left; cursor: pointer; outline: var(--border-2) solid transparent; outline-offset: calc(var(--space-1) * -1);
+  transition: transform var(--dur-fast) var(--ease-standard);
+}
+.fsel-option:hover, .fsel-option[data-active="true"] { background: var(--ink-a04); }
+.fsel-option:active { transform: translateY(calc(var(--move-sm) / 2)); }
+.fsel-option[aria-selected="true"] { color: var(--color-action); font-weight: var(--font-weight-700); }
+.fsel-option[aria-disabled="true"] { color: var(--text-muted); cursor: not-allowed; }
+.fsel-option:focus-visible { outline-color: var(--color-action); }
+.fsel-option__check { width: var(--size-16); height: var(--size-16); flex: 0 0 auto; color: currentColor; }
+.fsel-optgroup {
+  padding: var(--space-8) var(--space-12) var(--space-4); color: var(--text-muted);
+  font-size: var(--font-size-11); font-weight: var(--font-weight-700); letter-spacing: .07em; text-transform: uppercase;
+}
+@keyframes fsel-listbox-enter {
+  from { opacity: 0; transform: translateY(var(--move-sm)); }
+  to { opacity: 1; transform: none; }
+}
+@media (max-width: 47.49rem) {
+  .fsel-listbox { border-radius: var(--radius-8); }
+}
 
 /* ── checkbox.css ────────────────────────────────────────────────────────────── */
 /* ── Чекбокс ── структура з consent, вигляд із мови */
@@ -785,12 +1676,14 @@
   flex-shrink: 0; width: var(--size-22); height: var(--size-22); margin-top: var(--space-1);
   /* --border-control, не --border-default: порожній квадратик — єдиний носій
      контролу, тож його межа підпадає під WCAG 1.4.11 (3:1). Див. tokens.css. */
-  border: var(--border-1-5) solid var(--border-control); border-radius: var(--radius-7); background: var(--bg-page);
-  display: inline-flex; align-items: center; justify-content: center; color: transparent;
+  border: var(--border-1-5) solid var(--border-control); border-radius: var(--radius-4); background: var(--bg-page);
+  display: inline-flex; align-items: center; justify-content: center; color: transparent; outline: var(--border-2) solid transparent; outline-offset: var(--space-2);
+  transition: transform var(--dur-fast) var(--ease-standard);
 }
 .chk-box svg { width: var(--size-13); height: var(--size-13); }
 .chk-line input:checked + .chk-box { background: var(--color-action); border-color: var(--color-action); color: var(--on-action); }
-.chk-line input:focus-visible + .chk-box { outline: var(--border-2) solid var(--color-action); outline-offset: var(--space-2); }
+.chk-line:active .chk-box { transform: translateY(calc(var(--move-sm) / 2)); }
+.chk-line input:focus-visible + .chk-box { outline-color: var(--color-action); }
 
 /* ── radio.css ────────────────────────────────────────────────────────────── */
 /* ── Радіо-список ── структура з report/privacy, вигляд із мови */
@@ -801,12 +1694,14 @@
   /* --border-control, не --border-default: те саме, що й у .chk-box — порожнє
      кільце є весь контрол, WCAG 1.4.11 (3:1). Див. tokens.css. */
   border: var(--border-1-5) solid var(--border-control); border-radius: var(--radius-999); background: var(--bg-page);
-  display: inline-flex; align-items: center; justify-content: center;
+  display: inline-flex; align-items: center; justify-content: center; outline: var(--border-2) solid transparent; outline-offset: var(--space-2);
+  transition: transform var(--dur-fast) var(--ease-standard);
 }
 .radio-dot::after { content: ""; width: var(--size-10); height: var(--size-10); border-radius: var(--radius-999); background: transparent; }
 .radio-option input:checked + .radio-dot { border-color: var(--color-action); }
 .radio-option input:checked + .radio-dot::after { background: var(--color-action); }
-.radio-option input:focus-visible + .radio-dot { outline: var(--border-2) solid var(--color-action); outline-offset: var(--space-2); }
+.radio-option:active .radio-dot { transform: translateY(calc(var(--move-sm) / 2)); }
+.radio-option input:focus-visible + .radio-dot { outline-color: var(--color-action); }
 /* Варіант із двох рядків (заголовок опції + пояснення) — privacy-settings */
 .radio-option .opt-text { display: flex; flex-direction: column; gap: var(--space-2); }
 .radio-option .opt-title { color: var(--text-primary); font-weight: var(--font-weight-600); }
@@ -818,16 +1713,19 @@
    один avatar-прев'ю + ghost-кнопка дії (профіль, одне фото) — обидві всередині .photo-row. */
 .photo-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-10); }
 .photo-slot {
-  width: var(--size-84); height: var(--size-84); border-radius: var(--radius-30);
+  width: var(--size-84); height: var(--size-84); border-radius: var(--radius-20);
   border: var(--border-1-5) solid var(--border-default); background: var(--bg-surface);
   display: inline-flex; align-items: center; justify-content: center;
-  color: var(--color-brand); cursor: pointer; overflow: hidden;
+  color: var(--color-brand); cursor: pointer; overflow: hidden; outline: var(--border-2) solid transparent; outline-offset: var(--space-2);
+  transition: transform var(--dur-fast) var(--ease-standard);
 }
 .photo-slot svg { width: var(--size-26); height: var(--size-26); }
 .photo-slot img { width: 100%; height: 100%; object-fit: cover; }
 /* Слот — це <button>; кільце фокуса було відсутнє
    (аудит /impeccable, 2026-07-29). */
-.photo-slot:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: var(--space-2); }
+.photo-slot:focus-visible { outline-color: var(--color-action); }
+.photo-slot:hover { background: var(--bg-neutral); }
+.photo-slot:active { transform: translateY(calc(var(--move-sm) / 2)); }
 
 /* ── segment.css ────────────────────────────────────────────────────────────── */
 /* ── Панель фільтра над стрічкою (сегмент живе тут) ── (listings 1:1) */
@@ -858,14 +1756,15 @@
 .seg label {
   flex: 1; display: flex; align-items: center; justify-content: center; gap: var(--space-6);
   padding: var(--space-9) var(--space-8); border-radius: var(--radius-999);
-  font-size: var(--font-size-13); color: var(--text-muted); cursor: pointer;
-  transition: background var(--duration-1) var(--easing-1), color var(--duration-1) var(--easing-1);
+  font-size: var(--font-size-13); color: var(--text-muted); cursor: pointer; outline: var(--border-2) solid transparent; outline-offset: var(--space-2);
+  transition: transform var(--dur-fast) var(--ease-standard);
 }
 .seg input { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); }
 /* --bg-selected, не --bg-surface: піґулка лежить не на канвасі, а на треку
    --bg-neutral, і в темній темі елевація «поверхні» на ньому зникала (tokens.css). */
 .seg label:has(input:checked) { background: var(--bg-selected); color: var(--color-action); font-weight: var(--font-weight-700); }
-.seg label:has(input:focus-visible) { outline: var(--border-2) solid var(--color-action); outline-offset: var(--space-2); }
+.seg label:active { transform: translateY(calc(var(--move-sm) / 2)); }
+.seg label:has(input:focus-visible) { outline-color: var(--color-action); }
 .seg-count {
   display: inline-flex; align-items: center; justify-content: center;
   min-width: var(--size-17); height: var(--size-17); padding: 0 var(--space-5); border-radius: var(--radius-999);
@@ -880,18 +1779,19 @@
   position: sticky; bottom: var(--space-88); z-index: 4; align-self: flex-end; margin: 0 var(--space-14) var(--space-12) auto;
   width: var(--size-56); height: var(--size-56); border-radius: var(--radius-999); border: none;
   background: var(--color-action); color: var(--on-action); cursor: pointer;
-  display: inline-flex; align-items: center; justify-content: center;
+  display: inline-flex; align-items: center; justify-content: center; outline: var(--border-2) solid transparent; outline-offset: var(--space-2);
+  transition: transform var(--dur-fast) var(--ease-standard);
 }
 .fab svg { width: var(--size-24); height: var(--size-24); }
 .fab:hover { filter: brightness(1.08); }
-.fab:active { filter: brightness(.9); }
-.fab:focus-visible { outline: var(--border-2) solid var(--text-primary); outline-offset: var(--space-2); }
+.fab:active { filter: brightness(.9); transform: translateY(calc(var(--move-sm) / 2)); }
+.fab:focus-visible { outline-color: var(--text-primary); }
 
 /* ── sheet.css ────────────────────────────────────────────────────────────── */
 /* ── Боттом-шит фільтра ── (listings 1:1, як статичний блок) */
 .sheet {
   border: var(--border-1) solid var(--border-default); border-bottom: none;
-  border-radius: var(--radius-22) var(--radius-22) 0 0;
+  border-radius: var(--radius-16) var(--radius-16) 0 0;
   background: var(--bg-page); background-image: var(--grain-1);
   padding: var(--space-16) var(--space-18) calc(var(--space-20) + env(safe-area-inset-bottom));
 }
@@ -901,6 +1801,19 @@
   position: fixed; inset: auto; bottom: 0; left: 50%; transform: translateX(-50%);
   width: min(var(--size-400), 100vw); margin: 0; max-height: 82vh; overflow-y: auto;
 }
+.sheet--popover[popover] {
+  opacity: 0;
+  transform: translate(-50%, var(--move-md));
+  transition: opacity var(--dur-base) var(--ease-exit), transform var(--dur-base) var(--ease-exit);
+}
+.sheet--popover[popover]:popover-open {
+  opacity: 1;
+  transform: translate(-50%, 0);
+  transition-timing-function: var(--ease-enter);
+}
+@starting-style {
+  .sheet--popover[popover]:popover-open { opacity: 0; transform: translate(-50%, var(--move-md)); }
+}
 .sheet--popover::backdrop { background: var(--bg-backdrop); }
 .sheet-grip { width: var(--size-40); height: var(--size-4); border-radius: var(--radius-999); background: var(--border-default); margin: 0 auto var(--space-14); }
 .sheet-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-14); }
@@ -909,10 +1822,11 @@
   width: var(--size-44); height: var(--size-44); border-radius: var(--radius-999); border: var(--border-1-5) solid var(--border-default);
   background: transparent; color: var(--text-muted); cursor: pointer;
   display: inline-flex; align-items: center; justify-content: center;
+  transition: transform var(--dur-fast) var(--ease-standard);
 }
 .sheet-close svg { width: var(--size-15); height: var(--size-15); }
 .sheet-close:hover { color: var(--text-primary); border-color: var(--text-muted); }
-.sheet-close:active { background: var(--bg-neutral); }
+.sheet-close:active { background: var(--bg-neutral); transform: translateY(calc(var(--move-sm) / 2)); }
 /* Те саме кільце, що й у решти кнопок-іконок (.head-btn, .head-back) — раніше
    покладалась на дефолт браузера (аудит /impeccable, 2026-07-29). */
 .sheet-close:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: var(--space-2); }
@@ -920,10 +1834,15 @@
 
 /* ── state.css ────────────────────────────────────────────────────────────── */
 /* ── Порожній стан ── (стани listings 1:1) */
+@keyframes state-error-enter {
+  from { opacity: 0; transform: translateY(calc(var(--move-sm) / -2)); }
+  to { opacity: 1; transform: translateY(0); }
+}
 .state-main { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: center; } /* вертикальне центрування .state-block у main */
 .state-block { display: flex; flex-direction: column; align-items: center; text-align: center; padding: var(--space-32) var(--space-28); }
+.state-block--error-enter { animation: state-error-enter var(--dur-fast) var(--ease-standard) both; }
 .state-icon {
-  width: var(--size-88); height: var(--size-88); border-radius: var(--radius-30); background: var(--bg-empty-icon);
+  width: var(--size-88); height: var(--size-88); border-radius: var(--radius-20); background: var(--bg-empty-icon);
   display: flex; align-items: center; justify-content: center; color: var(--color-brand); margin-bottom: var(--space-22);
 }
 .state-icon svg { width: var(--size-44); height: var(--size-44); }
@@ -933,12 +1852,22 @@
 
 /* ── banner.css ────────────────────────────────────────────────────────────── */
 /* ── Банер ── структура сірих банерів, вигляд із мови (без тіней, папір + рамка) */
+@keyframes banner-error-enter {
+  from { opacity: 0; transform: translateY(calc(var(--move-sm) / -2)); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes banner-status-enter {
+  from { opacity: 0; transform: translateY(var(--move-sm)); }
+  to { opacity: 1; transform: translateY(0); }
+}
 .banner {
   display: flex; align-items: flex-start; gap: var(--space-10);
-  padding: var(--space-13) var(--space-14); border-radius: var(--radius-12);
+  padding: var(--space-13) var(--space-14); border-radius: var(--radius-8);
   border: var(--border-1-5) solid var(--border-default); background: var(--bg-surface);
   font-size: var(--font-size-13); color: var(--text-primary); line-height: 1.4;
 }
+.banner--error.banner--enter { animation: banner-error-enter var(--dur-fast) var(--ease-standard) both; }
+.banner:is(.banner--success, .banner--info).banner--enter { animation: banner-status-enter var(--dur-base) var(--ease-enter) both; }
 .banner-ic { flex-shrink: 0; width: var(--size-20); height: var(--size-20); color: var(--text-muted); margin-top: var(--space-1); }
 .banner-ic svg { width: 100%; height: 100%; display: block; }
 .banner--error .banner-ic { color: var(--color-danger); }
@@ -947,22 +1876,37 @@
 
 /* ── skeleton.css ────────────────────────────────────────────────────────────── */
 /* ── Скелетон завантаження ── (listings-loading 1:1) */
-@keyframes sk-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .45; } }
-.sk { background: var(--bg-pressed); animation: sk-pulse 1.4s ease-in-out infinite; }
-.sk-photo { width: 100%; aspect-ratio: 4 / 3; border-radius: var(--radius-26); }
+/* Рівний повтор повідомляє, що конкретний вміст ще завантажується. */
+@keyframes sk-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .55; }
+}
+.sk {
+  background: var(--bg-pressed);
+  animation: sk-pulse calc(var(--dur-slow) * 4) var(--ease-standard) infinite;
+  transition: opacity var(--dur-base) var(--ease-exit);
+}
+/* Додати клас усім `.sk` у заглушці перед заміною її справжнім вмістом. */
+.sk--leaving { animation: none; opacity: 0; }
+.sk-photo { width: 100%; aspect-ratio: 4 / 3; border-radius: var(--radius-18); }
 .sk-body { padding: var(--space-13) var(--space-2) 0; display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-14); }
-.sk-title { width: 62%; height: var(--size-26); border-radius: var(--radius-8); }
-.sk-price { width: 26%; height: var(--size-26); border-radius: var(--radius-8); }
-.sk-line { display: block; height: var(--size-12); border-radius: var(--radius-6); margin: var(--space-6) 0; } /* рядок тексту, що вантажиться; ширина — inline per-instance */
+.sk-title { width: 62%; height: var(--size-26); border-radius: var(--radius-6); }
+.sk-price { width: 26%; height: var(--size-26); border-radius: var(--radius-6); }
+.sk-line { display: block; height: var(--size-12); border-radius: var(--radius-4); margin: var(--space-6) 0; } /* рядок тексту, що вантажиться; ширина — inline per-instance */
 
 /* ── chat.css ────────────────────────────────────────────────────────────── */
 /* ══════════════════════════════════════════════════════════════════════════
    ЧАТ
    ══════════════════════════════════════════════════════════════════════════ */
 .chat-thread { display: flex; flex-direction: column; gap: var(--space-8); padding: var(--space-14) var(--space-16); }
-.msg { max-width: 78%; padding: var(--space-10) var(--space-13); border-radius: var(--radius-18); font-size: var(--font-size-16); line-height: 1.4; }
-.msg--in { align-self: flex-start; background: var(--bg-surface); color: var(--text-primary); border-bottom-left-radius: var(--radius-6); }
-.msg--out { align-self: flex-end; background: var(--color-action); color: var(--on-action); border-bottom-right-radius: var(--radius-6); }
+.msg { max-width: 78%; padding: var(--space-10) var(--space-13); border-radius: var(--radius-12); font-size: var(--font-size-16); line-height: 1.4; }
+.msg--in { align-self: flex-start; background: var(--bg-surface); color: var(--text-primary); border-bottom-left-radius: var(--radius-4); }
+.msg--out { align-self: flex-end; background: var(--color-action); color: var(--on-action); border-bottom-right-radius: var(--radius-4); }
+.msg--sent { animation: message-sent-enter var(--dur-base) var(--ease-enter); }
+@keyframes message-sent-enter {
+  from { opacity: 0; transform: translateY(var(--move-sm)); }
+  to { opacity: 1; transform: translateY(0); }
+}
 .composer {
   display: flex; align-items: center; gap: var(--space-8); padding: var(--space-10) var(--space-12);
   border-top: var(--border-1) solid var(--border-default); background: var(--bg-page); background-image: var(--grain-1);
@@ -977,14 +1921,16 @@
   flex-shrink: 0; width: var(--size-44); height: var(--size-44); border-radius: var(--radius-999); border: none;
   background: var(--color-action); color: var(--on-action); cursor: pointer;
   display: inline-flex; align-items: center; justify-content: center;
+  transition: transform var(--dur-fast) var(--ease-standard);
 }
 .composer .send svg { width: var(--size-20); height: var(--size-20); }
 .composer .send:hover { filter: brightness(1.08); }
-.composer .send:active { filter: brightness(.9); }
+.composer .send:active { filter: brightness(.9); transform: translateY(calc(var(--move-sm) / 2)); }
+.composer .send:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: var(--space-2); }
 
 /* ── Скелетон-бульбашка (chat-loading) ── реальна форма/вирівнювання msg--in/msg--out,
    нейтральний пульс замість кольору (та сама умова, що й .sk-line: ширина/висота — inline per-instance) */
-.sk-msg { align-self: flex-start; max-width: 78%; height: var(--size-38); border-radius: var(--radius-18); }
+.sk-msg { align-self: flex-start; max-width: 78%; height: var(--size-38); border-radius: var(--radius-12); }
 
 /* ── Master-detail для діалогів ──
    На телефоні файли лишаються окремими екранами: dialogs = список, chat = розмова.
@@ -1047,6 +1993,12 @@
     flex-direction: column;
     border-left: var(--border-1) solid var(--border-default);
   }
+  /* API-стан додається в момент вибору розмови: detail приходить з боку
+     master-списку, тому перехід пояснює зв'язок між рядком і листуванням.
+     Без .is-entering панель з'являється звичайно, без page-load анімації. */
+  .chat-desktop-panel--detail.is-entering {
+    animation: chat-detail-enter var(--dur-slow) var(--ease-enter);
+  }
   .chat-desktop-panel--master {
     grid-column: 1;
     grid-row: 2 / 6;
@@ -1068,34 +2020,66 @@
   .app--chat > .app-head--back .head-back { display: none; }
 }
 
+@keyframes chat-detail-enter {
+  from { opacity: 0; transform: translateX(calc(var(--move-md) * -1)); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
 /* ── gallery.css ────────────────────────────────────────────────────────────── */
 /* ── Повноекранний фото-в'юер ── винесено з photo-viewer.html (аудит 2026-07-29) */
 .gallery-bar { display: flex; align-items: center; justify-content: space-between; padding: var(--space-16) var(--space-16) var(--space-10); }
 .gallery-close {
-    width: var(--size-38); height: var(--size-38); border-radius: var(--radius-999); border: var(--border-1-5) solid var(--border-default);
+    width: var(--size-44); height: var(--size-44); border-radius: var(--radius-999); border: var(--border-1-5) solid var(--border-default);
     background: transparent; color: var(--text-primary); display: inline-flex; align-items: center; justify-content: center;
+    transition: transform var(--dur-fast) var(--ease-standard);
   }
 .gallery-close:hover { background: var(--bg-neutral); }
+.gallery-close:active { transform: translateY(calc(var(--move-sm) / 2)); }
+.gallery-close:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: var(--space-2); }
 .gallery-close svg { width: var(--size-15); height: var(--size-15); }
 .gallery-viewer { padding: var(--space-6) var(--space-16) 0; }
-.gallery-photo { width: 100%; aspect-ratio: 4 / 5; border-radius: var(--radius-26); object-fit: cover; display: block; background: var(--bg-surface); }
+.gallery-photo { width: 100%; aspect-ratio: 4 / 5; border-radius: var(--radius-18); object-fit: cover; display: block; background: var(--bg-surface); }
 .gallery-strip { list-style: none; display: flex; gap: var(--space-8); padding: var(--space-14) var(--space-16) var(--space-22); }
 .gallery-strip li { flex: 0 0 auto; }
-.gallery-thumb { width: var(--size-60); height: var(--size-60); border-radius: var(--radius-8); object-fit: cover; display: block; border: var(--border-1-5) solid transparent; }
+.gallery-thumb { width: var(--size-60); height: var(--size-60); border-radius: var(--radius-6); object-fit: cover; display: block; border: var(--border-1-5) solid transparent; }
 .gallery-thumb--current { border-color: var(--color-action); }
 
 /* ── thumb-strip.css ────────────────────────────────────────────────────────────── */
 /* ── Стрічка мініатюр кімнати ── винесено з room*.html, де дублювалась у 3 файлах */
 .thumb-strip { display: flex; gap: var(--space-8); margin-top: var(--space-8); }
 .thumb-strip a { display: block; flex: 0 0 auto; }
-.thumb-strip img { width: var(--size-64); height: var(--size-48); border-radius: var(--radius-8); object-fit: cover; display: block; background: var(--bg-surface); }
-.thumb-strip .sk { width: var(--size-64); height: var(--size-48); border-radius: var(--radius-8); }
+.thumb-strip img { width: var(--size-64); height: var(--size-48); border-radius: var(--radius-6); object-fit: cover; display: block; background: var(--bg-surface); }
+.thumb-strip .sk { width: var(--size-64); height: var(--size-48); border-radius: var(--radius-6); }
+
+@media (min-width: 67.5rem) {
+  .app--detail .section--media .thumb {
+    aspect-ratio: 16 / 10;
+  }
+  .app--detail .section--media .thumb-strip {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-10);
+    margin-top: var(--space-10);
+  }
+  .app--detail .section--media .thumb-strip a,
+  .app--detail .section--media .thumb-strip img,
+  .app--detail .section--media .thumb-strip .sk {
+    width: 100%;
+  }
+  .app--detail .section--media .thumb-strip img,
+  .app--detail .section--media .thumb-strip .sk {
+    height: auto;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-8);
+  }
+}
 
 /* ── role-option.css ────────────────────────────────────────────────────────────── */
 /* ── Опції вибору ролі ── винесено з role-select.html (аудит 2026-07-29) */
-.role-option { display: flex; flex-direction: column; justify-content: center; gap: var(--space-6); width: 100%; padding: var(--space-18) var(--space-20); border: var(--border-1-5) solid var(--border-default); border-radius: var(--radius-12); background: var(--bg-surface); text-align: left; }
+.role-option { display: flex; flex-direction: column; justify-content: center; gap: var(--space-6); width: 100%; padding: var(--space-18) var(--space-20); border: var(--border-1-5) solid var(--border-default); border-radius: var(--radius-8); background: var(--bg-surface); text-align: left; outline: var(--border-2) solid transparent; outline-offset: var(--space-2); transition: transform var(--dur-fast) var(--ease-standard); }
 .role-option:hover { background: var(--bg-neutral); }
-.role-option:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: var(--space-2); }
+.role-option:active { transform: translateY(calc(var(--move-sm) / 2)); }
+.role-option:focus-visible { outline-color: var(--color-action); }
 .role-option-title { font-family: var(--font-family-1); font-weight: var(--font-weight-700); font-size: var(--font-size-18); letter-spacing: -.01em; color: var(--text-primary); }
 .role-option-sub { font-size: var(--font-size-13); color: var(--text-muted); }
 .role-note { margin-top: var(--space-16); text-align: center; }
@@ -1112,6 +2096,78 @@
 /* ── Юридичний текст ── винесено з legal.html (аудит 2026-07-29) */
 .legal-copy p + p { margin-top: var(--space-13); }
 .legal-copy p { line-height: 1.55; }
+
+/* На телефоні документ лишається одним потоком читання. Від tablet поруч
+   з'являється лише навігація по вже видимих секціях: вона не ховає й не
+   дублює текст, а дає орієнтир у довгому документі. */
+.legal-toc { display: none; }
+.legal-skip:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  clip: auto;
+  clip-path: none;
+  overflow: visible;
+  display: inline-flex;
+  margin: var(--space-8);
+  padding: var(--space-12) var(--space-14);
+  border-radius: var(--radius-8);
+  background: var(--color-action);
+  color: var(--on-action);
+  outline: var(--border-2) solid var(--color-action);
+  outline-offset: var(--space-2);
+  text-decoration: none;
+}
+
+@media (min-width: 47.5rem) {
+  .app--legal > main {
+    display: grid;
+    grid-template-columns: minmax(var(--size-180), .45fr) minmax(0, var(--measure-read));
+    justify-content: center;
+    column-gap: var(--grid-gap);
+    align-items: start;
+    max-width: var(--container-max);
+  }
+  .app--legal > main > .legal-intro { grid-column: 1 / -1; }
+  .app--legal > main > .legal-toc {
+    display: flex;
+    position: sticky;
+    top: var(--space-88);
+    grid-column: 1;
+    grid-row: 2 / span 2;
+    flex-direction: column;
+    gap: var(--space-6);
+    align-self: start;
+    padding: var(--space-20) var(--space-16);
+    border-radius: var(--radius-16);
+    background: var(--bg-surface);
+  }
+  .legal-toc-title {
+    margin: 0 0 var(--space-6);
+    font-size: var(--font-size-11);
+    font-weight: var(--font-weight-700);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .legal-toc a {
+    display: flex;
+    align-items: center;
+    min-height: var(--size-44);
+    padding: var(--space-12) var(--space-13);
+    border-radius: var(--radius-8);
+    color: var(--text-primary);
+    font-size: var(--font-size-13);
+    font-weight: var(--font-weight-700);
+    text-decoration: none;
+  }
+  .legal-toc a:hover { background: var(--bg-neutral); }
+  .legal-toc a:focus-visible {
+    outline: var(--border-2) solid var(--color-action);
+    outline-offset: var(--space-2);
+  }
+  .app--legal > main > .legal-section { grid-column: 2; }
+}
 
 /* ── privacy-group.css ────────────────────────────────────────────────────────────── */
 /* ── Група налаштувань приватності ── винесено з privacy-settings.html */

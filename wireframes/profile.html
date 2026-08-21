@@ -86,7 +86,7 @@
     <a class="wf-nav-kit-link" href="kit.html">Кіт компонентів →</a>
     <button type="button" class="wf-nav-theme" onclick="wfToggleTheme()" aria-pressed="false">Темна тема</button>
     <div class="wf-nav-tools">
-      <input type="text" class="wf-nav-filter" placeholder="Фільтр за назвою…" oninput="wfNavFilter(this.value)">
+      <input type="text" class="wf-nav-filter" aria-label="Фільтр макетів за назвою" placeholder="Фільтр за назвою…" oninput="wfNavFilter(this.value)">
       <div class="wf-nav-toggle-all">
         <button type="button" onclick="wfNavToggleAll(true)">Розгорнути все</button>
         <button type="button" onclick="wfNavToggleAll(false)">Згорнути все</button>
@@ -325,10 +325,16 @@
   </nav>
 
   <div class="wf-stage">
-<div class="app app--detail">
+<div class="app app--detail app--person-detail">
 
   <header class="app-head app-head--back">
     <div class="head-back-wrap">
+      <nav class="breadcrumbs" aria-label="Хлібні крихти">
+        <ol>
+          <li><a href="listings.html">Куток</a></li>
+          <li aria-current="page">Профіль</li>
+        </ol>
+      </nav>
       <div class="head-brand-row"><svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--color-brand)"/><path d="M18 3L21 3L21 6Z" fill="var(--bg-surface)"/></svg><div class="head-brand">Куток</div></div>
       <div class="head-back-row">
       <a class="head-back" href="listings.html" aria-label="До списку"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a>
@@ -343,7 +349,7 @@
   <div id="search-popover" class="search-popover" popover>
     <form class="search-form" role="search" action="listings.html" method="get">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg>
-      <input type="search" name="q" placeholder="Пошук за назвою, районом…" aria-label="Пошук оголошень">
+      <input type="search" name="q" placeholder="Пошук" aria-label="Пошук оголошень">
     </form>
   </div>
 
@@ -357,12 +363,12 @@
       <span class="badge">телефон ✓ · фото ✓ · документ —</span>
     </section>
 
-    <section class="section">
+    <section class="section section--intro">
       <h2 class="overline">Про себе</h2>
       <p>Місцевий, працюю в IT. Шукаю кімнату ближче до центру. Спокійний, без галасливих компаній.</p>
     </section>
 
-    <section class="section">
+    <section class="section section--facts">
       <h2 class="overline">Звички та умови</h2>
       <ul class="facts">
         <li>Не палю</li>
@@ -373,7 +379,7 @@
       </ul>
     </section>
 
-    <section class="section">
+    <section class="section section--reviews">
       <h2 class="overline">Відгуки</h2>
       <div class="review">
         <p class="review-meta">Олена, господиня · травень 2026</p>
@@ -381,7 +387,7 @@
       </div>
     </section>
 
-    <section class="section">
+    <section class="section section--actions">
       <div class="btn-stack">
         <button class="btn btn--primary btn--block" type="button" disabled>Заявку надіслано · 2 дні тому</button>
         <a class="btn btn--ghost btn--block" href="_archive/report.html">Поскаржитись або заблокувати</a>
@@ -395,7 +401,7 @@
     <a class="tabbar-brand" href="listings.html" aria-label="Куток — на головну"><svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--color-brand)"/><path d="M18 3L21 3L21 6Z" fill="var(--bg-surface)"/></svg><span>Куток</span></a>
     <form class="tabbar-search search-form" role="search" action="listings.html" method="get">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg>
-      <input type="search" name="q" placeholder="Пошук за назвою, районом…" aria-label="Пошук оголошень">
+      <input type="search" name="q" placeholder="Пошук" aria-label="Пошук оголошень">
     </form>
     <a class="active" href="listings.html">
       <span class="tab-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg></span>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Відгук · Компоненти · Куток</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../index.css">
+<link rel="stylesheet" href="docs.css">
+<script src="docs-nav.js" defer></script>
+</head>
+<body class="docs">
+<div class="docs-shell">
+
+<nav class="docs-nav" data-docs-nav aria-label="Дизайн-система">
+  <a class="docs-nav-home" href="index.html">Куток · дизайн-система</a>
+</nav>
+
+<main class="docs-main">
+
+  <p class="docs-crumb"><a href="index.html">Компоненти</a> / Картки й списки</p>
+  <p class="docs-eyebrow">Компонент</p>
+  <h1 class="docs-title">Відгук</h1>
+  <p class="docs-lede">Свідчення після спільного проживання, а не оцінка до нього — рядок без картки, відділений лінією.</p>
+  <div class="docs-meta"><code>.review</code><code>.review-meta</code><code>.review-text</code></div>
+
+  <section class="docs-sec" id="anatomy">
+    <h2>Анатомія</h2>
+    <div class="docs-anatomy">
+      <div class="docs-stage">
+        <div style="width:100%; max-width:320px;">
+          <div class="review">
+            <p class="review-meta">Олена, господиня · травень 2026</p>
+            <p class="review-text">Прожив пів року, платив вчасно, лишив кімнату чистою.</p>
+          </div>
+        </div>
+      </div>
+      <ol class="docs-legend">
+        <li><b>Автор і дата</b><span>(<code>.review-meta</code>) — 11px, приглушений колір, хто лишив відгук і коли.</span></li>
+        <li><b>Текст відгуку</b><span>(<code>.review-text</code>) — 16px, чорнило, сам зміст.</span></li>
+        <li><b>Розділювач зверху</b><span>верхня лінія <code>--border-default</code> є на кожному відгуку, крім першого (<code>.review:first-child</code>) — так список читається одним потоком, не набором окремих карток.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="variants">
+    <h2>Варіанти й розміри</h2>
+    <div class="docs-variants">
+      <div class="docs-example">
+        <p class="docs-example-label">Один відгук</p>
+        <div class="docs-example-body" style="display:block; width:100%;">
+          <div class="review">
+            <p class="review-meta">Олена, господиня · травень 2026</p>
+            <p class="review-text">Прожив пів року, платив вчасно, лишив кімнату чистою.</p>
+          </div>
+        </div>
+      </div>
+      <div class="docs-example docs-example--wide">
+        <p class="docs-example-label">Стек відгуків — розділювач видно з другого</p>
+        <div class="docs-example-body" style="display:block; width:100%;">
+          <div class="review">
+            <p class="review-meta">Олена, господиня · травень 2026</p>
+            <p class="review-text">Прожив пів року, платив вчасно, лишив кімнату чистою.</p>
+          </div>
+          <div class="review">
+            <p class="review-meta">Артем, сусід · березень 2026</p>
+            <p class="review-text">Тихий, домовлятись легко, рекомендую.</p>
+          </div>
+        </div>
+      </div>
+      <div class="docs-example">
+        <p class="docs-example-label">Порожній стан</p>
+        <div class="docs-example-body"><span style="font-size:var(--font-size-16); color:var(--text-muted);">Ще немає відгуків — з'являться після першого спільного проживання.</span></div>
+        <p class="docs-example-note">Не <code>.review</code>-блок — звичайний приглушений текст, за патерном <a href="state.html">порожнього стану</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="usage">
+    <h2>Коли вживати</h2>
+    <p class="docs-copy">Відгук з'являється лише у <code>profile</code> — на власній сторінці профілю обох ролей, у списку того, що лишили попередні співмешканці. Це сигнал довіри іншого порядку, ніж <a href="badge.html">бейдж</a> чи <a href="meter.html">метр</a>: бейдж — факт про верифікацію, доступний з першого дня, метр — самозаповнена повнота профілю, а відгук з'являється лише <strong>після</strong> спільного проживання й пишеться іншою людиною, не власником профілю. Тому відгуки не можна підробити чи прискорити — вони ростуть повільно і саме тому важать більше.</p>
+    <div class="docs-where">
+      <span>profile — список відгуків про людину</span>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="dodont">
+    <h2>Правило і антиправило</h2>
+    <div class="docs-dodont">
+      <div class="docs-do">
+        <span class="docs-do-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg>Так</span>
+        <div class="docs-do-stage">
+          <div style="width:100%;">
+            <div class="review"><p class="review-meta">Олена, господиня · травень 2026</p><p class="review-text">Прожив пів року, платив вчасно.</p></div>
+            <div class="review"><p class="review-meta">Артем, сусід · березень 2026</p><p class="review-text">Тихий, домовлятись легко.</p></div>
+          </div>
+        </div>
+        <p>Плаский список із тонкою лінією між відгуками — жодних власних рамок чи тіней у кожного пункту.</p>
+      </div>
+      <div class="docs-dont">
+        <span class="docs-dont-tag">✕ Ні</span>
+        <div class="docs-dont-stage">
+          <div style="width:100%; padding:14px; border-radius:var(--radius-10); background:var(--bg-surface);"><p class="review-meta">Олена, господиня · травень 2026</p><p class="review-text">Прожив пів року, платив вчасно.</p></div>
+        </div>
+        <p>Огортати кожен відгук власною карткою — та сама «монотонна сітка однакових карток», яку concept.md прямо відкидає для секцій профілю: «Групування логікою, а не «кожна секція = картка»».</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="responsive">
+    <h2>Адаптив у макетах</h2>
+    <p class="docs-sec-hint">На телефоні відгуки читаються одним вертикальним потоком після профілю, на планшеті зберігають ту саму послідовність, а на десктопі лишаються в колонці профілю поруч зі списком кандидатів.</p>
+    <div class="docs-responsive" data-mobile="../../wireframes/profile.html" data-tablet="../../wireframes/profile.html" data-desktop="../../wireframes/candidates.html"></div>
+  </section>
+
+  <div class="docs-foot">
+    <a href="chips.html">← Факти й чипи</a>
+    <a href="index.html">Усі компоненти</a>
+    <a href="meter.html">Метр повноти профілю →</a>
+  </div>
+
+</main>
+</div>
+<script src="docs-responsive.js"></script>
+</body>
+</html>

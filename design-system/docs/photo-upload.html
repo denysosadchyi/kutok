@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ряд завантаження фото · Компоненти · Куток</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../index.css">
+<link rel="stylesheet" href="docs.css">
+<script src="docs-nav.js" defer></script>
+</head>
+<body class="docs">
+<div class="docs-shell">
+
+<nav class="docs-nav" data-docs-nav aria-label="Дизайн-система">
+  <a class="docs-nav-home" href="index.html">Куток · дизайн-система</a>
+</nav>
+
+<main class="docs-main">
+
+  <p class="docs-crumb"><a href="index.html">Компоненти</a> / Форми</p>
+  <p class="docs-eyebrow">Складений компонент</p>
+  <h1 class="docs-title">Ряд завантаження фото</h1>
+  <p class="docs-lede">Порожній слот і завантажене фото живуть в одній 84-пікселевій рамці — форма не змінюється в момент, коли фото зʼявляється.</p>
+  <div class="docs-meta"><code>.photo-row</code><code>.photo-slot</code></div>
+
+  <section class="docs-sec" id="anatomy">
+    <h2>Анатомія</h2>
+    <p class="docs-sec-hint">Один заповнений слот і два порожні поруч — типовий ряд кімнати з кількома фото.</p>
+    <div class="docs-anatomy">
+      <div class="docs-stage">
+        <div class="photo-row">
+          <span class="photo-slot"><img src="https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=200&h=200&fit=crop&auto=format&q=70" alt="" loading="lazy"></span>
+          <button class="photo-slot" aria-label="Додати фото"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+          <button class="photo-slot" aria-label="Додати фото"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+        </div>
+      </div>
+      <ol class="docs-legend">
+        <li><b>Порожній слот</b><span><code>&lt;button class="photo-slot"&gt;</code> з оливковою іконкою «+» — запрошує додати фото, рамка <code>--border-default</code>.</span></li>
+        <li><b>Заповнений слот</b><span><code>&lt;span class="photo-slot"&gt;&lt;img&gt;&lt;/span&gt;</code> — та сама 84px/радіус-30px рамка, фото заповнює її через <code>object-fit: cover</code>.</span></li>
+        <li><b>Ряд</b><span>(<code>.photo-row</code>) — flex-wrap контейнер, слоти переносяться на новий рядок при нестачі ширини.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="variants">
+    <h2>Варіанти й розміри</h2>
+    <p class="docs-sec-hint">Три реальні стани: сам собою порожній слот, сам собою заповнений, і змішаний ряд кімнати з кількома фото.</p>
+    <div class="docs-variants">
+      <div class="docs-example">
+        <p class="docs-example-label">Порожній слот</p>
+        <div class="docs-example-body">
+          <div class="photo-row">
+            <button class="photo-slot" aria-label="Додати фото"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+          </div>
+        </div>
+      </div>
+      <div class="docs-example">
+        <p class="docs-example-label">Заповнений слот</p>
+        <div class="docs-example-body">
+          <div class="photo-row">
+            <span class="photo-slot"><img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=200&h=200&fit=crop&auto=format&q=70" alt="" loading="lazy"></span>
+          </div>
+        </div>
+      </div>
+      <div class="docs-example docs-example--wide">
+        <p class="docs-example-label">Змішаний ряд — кілька фото кімнати (room-create*)</p>
+        <div class="docs-example-body">
+          <div class="photo-row">
+            <span class="photo-slot"><img src="https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=200&h=200&fit=crop&auto=format&q=70" alt="" loading="lazy"></span>
+            <button class="photo-slot" aria-label="Додати фото"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+            <button class="photo-slot" aria-label="Додати фото"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="motion">
+    <h2>Мікровзаємодія</h2>
+    <p class="docs-sec-hint">Наведи або натисни слот: він дає <strong>відповідь</strong> на початок дії з фото ще до системного діалогу вибору файлу.</p>
+    <div class="docs-stage"><div class="photo-row"><button type="button" class="photo-slot" aria-label="Додати фото"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button></div></div>
+    <p class="docs-copy">Тло, межа і короткий press використовують <code>--dur-fast</code>, <code>--ease-standard</code> та <code>calc(var(--move-sm) / 2)</code>; фокусне кільце працює тим самим слотом.</p>
+  </section>
+
+  <section class="docs-sec" id="usage">
+    <h2>Коли вживати</h2>
+    <p class="docs-copy">Ряд завантаження фото — для будь-якого місця, де людина додає фото до оголошення чи профілю: кілька фото кімнати (<code>room-create*</code>), фото профілю шукача й господаря при створенні (<code>profile-create-seeker*</code>, <code>profile-create-host*</code>) і при редагуванні (<code>my-profile-*-edit</code>). Компонент має дві форми, обидві всередині одного <code>.photo-row</code>: сітка кількох порожніх слотів для кімнати, де фото багато, і один <code>.avatar</code>-прев'ю поруч із ghost-кнопкою дії для профілю, де фото одне (<code>my-profile-seeker-edit.html</code>) — тут структура ряду залишається спільною, змінюється лише те, що саме в ньому лежить.</p>
+    <div class="docs-where">
+      <span>room-create*</span>
+      <span>profile-create-seeker*</span>
+      <span>profile-create-host*</span>
+      <span>my-profile-*-edit</span>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="dodont">
+    <h2>Правило і антиправило</h2>
+    <div class="docs-dodont">
+      <div class="docs-do">
+        <span class="docs-do-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg>Так</span>
+        <div class="docs-do-stage">
+          <div class="photo-row">
+            <span class="photo-slot"><img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=200&h=200&fit=crop&auto=format&q=70" alt="" loading="lazy"></span>
+            <button class="photo-slot" aria-label="Додати фото"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+          </div>
+        </div>
+        <p>Та сама 84px/радіус-30px рамка для порожнього слота-кнопки й заповненого прев'ю — слот не змінює форму в момент, коли фото зʼявляється.</p>
+      </div>
+      <div class="docs-dont">
+        <span class="docs-dont-tag">✕ Ні</span>
+        <div class="docs-dont-stage">
+          <div style="width:100%; border:var(--border-1-5) dashed var(--border-default); border-radius:var(--radius-10); padding:24px; text-align:center; color:var(--text-muted); font-size:var(--font-size-13);">Перетягніть фото сюди або натисніть, щоб завантажити</div>
+        </div>
+        <p>Оформлювати порожній стан як великий банер-зону з пунктирною рамкою на всю ширину — типовий generic-SaaS патерн. DESIGN.md відхиляє такі патерни в принципі: система тримає афорданс додавання фото в тому ж компактному масштабі іконки-квадрата, що й будь-який інший контрол, без окремої зони, що привертає увагу розміром.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="responsive">
+    <h2>Адаптив у макетах</h2>
+    <p class="docs-sec-hint">Фото профілю займає один слот, а фото кімнати збираються в ряд. На ширших екранах кількість і порядок слотів лишаються явними, без порожніх декоративних колонок.</p>
+    <div class="docs-responsive" data-mobile="../../wireframes/profile-create-seeker.html" data-tablet="../../wireframes/room-create.html" data-desktop="../../wireframes/room-create.html"></div>
+  </section>
+
+  <div class="docs-foot">
+    <a href="privacy-group.html">← Група приватності</a>
+    <a href="index.html">Усі компоненти</a>
+    <a href="segment.html">Сегмент типу →</a>
+  </div>
+
+</main>
+</div>
+<script src="docs-responsive.js"></script>
+</body>
+</html>

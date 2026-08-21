@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Список оголошень (десктоп) · Куток</title>
+<link rel="stylesheet" href="../design-system/index.css">
+<script src="../design-system/components/select.js" defer></script>
 <style>
   /* ── ВАЙРФРЕЙМ: лише сірий кістяк. Без кольору, бренд-шрифтів, іконок, тіней. ──
      Адаптив: mobile-first, з desktop-розкладкою через media-queries. */
@@ -32,6 +34,10 @@
   header.app { background: #f7f7f7; border-bottom: 1px solid #ccc; padding: 10px 12px; }
   .app-bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
   .app-name { font-size: 16px; font-weight: bold; color: #444; }
+  header.app .breadcrumbs { margin-top: 8px; color: #666; font-size: 11px; }
+  header.app .breadcrumbs ol { display: flex; gap: 6px; margin: 0; padding: 0; list-style: none; }
+  header.app .breadcrumbs li + li::before { content: "/"; margin-right: 6px; color: #999; }
+  header.app .breadcrumbs a { color: inherit; }
 
   /* Горизонтальна навігація в шапці — лише на десктопі */
   nav.topnav { display: none; }
@@ -224,6 +230,9 @@
         <a href="role-select.html">Профіль</a>
       </nav>
     </div>
+    <nav class="breadcrumbs" aria-label="Хлібні крихти">
+      <ol><li><a href="listings.html">Куток</a></li><li aria-current="page">Пошук</li></ol>
+    </nav>
   </header>
 
   <div class="work">
@@ -243,7 +252,7 @@
             </fieldset>
             <div class="field">
               <label for="district">Район Києва</label>
-              <select id="district" name="district">
+              <div class="fsel"><select id="district" name="district">
                 <option>Будь-який район</option>
                 <option selected>Поділ</option>
                 <option>Оболонь</option>
@@ -252,7 +261,7 @@
                 <option>Печерськ</option>
                 <option>Голосіїв</option>
                 <option>Солом'янка</option>
-              </select>
+              </select></div>
             </div>
             <div class="filters-row">
               <div class="field">
@@ -261,11 +270,11 @@
               </div>
               <div class="field">
                 <label for="gender">Стать сусіда</label>
-                <select id="gender" name="gender">
+                <div class="fsel"><select id="gender" name="gender">
                   <option selected>Будь-яка</option>
                   <option>Жінка</option>
                   <option>Чоловік</option>
-                </select>
+                </select></div>
               </div>
             </div>
             <button type="submit" class="primary">Застосувати фільтр</button>

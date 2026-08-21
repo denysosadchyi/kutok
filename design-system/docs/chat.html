@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Бульбашки й поле вводу · Компоненти · Куток</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../index.css">
+<link rel="stylesheet" href="docs.css">
+<script src="docs-nav.js" defer></script>
+</head>
+<body class="docs">
+<div class="docs-shell">
+
+<nav class="docs-nav" data-docs-nav aria-label="Дизайн-система">
+  <a class="docs-nav-home" href="index.html">Куток · дизайн-система</a>
+</nav>
+
+<main class="docs-main">
+
+  <p class="docs-crumb"><a href="index.html">Компоненти</a> / Чат</p>
+  <p class="docs-eyebrow">Чат</p>
+  <h1 class="docs-title">Бульбашки й поле вводу</h1>
+  <p class="docs-lede">Розмова, розблокована лише після взаємного інтересу — тому обидві сторони вже знають, з ким говорять.</p>
+  <div class="docs-meta"><code>.chat-thread</code><code>.msg</code><code>.msg--in</code><code>.msg--out</code><code>.composer</code><code>.composer .send</code><code>.sk-msg</code></div>
+
+  <section class="docs-sec" id="anatomy">
+    <h2>Анатомія</h2>
+    <p class="docs-sec-hint">Реальний уривок розмови плюс поле вводу — так, як вони стоять у <code>chat</code>.</p>
+    <div class="docs-anatomy">
+      <div class="docs-stage">
+        <div style="width:min(100%,340px); background:var(--bg-page); background-image:var(--grain-1); border-radius:var(--radius-16); overflow:hidden;">
+          <div class="chat-thread">
+            <div class="msg msg--out">Кімната ще вільна?</div>
+            <div class="msg msg--in">Так, вільна з 1 липня. Розкажи трохи про себе?</div>
+            <div class="msg msg--out">Переїхала до Києва місяць тому, працюю в кафе на Подолі.</div>
+          </div>
+          <form class="composer">
+            <input type="text" placeholder="Напиши повідомлення" aria-label="Повідомлення">
+            <button class="send" type="submit" aria-label="Надіслати"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l16-7-7 16-2.5-6.5L4 12z"/></svg></button>
+          </form>
+        </div>
+      </div>
+      <ol class="docs-legend">
+        <li><b>Вхідна бульбашка</b><span>(<code>.msg--in</code>) — зліва, тон <code>--bg-surface</code>, гострий кут знизу-зліва (<code>border-bottom-left-radius: 6px</code>) — той самий «хвостик», що читається як напрямок мовця.</span></li>
+        <li><b>Вихідна бульбашка</b><span>(<code>.msg--out</code>) — справа, суцільний кобальт (<code>--color-action</code>) — той самий голос кольору, що й у кнопок і ціни: власна дія користувача.</span></li>
+        <li><b>Поле вводу</b><span>(<code>.composer</code>) — рядок з тоном сторінки й верхньою рамкою; піл-інпут (<code>--bg-surface</code>) плюс кругла кнопка «надіслати» 44px, та сама родина іконок-кнопок, що й деінде в системі.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="variants">
+    <h2>Варіанти й розміри</h2>
+    <p class="docs-sec-hint">Пара бульбашок, поле вводу окремо і стан завантаження — той самий обрис без кольору.</p>
+    <div class="docs-variants">
+      <div class="docs-example docs-example--wide">
+        <p class="docs-example-label">Вхідна / вихідна бульбашка</p>
+        <div class="docs-example-body" style="display:block; width:100%; max-width:340px;">
+          <div class="chat-thread" style="padding:0;">
+            <div class="msg msg--in">Так, вільна з 1 липня. Розкажи трохи про себе?</div>
+            <div class="msg msg--out">Переїхала до Києва місяць тому, працюю в кафе на Подолі.</div>
+          </div>
+        </div>
+      </div>
+      <div class="docs-example docs-example--wide">
+        <p class="docs-example-label">Поле вводу (<code>.composer</code>)</p>
+        <div class="docs-example-body" style="display:block; width:100%; max-width:340px;">
+          <div class="chat-thread" data-chat-demo-thread style="padding:0 0 var(--space-8);"></div>
+          <form class="composer" data-chat-demo style="border-top:none; border-radius:var(--radius-10);">
+            <input type="text" placeholder="Напиши повідомлення" aria-label="Повідомлення">
+            <button class="send" type="submit" aria-label="Надіслати"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l16-7-7 16-2.5-6.5L4 12z"/></svg></button>
+          </form>
+        </div>
+        <p class="docs-example-note">Активне навіть у порожньому чаті (<code>chat-empty</code>) — розмову можна почати з нуля, поле не з'являється лише після першого повідомлення.</p>
+      </div>
+      <div class="docs-example docs-example--wide">
+        <p class="docs-example-label">Скелетон-бульбашки (<code>chat-loading</code>, <code>.sk-msg</code>)</p>
+        <div class="docs-example-body" style="display:block; width:100%; max-width:340px;">
+          <div class="chat-thread" aria-hidden="true" style="padding:0;">
+            <span class="sk sk-msg" style="align-self:flex-start; width:60%;"></span>
+            <span class="sk sk-msg" style="align-self:flex-end; width:50%;"></span>
+          </div>
+        </div>
+        <p class="docs-example-note">Той самий обрис і вирівнювання, що <code>.msg--in</code>/<code>.msg--out</code>, без кольору — повний розбір компонента скелетона на <a href="skeleton.html">скелетон завантаження</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="motion">
+    <h2>Мікровзаємодії</h2>
+    <p class="docs-sec-hint">Відправлення додає твоє повідомлення в поточну розмову; на широкому екрані вибір рядка показує, що detail належить саме до списку діалогів.</p>
+    <div class="docs-variants">
+      <div class="docs-example docs-example--wide">
+        <p class="docs-example-label">Master/detail — тільки явний стан <code>.is-entering</code></p>
+        <div class="docs-example-body" style="display:block; width:100%; max-width:340px;">
+          <button type="button" class="btn btn--ghost btn--sm" data-chat-detail-trigger>Показати розмову</button>
+          <div class="chat-desktop-panel chat-desktop-panel--detail" data-chat-detail-demo style="display:flex; width:100%; margin-top:var(--space-12); border-left:var(--border-1) solid var(--border-default);">
+            <div class="chat-thread" style="padding:var(--space-12);"><div class="msg msg--in">Діалог з Оленою</div></div>
+          </div>
+        </div>
+        <p class="docs-example-note">Панель рухається з боку списку через <code>transform</code> й <code>opacity</code>, лише після натискання. Без класу <code>.is-entering</code> page-load анімації немає.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="usage">
+    <h2>Коли вживати</h2>
+    <p class="docs-copy">Бульбашки й поле вводу живуть виключно на <code>chat</code> та його станах — <code>chat-empty</code>, <code>chat-loading</code>. Шапку зі співрозмовником сюди не відносимо: це <code>.person-row</code>, задокументований у <a href="list.html">«Рядок людини»</a>, той самий компонент стоїть і в <code>room</code>. Чат розблоковується лише після взаємного інтересу — того самого механізму R4 з product brief, тому композер тут не про «будь-кому написати», а про розмову, на яку вже погодились обидві сторони. Над полем вводу в продукті стоїть реальна підказка безпеки — «Порада: спілкуйся у Кутку до зустрічі. Зустрічайся в людному місці.» (клас <code class="hint">.hint</code>, розбір на <a href="text.html">текст: лічильник, оверлайн, підказка</a>) — сама поверхня чату несе нагадування про обережність, а не лише інтерфейс обміну повідомленнями.</p>
+    <div class="docs-where">
+      <span>chat</span>
+      <span>chat-empty</span>
+      <span>chat-loading</span>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="dodont">
+    <h2>Правило і антиправило</h2>
+    <div class="docs-dodont">
+      <div class="docs-do">
+        <span class="docs-do-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg>Так</span>
+        <div class="docs-do-stage">
+          <div class="msg msg--out">Переїхала до Києва місяць тому, працюю в кафе на Подолі.</div>
+        </div>
+        <p>Вихідні повідомлення фарбуємо кобальтом (<code>--color-action</code>) — той самий голос, що в кнопки й ціни: це власна дія й результат користувача, а не бренд і не сигнал.</p>
+      </div>
+      <div class="docs-dont">
+        <span class="docs-dont-tag">✕ Ні</span>
+        <div class="docs-dont-stage">
+          <div class="msg" style="background:var(--text-muted); color:var(--bg-page); align-self:auto;">Прочитано о 14:32</div>
+        </div>
+        <p>Вводити четвертий колір — «сірувато-блакитну» бульбашку статусу прочитання чи будь-який інший ad-hoc відтінок — не можна: у системи рівно три функціональні кольори. Вхідна бульбашка коректно лишається на нейтральному <code>--bg-surface</code>, тому самому тоні «трохи піднятого паперу», що й будь-яка інша другорядна поверхня.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="responsive">
+    <h2>Адаптив у макетах</h2>
+    <p class="docs-sec-hint">На телефоні список діалогів і сама розмова лишаються окремими екранами, а композер тримається внизу. Планшет-портрет зберігає цей один фокус. Від широкого desktop-порогу чат стає detail-панеллю поруч зі списком, тому перемикання не потребує переходу назад.</p>
+    <div class="docs-responsive" data-mobile="../../wireframes/chat.html" data-tablet="../../wireframes/chat.html" data-desktop="../../wireframes/chat.html"></div>
+  </section>
+
+  <div class="docs-foot">
+    <a href="text.html">← Текст: лічильник, оверлайн, підказка</a>
+    <a href="index.html">Усі компоненти →</a>
+  </div>
+
+</main>
+</div>
+<script src="docs-responsive.js"></script>
+<script>
+document.querySelectorAll('[data-chat-demo]').forEach((form) => {
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const input = form.querySelector('input');
+    const text = input.value.trim();
+    if (!text) return;
+    const message = document.createElement('div');
+    message.className = 'msg msg--out msg--sent';
+    message.textContent = text;
+    form.previousElementSibling.append(message);
+    input.value = '';
+    input.focus();
+  });
+});
+document.querySelectorAll('[data-chat-detail-trigger]').forEach((trigger) => {
+  trigger.addEventListener('click', () => {
+    const panel = trigger.parentElement.querySelector('[data-chat-detail-demo]');
+    panel.classList.remove('is-entering');
+    void panel.offsetWidth;
+    panel.classList.add('is-entering');
+  });
+});
+</script>
+</body>
+</html>

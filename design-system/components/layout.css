@@ -17,6 +17,16 @@
 }
 
 @media (min-width: 47.5rem) {
+  /* Короткі auth/verify кроки лишаються одним сфокусованим маршрутом.
+     --measure-read дає достатньо місця довгим поясненням згоди, але не
+     перетворює телефонне поле чи код на смугу через весь desktop. */
+  .app--compact > .app-head,
+  .app--compact > main {
+    width: 100%;
+    max-width: var(--measure-read);
+    margin-inline: auto;
+  }
+
   .app--compare > .app-head,
   .app--compare > main,
   .app--edit > .app-head,
@@ -46,6 +56,15 @@
   .app--edit form > .section:has(> .field + .field) > .field:last-child:nth-child(odd) {
     grid-column: 1 / -1;
   }
+
+  /* У довгій формі повноширинна CTA виглядає як ще одне поле. Дія завершує
+     маршрут по правому краю основної колонки; підказка стану тримає ту саму
+     міру. На телефоні btn--block лишається повноширинною. */
+  .app--edit form > .section:last-child > :where(.btn, .btn-stack, .hint) {
+    width: 100%;
+    max-width: 22rem;
+    margin-left: auto;
+  }
 }
 
 @media (min-width: 67.5rem) {
@@ -69,7 +88,7 @@
     top: var(--space-88);
     padding: var(--space-18);
     border: var(--border-1) solid var(--border-default);
-    border-radius: var(--radius-22);
+    border-radius: var(--radius-16);
     background: var(--bg-surface);
   }
   .form-preview .profile-hero { padding: 0; }

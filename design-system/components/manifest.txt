@@ -17,6 +17,7 @@ layout.css
 profile-hero.css
 button.css
 field.css
+select.css
 checkbox.css
 radio.css
 photo-upload.css

@@ -3,9 +3,10 @@
   position: sticky; bottom: var(--space-88); z-index: 4; align-self: flex-end; margin: 0 var(--space-14) var(--space-12) auto;
   width: var(--size-56); height: var(--size-56); border-radius: var(--radius-999); border: none;
   background: var(--color-action); color: var(--on-action); cursor: pointer;
-  display: inline-flex; align-items: center; justify-content: center;
+  display: inline-flex; align-items: center; justify-content: center; outline: var(--border-2) solid transparent; outline-offset: var(--space-2);
+  transition: transform var(--dur-fast) var(--ease-standard);
 }
 .fab svg { width: var(--size-24); height: var(--size-24); }
 .fab:hover { filter: brightness(1.08); }
-.fab:active { filter: brightness(.9); }
-.fab:focus-visible { outline: var(--border-2) solid var(--text-primary); outline-offset: var(--space-2); }
+.fab:active { filter: brightness(.9); transform: translateY(calc(var(--move-sm) / 2)); }
+.fab:focus-visible { outline-color: var(--text-primary); }

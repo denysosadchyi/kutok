@@ -1,13 +1,26 @@
 /* ── Поповер пошуку ── (listings 1:1) */
 .search-popover {
   width: min(var(--size-320), calc(100vw - var(--space-32)));
-  border: var(--border-1) solid var(--border-default); border-radius: var(--radius-14);
+  border: var(--border-1) solid var(--border-default); border-radius: var(--radius-10);
   background: var(--bg-surface); padding: var(--space-10);
+}
+.search-popover[popover] {
+  opacity: 0;
+  transform: translateY(calc(var(--move-sm) * -1));
+  transition: opacity var(--dur-base) var(--ease-exit), transform var(--dur-base) var(--ease-exit);
+}
+.search-popover[popover]:popover-open {
+  opacity: 1;
+  transform: translateY(0);
+  transition-timing-function: var(--ease-enter);
+}
+@starting-style {
+  .search-popover[popover]:popover-open { opacity: 0; transform: translateY(calc(var(--move-sm) * -1)); }
 }
 .search-form {
   display: flex; align-items: center; gap: var(--space-8);
   background: var(--bg-surface);
-  border-radius: var(--radius-12); padding: var(--space-9) var(--space-12);
+  border-radius: var(--radius-8); padding: var(--space-9) var(--space-12);
 }
 .search-form svg { width: var(--size-16); height: var(--size-16); color: var(--text-muted); flex-shrink: 0; }
 .search-form input {

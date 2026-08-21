@@ -82,7 +82,7 @@
     <a class="wf-nav-kit-link" href="../kit.html">Кіт компонентів →</a>
     <button type="button" class="wf-nav-theme" onclick="wfToggleTheme()" aria-pressed="false">Темна тема</button>
     <div class="wf-nav-tools">
-      <input type="text" class="wf-nav-filter" placeholder="Фільтр за назвою…" oninput="wfNavFilter(this.value)">
+      <input type="text" class="wf-nav-filter" aria-label="Фільтр макетів за назвою" placeholder="Фільтр за назвою…" oninput="wfNavFilter(this.value)">
       <div class="wf-nav-toggle-all">
         <button type="button" onclick="wfNavToggleAll(true)">Розгорнути все</button>
         <button type="button" onclick="wfNavToggleAll(false)">Згорнути все</button>
@@ -382,7 +382,9 @@
   </nav>
 
   <div class="wf-stage">
-<div class="app app--flow">
+<div class="app app--flow app--legal">
+
+  <a class="legal-skip sr-only" href="#legal-content">Перейти до тексту документа</a>
 
   <header class="app-head app-head--back">
     <div class="head-brand-row"><svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--color-brand)"/><path d="M18 3L21 3L21 6Z" fill="var(--bg-surface)"/></svg><div class="head-brand">Куток</div></div>
@@ -392,28 +394,34 @@
     </div>
   </header>
 
-  <main>
-    <div class="section">
+  <main id="legal-content" tabindex="-1">
+    <div class="section legal-intro">
       <p class="hint">Останнє оновлення: 1 липня 2026.</p>
     </div>
 
-    <div class="section">
-      <h2 class="overline">Умови використання</h2>
+    <nav class="legal-toc" aria-label="Навігація документом">
+      <p class="legal-toc-title">У документі</p>
+      <a href="#terms">Умови використання</a>
+      <a href="#privacy">Політика приватності</a>
+    </nav>
+
+    <section class="section legal-section" id="terms" aria-labelledby="terms-title">
+      <h2 class="overline" id="terms-title">Умови використання</h2>
       <div class="legal-copy">
         <p>Куток — сервіс для пошуку співмешканців і підселення у вільні кімнати в Києві. Реєструючись, ви підтверджуєте, що вам виповнилось 18 років і що інформація в профілі (ім'я, вік, фото) відповідає дійсності.</p>
         <p>Заборонено створювати фейкові профілі, розміщувати оголошення про кімнати, якими ви не розпоряджаєтесь, і використовувати чат для реклами чи розсилок. За порушення акаунт може бути обмежено або видалено.</p>
         <p>Куток є посередником між шукачем і господарем: ми не є стороною договору оренди і не відповідаємо за домовленості між користувачами після знайомства в застосунку.</p>
       </div>
-    </div>
+    </section>
 
-    <div class="section">
-      <h2 class="overline">Політика приватності</h2>
+    <section class="section legal-section" id="privacy" aria-labelledby="privacy-title">
+      <h2 class="overline" id="privacy-title">Політика приватності</h2>
       <div class="legal-copy">
         <p>Для верифікації акаунта Куток обробляє номер телефону (підтвердження через SMS-код) і фотографію обличчя — селфі, яке звіряється з фото профілю один раз, щоб підтвердити, що за профілем стоїть реальна людина. Ці дані не публікуються і не передаються третім особам.</p>
         <p>Дані профілю зберігаються, поки акаунт активний. Селфі та результат звірки зберігаються 90 днів після верифікації, потім видаляються автоматично. Історію заявок і чатів зберігаємо, поки в них є хоча б одна активна сторона.</p>
         <p>Ви маєте право будь-коли запросити видалення акаунта і всіх пов'язаних даних — з розділу «Керування акаунтом» або через звернення в підтримку. Видалення незворотне і відбувається протягом 30 днів.</p>
       </div>
-    </div>
+    </section>
   </main>
 
   <footer class="tabbar">
@@ -422,7 +430,7 @@
     <a class="tabbar-brand" href="../listings.html" aria-label="Куток — на головну"><svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--color-brand)"/><path d="M18 3L21 3L21 6Z" fill="var(--bg-surface)"/></svg><span>Куток</span></a>
     <form class="tabbar-search search-form" role="search" action="../listings.html" method="get">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg>
-      <input type="search" name="q" placeholder="Пошук за назвою, районом…" aria-label="Пошук оголошень">
+      <input type="search" name="q" placeholder="Пошук" aria-label="Пошук оголошень">
     </form>
     <a href="../listings.html">
       <span class="tab-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg></span>

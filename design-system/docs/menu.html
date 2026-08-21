@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Список-меню налаштувань · Компоненти · Куток</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../index.css">
+<link rel="stylesheet" href="docs.css">
+<script src="docs-nav.js" defer></script>
+</head>
+<body class="docs">
+<div class="docs-shell">
+
+<nav class="docs-nav" data-docs-nav aria-label="Дизайн-система">
+  <a class="docs-nav-home" href="index.html">Куток · дизайн-система</a>
+</nav>
+
+<main class="docs-main">
+
+  <p class="docs-crumb"><a href="index.html">Компоненти</a> / Оболонка й навігація</p>
+  <p class="docs-eyebrow">Службова навігація</p>
+  <h1 class="docs-title">Список-меню налаштувань</h1>
+  <p class="docs-lede">Рядок-список під профілем-героєм: іконка, лейбл, шеврон — вхід у підекрани приватності, блокувань, акаунта й правового.</p>
+  <div class="docs-meta"><code>.menu-list</code><code>.menu-row</code><code>.menu-ic</code><code>.menu-chev</code></div>
+
+  <section class="docs-sec" id="anatomy">
+    <h2>Анатомія</h2>
+    <p class="docs-sec-hint">Один рядок меню — розмітка та ж сама для кожного пункту, різниться лише іконка й лейбл. Наведення, натискання й клавіатурний фокус у прикладі дають коротку відповідь на перехід.</p>
+    <div class="docs-anatomy">
+      <div class="docs-stage">
+        <nav class="menu-list" aria-label="Налаштування профілю" style="width:100%;">
+          <a class="menu-row" href="#"><span class="menu-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg></span><span class="menu-txt">Налаштування приватності</span><span class="menu-chev"></span></a>
+        </nav>
+      </div>
+      <ol class="docs-legend">
+        <li><b>Іконка</b><span>(<code>.menu-ic</code>) — 22px контурний stroke-гліф, колір <code>--color-brand</code> (олива), не кобальт.</span></li>
+        <li><b>Лейбл</b><span>(<code>.menu-txt</code>) — назва підекрана, займає всю вільну ширину рядка.</span></li>
+        <li><b>Шеврон</b><span>(<code>.menu-chev</code>) — натяк «веде далі», без стрілки-іконки.</span></li>
+        <li><b>Роздільник</b><span>нижня лінія <code>--border-default</code> між рядками, відсутня в останнього пункту списку.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="variants">
+    <h2>Варіанти й розміри</h2>
+    <div class="docs-variants">
+      <div class="docs-example docs-example--wide">
+        <p class="docs-example-label">Повний список — 4 пункти</p>
+        <div class="docs-example-body" style="width:100%;">
+          <nav class="menu-list" aria-label="Налаштування профілю" style="width:100%;">
+            <a class="menu-row" href="#"><span class="menu-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V9.5L12 4l8 5.5V21"/><path d="M9.5 21v-6h5v6"/></svg></span><span class="menu-txt">Здаєте кімнату? Стати господарем</span><span class="menu-chev"></span></a>
+            <a class="menu-row" href="#"><span class="menu-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg></span><span class="menu-txt">Налаштування приватності</span><span class="menu-chev"></span></a>
+            <a class="menu-row" href="#"><span class="menu-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M6 6l12 12"/></svg></span><span class="menu-txt">Заблоковані</span><span class="menu-chev"></span></a>
+            <a class="menu-row" href="#"><span class="menu-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12.5h6M9 16h6"/></svg></span><span class="menu-txt">Умови використання · Політика приватності</span><span class="menu-chev"></span></a>
+          </nav>
+        </div>
+        <p class="docs-example-note">Останній рядок без нижнього роздільника (<code>:last-child</code>) — список закривається чисто, без зайвої лінії перед наступним блоком екрана.</p>
+      </div>
+      <div class="docs-example">
+        <p class="docs-example-label">Один рядок, ізольовано</p>
+        <div class="docs-example-body">
+          <nav class="menu-list" aria-label="Налаштування профілю" style="width:100%;">
+            <a class="menu-row" href="#"><span class="menu-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M6 6l12 12"/></svg></span><span class="menu-txt">Заблоковані</span><span class="menu-chev"></span></a>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="usage">
+    <h2>Коли вживати</h2>
+    <p class="docs-copy">Меню стоїть в обох профілях — <code>my-profile-seeker</code> і <code>my-profile-host</code> — одразу під <a href="profile-hero.html">профілем-героєм</a>, як службовий блок навігації в підекрани: приватність, заблоковані, акаунт, підтримка, юридичне. Це не контент профілю, а вихід з нього — тому іконки й текст навмисно нейтральні, не привертають увагу так, як бейдж довіри чи метр повноти вище на тому самому екрані. Пункти й порядок можуть відрізнятись між роллю шукача й господаря (наприклад, запрошення «стати господарем» бачить лише шукач), але розмітка рядка та сама.</p>
+    <div class="docs-where">
+      <span>my-profile-seeker</span>
+      <span>my-profile-host</span>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="dodont">
+    <h2>Правило і антиправило</h2>
+    <div class="docs-dodont">
+      <div class="docs-do">
+        <span class="docs-do-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg>Так</span>
+        <div class="docs-do-stage">
+          <nav class="menu-list" aria-label="Налаштування профілю" style="width:100%;">
+            <a class="menu-row" href="#"><span class="menu-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg></span><span class="menu-txt">Налаштування приватності</span><span class="menu-chev"></span></a>
+          </nav>
+        </div>
+        <p>Іконка й текст лишаються оливою — брендово-нейтральний колір службового блоку, той самий на всіх пунктах меню.</p>
+      </div>
+      <div class="docs-dont">
+        <span class="docs-dont-tag">✕ Ні</span>
+        <div class="docs-dont-stage">
+          <nav class="menu-list" aria-label="" style="width:100%;">
+            <a class="menu-row" href="#" style="color:var(--color-action);"><span class="menu-ic" style="color:var(--color-action);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg></span><span class="menu-txt">Налаштування приватності</span><span class="menu-chev"></span></a>
+          </nav>
+        </div>
+        <p>Пофарбувати іконку й лейбл у кобальт, бо рядок «клікабельний», — помилка: за правилом трьох голосів кобальт зарезервований для дії-з-результатом чи значення (ціна, CTA, прогрес), а просте переведення у підекран не є ні тим, ні іншим.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="responsive">
+    <h2>Адаптив у макетах</h2>
+    <p class="docs-sec-hint">На телефоні службове меню йде під профілем вертикальним списком, на планшеті зберігає той самий порядок, а на десктопі профіль-герой і меню розходяться у дві колонки.</p>
+    <div class="docs-responsive" data-mobile="../../wireframes/my-profile-seeker.html" data-tablet="../../wireframes/my-profile-seeker.html" data-desktop="../../wireframes/my-profile-seeker.html"></div>
+  </section>
+
+  <div class="docs-foot">
+    <a href="tabbar.html">← Таб-бар</a>
+    <a href="index.html">Усі компоненти</a>
+    <a href="button.html">Кнопка →</a>
+  </div>
+
+</main>
+</div>
+<script src="docs-responsive.js"></script>
+</body>
+</html>

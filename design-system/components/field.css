@@ -6,31 +6,11 @@
 }
 .field input, .field textarea, .field select {
   width: 100%; border: none; background: var(--bg-surface);
-  border-radius: var(--radius-12); padding: var(--space-12) var(--space-13);
+  border-radius: var(--radius-8); padding: var(--space-12) var(--space-13);
   font: inherit; font-size: var(--font-size-16); color: var(--text-primary);
+  outline: var(--border-2) solid transparent; outline-offset: var(--space-1);
 }
 .field input, .field select { height: var(--size-48); padding: 0 var(--space-13); }
 .field textarea { min-height: var(--size-96); resize: vertical; line-height: 1.45; }
 .field input::placeholder, .field textarea::placeholder { color: var(--text-muted); }
-.field input:focus, .field textarea:focus, .field select:focus { outline: var(--border-2) solid var(--color-action); outline-offset: var(--space-1); }
-
-/* ── Кастомний select ── (listings .fsel, борт прибрано 2026-07-24) */
-.fsel {
-  position: relative; display: flex; align-items: center; min-width: 0; width: 100%;
-  background: var(--bg-surface);
-  border-radius: var(--radius-12); padding: 0 var(--space-30) 0 var(--space-13); height: var(--size-48);
-}
-.fsel select {
-  appearance: none; -webkit-appearance: none; -moz-appearance: none;
-  border: none; background: transparent; font: inherit;
-  font-size: var(--font-size-16); font-weight: var(--font-weight-600); color: var(--text-primary); cursor: pointer;
-  flex: 1; min-width: 0; padding: 0;
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-}
-.fsel::after {
-  content: ""; position: absolute; right: var(--space-14); top: 50%; margin-top: -5px;
-  width: var(--size-8); height: var(--size-8);
-  border-right: var(--border-1-5) solid var(--text-muted); border-bottom: var(--border-1-5) solid var(--text-muted);
-  transform: rotate(45deg); pointer-events: none;
-}
-.fsel:focus-within { outline: var(--border-2) solid var(--color-action); outline-offset: var(--space-1); }
+.field input:focus, .field textarea:focus, .field select:focus { outline-color: var(--color-action); }

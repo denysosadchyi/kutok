@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Скелетон завантаження · Компоненти · Куток</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../index.css">
+<link rel="stylesheet" href="docs.css">
+<script src="docs-nav.js" defer></script>
+</head>
+<body class="docs">
+<div class="docs-shell">
+
+<nav class="docs-nav" data-docs-nav aria-label="Дизайн-система">
+  <a class="docs-nav-home" href="index.html">Куток · дизайн-система</a>
+</nav>
+
+<main class="docs-main">
+
+  <p class="docs-crumb"><a href="index.html">Компоненти</a> / Зворотний зв'язок</p>
+  <p class="docs-eyebrow">Зворотний зв'язок</p>
+  <h1 class="docs-title">Скелетон завантаження</h1>
+  <p class="docs-lede">Не сірий прямокутник, а точна форма реального компонента без кольору — щоб контент, коли завантажиться, не зрушив розкладку.</p>
+  <div class="docs-meta"><code>.sk</code><code>.sk--leaving</code><code>.sk-photo</code><code>.sk-body</code><code>.sk-title</code><code>.sk-price</code><code>.sk-line</code><code>.sk-msg</code></div>
+
+  <section class="docs-sec" id="anatomy">
+    <h2>Анатомія</h2>
+    <p class="docs-sec-hint">Скелетон картки оголошення — та сама розкладка, що й у <a href="card.html">картці оголошення</a>. У живому вигляді він рівно пульсує, поки дані ще надходять.</p>
+    <div class="docs-anatomy">
+      <div class="docs-stage">
+        <div style="width:min(100%,280px);">
+          <div class="sk sk-photo"></div>
+          <div class="sk-body"><div class="sk sk-title"></div><div class="sk sk-price"></div></div>
+        </div>
+      </div>
+      <ol class="docs-legend">
+        <li><b>Базовий тон</b><span>(<code>.sk</code>) — заливка <code>--bg-pressed</code> рівно пульсує лише прозорістю. Це статус завантаження, не декор; темп бере <code>--dur-slow</code> та <code>--ease-standard</code>.</span></li>
+        <li><b>Фото-заглушка</b><span>(<code>.sk-photo</code>) — 4:3, радіус <code>--radius-18</code>, той самий, що в <code>.card-photo</code>, тому силует картки впізнається ще до завантаження фото.</span></li>
+        <li><b>Заголовок і ціна</b><span>(<code>.sk-title</code> 62%, <code>.sk-price</code> 26%) — та сама пара слотів, що й у реальному <code>.card-body</code>, тому розкладка не стрибає в момент підміни на справжній контент.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="motion">
+    <h2>Живий перехід: завантаження → вміст</h2>
+    <p class="docs-sec-hint">Пульс відповідає на питання «що відбувається зараз», а плавне зникнення заглушки звʼязує її зі справжнім вмістом. Натисни кнопку: клас <code>.sk--leaving</code> додається всім частинам скелетона перед підміною.</p>
+    <div class="docs-stage" data-skeleton-demo>
+      <div style="width:min(100%,280px);">
+        <div data-skeleton-loading aria-hidden="true">
+          <div class="sk sk-photo"></div>
+          <div class="sk-body"><div class="sk sk-title"></div><div class="sk sk-price"></div></div>
+          <span class="sk sk-line" style="width:72%;"></span>
+        </div>
+        <div data-skeleton-content hidden>
+          <p style="margin:0; font-size:var(--font-size-16); font-weight:var(--font-weight-700);">Кімната на Подолі</p>
+          <p style="margin:var(--space-6) 0 0; font-size:var(--font-size-13); color:var(--text-muted);">14 500 грн · 2 кімнати · 5 хв до метро</p>
+        </div>
+        <p class="sr-only" role="status" data-skeleton-status>Вміст завантажується.</p>
+        <button class="btn btn--ghost btn--sm" type="button" data-skeleton-toggle style="margin-top:var(--space-16);">Показати вміст</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="variants">
+    <h2>Варіанти й розміри</h2>
+    <p class="docs-sec-hint">Скелетон завжди повторює форму того, що він заміняє — картку, бульбашку чату чи рядок тексту.</p>
+    <div class="docs-variants">
+      <div class="docs-example">
+        <p class="docs-example-label">Картка оголошення (<code>listings-loading</code>)</p>
+        <div class="docs-example-body" style="display:block; width:100%;">
+          <div class="sk sk-photo"></div>
+          <div class="sk-body"><div class="sk sk-title"></div><div class="sk sk-price"></div></div>
+        </div>
+        <p class="docs-example-note">Повний розбір реальної картки — <a href="card.html">картка оголошення</a>.</p>
+      </div>
+      <div class="docs-example">
+        <p class="docs-example-label">Бульбашки чату (<code>chat-loading</code>, <code>.sk-msg</code>)</p>
+        <div class="docs-example-body" style="display:block; width:100%;">
+          <div class="chat-thread" style="padding:0;">
+            <span class="sk sk-msg" style="align-self:flex-start; width:60%;"></span>
+            <span class="sk sk-msg" style="align-self:flex-end; width:50%;"></span>
+            <span class="sk sk-msg" style="align-self:flex-start; width:70%; height:56px;"></span>
+          </div>
+        </div>
+        <p class="docs-example-note"><code>.sk-msg</code> визначений у chat.css, але компонує базовий пульс <code>.sk</code> — той самий обрис/вирівнювання, що й <code>.msg--in</code>/<code>.msg--out</code>. Повний розбір — <a href="chat.html">бульбашки й поле вводу</a>.</p>
+      </div>
+      <div class="docs-example docs-example--wide">
+        <p class="docs-example-label">Рядок тексту (<code>.sk-line</code>) — поля профілю</p>
+        <div class="docs-example-body" style="display:block; width:100%; max-width:320px;">
+          <span class="sk sk-line" style="width:80%;"></span>
+          <span class="sk sk-line" style="width:55%;"></span>
+          <span class="sk sk-line" style="width:65%;"></span>
+        </div>
+        <p class="docs-example-note">Генеричний рядок тексту, що вантажиться — ширина задається inline на кожному екземплярі, напр. у <code>profile-loading</code>, <code>my-profile-seeker-loading</code>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="usage">
+    <h2>Коли вживати</h2>
+    <p class="docs-copy">Скелетон стоїть на дев'яти <code>*-loading</code> екранах системи — <code>listings-loading</code>, <code>applications-loading</code>, <code>chat-loading</code>, <code>my-listings-loading</code>, <code>my-profile-host-loading</code>, <code>my-profile-seeker-loading</code>, <code>profile-loading</code>, <code>room-loading</code>, <code>verify-loading</code> — усюди, де дані ще запитуються з мережі. Це не те саме, що <a href="state.html">порожній стан</a>: скелетон каже «дані вже їдуть», порожній стан каже «даних немає взагалі», і плутати їх — означає обіцяти контент, якого не буде. Кожен клас <code>.sk-*</code> навмисно повторює радіус і пропорції реального елемента, який він заміняє. Коли дані прийшли, додай <code>.sk--leaving</code> всім його частинам і заміни їх вмістом після завершення переходу — так екран не сіпається.</p>
+    <div class="docs-where">
+      <span>listings-loading</span>
+      <span>chat-loading</span>
+      <span>profile-loading / my-profile-seeker-loading / my-profile-host-loading</span>
+      <span>room-loading</span>
+      <span>applications-loading / my-listings-loading</span>
+      <span>verify-loading</span>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="dodont">
+    <h2>Правило і антиправило</h2>
+    <div class="docs-dodont">
+      <div class="docs-do">
+        <span class="docs-do-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg>Так</span>
+        <div class="docs-do-stage">
+          <div style="width:100%; max-width:200px;">
+            <div class="sk sk-photo"></div>
+            <div class="sk-body"><div class="sk sk-title"></div><div class="sk sk-price"></div></div>
+          </div>
+        </div>
+        <p>Скелетон картки має точно ті самі радіус і слоти, що <a href="card.html">реальна картка</a> — коли фото й ціна довантажаться, розмір блоку не зміниться.</p>
+      </div>
+      <div class="docs-dont">
+        <span class="docs-dont-tag">✕ Ні</span>
+        <div class="docs-dont-stage">
+          <div class="sk" style="width:200px; height:80px; border-radius:var(--radius-6);"></div>
+        </div>
+        <p>Один загальний сірий прямокутник (чи спінер) на всі стани завантаження — зручно писати, але вимикає сенс системи: реальний контент має свої пропорції, і підміна викличе видимий стрибок розкладки саме тому, що заглушка їх не повторювала.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="responsive">
+    <h2>Адаптив у макетах</h2>
+    <p class="docs-sec-hint">Скелетон стрічки повторює сітку оголошень на кожній ширині: на телефоні картки йдуть одна за одною, а ширший макет змінює лише розкладку, не форму фото, ціни чи рядків тексту.</p>
+    <div class="docs-responsive" data-mobile="../../wireframes/listings-loading.html" data-tablet="../../wireframes/listings-loading.html" data-desktop="../../wireframes/listings-loading.html"></div>
+  </section>
+
+  <div class="docs-foot">
+    <a href="banner.html">← Банер</a>
+    <a href="index.html">Усі компоненти</a>
+    <a href="text.html">Текст: лічильник, оверлайн, підказка →</a>
+  </div>
+
+</main>
+</div>
+<script>
+  (function () {
+    var demo = document.querySelector('[data-skeleton-demo]');
+    if (!demo) return;
+
+    var loading = demo.querySelector('[data-skeleton-loading]');
+    var content = demo.querySelector('[data-skeleton-content]');
+    var button = demo.querySelector('[data-skeleton-toggle]');
+    var status = demo.querySelector('[data-skeleton-status]');
+    var skeletons = Array.prototype.slice.call(loading.querySelectorAll('.sk'));
+
+    function showContent() {
+      loading.hidden = true;
+      content.hidden = false;
+      button.disabled = false;
+      button.textContent = 'Показати завантаження';
+      status.textContent = 'Вміст завантажено.';
+    }
+
+    button.addEventListener('click', function () {
+      if (!content.hidden) {
+        content.hidden = true;
+        loading.hidden = false;
+        skeletons.forEach(function (skeleton) { skeleton.classList.remove('sk--leaving'); });
+        button.textContent = 'Показати вміст';
+        status.textContent = 'Вміст завантажується.';
+        return;
+      }
+
+      button.disabled = true;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        showContent();
+        return;
+      }
+
+      skeletons[0].addEventListener('transitionend', function onExit(event) {
+        if (event.propertyName === 'opacity') showContent();
+      }, { once: true });
+      skeletons.forEach(function (skeleton) { skeleton.classList.add('sk--leaving'); });
+    });
+  }());
+</script>
+<script src="docs-responsive.js"></script>
+</body>
+</html>

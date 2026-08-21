@@ -1,4 +1,10 @@
 (function () {
+  /* Shared product enhancement runtime. Loaded once by every active wireframe. */
+  var selectRuntime = document.createElement('script');
+  selectRuntime.src = new URL('../design-system/components/select.js', document.currentScript && document.currentScript.src || window.location.href).href;
+  selectRuntime.defer = true;
+  document.head.appendChild(selectRuntime);
+
   function ready() {
     var nav = document.querySelector('.wf-nav');
     if (!nav) return;

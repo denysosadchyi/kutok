@@ -111,7 +111,8 @@
 | [`sitemap.md`](./sitemap.md) · [`flows.md`](./flows.md) · [`ia.md`](./ia.md) · [`audit.md`](./audit.md) | Проектування: сутності + екрани, user flows, навігація, аудит мапи | ✅ чернетка |
 | [`research/`](./research/) | [research.md](./research/research.md) (конкуренти · бенчмарк · патерни · висновки · доресерч), [competitors.md](./research/competitors.md), [personas.md](./research/personas.md), [jtbd.md](./research/jtbd.md), [critique.md](./research/critique.md), [interviews.md](./research/interviews.md), [дашборд](./research/index.html) | ✅ |
 | [`research/screens/`](./research/screens/) | Скріни еталонів бенчмарку (Airbnb, Tinder); скріни конкурентів — TODO | 🟡 частково |
-| `wireframes/` · `concept/` · [`design-system/`](./design-system/) · `handoff/` | Наступні етапи дизайну (wireframes → концепт → дизайн-система → хендоф) | 🟡 частково (`design-system/` = `tokens.css` + `components/`; `patterns/`, `docs/`, `examples/` поки порожньо) |
+| `wireframes/` · `concept/` · `handoff/` | Наступні етапи дизайну (wireframes → концепт → дизайн-система → хендоф) | 🟡 частково |
+| [`DESIGN.md`](./DESIGN.md) · [`design-system/tokens.css`](./design-system/tokens.css) · [`design-system/components/`](./design-system/components/) · [`design-system/docs/index.html`](./design-system/docs/index.html) | Дизайн-система: правила, токени, компоненти й жива документація | ✅ |
 
 ### Живі артефакти (рендер)
 

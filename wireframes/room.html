@@ -89,7 +89,7 @@
     <a class="wf-nav-kit-link" href="kit.html">Кіт компонентів →</a>
     <button type="button" class="wf-nav-theme" onclick="wfToggleTheme()" aria-pressed="false">Темна тема</button>
     <div class="wf-nav-tools">
-      <input type="text" class="wf-nav-filter" placeholder="Фільтр за назвою…" oninput="wfNavFilter(this.value)">
+      <input type="text" class="wf-nav-filter" aria-label="Фільтр макетів за назвою" placeholder="Фільтр за назвою…" oninput="wfNavFilter(this.value)">
       <div class="wf-nav-toggle-all">
         <button type="button" onclick="wfNavToggleAll(true)">Розгорнути все</button>
         <button type="button" onclick="wfNavToggleAll(false)">Згорнути все</button>
@@ -328,10 +328,16 @@
   </nav>
 
   <div class="wf-stage">
-<div class="app app--detail">
+<div class="app app--detail app--room-detail">
 
   <header class="app-head app-head--back">
     <div class="head-back-wrap">
+      <nav class="breadcrumbs" aria-label="Хлібні крихти">
+        <ol>
+          <li><a href="listings.html">Куток</a></li>
+          <li aria-current="page">Оголошення кімнати</li>
+        </ol>
+      </nav>
       <div class="head-brand-row"><svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--color-brand)"/><path d="M18 3L21 3L21 6Z" fill="var(--bg-surface)"/></svg><div class="head-brand">Куток</div></div>
       <div class="head-back-row">
       <a class="head-back" href="listings.html" aria-label="До списку"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a>
@@ -346,13 +352,13 @@
   <div id="search-popover" class="search-popover" popover>
     <form class="search-form" role="search" action="listings.html" method="get">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg>
-      <input type="search" name="q" placeholder="Пошук за назвою, районом…" aria-label="Пошук оголошень">
+      <input type="search" name="q" placeholder="Пошук" aria-label="Пошук оголошень">
     </form>
   </div>
 
 
   <main>
-    <section class="section">
+    <section class="section section--media">
       <a href="_archive/photo-viewer.html">
         <img class="thumb" src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800&h=600&fit=crop&auto=format&q=70" alt="Фото кімнати в 2-к квартирі на Поділі" loading="lazy">
       </a>
@@ -363,47 +369,51 @@
       </div>
     </section>
 
-    <section class="section section--aside">
-      <h2 class="card-title">Кімната в 2-к квартирі</h2>
-      <p class="amount">9 500 ₴/міс</p>
-      <ul class="facts">
-        <li>Поділ, вул. Костянтинівська</li>
-        <li>1 співмешканець</li>
-        <li>Заїзд з 1 липня</li>
-      </ul>
-    </section>
+    <div class="detail-main">
+      <section class="section section--description">
+        <h2 class="overline">Опис</h2>
+        <p>Світла кімната 14 м² у двокімнатній квартирі. Поруч метро «Контрактова площа». Є меблі, інтернет, пральна машина.</p>
+      </section>
 
-    <section class="section">
-      <h2 class="overline">Опис</h2>
-      <p>Світла кімната 14 м² у двокімнатній квартирі. Поруч метро «Контрактова площа». Є меблі, інтернет, пральна машина.</p>
-    </section>
+      <section class="section section--rules">
+        <h2 class="overline">Правила співжиття</h2>
+        <ul class="facts">
+          <li>Без куріння в квартирі</li>
+          <li>Можна з котом</li>
+          <li>Тихо після 23:00</li>
+        </ul>
+      </section>
+    </div>
 
-    <section class="section">
-      <h2 class="overline">Правила співжиття</h2>
-      <ul class="facts">
-        <li>Без куріння в квартирі</li>
-        <li>Можна з котом</li>
-        <li>Тихо після 23:00</li>
-      </ul>
-    </section>
+    <aside class="detail-rail" aria-label="Умови та дія за оголошенням">
+      <section class="section section--aside">
+        <h2 class="card-title">Кімната в 2-к квартирі</h2>
+        <p class="amount">9 500 ₴/міс</p>
+        <ul class="facts">
+          <li>Поділ, вул. Костянтинівська</li>
+          <li>1 співмешканець</li>
+          <li>Заїзд з 1 липня</li>
+        </ul>
+      </section>
 
-    <section class="section">
-      <h2 class="overline">Господиня</h2>
-      <a class="person-row" href="profile.html">
-        <img class="avatar avatar--sm" src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=120&h=120&fit=crop&auto=format&q=70" alt="Фото — Олена, 28" loading="lazy">
-        <span>
-          <span class="person-name">Олена, 28</span>
-          <span class="badge" style="margin-top:4px;">телефон ✓ · фото ✓ · документ —</span>
-        </span>
-      </a>
-    </section>
+      <section class="section section--trust">
+        <h2 class="overline">Господиня</h2>
+        <a class="person-row" href="profile.html">
+          <img class="avatar avatar--sm" src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=120&h=120&fit=crop&auto=format&q=70" alt="Фото — Олена, 28" loading="lazy">
+          <span>
+            <span class="person-name">Олена, 28</span>
+            <span class="badge" style="margin-top:4px;">телефон ✓ · фото ✓ · документ —</span>
+          </span>
+        </a>
+      </section>
 
-    <section class="section">
-      <div class="btn-stack">
-        <a class="btn btn--primary btn--block" href="consent.html">Хочу познайомитись</a>
-        <a class="btn btn--ghost btn--block" href="_archive/report.html">Поскаржитись або заблокувати</a>
-      </div>
-    </section>
+      <section class="section section--actions">
+        <div class="btn-stack">
+          <a class="btn btn--primary btn--block" href="consent.html">Хочу познайомитись</a>
+          <a class="btn btn--ghost btn--block" href="_archive/report.html">Поскаржитись або заблокувати</a>
+        </div>
+      </section>
+    </aside>
   </main>
 
   <footer class="tabbar">
@@ -412,7 +422,7 @@
     <a class="tabbar-brand" href="listings.html" aria-label="Куток — на головну"><svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--color-brand)"/><path d="M18 3L21 3L21 6Z" fill="var(--bg-surface)"/></svg><span>Куток</span></a>
     <form class="tabbar-search search-form" role="search" action="listings.html" method="get">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg>
-      <input type="search" name="q" placeholder="Пошук за назвою, районом…" aria-label="Пошук оголошень">
+      <input type="search" name="q" placeholder="Пошук" aria-label="Пошук оголошень">
     </form>
     <a class="active" href="listings.html">
       <span class="tab-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg></span>

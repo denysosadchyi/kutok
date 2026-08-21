@@ -87,7 +87,7 @@
     <a class="wf-nav-kit-link" href="kit.html">Кіт компонентів →</a>
     <button type="button" class="wf-nav-theme" onclick="wfToggleTheme()" aria-pressed="false">Темна тема</button>
     <div class="wf-nav-tools">
-      <input type="text" class="wf-nav-filter" placeholder="Фільтр за назвою…" oninput="wfNavFilter(this.value)">
+      <input type="text" class="wf-nav-filter" aria-label="Фільтр макетів за назвою" placeholder="Фільтр за назвою…" oninput="wfNavFilter(this.value)">
       <div class="wf-nav-toggle-all">
         <button type="button" onclick="wfNavToggleAll(true)">Розгорнути все</button>
         <button type="button" onclick="wfNavToggleAll(false)">Згорнути все</button>
@@ -330,6 +330,12 @@
 
   <header class="app-head">
     <div>
+      <nav class="breadcrumbs" aria-label="Хлібні крихти">
+        <ol>
+          <li><a href="listings.html">Куток</a></li>
+          <li aria-current="page">Пошук</li>
+        </ol>
+      </nav>
       <div class="head-brand-row"><svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--color-brand)"/><path d="M18 3L21 3L21 6Z" fill="var(--bg-surface)"/></svg><div class="head-brand">Куток</div></div>
       <h1 class="head-word">Пошук</h1>
       <p class="head-sub">Кімнати й сусіди в Києві, між своїми</p>
@@ -342,11 +348,12 @@
   <div id="search-popover" class="search-popover" popover>
     <form class="search-form" role="search" action="listings.html" method="get">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg>
-      <input type="search" name="q" placeholder="Пошук за назвою, районом…" aria-label="Пошук оголошень">
+      <input type="search" name="q" placeholder="Пошук" aria-label="Пошук оголошень">
     </form>
   </div>
 
-  <section class="filterbar" aria-label="Тип оголошень">
+  <div class="catalog-workspace">
+  <section class="filterbar" aria-label="Фільтри оголошень">
     <form class="filters-form" action="listings.html" method="get">
       <fieldset class="seg">
         <legend class="sr-only">Тип оголошень</legend>
@@ -354,6 +361,21 @@
         <label><input type="radio" name="type" value="people"> Люди <span class="seg-count">0</span></label>
         <label><input type="radio" name="type" value="all" checked> Усі <span class="seg-count">0</span></label>
       </fieldset>
+      <div class="filters-inline">
+        <div class="field">
+          <label for="filters-district">Район</label>
+          <label class="fsel"><select id="filters-district" name="district"><option>Весь Київ</option><option selected>Поділ</option><option>Оболонь</option><option>Позняки</option><option>Шевченківський</option></select></label>
+        </div>
+        <div class="field">
+          <label for="filters-price">Ціна</label>
+          <label class="fsel"><select id="filters-price" name="price"><option>до 8 000 ₴</option><option selected>до 10 000 ₴</option><option>до 15 000 ₴</option><option>без межі</option></select></label>
+        </div>
+        <div class="field">
+          <label for="filters-gender">Стать сусіда</label>
+          <label class="fsel"><select id="filters-gender" name="gender"><option selected>будь-яка</option><option>жінка</option><option>чоловік</option></select></label>
+        </div>
+        <button class="btn btn--primary" type="submit">Застосувати</button>
+      </div>
     </form>
   </section>
 
@@ -417,6 +439,7 @@
       </div>
     </div>
   </main>
+  </div>
 
   <button type="button" class="fab" popovertarget="filter-sheet" aria-label="Відкрити фільтр">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h7M17.5 7H20M4 12h2.5M13 12h7M4 17h7M17.5 17H20"/><circle cx="14.5" cy="7" r="2.4"/><circle cx="9.5" cy="12" r="2.4"/><circle cx="14.5" cy="17" r="2.4"/></svg>
@@ -428,7 +451,7 @@
     <a class="tabbar-brand" href="listings.html" aria-label="Куток — на головну"><svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--color-brand)"/><path d="M18 3L21 3L21 6Z" fill="var(--bg-surface)"/></svg><span>Куток</span></a>
     <form class="tabbar-search search-form" role="search" action="listings.html" method="get">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg>
-      <input type="search" name="q" placeholder="Пошук за назвою, районом…" aria-label="Пошук оголошень">
+      <input type="search" name="q" placeholder="Пошук" aria-label="Пошук оголошень">
     </form>
     <a class="active" href="listings.html">
       <span class="tab-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg></span>

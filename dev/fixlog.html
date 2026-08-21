@@ -246,7 +246,7 @@
          so anything that sets display MUST restore the hidden case itself —
          otherwise the element is permanently on screen. */
       .pop[hidden], .dr[hidden], .dr__rate[hidden],
-      .pop__body[hidden], .pop__note[hidden], .pop__send[hidden] { display: none; }
+      .pop__body[hidden], .pop__form[hidden], .pop__send[hidden] { display: none; }
 
       /* ── Page head ────────────────────────────────────────────────────────
          Title, tally, actions — one toolbar line. The tally carries the same
@@ -297,7 +297,10 @@
         font: 600 12px/1 var(--font-mono);
       }
 
-      .head__actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+      .head__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-left: auto; }
+      .executor { display: inline-flex; align-items: center; gap: 7px; }
+      .executor__label { color: var(--muted); font: 500 11px/1 var(--font-ui); }
+      .executor__err { color: var(--danger); font: 500 11px/1.3 var(--font-ui); }
       .reload {
         padding: 5px 12px;
         border: 1px solid var(--line-strong);
@@ -809,6 +812,8 @@
         position: absolute;
         top: 0; right: 0; bottom: 0;
         width: 92%;
+        max-width: 100vw;
+        min-width: 0;
         display: flex;
         flex-direction: column;
         border-left: 1px solid var(--line-strong);
@@ -892,9 +897,22 @@
         text-decoration: none;
       }
       .dr__open:hover, .dr__open:focus-visible { outline: none; text-decoration: underline; }
-      /* The frame hosts the LIGHT app: a white ground under it means loading
-         is a white flash into a white page, not a dark hole into a white one. */
-      .dr__frame { flex: 1 1 auto; width: 100%; border: 0; background: oklch(1 0 0); }
+      /* The frame hosts the product, not the wireframe review shell. Its
+         viewport is the drawer's available width, so the product's own media
+         queries choose desktop/tablet/mobile exactly as they would standalone. */
+      .dr__preview { position: relative; flex: 1 1 auto; min-height: 0; overflow: hidden; background: oklch(1 0 0); }
+      .dr__frame { position: relative; z-index: 1; display: block; width: 100%; height: 100%; border: 0; background: oklch(1 0 0); }
+      .dr__loading {
+        position: absolute; inset: 0; z-index: 2;
+        display: grid; place-items: center;
+        padding: 24px;
+        background: oklch(1 0 0);
+        color: var(--muted);
+        font: 500 13px/1.4 var(--font-ui);
+        text-align: center;
+      }
+      .dr__loading[hidden] { display: none; }
+      .dr__loading[data-error] { color: var(--danger); }
 
       /* ── Dialog ───────────────────────────────────────────────────────────
          Two modes, one box: reading what a fix did, and telling it to be done
@@ -982,6 +1000,8 @@
       .pop__it--open .pop__it-head { color: var(--danger); }
       .pop__it-res { margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--line); color: var(--ink-2); }
 
+      .pop__form { display: grid; gap: 12px; }
+
       .pop__note {
         display: block;
         width: 100%;
@@ -1027,13 +1047,25 @@
         tbody tr.is-wip td { background: var(--info-soft) }
         tbody tr.sub.is-redo td { background: var(--danger-soft) }
         .dr__panel, .dr__scrim, .pop__scrim, .pop__box { animation: none }
-        .icon-btn, .reload, .dr__nav, .dr__x, .pop__cancel, .pop__send, th { transition: none }
+        .icon-btn, .reload, .dr__nav, .dr__x,
+        .pop__cancel, .pop__send, th { transition: none }
       }
 
       @media (max-width: 720px) {
         body { padding: 14px 14px 24px; }
         h1 { font-size: 15px; }
+        .head__actions { width: 100%; margin-left: 0; }
+        .executor { margin-right: auto; }
+        .executor .seg__b { min-height: 44px; padding-inline: 14px; }
+        .dr__panel { width: 100%; }
+        .dr__head { gap: 8px; padding-inline: 10px; }
+        .dr__actions { gap: 8px; padding-left: 0; border-left: 0; }
+        .dr__open { display: none; }
         .dr__rate-label { display: none; }
+      }
+      @media (pointer: coarse) {
+        .executor .seg__b { min-height: 44px; padding-inline: 14px; }
+        .dr__nav, .dr__x { width: 44px; height: 44px; }
       }
       /* Below ~640px the fixed columns would starve Запит — the page's whole
          point. Трив. (4) and Агент (6) are the most expendable index data;
@@ -1053,6 +1085,16 @@
         <h1>Fix log</h1>
         <div class="tally" id="count"></div>
         <div class="head__actions">
+          <div class="executor">
+            <span class="executor__label">Виконавець</span>
+            <div class="seg" role="group" aria-label="Виконавець нових правок">
+              <button class="seg__b" id="executorCodex" type="button"
+                aria-pressed="true">Codex</button>
+              <button class="seg__b" id="executorClaude" type="button"
+                aria-pressed="false">Claude Code</button>
+            </div>
+            <span class="executor__err" id="executorErr" role="status"></span>
+          </div>
           <button class="reload reload--quiet theme" id="theme" type="button"
             aria-label="Перемкнути тему" title="Тема">
             <svg class="theme__sun" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><g fill="currentColor"><path d="M18 12a6 6 0 1 1-12 0a6 6 0 0 1 12 0"/><path fill-rule="evenodd" d="M12 1.25a.75.75 0 0 1 .75.75v1a.75.75 0 0 1-1.5 0V2a.75.75 0 0 1 .75-.75M1.25 12a.75.75 0 0 1 .75-.75h1a.75.75 0 0 1 0 1.5H2a.75.75 0 0 1-.75-.75m19 0a.75.75 0 0 1 .75-.75h1a.75.75 0 0 1 0 1.5h-1a.75.75 0 0 1-.75-.75M12 20.25a.75.75 0 0 1 .75.75v1a.75.75 0 0 1-1.5 0v-1a.75.75 0 0 1 .75-.75" clip-rule="evenodd"/><path d="M4.398 4.398a.75.75 0 0 1 1.061 0l.393.393a.75.75 0 0 1-1.06 1.06l-.394-.392a.75.75 0 0 1 0-1.06m15.202 0a.75.75 0 0 1 0 1.06l-.392.393a.75.75 0 0 1-1.06-1.06l.392-.393a.75.75 0 0 1 1.06 0m-1.453 13.748a.75.75 0 0 1 1.061 0l.393.393a.75.75 0 0 1-1.06 1.06l-.394-.392a.75.75 0 0 1 0-1.06m-12.295 0a.75.75 0 0 1 0 1.06l-.393.393a.75.75 0 1 1-1.06-1.06l.392-.393a.75.75 0 0 1 1.06 0" opacity=".5"/></g></svg>
@@ -1114,7 +1156,10 @@
             <button class="dr__x" id="drClose" type="button" aria-label="Закрити"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><g fill="currentColor"><path d="M22 12c0 5.523-4.477 10-10 10S2 17.523 2 12S6.477 2 12 2s10 4.477 10 10" opacity=".5"/><path d="M8.97 8.97a.75.75 0 0 1 1.06 0L12 10.94l1.97-1.97a.75.75 0 1 1 1.06 1.06L13.06 12l1.97 1.97a.75.75 0 0 1-1.06 1.06L12 13.06l-1.97 1.97a.75.75 0 0 1-1.06-1.06L10.94 12l-1.97-1.97a.75.75 0 0 1 0-1.06"/></g></svg></button>
           </div>
         </header>
-        <iframe class="dr__frame" id="drFrame" title="Екран правки"></iframe>
+        <div class="dr__preview">
+          <p class="dr__loading" id="drLoading" role="status">Завантаження макета…</p>
+          <iframe class="dr__frame" id="drFrame" title="Екран правки" aria-busy="true"></iframe>
+        </div>
       </aside>
     </div>
 
@@ -1125,9 +1170,11 @@
         <h2 class="pop__title" id="popTitle">На доробку</h2>
         <p class="pop__sub" id="popSub"></p>
         <div class="pop__body" id="popBody" hidden></div>
-        <textarea class="pop__note" id="popNote" rows="4" maxlength="500"
-          aria-label="Що не так і як має бути"
-          placeholder="Що не так і як має бути"></textarea>
+        <div class="pop__form" id="popForm">
+          <textarea class="pop__note" id="popNote" rows="4" maxlength="500"
+            aria-label="Що не так і як має бути"
+            placeholder="Що не так і як має бути"></textarea>
+        </div>
         <div class="pop__foot">
           <span class="pop__err" id="popErr"></span>
           <button class="pop__cancel" id="popCancel" type="button">Скасувати</button>
@@ -1186,6 +1233,7 @@
          mark wearing Claude's brand orange (--lane-imp). «сам» is a person,
          not a brand — the Solar user icon like the rest of the UI set. */
       const LANE_IC = {
+        codex: '<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 1 0 8.66 15l-2.6-1.5A7 7 0 1 1 12 5z"/><path fill="currentColor" d="M12 8a4 4 0 1 0 3.46 6l-2.6-1.5A1 1 0 1 1 12 12z"/></svg>',
         claude: '<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="m4.714 15.956l4.718-2.648l.079-.23l-.08-.128h-.23l-.79-.048l-2.695-.073l-2.337-.097l-2.265-.122l-.57-.121l-.535-.704l.055-.353l.48-.321l.685.06l1.518.104l2.277.157l1.651.098l2.447.255h.389l.054-.158l-.133-.097l-.103-.098l-2.356-1.596l-2.55-1.688l-1.336-.972l-.722-.491L2 6.223l-.158-1.008l.656-.722l.88.06l.224.061l.893.686l1.906 1.476l2.49 1.833l.364.304l.146-.104l.018-.072l-.164-.274l-1.354-2.446l-1.445-2.49l-.644-1.032l-.17-.619a3 3 0 0 1-.103-.729L6.287.133L6.7 0l.995.134l.42.364l.619 1.415L9.735 4.14l1.555 3.03l.455.898l.243.832l.09.255h.159V9.01l.127-1.706l.237-2.095l.23-2.695l.08-.76l.376-.91l.747-.492l.583.28l.48.685l-.067.444l-.286 1.851l-.558 2.903l-.365 1.942h.213l.243-.242l.983-1.306l1.652-2.064l.728-.82l.85-.904l.547-.431h1.032l.759 1.129l-.34 1.166l-1.063 1.347l-.88 1.142l-1.263 1.7l-.79 1.36l.074.11l.188-.02l2.853-.606l1.542-.28l1.84-.315l.832.388l.09.395l-.327.807l-1.967.486l-2.307.462l-3.436.813l-.043.03l.049.061l1.548.146l.662.036h1.62l3.018.225l.79.522l.473.638l-.08.485l-1.213.62l-1.64-.389l-3.825-.91l-1.31-.329h-.183v.11l1.093 1.068l2.003 1.81l2.508 2.33l.127.578l-.321.455l-.34-.049l-2.204-1.657l-.85-.747l-1.925-1.62h-.127v.17l.443.649l2.343 3.521l.122 1.08l-.17.353l-.607.213l-.668-.122l-1.372-1.924l-1.415-2.168l-1.141-1.943l-.14.08l-.674 7.254l-.316.37l-.728.28l-.607-.461l-.322-.747l.322-1.476l.388-1.924l.316-1.53l.285-1.9l.17-.632l-.012-.042l-.14.018l-1.432 1.967l-2.18 2.945l-1.724 1.845l-.413.164l-.716-.37l.066-.662l.401-.589l2.386-3.036l1.439-1.882l.929-1.086l-.006-.158h-.055L4.138 18.56l-1.13.146l-.485-.456l.06-.746l.231-.243l1.907-1.312Z"/></svg>',
         opencode: '<svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true"><path fill="currentColor" d="M22 24H2V0h20zM17 4.8H7v14.4h10z"/></svg>',
         self: '<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><g fill="currentColor"><circle cx="12" cy="6" r="4"/><path d="M20 17.5c0 2.485 0 4.5-8 4.5s-8-2.015-8-4.5S7.582 13 12 13s8 2.015 8 4.5" opacity=".5"/></g></svg>',
@@ -1197,20 +1245,38 @@
         const icons = []
         if (/opencode/i.test(t)) icons.push(LANE_IC.opencode)
         else if (/сам/i.test(t)) icons.push(LANE_IC.self)
-        /* Назва моделі — це не інформація в цьому стовпчику: колонка каже,
-           ХТО робив правку, а всі вони Claude. «opus», «sonnet», «haiku»,
-           «fable» друкувалися словом лише тому, що словника їм не завели —
-           і одна модель виглядала інакше за іншу без жодної причини.
-           Тепер будь-яка з них — той самий знак; точна назва лишається в
-           title, бо в лозі вона записана і за нею шукають. */
-        else if (/agent|claude|impeccable|opus|sonnet|haiku|fable|anthropic/i.test(t))
+        /* Сучасний `agent` lane означає Codex; явні Claude/model names
+           (`claude`, `opus`, `sonnet`, `haiku`, `fable`, `anthropic`) означають
+           Claude Code. Точна назва лишається в title, бо в лозі вона записана
+           і за нею шукають. */
+        else if (/agent|codex/i.test(t))
+          icons.push(LANE_IC.codex)
+        else if (/claude|impeccable|opus|sonnet|haiku|fable|anthropic/i.test(t))
           icons.push(LANE_IC.claude)
         /* Outside the vocabulary → the name itself, readable, never an
            unexplained blank. */
+        const kind = /opencode/i.test(t) ? 'opencode' : /agent|codex/i.test(t) ? 'codex' : /impeccable/i.test(t) ? 'imp' : 'agent'
         if (!icons.length) return `<span class="lane" title="${esc(t)}">${esc(t)}</span>`
-        const kind = /opencode/i.test(t) ? 'opencode' : /impeccable/i.test(t) ? 'imp' : 'agent'
-        return `<span class="lane lane--${kind}" role="img" title="${esc(t)}" aria-label="${esc(t)}">${icons.join('')}</span>`
+        /* Keep the source lane/model available to assistive tech and hover;
+           the cell itself is intentionally SVG-only. */
+        const label = kind === 'codex' ? t : kind === 'agent' || kind === 'imp' ? 'Claude Code' : t
+        return `<span class="lane lane--${kind}" role="img" title="${esc(label)}" aria-label="${esc(label)}">${icons.join('')}</span>`
       }
+
+      /* Narrow render fixtures: these lanes must never leak their source
+         text into the visible cell, including the model/effort suffix. */
+      ;[
+        'Codex', 'agent', 'Codex · gpt-5.6-luna · high',
+        'Codex · gpt-5.6-terra · medium', 'Codex · gpt-5.6-sol · xhigh',
+      ].forEach((raw) => {
+        const probe = document.createElement('template')
+        probe.innerHTML = lane(raw)
+        const mark = probe.content.firstElementChild
+        console.assert(mark && mark.querySelector('svg') && mark.textContent === '',
+          `Codex lane must render as SVG-only: ${raw}`)
+        console.assert(mark && mark.getAttribute('title') === raw && mark.getAttribute('aria-label') === raw,
+          `Codex lane metadata must preserve source: ${raw}`)
+      })
 
       /* «3хв тому» замість «15:32». Абсолютний час у цій таблиці ніколи не
          був питанням — питання завжди «наскільки це свіже»; годинник змушував
@@ -1239,7 +1305,20 @@
       /* Annotations carry the full URL they were made on; only the path is
          worth showing, and a malformed one must not take the page down. */
       const routeOf = (url) => {
-        try { return new URL(url).pathname } catch { return String(url || '—') }
+        try {
+          const parsed = new URL(url, location.href)
+          /* The root viewer now records links as `/#wireframes/foo.html?width=…`.
+             The drawer must load the product document itself: embedding the
+             root viewer would bring its left navigation into the product
+             preview. Width is a viewer concern, so deliberately discard it. */
+          if ((parsed.pathname === '/' || /\/index\.html$/.test(parsed.pathname)) && parsed.hash) {
+            const file = decodeURIComponent(parsed.hash.slice(1)).split('?')[0]
+            if (/^(?:wireframes|research|concept|ui|handoff|design-system\/docs)\/[\w./-]+\.html$/.test(file)) {
+              return '/' + file
+            }
+          }
+          return parsed.pathname
+        } catch { return String(url || '—') }
       }
 
       const plural = (n, one, few, many) => {
@@ -2032,6 +2111,51 @@
 
       /* ── Drawer ───────────────────────────────────────────────────────── */
       const dr = $('dr')
+      let drawerLoadToken = 0
+      const DRAWER_EMBED_CSS = [
+        /* A wireframe opened directly carries its own review navigation.
+           Fixlog is already the review context, so only the product belongs
+           in this frame. Keep this scoped to the child document: standalone
+           pages and the root viewer retain their own navigation behaviour. */
+        'html,body{width:100%!important;min-width:0!important;overflow-x:hidden!important}',
+        '.wf-nav,.wf-nav-toggle,.sidenav{display:none!important}',
+        '.wf-shell{display:block!important;width:100%!important;min-width:0!important;min-height:100dvh!important}',
+        '.wf-stage{display:block!important;width:100%!important;min-width:0!important;min-height:100dvh!important}',
+        '.wf-stage>.app{margin-inline:auto!important}',
+      ].join('')
+
+      function prepareDrawerEmbed(frame) {
+        let doc
+        try { doc = frame.contentDocument } catch { return false }
+        if (!doc || !doc.documentElement || !doc.body) return false
+
+        let style = doc.getElementById('fixlog-product-embed')
+        if (!style) {
+          style = doc.createElement('style')
+          style.id = 'fixlog-product-embed'
+          style.textContent = DRAWER_EMBED_CSS
+          doc.head.appendChild(style)
+        }
+
+        /* The standalone responsive helper has already created this button by
+           iframe load time. Remove it from the accessibility tree as well as
+           the layout, even on pages whose stylesheet arrives late. */
+        doc.querySelectorAll('.wf-nav, .wf-nav-toggle, .sidenav').forEach((el) => {
+          el.setAttribute('aria-hidden', 'true')
+          el.inert = true
+        })
+        return true
+      }
+
+      function setDrawerLoading(state, message) {
+        const loading = $('drLoading')
+        const frame = $('drFrame')
+        const visible = state === 'loading' || state === 'error'
+        loading.hidden = !visible
+        loading.toggleAttribute('data-error', state === 'error')
+        if (message) loading.textContent = message
+        frame.setAttribute('aria-busy', state === 'loading' ? 'true' : 'false')
+      }
 
       function openAt(i) {
         if (i < 0 || i >= visible.length) return
@@ -2056,6 +2180,7 @@
       }
       function openDrawer(route, pin, key, row) {
         if (!route || route === '—') return
+        const loadToken = ++drawerLoadToken
         /* The name is the request itself — what was asked for is what
            identifies a fix to a human; the route is supporting detail. */
         $('drName').textContent = row ? plain(row.req || '—') : route
@@ -2078,10 +2203,24 @@
         }
         $('drOpen').href = route
         const f = $('drFrame')
-        f.onload = () => pin && dropPin(f, pin)
+        setDrawerLoading('loading', 'Завантаження макета…')
+        f.onload = () => {
+          if (loadToken !== drawerLoadToken) return
+          if (!prepareDrawerEmbed(f)) {
+            setDrawerLoading('error', 'Не вдалося відкрити макет. Спробуйте відкрити його окремо.')
+            return
+          }
+          setDrawerLoading('ready')
+          if (pin) dropPin(f, pin)
+        }
+        f.onerror = () => {
+          if (loadToken !== drawerLoadToken) return
+          setDrawerLoading('error', 'Не вдалося відкрити макет. Спробуйте відкрити його окремо.')
+        }
         f.src = route
         dr.hidden = false
         document.body.style.overflow = 'hidden'
+        $('drClose').focus({ preventScroll: true })
       }
 
       /* The drawer and the app are the same origin, so the pin goes INTO the
@@ -2096,11 +2235,13 @@
          The retry re-places it as the page grows and stops once the body is
          tall enough to actually hold it. */
       function closeDrawer() {
+        drawerLoadToken++
         dr.hidden = true
         document.querySelectorAll('tr.is-current').forEach((el) => el.classList.remove('is-current'))
         /* Blank the frame: otherwise the app keeps running behind the scrim,
            with its own timers, fetches and annotation toolbar alive. */
         $('drFrame').src = 'about:blank'
+        setDrawerLoading('loading', 'Завантаження макета…')
         document.body.style.overflow = ''
       }
 
@@ -2255,6 +2396,40 @@
       /* ── Details / rework dialog ──────────────────────────────────────── */
       const pop = $('pop')
       let popKey = ''
+      const EXECUTOR_KEY = 'fixlog-executor'
+      const savedExecutor = localStorage.getItem(EXECUTOR_KEY)
+      let executor = savedExecutor === 'codex' || savedExecutor === 'claude'
+        ? savedExecutor : 'codex'
+      const showExecutor = (value) => {
+        executor = value === 'codex' ? 'codex' : 'claude'
+        $('executorCodex').setAttribute('aria-pressed', executor === 'codex' ? 'true' : 'false')
+        $('executorClaude').setAttribute('aria-pressed', executor === 'claude' ? 'true' : 'false')
+      }
+      const saveExecutor = async (value) => {
+        const previous = executor
+        showExecutor(value)
+        $('executorErr').textContent = ''
+        $('executorCodex').disabled = $('executorClaude').disabled = true
+        try {
+          const response = await fetch(`${RATE}/settings/executor`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ executor }),
+          })
+          const data = await response.json().catch(() => ({}))
+          if (!response.ok || !data.ok) throw new Error(data.error || 'HTTP ' + response.status)
+          showExecutor(data.settings.executor)
+          localStorage.setItem(EXECUTOR_KEY, executor)
+        } catch (error) {
+          showExecutor(previous)
+          $('executorErr').textContent = 'Не збережено'
+        } finally {
+          $('executorCodex').disabled = $('executorClaude').disabled = false
+        }
+      }
+      $('executorCodex').addEventListener('click', () => saveExecutor('codex'))
+      $('executorClaude').addEventListener('click', () => saveExecutor('claude'))
+      showExecutor(executor)
 
       /* Two modes, one dialog: reading what a fix did, and telling it to be
          redone. They share the same subject line, so splitting them into two
@@ -2292,7 +2467,7 @@
         /* The form only exists in rework mode. Re-opening while an iteration
            is still open pre-fills its note: sending again AMENDS the open
            instruction (the server keeps one open iteration per fix). */
-        $('popNote').hidden = details
+        $('popForm').hidden = details
         $('popSend').hidden = details
         $('popCancel').textContent = details ? 'Закрити' : 'Скасувати'
         $('popNote').value = open ? open.note : ''
@@ -2334,7 +2509,7 @@
           const r = await fetch(`${RATE}/rework`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id: popKey, note }),
+            body: JSON.stringify({ id: popKey, note, executor }),
           })
           const data = await r.json().catch(() => ({}))
           if (!r.ok || !data.ok) throw new Error(data.error || 'HTTP ' + r.status)
@@ -2467,6 +2642,13 @@
         }
 
         state.ratingsErr = ''
+        getJSON(`${RATE}/settings`)
+          .then((value) => {
+            if (value.executor !== 'codex' && value.executor !== 'claude') return
+            if (value.executor !== executor) showExecutor(value.executor)
+            localStorage.setItem(EXECUTOR_KEY, value.executor)
+          })
+          .catch(() => { /* ratings warning already reports the same service */ })
         getJSON(`${RATE}/ratings`)
           .then((v) => {
             /* Re-render only when the verdicts actually changed — this fires

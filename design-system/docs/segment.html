@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Сегмент типу · Компоненти · Куток</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../index.css">
+<link rel="stylesheet" href="docs.css">
+<script src="docs-nav.js" defer></script>
+</head>
+<body class="docs">
+<div class="docs-shell">
+
+<nav class="docs-nav" data-docs-nav aria-label="Дизайн-система">
+  <a class="docs-nav-home" href="index.html">Куток · дизайн-система</a>
+</nav>
+
+<main class="docs-main">
+
+  <p class="docs-crumb"><a href="index.html">Компоненти</a> / Разове</p>
+  <p class="docs-eyebrow">Разовий патерн — тільки один екран</p>
+  <h1 class="docs-title">Сегмент типу</h1>
+  <p class="docs-lede">Перемикач «Кімнати / Люди / Усі» над стрічкою каталогу — розмітки цього компонента більше немає ніде в системі, окрім <code>listings</code>.</p>
+  <div class="docs-meta"><code>.filterbar</code><code>.seg</code><code>.seg-count</code></div>
+
+  <section class="docs-sec" id="anatomy">
+    <h2>Анатомія</h2>
+    <p class="docs-sec-hint">Той самий сегмент, що стоїть над стрічкою в <code>listings</code>, всередині тонкої обгортки <code>.filterbar</code> (лише відступи, не окрема стилістика).</p>
+    <div class="docs-anatomy">
+      <div class="docs-stage">
+        <fieldset class="seg">
+          <legend class="sr-only">Тип оголошень</legend>
+          <label><input type="radio" name="type"> Кімнати <span class="seg-count">18</span></label>
+          <label><input type="radio" name="type"> Люди <span class="seg-count">6</span></label>
+          <label><input type="radio" name="type" checked> Усі <span class="seg-count">24</span></label>
+        </fieldset>
+      </div>
+      <ol class="docs-legend">
+        <li><b>Трек</b><span>(<code>.seg</code>) — тло <code>--bg-neutral</code>, без рамки, радіус 999px, 4px внутрішнього відступу під три пункти рівної ширини.</span></li>
+        <li><b>Вибраний пункт</b><span>(<code>label:has(input:checked)</code>) — біла піґулка на <code>--bg-selected</code>, текст кобальт (<code>--color-action</code>), вага 700. Це не <code>--bg-surface</code>: піґулка лежить не на канвасі сторінки, а на темнішому треку сегмента, і в темній темі звичайна «виступ»-роль на ньому губилась — тому виділено окремий токен, який лишається видимим на обох тонах.</span></li>
+        <li><b>Лічильник</b><span>(<code>.seg-count</code>) — коло з числом: приглушене на невибраних пунктах, інвертується в кобальт із кремовим текстом на вибраному.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="variants">
+    <h2>Варіанти й розміри</h2>
+    <p class="docs-sec-hint">У цього контролу немає розмірів чи станів окрім «який пункт вибрано зараз» — тому варіантів навмисно небагато.</p>
+    <div class="docs-variants">
+      <div class="docs-example">
+        <p class="docs-example-label">Вибрано «Усі»</p>
+        <div class="docs-example-body">
+          <fieldset class="seg">
+            <legend class="sr-only">Тип оголошень</legend>
+            <label><input type="radio" name="type-a"> Кімнати <span class="seg-count">18</span></label>
+            <label><input type="radio" name="type-a"> Люди <span class="seg-count">6</span></label>
+            <label><input type="radio" name="type-a" checked> Усі <span class="seg-count">24</span></label>
+          </fieldset>
+        </div>
+      </div>
+      <div class="docs-example">
+        <p class="docs-example-label">Вибрано «Кімнати»</p>
+        <div class="docs-example-body">
+          <fieldset class="seg">
+            <legend class="sr-only">Тип оголошень</legend>
+            <label><input type="radio" name="type-b" checked> Кімнати <span class="seg-count">18</span></label>
+            <label><input type="radio" name="type-b"> Люди <span class="seg-count">6</span></label>
+            <label><input type="radio" name="type-b"> Усі <span class="seg-count">24</span></label>
+          </fieldset>
+        </div>
+        <p class="docs-example-note">Кобальт і лічильник переїжджають разом із вибором — форма пункту не змінюється.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="motion">
+    <h2>Мікровзаємодія</h2>
+    <p class="docs-sec-hint">Перемкни тип видачі: зміна піґулки й лічильника дає <strong>відповідь</strong>, який набір результатів буде показано.</p>
+    <div class="docs-stage"><fieldset class="seg"><legend class="sr-only">Тип оголошень для демонстрації руху</legend><label><input type="radio" name="motion-seg" checked> Кімнати <span class="seg-count">18</span></label><label><input type="radio" name="motion-seg"> Люди <span class="seg-count">6</span></label><label><input type="radio" name="motion-seg"> Усі <span class="seg-count">24</span></label></fieldset></div>
+    <p class="docs-copy">Колір, тло та press переходять через <code>--dur-fast</code> і <code>--ease-standard</code>; фокусна рамка лишає клавіатурний вибір читабельним.</p>
+  </section>
+
+  <section class="docs-sec" id="usage">
+    <h2>Коли вживати</h2>
+    <p class="docs-copy">Сегмент — <strong>перемикач типу видачі</strong>, а не фільтр: він живе виключно над стрічкою каталогу на <code>listings</code>, всередині <code>.filterbar</code>, і розділяє «Кімнати», «Люди» й «Усі» — три способи подивитись на той самий пошук. Лічильник поруч із кожним пунктом показує, скільки результатів дасть перемикання, тому людина бачить наслідок кліку заздалегідь, а не після нього. Дизайн (DESIGN.md) явно фіксує: лічильники зникають лише тоді, коли число справді невідоме (стани <code>-error</code> / <code>-loading</code>), а не тому, що воно нуль — «0» лишається видимим числом, а не порожнім місцем. Більше ніде в продукті немає екрана з таким самим потрійним поділом видачі, тому компонент і живе в розділі «Разове».</p>
+    <div class="docs-where">
+      <span>listings — над стрічкою каталогу, усередині .filterbar</span>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="dodont">
+    <h2>Правило і антиправило</h2>
+    <div class="docs-dodont">
+      <div class="docs-do">
+        <span class="docs-do-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg>Так</span>
+        <div class="docs-do-stage">
+          <fieldset class="seg">
+            <legend class="sr-only">Тип оголошень</legend>
+            <label><input type="radio" name="type-c"> Кімнати <span class="seg-count">18</span></label>
+            <label><input type="radio" name="type-c"> Люди <span class="seg-count">0</span></label>
+            <label><input type="radio" name="type-c" checked> Усі <span class="seg-count">24</span></label>
+          </fieldset>
+        </div>
+        <p>Три пункти рівної ширини (<code>flex:1</code> кожному), лічильник видно завжди — навіть коли він «0» для «Люди». Так контрол читається як одна ціла шкала, а не як довільний ряд кнопок.</p>
+      </div>
+      <div class="docs-dont">
+        <span class="docs-dont-tag">✕ Ні</span>
+        <div class="docs-dont-stage">
+          <span style="font-size:var(--font-size-16); font-weight:var(--font-weight-700); color:var(--text-primary);">Кімнати · Люди · Усі 24</span>
+        </div>
+        <p>Ховати лічильник, коли він дорівнює нулю, або звужувати пункт під коротшу назву. Обидва рухи здаються «економією місця», але саме рівна ширина й завжди видиме число — те, що робить сегмент одним фільтр-контролом, а не рядком випадкових кнопок.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="responsive">
+    <h2>Адаптив у макетах</h2>
+    <p class="docs-sec-hint">На телефоні три сегменти ділять ширину каталогу порівну й лишають лічильник видимим. На планшеті контрол не змінює семантики, лише отримує більше простору в каталозі. На десктопі він лишається фільтром того самого списку поруч зі сталою панеллю параметрів.</p>
+    <div class="docs-responsive" data-mobile="../../wireframes/listings.html" data-tablet="../../wireframes/listings.html" data-desktop="../../wireframes/listings-desktop.html"></div>
+  </section>
+
+  <div class="docs-foot">
+    <a href="photo-upload.html">← Ряд завантаження фото</a>
+    <a href="index.html">Усі компоненти</a>
+    <a href="fab.html">FAB фільтра →</a>
+  </div>
+
+</main>
+</div>
+<script src="docs-responsive.js"></script>
+</body>
+</html>

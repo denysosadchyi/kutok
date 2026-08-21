@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Боттом-шит · Компоненти · Куток</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../index.css">
+<link rel="stylesheet" href="docs.css">
+<script src="docs-nav.js" defer></script>
+</head>
+<body class="docs">
+<div class="docs-shell">
+
+<nav class="docs-nav" data-docs-nav aria-label="Дизайн-система">
+  <a class="docs-nav-home" href="index.html">Куток · дизайн-система</a>
+</nav>
+
+<main class="docs-main">
+
+  <p class="docs-crumb"><a href="index.html">Компоненти</a> / Разове</p>
+  <p class="docs-eyebrow">Разовий патерн — тільки один екран</p>
+  <h1 class="docs-title">Боттом-шит</h1>
+  <p class="docs-lede">Панель фільтра «Район / Ціна / Стать», яку відкриває <a href="fab.html">FAB</a> над стрічкою каталогу — єдине місце в продукті, де ця розмітка з'являється.</p>
+  <div class="docs-meta"><code>.sheet</code><code>.sheet--popover</code><code>.sheet-grip</code><code>.sheet-head</code><code>.sheet-title</code><code>.sheet-close</code><code>.sheet-form</code></div>
+
+  <section class="docs-sec" id="anatomy">
+    <h2>Анатомія</h2>
+    <p class="docs-sec-hint">Показано базовий статичний <code>.sheet</code> — без модифікатора <code>.sheet--popover</code>, який фіксує панель до низу вʼюпорта і додає нативний <code>::backdrop</code> (докладніше в розділі «Варіанти»).</p>
+    <div class="docs-anatomy">
+      <div class="docs-stage">
+        <div class="sheet" style="width:100%; max-width:340px;">
+          <div class="sheet-grip"></div>
+          <div class="sheet-head">
+            <span class="sheet-title">Фільтр</span>
+            <button class="sheet-close" aria-label="Закрити фільтр"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
+          </div>
+          <form class="sheet-form">
+            <div class="field"><span class="cap">Район Києва</span><label class="fsel"><select><option selected>Поділ</option><option>Оболонь</option></select></label></div>
+            <div class="field"><span class="cap">Ціна, ₴/міс</span><label class="fsel"><select><option selected>до 10 000 ₴</option><option>до 15 000 ₴</option></select></label></div>
+            <div class="field"><span class="cap">Стать сусіда</span><label class="fsel"><select><option selected>будь-яка</option><option>жінка</option></select></label></div>
+            <button type="button" class="btn btn--primary btn--block">Показати 24 оголошення</button>
+          </form>
+        </div>
+      </div>
+      <ol class="docs-legend">
+        <li><b>Ручка</b><span>(<code>.sheet-grip</code>) — коротка риска зверху, стандартний натяк «це можна потягнути вниз, щоб закрити».</span></li>
+        <li><b>Шапка</b><span>(<code>.sheet-head</code>) — заголовок «Фільтр» (<code>.sheet-title</code>, 18px, той самий розмір, що й заголовок хедера-варіанта B) і кнопка закриття (<code>.sheet-close</code>) — те саме 44px кільце, що й у кнопок «назад»/пошуку хедера.</span></li>
+        <li><b>Поля</b><span>(<code>.sheet-form</code>) — вертикальний стек на всю ширину з проміжком 13px; кожне поле — <a href="field.html">.field / .fsel</a>, на власному тлі <code>--bg-surface</code>.</span></li>
+        <li><b>CTA</b><span>«Показати 24 оголошення» — <code>.btn.btn--primary.btn--block</code>, кобальтова кнопка на всю ширину знизу шита.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="variants">
+    <h2>Варіанти й розміри</h2>
+    <p class="docs-sec-hint">Натисни кнопку нижче: живий popover показує, як шит приходить із нижнього краю та лишається контекстом каталогу.</p>
+    <div class="docs-variants">
+      <div class="docs-example docs-example--wide">
+        <p class="docs-example-label"><code>.sheet--popover</code> — реальний виробничий варіант</p>
+        <div class="docs-example-body"><button type="button" class="btn btn--primary" popovertarget="docs-filter-sheet">Відкрити фільтр</button></div>
+        <div id="docs-filter-sheet" class="sheet sheet--popover" popover>
+          <div class="sheet-grip"></div>
+          <div class="sheet-head"><span class="sheet-title">Фільтр</span><button type="button" class="sheet-close" popovertarget="docs-filter-sheet" popovertargetaction="hide" aria-label="Закрити фільтр"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></button></div>
+          <p class="docs-copy" style="margin:0;">Панель лишається тимчасовим керуванням результатами. Поява виконує роботу звʼязку — це не окремий екран.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="usage">
+    <h2>Коли вживати</h2>
+    <p class="docs-copy">Боттом-шит — <strong>виключно панель фільтра</strong> на <code>listings</code>, яку відкриває кобальтовий <a href="fab.html">FAB</a> зі слайдер-іконкою над таб-баром. Поля всередині — на всю ширину, з лейблами-оверлайнами (<a href="field.html">.field / .fsel</a>), кнопка «Застосувати» — кобальтова, на всю ширину знизу. Важлива деталь елевації: сам <code>.sheet</code> лежить на тоні канвасу (<code>--bg-page</code>) — «частина сторінки», а не окрема виступаюча поверхня; виступають лише поля форми (<code>--bg-surface</code>). Ніде більше в продукті ця розмітка не використовується — інші форми (реєстрація, скарга, підтримка) стоять на повних екранах, не в шиті.</p>
+    <div class="docs-where">
+      <span>listings — панель фільтра, відкривається FAB-ом</span>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="dodont">
+    <h2>Правило і антиправило</h2>
+    <div class="docs-dodont">
+      <div class="docs-do">
+        <span class="docs-do-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg>Так</span>
+        <div class="docs-do-stage">
+          <div class="sheet" style="width:100%; max-width:260px; padding:var(--space-14) var(--space-16);">
+            <div class="sheet-grip"></div>
+            <div class="sheet-head"><span class="sheet-title">Фільтр</span></div>
+          </div>
+        </div>
+        <p>Тло самого шита лишається <strong><code>--bg-page</code></strong> — тон канвасу, той самий, що й у решти сторінки. Виступ дають лише поля форми всередині.</p>
+      </div>
+      <div class="docs-dont">
+        <span class="docs-dont-tag">✕ Ні</span>
+        <div class="docs-dont-stage">
+          <div style="width:100%; max-width:260px; padding:var(--space-14) var(--space-16); border-radius:var(--radius-16) var(--radius-16) 0 0; background:var(--bg-surface);">
+            <div class="sheet-grip"></div>
+            <div class="sheet-head"><span class="sheet-title">Фільтр</span></div>
+          </div>
+        </div>
+        <p>Класти <code>.sheet</code> на <code>--bg-surface</code>, ніби це окрема модальна картка. Історія правок DESIGN.md (2026-07-24) фіксує саме цю корекцію: шит раніше читався як окрема виступаюча поверхня, і його свідомо сплющили до тону сторінки — той самий закон елевації «різниця тону паперу, не стос карток», що діє в решті системи.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="responsive">
+    <h2>Адаптив у макетах</h2>
+    <p class="docs-sec-hint">На телефоні фільтр відкривається як нижній шит на всю ширину в’юпорта. На планшеті він лишається компактною панеллю поверх каталогу, а на десктопі фільтри переходять у постійну бічну колонку замість шита.</p>
+    <div class="docs-responsive" data-mobile="../../wireframes/listings.html" data-tablet="../../wireframes/listings-loading.html" data-desktop="../../wireframes/listings-desktop.html"></div>
+  </section>
+
+  <div class="docs-foot">
+    <a href="fab.html">← FAB фільтра</a>
+    <a href="index.html">Усі компоненти</a>
+    <a href="role-option.html">Опції вибору ролі →</a>
+  </div>
+
+</main>
+</div>
+<script src="docs-responsive.js"></script>
+</body>
+</html>

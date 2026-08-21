@@ -1,0 +1,67 @@
+/* ── Кастомний select ──
+   JS прогресивно покращує наявний .fsel > select. Нативний select лишається
+   джерелом значення для form submission та існуючих change-обробників. */
+.fsel {
+  position: relative; display: flex; align-items: center; min-width: 0; width: 100%;
+  min-height: var(--size-48); padding: 0; background: var(--bg-surface); border-radius: var(--radius-8);
+}
+.fsel > select {
+  appearance: none; -webkit-appearance: none; -moz-appearance: none;
+  width: 100%; min-width: 0; min-height: var(--size-48); border: none; background: transparent;
+  padding: 0 var(--space-30) 0 var(--space-13); font: inherit; font-size: var(--font-size-16);
+  font-weight: var(--font-weight-600); color: var(--text-primary); cursor: pointer;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; outline: var(--border-2) solid transparent; outline-offset: var(--space-1);
+}
+.fsel > select:focus { outline-color: var(--color-action); }
+.fsel.is-enhanced > select {
+  position: absolute; inline-size: 1px; block-size: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+}
+.fsel-button {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--space-12);
+  width: 100%; min-height: var(--size-48); border: 0; border-radius: var(--radius-8);
+  padding: 0 var(--space-13); background: transparent; color: var(--text-primary); font: inherit;
+  font-size: var(--font-size-16); font-weight: var(--font-weight-600); text-align: left; cursor: pointer; outline: var(--border-2) solid transparent; outline-offset: var(--space-1);
+  transition: transform var(--dur-fast) var(--ease-standard);
+}
+.fsel-button__text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fsel-button__chevron {
+  flex: 0 0 auto; width: var(--size-8); height: var(--size-8); margin-inline-end: var(--space-2);
+  border-inline-end: var(--border-1-5) solid var(--text-muted); border-block-end: var(--border-1-5) solid var(--text-muted);
+  transform: translateY(calc(var(--move-sm) / -4)) rotate(45deg); transition: transform var(--dur-fast) var(--ease-standard);
+}
+.fsel-button[aria-expanded="true"] .fsel-button__chevron { transform: translateY(calc(var(--move-sm) / 2)) rotate(225deg); }
+.fsel-button:hover { background: var(--bg-neutral); }
+.fsel-button:active { transform: translateY(calc(var(--move-sm) / 2)); }
+.fsel-button:disabled { color: var(--text-muted); cursor: not-allowed; }
+.fsel-button:focus-visible { outline-color: var(--color-action); }
+.fsel-listbox {
+  position: fixed; z-index: 30; box-sizing: border-box; display: flex; flex-direction: column; gap: var(--space-2);
+  margin: 0; padding: var(--space-6); overflow: auto; border: 0; border-radius: var(--radius-10);
+  background: var(--bg-surface); color: var(--text-primary); list-style: none;
+}
+.fsel-listbox[hidden] { display: none; }
+.fsel-listbox:not([hidden]) { animation: fsel-listbox-enter var(--dur-base) var(--ease-enter); }
+.fsel-option {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--space-12);
+  width: 100%; min-height: var(--size-44); border: 0; border-radius: var(--radius-6); padding: var(--space-10) var(--space-12);
+  background: transparent; color: var(--text-primary); font: inherit; font-size: var(--font-size-16); text-align: left; cursor: pointer; outline: var(--border-2) solid transparent; outline-offset: calc(var(--space-1) * -1);
+  transition: transform var(--dur-fast) var(--ease-standard);
+}
+.fsel-option:hover, .fsel-option[data-active="true"] { background: var(--ink-a04); }
+.fsel-option:active { transform: translateY(calc(var(--move-sm) / 2)); }
+.fsel-option[aria-selected="true"] { color: var(--color-action); font-weight: var(--font-weight-700); }
+.fsel-option[aria-disabled="true"] { color: var(--text-muted); cursor: not-allowed; }
+.fsel-option:focus-visible { outline-color: var(--color-action); }
+.fsel-option__check { width: var(--size-16); height: var(--size-16); flex: 0 0 auto; color: currentColor; }
+.fsel-optgroup {
+  padding: var(--space-8) var(--space-12) var(--space-4); color: var(--text-muted);
+  font-size: var(--font-size-11); font-weight: var(--font-weight-700); letter-spacing: .07em; text-transform: uppercase;
+}
+@keyframes fsel-listbox-enter {
+  from { opacity: 0; transform: translateY(var(--move-sm)); }
+  to { opacity: 1; transform: none; }
+}
+@media (max-width: 47.49rem) {
+  .fsel-listbox { border-radius: var(--radius-8); }
+}

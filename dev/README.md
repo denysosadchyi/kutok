@@ -120,12 +120,95 @@ bash dev/build/build.sh
 | Юніт | Порт | Що робить | Файл |
 |---|---|---|---|
 | `kutok-annotations.service` | 4747 | `agentation-mcp server` — приймає анотації з тулбара (SQLite `~/.agentation/store.db`) | `dev/mcp/node_modules/.bin/agentation-mcp` |
-| `kutok-fixlog.service` | 4748 | вердикти рев'ювера + черга доробок (`/rate`, `/rework`, `/rework-done`) | `dev/fixlog-server.mjs` → `dev/fixlog-ratings.json` |
-| `kutok-dispatcher.service` | — | вартовий: раз на 18с опитує `:4747/pending` і `:4748/rework`, на кожну одиницю запускає headless `claude -p … --dangerously-skip-permissions` з cwd=`/home/den/kutok` | `/home/den/.local/share/kutok-dispatcher/dispatcher.py` |
+| `kutok-fixlog.service` | 4748 | вердикти, глобальний executor (`/settings`) і черга доробок (`/rate`, `/rework`, `/rework-done`) | `dev/fixlog-server.mjs` → `dev/fixlog-ratings.json` + `dev/fixlog-settings.json` |
+| `kutok-dispatcher.service` | — | вартовий: раз на 18с читає глобальний executor і опитує `:4747/pending` та `:4748/rework`; запускає вибраний Codex або Claude Code з cwd=`/home/den/kutok` | `/home/den/.local/share/kutok-dispatcher/dispatcher.py` |
 
 `agentation-mcp` встановлено окремо від тулбарного білда (`dev/build/`), у
 власній теці `dev/mcp/` з власним `package.json`/`node_modules` — щоб не
 зіткнутись із `npm install` тулбара.
+
+## Глобальний вибір виконавця
+
+У header самої таблиці `dev/fixlog.html` постійно видно дві опції: **Codex** і
+**Claude Code**. Server-side source of truth живе в
+`dev/fixlog-settings.json`; початкове й поточне значення налаштовано на
+`codex`. `localStorage['fixlog-executor']` є лише миттєвим UI-cache до відповіді
+сервера, а не джерелом маршрутизації.
+
+Потік даних:
+
+1. toolbar надсилає `PUT /settings/executor` з `{ executor }`;
+2. `fixlog-server.mjs` приймає тільки `codex` або `claude`, атомарно зберігає
+   setting і віддає його через `GET /settings`;
+3. `dispatcher.py` читає setting перед взяттям роботи та застосовує його до
+   нових Agentation annotations і legacy reworks;
+4. `POST /rework` додатково зберігає executor snapshot у поточній ітерації
+   `reworks[]`, щоб уже поставлена доробка не змінила виконавця заднім числом;
+5. dispatcher повторно перевіряє allowlist, будує `argv` без shell, і `Worker`
+   запускає рівно вибраний локальний CLI.
+
+Для Codex dispatcher окремо й детерміновано визначає складність із
+`comment`, `severity`, `element`, `elementPath`, `cssClasses`, `url`, а для
+доробки ще й із `rework.note`. Довжина тексту не є сигналом; невизначена
+правка консервативно потрапляє в `normal`.
+
+| Складність | Типові сигнали | Model / effort |
+|---|---|---|
+| `small` | локальний текст, відступ, колір, іконка, mechanical rework | `gpt-5.6-luna` / `low` |
+| `normal` | компонент, форма, select/dropdown, адаптив одного архетипу; також fallback | `gpt-5.6-terra` / `medium` |
+| `complex` | high/critical, навігація, IA, кілька екранів, рефакторинг, ризикована інтеграція | `gpt-5.6-sol` / `high` |
+
+Модель і effort беруться лише із закритої таблиці dispatcher-а: дані
+анотації не можуть стати CLI-прапорцями. Обраний lane видно в label/log
+`Worker` і передається виконавцю як точне значення колонки «Маршрут»
+`dev/fixlog.md`.
+
+Бриф task-scoped: точні `comment`, URL та DOM-selector/class context, до
+чотирьох candidate files, знайдених із pathname і класів компонента, та лише
+релевантні checks. Великі browser dumps не передаються; локальні
+`nearbyText`/`selectedText`/`reactComponents` обмежені 600 символами кожен.
+`AGENTS.md` Codex читає автоматично з cwd, тому dispatcher не дублює в кожен
+prompt універсальні правила про gallery/chat/forms. Патерн відповідає
+локальному SplitMart handoff: одна правка = один job із конкретними
+paths/contracts, root лише збирає контекст і перевіряє.
+
+Клієнт `/rework` без `executor` отримує snapshot поточного global setting.
+Стара queue-ітерація без snapshot теж бере поточний global setting. Невідоме
+значення сервер відхиляє з HTTP 400; якщо невалідне значення все ж потрапить
+у відповідь черги, dispatcher пропускає його і не створює процес. Якщо settings
+service тимчасово недоступний, документований fallback dispatcher — `codex`.
+
+Фактичні команди звірено з локальними `codex exec --help` та `claude --help`:
+
+```text
+/home/den/.local/bin/codex exec --approve-for-me --ephemeral \
+  --model <allowlisted-model> \
+  --config 'model_reasoning_effort="<allowlisted-effort>"' \
+  --cd /home/den/kutok <brief>
+
+/home/den/.local/bin/claude -p <brief> --dangerously-skip-permissions
+```
+
+Політика Claude не змінювалась цією правкою. Для нового маршруту Codex не
+використовується `--dangerously-bypass-approvals-and-sandbox`:
+`--approve-for-me` сам вмикає workspace-write sandbox і передає запити поза
+ним автоматичному review Codex. Явний `--sandbox workspace-write` поруч із ним
+не додається: локальний CLI відхиляє таку комбінацію як mutually exclusive.
+Це потрібно unattended-прогону, зокрема для фінального localhost PATCH
+статусу, але не вимикає sandbox/approval механізм.
+Файл-рубильник dispatcher лишається окремим першим guard у кожній ітерації та
+не змінювався.
+
+Безпечні тести не торкаються живих портів чи черги:
+
+```bash
+node --test dev/tests/fixlog-server.test.mjs
+python3 -m unittest dev/tests/test_dispatcher.py
+```
+
+Node-тест піднімає fixlog-server на випадковому loopback-порту з тимчасовими
+ratings/settings JSON. Python-тест мокає `subprocess.Popen`, тому жоден
+Codex/Claude job не запускається.
 
 ## Увімкнути / вимкнути
 
@@ -147,7 +230,7 @@ systemctl --user stop kutok-annotations kutok-fixlog kutok-dispatcher
 ## Рубильник вартового
 
 Вартовий — єдиний з трьох сервісів, що САМ запускає роботу (headless
-Claude-агентів у робочому дереві). Файл-рубильник:
+Codex/Claude-виконавців у робочому дереві). Файл-рубильник:
 
 ```
 /home/den/.kutok-dispatcher.off
@@ -203,7 +286,8 @@ curl -s http://127.0.0.1:4748/rework    → {"count":0,"items":[]}
 - systemd-юніти перейменовані `splitmart-*` → `kutok-*`, `node`/`python3`
   прописані абсолютним шляхом (`which node`/`which python3` на цій машині),
   бо для user-юнітів PATH не гарантовано містить nvm.
-- Логіка dispatcher.py й fixlog-server.mjs НЕ змінена — перенесення
-  точкове, чотири задокументовані рішення (ack до запуску, спільний ліміт
-  воркерів, стан на диску лише для доробок, ротація лога зрізом) і
-  рубильник лишились як були.
+- Під час початкового перенесення логіка dispatcher.py й fixlog-server.mjs не
+  змінювалась. Пізніше додано глобальний allowlisted routing Agentation на
+  Codex або Claude Code; чотири задокументовані рішення (ack до запуску,
+  спільний ліміт воркерів, стан на диску лише для доробок, ротація лога
+  зрізом) і рубильник лишились як були.

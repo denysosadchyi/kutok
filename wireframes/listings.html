@@ -75,6 +75,10 @@
   .app { anchor-name: --device; }
   .head-btn { anchor-name: --search-anchor; }
   #search-popover { position: fixed; position-anchor: --search-anchor; position-area: bottom span-left; margin: 8px 0 0; }
+  @media (min-width: 67.5rem) {
+    .app.app--catalog > .app-head { display: none; }
+    .app.app--catalog .catalog-results > .feed { padding-top: 0; }
+  }
   @supports (left: anchor(left)) {
     #filter-sheet { position-anchor: --device; left: anchor(left); width: anchor-size(width); transform: none; }
   }
@@ -95,7 +99,7 @@
     <a class="wf-nav-kit-link" href="kit.html">Кіт компонентів →</a>
     <button type="button" class="wf-nav-theme" onclick="wfToggleTheme()" aria-pressed="false">Темна тема</button>
     <div class="wf-nav-tools">
-      <input type="text" class="wf-nav-filter" placeholder="Фільтр за назвою…" oninput="wfNavFilter(this.value)">
+      <input type="text" class="wf-nav-filter" aria-label="Фільтр макетів за назвою" placeholder="Фільтр за назвою…" oninput="wfNavFilter(this.value)">
       <div class="wf-nav-toggle-all">
         <button type="button" onclick="wfNavToggleAll(true)">Розгорнути все</button>
         <button type="button" onclick="wfNavToggleAll(false)">Згорнути все</button>
@@ -338,6 +342,12 @@
 
   <header class="app-head">
     <div>
+      <nav class="breadcrumbs" aria-label="Хлібні крихти">
+        <ol>
+          <li><a href="listings.html">Куток</a></li>
+          <li aria-current="page">Пошук</li>
+        </ol>
+      </nav>
       <div class="head-brand-row"><svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--color-brand)"/><path d="M18 3L21 3L21 6Z" fill="var(--bg-surface)"/></svg><div class="head-brand">Куток</div></div>
       <h1 class="head-word">Пошук</h1>
       <p class="head-sub">Кімнати й сусіди в Києві, між своїми</p>
@@ -350,17 +360,18 @@
   <div id="search-popover" class="search-popover" popover>
     <form class="search-form" role="search" action="listings.html" method="get">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg>
-      <input type="search" name="q" placeholder="Пошук за назвою, районом…" aria-label="Пошук оголошень">
+      <input type="search" name="q" placeholder="Пошук" aria-label="Пошук оголошень">
     </form>
   </div>
 
-  <section class="filterbar" aria-label="Тип оголошень">
+  <div class="catalog-workspace">
+  <section class="filterbar" aria-label="Фільтри оголошень">
     <form class="filters-form" action="listings.html" method="get">
       <fieldset class="seg">
         <legend class="sr-only">Тип оголошень</legend>
-        <label><input type="radio" name="type" value="rooms"> Кімнати <span class="seg-count">18</span></label>
-        <label><input type="radio" name="type" value="people"> Люди <span class="seg-count">6</span></label>
-        <label><input type="radio" name="type" value="all" checked> Усі <span class="seg-count">24</span></label>
+        <label><input type="radio" name="type" value="rooms"> Кімнати <span class="seg-count">8</span></label>
+        <label><input type="radio" name="type" value="people"> Люди <span class="seg-count">4</span></label>
+        <label><input type="radio" name="type" value="all" checked> Усі <span class="seg-count">12</span></label>
       </fieldset>
       <div class="filters-inline">
         <div class="field">
@@ -376,6 +387,7 @@
           <label class="fsel"><select id="filters-gender" name="gender"><option selected>будь-яка</option><option>жінка</option><option>чоловік</option></select></label>
         </div>
         <button class="btn btn--primary" type="submit">Застосувати</button>
+        <p class="filter-summary">Поділ · до 10 000 ₴ · спочатку нові</p>
       </div>
     </form>
   </section>
@@ -429,12 +441,28 @@
     </form>
   </div>
 
-  <main>
-    <ul class="feed">
+  <main class="catalog-results">
+    <div class="catalog-heading">
+      <h2 aria-live="polite">12 оголошень</h2>
+      <div class="view-switch" role="group" aria-label="Вигляд оголошень">
+        <button type="button" class="view-switch-btn is-active" data-listing-view="cards" aria-pressed="true">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg>
+          <span class="sr-only">Картки</span>
+        </button>
+        <button type="button" class="view-switch-btn" data-listing-view="table" aria-pressed="false">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h12M8 12h12M8 18h12"/><path d="M4 6h.01M4 12h.01M4 18h.01"/></svg>
+          <span class="sr-only">Таблиця</span>
+        </button>
+      </div>
+    </div>
+    <ul class="feed" aria-label="Оголошення">
+      <li class="listing-table-head">
+        <span>Фото</span><span>Оголошення</span><span>Район</span><span>Перевірка</span><span>Ціна</span>
+      </li>
       <li>
         <a class="card" href="room.html">
           <div class="card-photo">
-            <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800&h=560&fit=crop&auto=format&q=70" alt="Фото кімнати в 2-к квартирі на Поділі" loading="lazy">
+            <img src="https://images.unsplash.com/photo-1748680099002-1441d21a5158?w=800&h=560&fit=crop&auto=format&q=80" alt="Світла спальня з рослиною у 2-кімнатній квартирі на Подолі" loading="lazy">
             <span class="place"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.8-6.5-10.5a6.5 6.5 0 0 1 13 0C18.5 15.2 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.3"/></svg><span class="t">Поділ, Київ</span></span><span class="badge badge--on-photo"><span class="badge-check"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>телефон, фото</span>
           </div>
           <div class="card-body">
@@ -449,7 +477,7 @@
       <li>
         <a class="card" href="room.html">
           <div class="card-photo">
-            <img src="https://images.unsplash.com/photo-1505873242700-f289a29e1e0f?w=800&h=560&fit=crop&auto=format&q=70" alt="Фото кімнати в 3-к квартирі на Оболоні" loading="lazy">
+            <img src="https://images.unsplash.com/photo-1748696920340-452f1f4144be?w=800&h=560&fit=crop&auto=format&q=80" alt="Спокійна спальня з металевим ліжком у 3-кімнатній квартирі на Оболоні" loading="lazy">
             <span class="place"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.8-6.5-10.5a6.5 6.5 0 0 1 13 0C18.5 15.2 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.3"/></svg><span class="t">Оболонь, Київ</span></span><span class="badge badge--on-photo"><span class="badge-check"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>телефон</span>
           </div>
           <div class="card-body">
@@ -462,9 +490,10 @@
       </li>
 
       <li>
-        <a class="card" href="profile.html">
+        <a class="card card--person" href="profile.html">
           <div class="card-photo">
-            <img src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=800&h=560&fit=crop&auto=format&q=70" alt="Фото профілю — Артем, 26" loading="lazy">
+            <img class="person-card__backdrop" src="https://images.unsplash.com/photo-1779497056366-49a5bc7aaf00?w=800&h=560&fit=crop&crop=faces&auto=format&q=80" alt="" aria-hidden="true" loading="lazy">
+            <img class="person-card__avatar" src="https://images.unsplash.com/photo-1779497056366-49a5bc7aaf00?w=800&h=560&fit=crop&crop=faces&auto=format&q=80" alt="Портрет Артема, 26 років, у теплому природному світлі" loading="lazy">
             <span class="place"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.8-6.5-10.5a6.5 6.5 0 0 1 13 0C18.5 15.2 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.3"/></svg><span class="t">Шевченківський або Поділ</span></span><span class="badge badge--on-photo"><span class="badge-check"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>телефон, фото</span>
           </div>
           <div class="card-body">
@@ -479,7 +508,7 @@
       <li>
         <a class="card" href="room.html">
           <div class="card-photo">
-            <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=560&fit=crop&auto=format&q=70" alt="Фото світлої кімнати на Лук’янівці" loading="lazy">
+            <img src="https://images.unsplash.com/photo-1764867269037-90e860fbf571?w=800&h=560&fit=crop&auto=format&q=80" alt="Спальня у теплому сонячному світлі на Лук’янівці" loading="lazy">
             <span class="place"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.8-6.5-10.5a6.5 6.5 0 0 1 13 0C18.5 15.2 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.3"/></svg><span class="t">Лук’янівка, Київ</span></span><span class="badge badge--on-photo"><span class="badge-check"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>телефон, фото</span>
           </div>
           <div class="card-body">
@@ -492,9 +521,10 @@
       </li>
 
       <li>
-        <a class="card" href="profile.html">
+        <a class="card card--person" href="profile.html">
           <div class="card-photo">
-            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800&h=560&fit=crop&auto=format&q=70" alt="Фото профілю — Марта, 24" loading="lazy">
+            <img class="person-card__backdrop" src="https://images.unsplash.com/photo-1758521540968-3af0cc2074a0?w=800&h=560&fit=crop&crop=faces&auto=format&q=80" alt="" aria-hidden="true" loading="lazy">
+            <img class="person-card__avatar" src="https://images.unsplash.com/photo-1758521540968-3af0cc2074a0?w=800&h=560&fit=crop&crop=faces&auto=format&q=80" alt="Природний портрет Марти, 24 роки, на міській вулиці" loading="lazy">
             <span class="place"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.8-6.5-10.5a6.5 6.5 0 0 1 13 0C18.5 15.2 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.3"/></svg><span class="t">Поділ або Лук’янівка</span></span><span class="badge badge--on-photo"><span class="badge-check"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>телефон, фото</span>
           </div>
           <div class="card-body">
@@ -509,7 +539,7 @@
       <li>
         <a class="card" href="room.html">
           <div class="card-photo">
-            <img src="https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=800&h=560&fit=crop&auto=format&q=70" alt="Фото окремої кімнати в квартирі на Позняках" loading="lazy">
+            <img src="https://images.unsplash.com/photo-1765464184843-105e144bd54b?w=800&h=560&fit=crop&auto=format&q=80" alt="Невелика окрема кімната з ліжком біля вікна на Позняках" loading="lazy">
             <span class="place"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.8-6.5-10.5a6.5 6.5 0 0 1 13 0C18.5 15.2 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.3"/></svg><span class="t">Позняки, Київ</span></span><span class="badge badge--on-photo"><span class="badge-check"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>телефон, фото</span>
           </div>
           <div class="card-body">
@@ -524,7 +554,7 @@
       <li>
         <a class="card" href="room.html">
           <div class="card-photo">
-            <img src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800&h=560&fit=crop&auto=format&q=70" alt="Фото кімнати в новобудові на Осокорках" loading="lazy">
+            <img src="https://images.unsplash.com/photo-1747139157713-430fd0b29b93?w=800&h=560&fit=crop&auto=format&q=80" alt="Сучасна спальня з рослинами й особистим декором на Осокорках" loading="lazy">
             <span class="place"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.8-6.5-10.5a6.5 6.5 0 0 1 13 0C18.5 15.2 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.3"/></svg><span class="t">Осокорки, Київ</span></span><span class="badge badge--on-photo"><span class="badge-check"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>телефон, фото</span>
           </div>
           <div class="card-body">
@@ -537,9 +567,10 @@
       </li>
 
       <li>
-        <a class="card" href="profile.html">
+        <a class="card card--person" href="profile.html">
           <div class="card-photo">
-            <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800&h=560&fit=crop&auto=format&q=70" alt="Фото профілю — Ігор, 27" loading="lazy">
+            <img class="person-card__backdrop" src="https://images.unsplash.com/photo-1759853899780-c2444e55877a?w=800&h=560&fit=crop&crop=faces&auto=format&q=80" alt="" aria-hidden="true" loading="lazy">
+            <img class="person-card__avatar" src="https://images.unsplash.com/photo-1759853899780-c2444e55877a?w=800&h=560&fit=crop&crop=faces&auto=format&q=80" alt="Природний міський портрет Ігоря, 27 років" loading="lazy">
             <span class="place"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.8-6.5-10.5a6.5 6.5 0 0 1 13 0C18.5 15.2 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.3"/></svg><span class="t">Правий берег</span></span><span class="badge badge--on-photo"><span class="badge-check"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>телефон</span>
           </div>
           <div class="card-body">
@@ -554,7 +585,7 @@
       <li>
         <a class="card" href="room.html">
           <div class="card-photo">
-            <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=560&fit=crop&auto=format&q=70" alt="Фото кімнати в 2-к квартирі на Нивках" loading="lazy">
+            <img src="https://images.unsplash.com/photo-1761551250944-b415df375483?w=800&h=560&fit=crop&auto=format&q=80" alt="Затишна кімната з великим вікном у 2-кімнатній квартирі на Нивках" loading="lazy">
             <span class="place"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.8-6.5-10.5a6.5 6.5 0 0 1 13 0C18.5 15.2 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.3"/></svg><span class="t">Нивки, Київ</span></span><span class="badge badge--on-photo"><span class="badge-check"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>телефон</span>
           </div>
           <div class="card-body">
@@ -569,7 +600,7 @@
       <li>
         <a class="card" href="room.html">
           <div class="card-photo">
-            <img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=800&h=560&fit=crop&auto=format&q=70" alt="Фото кімнати в будинку на Сирці" loading="lazy">
+            <img src="https://images.unsplash.com/photo-1748681257798-51934eca545b?w=800&h=560&fit=crop&auto=format&q=80" alt="Світла кімната з домашнім декором у будинку на Сирці" loading="lazy">
             <span class="place"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.8-6.5-10.5a6.5 6.5 0 0 1 13 0C18.5 15.2 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.3"/></svg><span class="t">Сирець, Київ</span></span><span class="badge badge--on-photo"><span class="badge-check"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>телефон</span>
           </div>
           <div class="card-body">
@@ -584,7 +615,7 @@
       <li>
         <a class="card" href="room.html">
           <div class="card-photo">
-            <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=800&h=560&fit=crop&auto=format&q=70" alt="Фото кімнати в 3-к квартирі на Голосіїві" loading="lazy">
+            <img src="https://images.unsplash.com/photo-1757417983938-2c2a931d41aa?w=800&h=560&fit=crop&auto=format&q=80" alt="Спальня у зелених тонах у 3-кімнатній квартирі на Голосіїві" loading="lazy">
             <span class="place"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.8-6.5-10.5a6.5 6.5 0 0 1 13 0C18.5 15.2 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.3"/></svg><span class="t">Голосіїв, Київ</span></span><span class="badge badge--on-photo"><span class="badge-check"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>телефон, фото</span>
           </div>
           <div class="card-body">
@@ -597,9 +628,10 @@
       </li>
 
       <li>
-        <a class="card" href="profile.html">
+        <a class="card card--person" href="profile.html">
           <div class="card-photo">
-            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&h=560&fit=crop&auto=format&q=70" alt="Фото профілю — Ліза, 25" loading="lazy">
+            <img class="person-card__backdrop" src="https://images.unsplash.com/photo-1758172072383-1a8ebdb56128?w=800&h=560&fit=crop&crop=faces&auto=format&q=80" alt="" aria-hidden="true" loading="lazy">
+            <img class="person-card__avatar" src="https://images.unsplash.com/photo-1758172072383-1a8ebdb56128?w=800&h=560&fit=crop&crop=faces&auto=format&q=80" alt="Природний портрет Лізи, 25 років, у м’якому денному світлі" loading="lazy">
             <span class="place"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.8-6.5-10.5a6.5 6.5 0 0 1 13 0C18.5 15.2 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.3"/></svg><span class="t">Центр або Поділ</span></span><span class="badge badge--on-photo"><span class="badge-check"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>телефон, фото</span>
           </div>
           <div class="card-body">
@@ -612,6 +644,7 @@
       </li>
 </ul>
   </main>
+  </div>
 
   <button type="button" class="fab" popovertarget="filter-sheet" aria-label="Відкрити фільтр">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h7M17.5 7H20M4 12h2.5M13 12h7M4 17h7M17.5 17H20"/><circle cx="14.5" cy="7" r="2.4"/><circle cx="9.5" cy="12" r="2.4"/><circle cx="14.5" cy="17" r="2.4"/></svg>
@@ -623,7 +656,7 @@
     <a class="tabbar-brand" href="listings.html" aria-label="Куток — на головну"><svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--color-brand)"/><path d="M18 3L21 3L21 6Z" fill="var(--bg-surface)"/></svg><span>Куток</span></a>
     <form class="tabbar-search search-form" role="search" action="listings.html" method="get">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg>
-      <input type="search" name="q" placeholder="Пошук за назвою, районом…" aria-label="Пошук оголошень">
+      <input type="search" name="q" placeholder="Пошук" aria-label="Пошук оголошень">
     </form>
     <a class="active" href="listings.html">
       <span class="tab-ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg></span>
@@ -678,6 +711,49 @@
       b.setAttribute('aria-pressed', dark ? 'true' : 'false');
     });
   }
+  (function () {
+    var feed = document.querySelector('.catalog-results .feed');
+    var buttons = document.querySelectorAll('[data-listing-view]');
+    var typeInputs = document.querySelectorAll('input[name="type"]');
+    var heading = document.querySelector('.catalog-heading h2');
+    if (!feed) return;
+
+    var listingRows = feed.querySelectorAll(':scope > li:not(.listing-table-head)');
+    function setListingType(type) {
+      var visibleCount = 0;
+      listingRows.forEach(function (row) {
+        var isPerson = !!row.querySelector('.card--person');
+        var visible = type === 'all' || (type === 'people' ? isPerson : !isPerson);
+        row.hidden = !visible;
+        if (visible) visibleCount += 1;
+      });
+      if (heading) heading.textContent = visibleCount + ' оголошень';
+    }
+
+    typeInputs.forEach(function (input) {
+      input.addEventListener('change', function () { setListingType(input.value); });
+    });
+    var selectedType = document.querySelector('input[name="type"]:checked');
+    if (selectedType) setListingType(selectedType.value);
+
+    if (!buttons.length) return;
+
+    function setListingView(view) {
+      var table = view === 'table';
+      feed.classList.toggle('feed--table', table);
+      buttons.forEach(function (button) {
+        var active = button.getAttribute('data-listing-view') === view;
+        button.classList.toggle('is-active', active);
+        button.setAttribute('aria-pressed', active ? 'true' : 'false');
+      });
+      try { localStorage.setItem('kutok-listings-view', view); } catch (e) {}
+    }
+
+    buttons.forEach(function (button) {
+      button.addEventListener('click', function () { setListingView(button.getAttribute('data-listing-view')); });
+    });
+    try { setListingView(localStorage.getItem('kutok-listings-view') || 'cards'); } catch (e) { setListingView('cards'); }
+  }());
   wfSyncThemeLabel();
 </script>
 </body>

@@ -1,10 +1,15 @@
 /* ── Статус-піґулка ── (заявки/оголошення: «очікує», «відхилено», «активне»…) */
+@keyframes status-pill-enter {
+  from { opacity: 0; transform: translateY(var(--move-sm)); }
+  to { opacity: 1; transform: translateY(0); }
+}
 .status-pill {
   display: inline-flex; align-items: center; gap: var(--space-4); flex-shrink: 0;
   padding: var(--space-3) var(--space-10); border-radius: var(--radius-999);
   background: var(--bg-neutral); color: var(--text-muted);
   font-size: var(--font-size-11); font-weight: var(--font-weight-600); white-space: nowrap;
 }
+.status-pill--enter { animation: status-pill-enter var(--dur-base) var(--ease-enter) both; }
 .status-pill svg { width: var(--size-10); height: var(--size-10); }
 .status-pill--success { color: var(--color-action); font-weight: var(--font-weight-700); } /* кобальт = дія/результат, той самий голос що ціна й CTA */
 .status-pill--rejected { color: var(--text-muted); text-decoration: line-through; text-decoration-color: var(--text-muted); text-decoration-thickness: var(--border-1-5); }

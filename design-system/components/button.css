@@ -1,14 +1,15 @@
 /* ── Кнопки ── (один API; консолідує .btn/.primary/.ghost/sheet-apply/edit-link) */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: var(--space-7);
-  height: var(--size-48); padding: 0 var(--space-18); border-radius: var(--radius-12);
+  height: var(--size-48); padding: 0 var(--space-18); border-radius: var(--radius-8);
   border: var(--border-1-5) solid var(--border-default); background: transparent; color: var(--text-primary);
   font: inherit; font-size: var(--font-size-16); font-weight: var(--font-weight-600);
-  cursor: pointer; text-decoration: none;
+  cursor: pointer; text-decoration: none; outline: var(--border-2) solid transparent; outline-offset: var(--space-2);
+  transition: transform var(--dur-fast) var(--ease-standard);
 }
 .btn:hover { background: var(--bg-neutral); }
-.btn:active { background: var(--bg-pressed); }
-.btn:focus-visible { outline: var(--border-2) solid var(--color-action); outline-offset: var(--space-2); }
+.btn:active { background: var(--bg-pressed); transform: translateY(calc(var(--move-sm) / 2)); }
+.btn:focus-visible { outline-color: var(--color-action); }
 .btn--primary { border: none; background: var(--color-action); color: var(--on-action); font-weight: var(--font-weight-700); }
 .btn--primary:hover { background: var(--color-action); filter: brightness(1.08); }
 .btn--primary:active { filter: brightness(.92); }

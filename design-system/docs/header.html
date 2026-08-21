@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Хедер екрана · Компоненти · Куток</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../index.css">
+<link rel="stylesheet" href="docs.css">
+<script src="docs-nav.js" defer></script>
+</head>
+<body class="docs">
+<div class="docs-shell">
+
+<nav class="docs-nav" data-docs-nav aria-label="Дизайн-система">
+  <a class="docs-nav-home" href="index.html">Куток · дизайн-система</a>
+</nav>
+
+<main class="docs-main">
+
+  <p class="docs-crumb"><a href="index.html">Компоненти</a> / Оболонка й навігація</p>
+  <p class="docs-eyebrow">Каркас екрана</p>
+  <h1 class="docs-title">Хедер екрана</h1>
+  <p class="docs-lede">Один бренд-рядок на обидва варіанти: видавничий заголовок таба або кнопка «назад» із заголовком підекрана — лого не зникає ніде.</p>
+  <div class="docs-meta"><code>.app-head</code><code>.app-head--back</code><code>.head-word</code><code>.head-title</code><code>.head-btn</code></div>
+
+  <section class="docs-sec" id="anatomy">
+    <h2>Анатомія</h2>
+    <p class="docs-sec-hint">Варіант A — вордмарк, як на первинних табах (Пошук, Заявки, Чати, Профіль).</p>
+    <div class="docs-anatomy">
+      <div class="docs-stage">
+        <header class="app-head" style="width:100%;">
+          <div>
+            <div class="head-brand-row"><svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--color-brand)"/><path d="M18 3L21 3L21 6Z" fill="var(--bg-surface)"/></svg><div class="head-brand">Куток</div></div>
+            <h1 class="head-word">Пошук</h1>
+            <p class="head-sub">Кімнати й сусіди в Києві, між своїми</p>
+          </div>
+          <button type="button" class="head-btn" aria-label="Відкрити пошук">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg>
+          </button>
+        </header>
+      </div>
+      <ol class="docs-legend">
+        <li><b>Бренд-рядок</b><span>(<code>.head-brand-row</code>) — 15px <code>.brand-mark</code> + лейбл «КУТОК», однаковий в обох варіантах шапки. Логотип не зникає ніде в продукті.</span></li>
+        <li><b>Видавничий заголовок</b><span>(<code>.head-word</code>) — назва активного таба, 40px, кольору <code>--color-brand</code>; читається як заголовок розділу, не просто підпис.</span></li>
+        <li><b>Підзаголовок</b><span>(<code>.head-sub</code>) — короткий описовий рядок під заголовком таба.</span></li>
+        <li><b>Кнопка пошуку</b><span>(<code>.head-btn</code>) — кільце 44px, оливова рамка й іконка, інвертується суцільною оливою на hover; та сама мова, що й кнопка «назад».</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="variants">
+    <h2>Варіанти й розміри</h2>
+    <p class="docs-sec-hint">Два варіанти шапки, і в обох пошук з'являється тільки там, де в контексті екрана є сенс. Наведи, натисни або перейди Tab на кнопки нижче: це швидка відповідь на дію через motion-токени.</p>
+    <div class="docs-variants">
+      <div class="docs-example docs-example--wide">
+        <p class="docs-example-label">Варіант B — назад + заголовок, із пошуком</p>
+        <div class="docs-example-body" style="width:100%;">
+          <header class="app-head app-head--back" style="width:100%;">
+            <div class="head-back-wrap">
+              <div class="head-brand-row"><svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--color-brand)"/><path d="M18 3L21 3L21 6Z" fill="var(--bg-surface)"/></svg><div class="head-brand">Куток</div></div>
+              <div class="head-back-row">
+                <a class="head-back" href="#" aria-label="До списку"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a>
+                <h1 class="head-title">Оголошення кімнати</h1>
+              </div>
+            </div>
+            <button type="button" class="head-btn" aria-label="Відкрити пошук">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg>
+            </button>
+          </header>
+        </div>
+        <p class="docs-example-note">«Оголошення кімнати» — змістовний вторинний екран (<code>room</code>), пошук лишається доступним.</p>
+      </div>
+      <div class="docs-example docs-example--wide">
+        <p class="docs-example-label">Варіант B — назад + заголовок, без пошуку (утилітарний екран)</p>
+        <div class="docs-example-body" style="width:100%;">
+          <header class="app-head app-head--back" style="width:100%;">
+            <div class="head-brand-row"><svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--color-brand)"/><path d="M18 3L21 3L21 6Z" fill="var(--bg-surface)"/></svg><div class="head-brand">Куток</div></div>
+            <div class="head-back-row">
+              <a class="head-back" href="#" aria-label="Назад"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a>
+              <h1 class="head-title">Вхід</h1>
+            </div>
+          </header>
+        </div>
+        <p class="docs-example-note">Без <code>.head-btn</code> шапка лишається колонкою — рядковий розкол вмикається лише коли кнопка пошуку присутня (<code>:has(&gt; .head-btn)</code>).</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="usage">
+    <h2>Коли вживати</h2>
+    <p class="docs-copy">Варіант A стоїть тільки на чотирьох первинних табах (Пошук / Заявки / Чати / Профіль, обидві ролі) — вордмарк заміняє звичний заголовок екрана і читається як назва розділу. Варіант B — на всіх вторинних екранах, і всередині нього рішення про кнопку пошуку залежить від контексту: вона є на змістовних екранах (<code>room</code>, <code>chat</code>, чужий <code>profile</code>, <code>my-listings</code>), бо там людина все ще може захотіти пошукати щось інше, і відсутня на утилітарних і формах — вхід, верифікація, згода, створення чи редагування оголошення й профілю, скарга, підтримка, акаунт, приватність, юридичне, відновлення доступу (DESIGN.md, «Header / Шапка») — де пошук не має сенсу в контексті задачі, яку людина в цю мить виконує. Бренд-рядок зверху не залежить від цього рішення й присутній завжди.</p>
+    <div class="docs-where">
+      <span>listings* — варіант A</span>
+      <span>my-profile-seeker / host — варіант A</span>
+      <span>room, chat, profile, my-listings — варіант B з пошуком</span>
+      <span>login, verify-*, consent, report, support — варіант B без пошуку</span>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="dodont">
+    <h2>Правило і антиправило</h2>
+    <div class="docs-dodont">
+      <div class="docs-do">
+        <span class="docs-do-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg>Так</span>
+        <div class="docs-do-stage">
+          <header class="app-head app-head--back" style="width:100%;">
+            <div class="head-back-wrap">
+              <div class="head-brand-row"><svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--color-brand)"/><path d="M18 3L21 3L21 6Z" fill="var(--bg-surface)"/></svg><div class="head-brand">Куток</div></div>
+              <div class="head-back-row">
+                <a class="head-back" href="#" aria-label="До списку"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a>
+                <h1 class="head-title">Оголошення кімнати</h1>
+              </div>
+            </div>
+            <button type="button" class="head-btn" aria-label="Відкрити пошук">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.8 16.8L21 21"/></svg>
+            </button>
+          </header>
+        </div>
+        <p>На <code>room</code> пошук лишається в шапці, бо це змістовний екран каталогу — людина, яка дивиться одну кімнату, ще може захотіти шукати далі.</p>
+      </div>
+      <div class="docs-dont">
+        <span class="docs-dont-tag">✕ Ні</span>
+        <div class="docs-dont-stage">
+          <header class="app-head app-head--back" style="width:100%;">
+            <div class="head-brand-row"><svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3H18L21 6V21H3Z" fill="var(--color-brand)"/><path d="M18 3L21 3L21 6Z" fill="var(--bg-surface)"/></svg><div class="head-brand">Куток</div></div>
+            <div class="head-back-row">
+              <a class="head-back" href="#" aria-label="Назад"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a>
+              <h1 class="head-title">Верифікація телефону</h1>
+            </div>
+          </header>
+        </div>
+        <p>На <code>verify-phone</code> кнопка пошуку зайва — людина посеред одного кроку онбордингу, і пошук не має контекстного сенсу; правильний варіант B тут — без <code>.head-btn</code>, як у прикладі вище.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="responsive">
+    <h2>Адаптив у макетах</h2>
+    <p class="docs-sec-hint">На телефоні шапка дає бренд-рядок і контекстну дію пошуку. На планшеті структура не дублює таб-бар. На десктопі навігація переходить у верхню панель з розгорнутим пошуком, а мобільні елементи шапки ховаються, щоб не повторювати те саме керування.</p>
+    <div class="docs-responsive" data-mobile="../../wireframes/listings.html" data-tablet="../../wireframes/listings.html" data-desktop="../../wireframes/listings-desktop.html"></div>
+  </section>
+
+  <div class="docs-foot">
+    <a href="index.html">← Усі компоненти</a>
+    <a href="search.html">Поповер пошуку →</a>
+  </div>
+
+</main>
+</div>
+<script src="docs-responsive.js"></script>
+</body>
+</html>

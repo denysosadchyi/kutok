@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Статус-піґулка · Компоненти · Куток</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../index.css">
+<link rel="stylesheet" href="docs.css">
+<script src="docs-nav.js" defer></script>
+</head>
+<body class="docs">
+<div class="docs-shell">
+
+<nav class="docs-nav" data-docs-nav aria-label="Дизайн-система">
+  <a class="docs-nav-home" href="index.html">Куток · дизайн-система</a>
+</nav>
+
+<main class="docs-main">
+
+  <p class="docs-crumb"><a href="index.html">Компоненти</a> / Картки й списки</p>
+  <p class="docs-eyebrow">Малий компонент</p>
+  <h1 class="docs-title">Статус-піґулка</h1>
+  <p class="docs-lede">Мала піґулка для вузького набору станів життєвого циклу — заявки й оголошення, не сигнал довіри.</p>
+  <div class="docs-meta"><code>.status-pill</code><code>.status-pill--enter</code><code>.status-pill--success</code><code>.status-pill--rejected</code></div>
+
+  <section class="docs-sec" id="anatomy">
+    <h2>Анатомія</h2>
+    <p class="docs-sec-hint">Три стани того самого класу — нейтральний, успіх, відхилено.</p>
+    <div class="docs-anatomy">
+      <div class="docs-stage">
+        <div style="display:flex; flex-direction:column; gap:12px; align-items:flex-start;">
+          <span class="status-pill">очікує</span>
+          <span class="status-pill status-pill--success">Активне</span>
+          <span class="status-pill status-pill--rejected">відхилено</span>
+        </div>
+      </div>
+      <ol class="docs-legend">
+        <li><b>Нейтральна піґулка</b><span>(<code>.status-pill</code>) — тло <code>--bg-neutral</code>, приглушений текст: типовий стан «очікує», «Зайнято».</span></li>
+        <li><b>Модифікатор успіху</b><span>(<code>.status-pill--success</code>) — колір <code>--color-action</code>, вага 700: той самий кобальтовий голос, що й ціна та CTA, для означеного позитивного результату.</span></li>
+        <li><b>Модифікатор відхилення</b><span>(<code>.status-pill--rejected</code>) — приглушений колір з перекресленням через <code>text-decoration-color</code>, не рамкою: <code>--border-default</code> невидимий у темній темі, тому колір лягає на текст.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="motion">
+    <h2>Живий статус: нова відповідь</h2>
+    <p class="docs-sec-hint">Коли заявка отримує результат, нова піґулка входить у своєму рядку. Рух показує зміну статусу; вже наявні статуси не анімуються під час відкриття екрана.</p>
+    <div class="docs-stage" data-status-pill-demo>
+      <div style="display:flex; flex-direction:column; align-items:flex-start; gap:var(--space-14);">
+        <button class="btn btn--ghost btn--sm" type="button" data-status-pill-show>Показати відповідь</button>
+        <div aria-live="polite" data-status-pill-live></div>
+        <template data-status-pill-template><span class="status-pill status-pill--success status-pill--enter">перенесено в чат<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></template>
+      </div>
+    </div>
+    <p class="docs-example-note">Додай <code>.status-pill--enter</code> лише до нового статусу: він використовує <code>--dur-base</code>, <code>--ease-enter</code> і <code>--move-sm</code>, щоб показати результат без затримки.</p>
+  </section>
+
+  <section class="docs-sec" id="variants">
+    <h2>Варіанти й розміри</h2>
+    <p class="docs-sec-hint">Ті самі три стани у двох реальних контекстах.</p>
+    <div class="docs-variants">
+      <div class="docs-example">
+        <p class="docs-example-label">my-listings — активне / зайняте</p>
+        <div class="docs-example-body">
+          <span class="status-pill status-pill--success">Активне</span>
+          <span class="status-pill">Зайнято</span>
+        </div>
+      </div>
+      <div class="docs-example docs-example--wide">
+        <p class="docs-example-label">applications — очікує / перенесено в чат / відхилено</p>
+        <div class="docs-example-body">
+          <span class="status-pill">очікує</span>
+          <span class="status-pill status-pill--success">перенесено в чат<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+          <span class="status-pill status-pill--rejected">відхилено</span>
+        </div>
+        <p class="docs-example-note">Стрілка-шеврон — необов'язковий елемент усередині <code>--success</code>, показує перехід у чат, не окремий модифікатор.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="usage">
+    <h2>Коли вживати</h2>
+    <p class="docs-copy">Статус-піґулка вживається рівно у двох місцях: стан заявки «Хочу познайомитись» у <code>applications</code> («очікує» → «перенесено в чат» або «відхилено») і зайнятість оголошення в <code>my-listings</code> («Активне» / «Зайнято»). Це вузький перелік іменованих станів життєвого циклу, не універсальний ярлик — для довільних фактів чи характеристик кімнати призначені <a href="chips.html">факти й чипи</a>. Якщо результат щойно прийшов, додай <code>.status-pill--enter</code> до нової піґулки; статичний статус не рухається. Success-модифікатор зарезервований для означеного позитивного результату («Активне», «перенесено в чат»), а не для будь-якого «хорошого» стану.</p>
+    <div class="docs-where">
+      <span>applications — очікує / перенесено / відхилено</span>
+      <span>my-listings — активне / зайнято</span>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="dodont">
+    <h2>Правило і антиправило</h2>
+    <div class="docs-dodont">
+      <div class="docs-do">
+        <span class="docs-do-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg>Так</span>
+        <div class="docs-do-stage">
+          <span class="status-pill status-pill--success">перенесено в чат<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+        </div>
+        <p><code>--success</code> для реального результату життєвого циклу — заявку прийнято, оголошення активне. Кобальт тут означає той самий «дія/результат», що й ціна.</p>
+      </div>
+      <div class="docs-dont">
+        <span class="docs-dont-tag">✕ Ні</span>
+        <div class="docs-dont-stage">
+          <span class="badge"><span class="badge-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>очікує</span>
+        </div>
+        <p>Показувати статус життєвого циклу через <a href="badge.html"><code>.badge</code></a>. Обидва — малі округлі піґулки, але означають різне: бейдж каже «ця людина чи кімната верифікована», статус-піґулка каже «ця конкретна заявка чи оголошення в стані X». Змішування розмиває єдиний сигнал, який DESIGN.md вимагає завжди читати як довіру й нічого більше.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="responsive">
+    <h2>Адаптив у макетах</h2>
+    <p class="docs-sec-hint">Статус заявки лишається біля людини, якої стосується: на телефоні рядок стискається без втрати назви стану, а на ширших екранах піґулка не перетворюється на окремий індикатор.</p>
+    <div class="docs-responsive" data-mobile="../../wireframes/applications.html" data-tablet="../../wireframes/applications.html" data-desktop="../../wireframes/applications.html"></div>
+  </section>
+
+  <div class="docs-foot">
+    <a href="badge.html">← Бейдж верифікації</a>
+    <a href="index.html">Усі компоненти</a>
+    <a href="chips.html">Факти й чипи →</a>
+  </div>
+
+</main>
+</div>
+<script>
+  (function () {
+    var demo = document.querySelector('[data-status-pill-demo]');
+    if (!demo) return;
+
+    var live = demo.querySelector('[data-status-pill-live]');
+    var template = demo.querySelector('[data-status-pill-template]');
+    demo.querySelector('[data-status-pill-show]').addEventListener('click', function () {
+      live.replaceChildren(template.content.cloneNode(true));
+    });
+  }());
+</script>
+<script src="docs-responsive.js"></script>
+</body>
+</html>

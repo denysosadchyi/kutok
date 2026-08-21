@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Поле форми · Компоненти · Куток</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../index.css">
+<link rel="stylesheet" href="docs.css">
+<script src="docs-nav.js" defer></script>
+</head>
+<body class="docs">
+<div class="docs-shell">
+
+<nav class="docs-nav" data-docs-nav aria-label="Дизайн-система">
+  <a class="docs-nav-home" href="index.html">Куток · дизайн-система</a>
+</nav>
+
+<main class="docs-main">
+
+  <p class="docs-crumb"><a href="index.html">Компоненти</a> / Форми</p>
+  <p class="docs-eyebrow">Базовий компонент</p>
+  <h1 class="docs-title">Поле форми</h1>
+  <p class="docs-lede">Підпис, поле вводу й кастомний select одного тону — без рамки, лише зсув паперу відрізняє поле від фону.</p>
+  <div class="docs-meta"><code>.field</code><code>.field &gt; label</code><code>.cap</code><code>.fsel</code></div>
+
+  <section class="docs-sec" id="anatomy">
+    <h2>Анатомія</h2>
+    <p class="docs-sec-hint">Три поля одного `.field`-блоку: текстовий інпут, textarea й окремий `.fsel` — кастомний select.</p>
+    <div class="docs-anatomy">
+      <div class="docs-stage">
+        <div style="display:flex; flex-direction:column; gap:var(--space-13); width:100%; max-width:320px;">
+          <div class="field"><label for="f1">Номер телефону</label><input id="f1" type="tel" placeholder="+380" value="+380 67 123 45 67"></div>
+          <div class="field"><label for="f3">Опишіть проблему</label><textarea id="f3" placeholder="Наприклад: не приходить SMS-код на верифікацію телефону."></textarea></div>
+          <label class="fsel"><select aria-label="Район"><option selected>Поділ</option><option>Оболонь</option><option>Позняки</option></select></label>
+        </div>
+      </div>
+      <ol class="docs-legend">
+        <li><b>Підпис</b><span>(<code>.field &gt; label</code> / <code>.cap</code>) — 11px, uppercase, <code>--text-muted</code>: називає поле, не декорує його.</span></li>
+        <li><b>Поверхня поля</b><span>тло <code>--bg-surface</code> (paper-2, світліше за канвас), без рамки, радіус 12px, висота 48px для інпуту й select — той самий механізм глибини, що й у карток.</span></li>
+        <li><b>Textarea</b><span>та сама поверхня, мінімальна висота 96px, вертикальний resize.</span></li>
+        <li><b>Кастомний select</b><span>(<code>.fsel</code>) — нативний select прогресивно покращується до button/listbox, але лишається джерелом form-значення й <code>change</code>.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="variants">
+    <h2>Варіанти й розміри</h2>
+    <p class="docs-sec-hint">Один візуальний закон на input, textarea й select — незалежно від контексту використання.</p>
+    <div class="docs-variants">
+      <div class="docs-example">
+        <p class="docs-example-label">Текстове поле — заповнене</p>
+        <div class="docs-example-body" style="width:100%;">
+          <div class="field" style="width:100%;"><label for="v1">Номер телефону</label><input id="v1" type="tel" value="+380 67 123 45 67"></div>
+        </div>
+      </div>
+      <div class="docs-example">
+        <p class="docs-example-label">Текстове поле — порожнє</p>
+        <div class="docs-example-body" style="width:100%;">
+          <div class="field" style="width:100%;"><label for="v2">Код із SMS (6 цифр)</label><input id="v2" inputmode="numeric" maxlength="6" placeholder="000000"></div>
+        </div>
+      </div>
+      <div class="docs-example">
+        <p class="docs-example-label">Textarea</p>
+        <div class="docs-example-body" style="width:100%;">
+          <div class="field" style="width:100%;"><label for="v3">Про себе</label><textarea id="v3" placeholder="Кілька речень про себе."></textarea></div>
+        </div>
+      </div>
+      <div class="docs-example">
+        <p class="docs-example-label">Кастомний select (<code>.fsel</code> + нативне джерело)</p>
+        <div class="docs-example-body" style="width:100%;">
+          <label class="fsel" style="width:100%;"><select aria-label="Район"><option selected>Поділ</option><option>Оболонь</option><option>Позняки</option></select></label>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="motion">
+    <h2>Мікровзаємодія</h2>
+    <p class="docs-sec-hint">Перейди у поле Tab або клацни в нього: кільце фокуса дає <strong>відповідь</strong>, куди саме зараз піде введення.</p>
+    <div class="docs-stage" style="max-width:320px;"><div class="field"><label for="motion-field">Ваше імʼя</label><input id="motion-field" type="text" placeholder="Напишіть тут"></div></div>
+    <p class="docs-copy">Контур фокуса зʼявляється за <code>--dur-fast</code> та <code>--ease-standard</code>, без руху самого поля й без зміни розкладки форми.</p>
+    <div class="docs-stage" style="max-width:320px; margin-top:var(--space-13);"><label class="fsel"><select aria-label="Район для демонстрації руху"><option selected>Поділ</option><option>Оболонь</option><option>Позняки</option></select></label></div>
+    <p class="docs-copy">У кастомному select список зʼявляється за <code>--dur-base</code> та <code>--ease-enter</code>: це <strong>звʼязок</strong> між натиснутою кнопкою і тимчасовим списком значень.</p>
+  </section>
+
+  <section class="docs-sec" id="usage">
+    <h2>Коли вживати</h2>
+    <p class="docs-copy"><code>.field</code> — стандартна обгортка для будь-якого текстового введення в системі: від входу й верифікації телефону/коду до створення оголошення кімнати, скарги, звернення в підтримку й редагування профілю. <code>.fsel</code> прогресивно покращує наявний <code>select</code> у button/listbox: опції не дублюються в HTML, нативне поле лишається джерелом form-значення та події <code>change</code>. Без JavaScript це звичайний select. Обидва компоненти читають той самий візуальний закон полів: тло <code>--bg-surface</code>, без рамки, радіус 12px.</p>
+    <div class="docs-where">
+      <span>login / verify-phone / verify-code</span>
+      <span>room-create</span>
+      <span>report / support</span>
+      <span>profile-create-*</span>
+      <span>*-edit</span>
+      <span>listings-desktop — фільтр (<code>.fsel</code>)</span>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="dodont">
+    <h2>Правило і антиправило</h2>
+    <div class="docs-dodont">
+      <div class="docs-do">
+        <span class="docs-do-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg>Так</span>
+        <div class="docs-do-stage">
+          <label class="fsel" style="width:220px;"><select aria-label="Район"><option selected>Поділ</option></select></label>
+        </div>
+        <p>Жодне поле — ні інпут, ні textarea, ні <code>.fsel</code> — не має рамки. Глибина сигналізується лише зсувом тону <code>--bg-surface</code> над канвасом, так само, як у картки.</p>
+      </div>
+      <div class="docs-dont">
+        <span class="docs-dont-tag">✕ Ні</span>
+        <div class="docs-dont-stage">
+          <label class="fsel" style="width:220px; border: var(--border-1-5) solid var(--border-default);"><select aria-label="Район"><option selected>Поділ</option></select></label>
+        </div>
+        <p>Повертати рамку <code>.fsel</code>, «бо це список і має виглядати клікабельним». DESIGN.md фіксує саме цю спробу 2026-07-24 і скасовує її: <code>.fsel</code> був єдиним винятком, скопійованим зі старого чернетки — «той самий компонент має виглядати однаково всюди».</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="responsive">
+    <h2>Адаптив у макетах</h2>
+    <p class="docs-sec-hint">Поля лінійних форм свідомо лишаються читабельною колонкою на всіх ширинах. Ширший екран додає простір навколо кроку, а не перетворює інпут, select чи textarea на надто довгий рядок.</p>
+    <div class="docs-responsive" data-mobile="../../wireframes/verify-phone.html" data-tablet="../../wireframes/profile-create-seeker.html" data-desktop="../../wireframes/room-create.html"></div>
+  </section>
+
+  <div class="docs-foot">
+    <a href="profile-hero.html">← Профіль-герой</a>
+    <a href="index.html">Усі компоненти</a>
+    <a href="checkbox.html">Чекбокс →</a>
+  </div>
+
+</main>
+</div>
+<script src="../components/select.js" defer></script>
+<script src="docs-responsive.js"></script>
+</body>
+</html>

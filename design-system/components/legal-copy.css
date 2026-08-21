@@ -1,3 +1,75 @@
 /* ── Юридичний текст ── винесено з legal.html (аудит 2026-07-29) */
 .legal-copy p + p { margin-top: var(--space-13); }
 .legal-copy p { line-height: 1.55; }
+
+/* На телефоні документ лишається одним потоком читання. Від tablet поруч
+   з'являється лише навігація по вже видимих секціях: вона не ховає й не
+   дублює текст, а дає орієнтир у довгому документі. */
+.legal-toc { display: none; }
+.legal-skip:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  clip: auto;
+  clip-path: none;
+  overflow: visible;
+  display: inline-flex;
+  margin: var(--space-8);
+  padding: var(--space-12) var(--space-14);
+  border-radius: var(--radius-8);
+  background: var(--color-action);
+  color: var(--on-action);
+  outline: var(--border-2) solid var(--color-action);
+  outline-offset: var(--space-2);
+  text-decoration: none;
+}
+
+@media (min-width: 47.5rem) {
+  .app--legal > main {
+    display: grid;
+    grid-template-columns: minmax(var(--size-180), .45fr) minmax(0, var(--measure-read));
+    justify-content: center;
+    column-gap: var(--grid-gap);
+    align-items: start;
+    max-width: var(--container-max);
+  }
+  .app--legal > main > .legal-intro { grid-column: 1 / -1; }
+  .app--legal > main > .legal-toc {
+    display: flex;
+    position: sticky;
+    top: var(--space-88);
+    grid-column: 1;
+    grid-row: 2 / span 2;
+    flex-direction: column;
+    gap: var(--space-6);
+    align-self: start;
+    padding: var(--space-20) var(--space-16);
+    border-radius: var(--radius-16);
+    background: var(--bg-surface);
+  }
+  .legal-toc-title {
+    margin: 0 0 var(--space-6);
+    font-size: var(--font-size-11);
+    font-weight: var(--font-weight-700);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .legal-toc a {
+    display: flex;
+    align-items: center;
+    min-height: var(--size-44);
+    padding: var(--space-12) var(--space-13);
+    border-radius: var(--radius-8);
+    color: var(--text-primary);
+    font-size: var(--font-size-13);
+    font-weight: var(--font-weight-700);
+    text-decoration: none;
+  }
+  .legal-toc a:hover { background: var(--bg-neutral); }
+  .legal-toc a:focus-visible {
+    outline: var(--border-2) solid var(--color-action);
+    outline-offset: var(--space-2);
+  }
+  .app--legal > main > .legal-section { grid-column: 2; }
+}

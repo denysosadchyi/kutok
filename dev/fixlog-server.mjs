@@ -42,26 +42,39 @@ import { createServer } from 'node:http'
 import { readFileSync, writeFileSync, renameSync, existsSync, unlinkSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 
-const PORT = 4748
-const HOST = '0.0.0.0'
-const FILE = '/home/den/kutok/dev/fixlog-ratings.json'
+const PORT = Number(process.env.FIXLOG_PORT || 4748)
+const HOST = process.env.FIXLOG_HOST || '0.0.0.0'
+const FILE = process.env.FIXLOG_FILE || '/home/den/kutok/dev/fixlog-ratings.json'
+const SETTINGS_FILE = process.env.FIXLOG_SETTINGS_FILE || '/home/den/kutok/dev/fixlog-settings.json'
 
 /* Guardrails on untrusted input. The reviewer is trusted, a stray script on
    the LAN is not, and this process writes to disk. */
 const MAX_BODY = 64 * 1024 // one rating is ~200 bytes; anything larger is noise
 const MAX_ID = 400
 const MAX_NOTE = 1000
+const EXECUTORS = new Set(['codex', 'claude'])
+
+/* The queue carries a stable machine value, never a CLI fragment. Callers
+   decide the compatibility fallback before invoking this helper; unknown
+   explicit values are rejected at the HTTP edge. */
+function executorOf(value) {
+  if (value === undefined || value === null || value === '') return 'claude'
+  if (typeof value !== 'string') return null
+  const executor = value.trim().toLowerCase()
+  return EXECUTORS.has(executor) ? executor : null
+}
 
 /* ── Store ──────────────────────────────────────────────────────────────
    Kept in memory and mirrored to disk on every write. Memory is the read
    path (a GET never touches the disk), disk is the durable copy. Loading
    once at boot means a corrupted file is noticed immediately, at start, not
    on the first request hours later. */
-let ratings = load()
+let ratings = loadRatings()
+let settings = loadSettings()
 
-function load() {
+function loadRatings() {
   if (!existsSync(FILE)) {
-    persist({})
+    persist({}, FILE, 'fixlog-ratings')
     return {}
   }
   try {
@@ -79,13 +92,35 @@ function load() {
   }
 }
 
-function persist(data) {
+function loadSettings() {
+  if (!existsSync(SETTINGS_FILE)) {
+    const initial = { executor: 'codex', updatedAt: new Date().toISOString() }
+    persist(initial, SETTINGS_FILE, 'fixlog-settings')
+    return initial
+  }
+  try {
+    const parsed = JSON.parse(readFileSync(SETTINGS_FILE, 'utf8'))
+    const executor = typeof parsed?.executor === 'string'
+      && EXECUTORS.has(parsed.executor.trim().toLowerCase())
+      ? parsed.executor.trim().toLowerCase() : null
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed) || !executor) {
+      throw new Error('settings must contain an allowlisted executor')
+    }
+    return { ...parsed, executor }
+  } catch (e) {
+    console.error(`[fixlog] ${SETTINGS_FILE} is unreadable (${e.message}).`)
+    console.error('[fixlog] Refusing to start — fix or move it aside.')
+    process.exit(1)
+  }
+}
+
+function persist(data, target = FILE, stem = 'fixlog-ratings') {
   /* Temp file in the SAME directory: rename is only atomic within a
      filesystem, and /tmp is frequently a different one. */
-  const tmp = join(dirname(FILE), `.fixlog-ratings.${process.pid}.${Date.now()}.tmp`)
+  const tmp = join(dirname(target), `.${stem}.${process.pid}.${Date.now()}.tmp`)
   try {
     writeFileSync(tmp, JSON.stringify(data, null, 2) + '\n', 'utf8')
-    renameSync(tmp, FILE)
+    renameSync(tmp, target)
   } catch (e) {
     /* Leave no debris behind if the rename is what failed. */
     try {
@@ -118,7 +153,7 @@ const lastOpen = (rec) => {
 /* ── HTTP ───────────────────────────────────────────────────────────── */
 const cors = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Methods': 'GET, POST, PUT, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type',
   'Access-Control-Max-Age': '86400',
 }
@@ -171,6 +206,30 @@ const server = createServer(async (req, res) => {
 
   if (req.method === 'GET' && path === '/ratings') {
     send(res, 200, ratings)
+    return
+  }
+
+  if (req.method === 'GET' && path === '/settings') {
+    send(res, 200, settings)
+    return
+  }
+
+  if (req.method === 'PUT' && path === '/settings/executor') {
+    let body
+    try { body = JSON.parse((await readBody(req)) || '{}') } catch (e) {
+      send(res, 400, { ok: false, error: `bad JSON: ${e.message}` }); return
+    }
+    const executor = typeof body.executor === 'string' ? executorOf(body.executor) : null
+    if (!executor) {
+      send(res, 400, { ok: false, error: 'executor must be one of: codex, claude' })
+      return
+    }
+    const next = { ...settings, executor, updatedAt: new Date().toISOString() }
+    try { persist(next, SETTINGS_FILE, 'fixlog-settings') } catch (e) {
+      send(res, 500, { ok: false, error: `could not persist: ${e.message}` }); return
+    }
+    settings = next
+    send(res, 200, { ok: true, settings })
     return
   }
 
@@ -243,6 +302,11 @@ const server = createServer(async (req, res) => {
       send(res, 400, { ok: false, error: 'note is required — it is the instruction' })
       return
     }
+    const executor = executorOf(body.executor ?? settings.executor)
+    if (!executor) {
+      send(res, 400, { ok: false, error: 'executor must be one of: codex, claude' })
+      return
+    }
 
     const prev = ratings[id] || { id }
     const list = rwList(prev).slice()
@@ -252,9 +316,9 @@ const server = createServer(async (req, res) => {
          an iteration is still open AMENDS its note rather than queueing a
          second — the reviewer is refining the ask, not asking twice. A new
          iteration begins only after the previous one was closed. */
-      list[list.length - 1] = { ...list[list.length - 1], note, at: now }
+      list[list.length - 1] = { ...list[list.length - 1], note, executor, at: now }
     } else {
-      list.push({ note, at: now, done: false })
+      list.push({ note, executor, at: now, done: false })
     }
     const record = {
       ...prev,
@@ -327,4 +391,5 @@ const server = createServer(async (req, res) => {
 server.listen(PORT, HOST, () => {
   console.log(`[fixlog] ratings on http://${HOST}:${PORT} → ${FILE}`)
   console.log(`[fixlog] ${Object.keys(ratings).length} rating(s) loaded`)
+  console.log(`[fixlog] executor ${settings.executor} from ${SETTINGS_FILE}`)
 })

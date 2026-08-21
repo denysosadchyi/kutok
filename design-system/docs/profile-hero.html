@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Профіль-герой · Компоненти · Куток</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../index.css">
+<link rel="stylesheet" href="docs.css">
+<script src="docs-nav.js" defer></script>
+</head>
+<body class="docs">
+<div class="docs-shell">
+
+<nav class="docs-nav" data-docs-nav aria-label="Дизайн-система">
+  <a class="docs-nav-home" href="index.html">Куток · дизайн-система</a>
+</nav>
+
+<main class="docs-main">
+
+  <p class="docs-crumb"><a href="index.html">Компоненти</a> / Картки й списки</p>
+  <p class="docs-eyebrow">Композиція</p>
+  <h1 class="docs-title">Профіль-герой</h1>
+  <p class="docs-lede">Не новий компонент, а композиція вже задокументованих: аватар, ім'я, біо, бейдж, кнопка редагування й метр — центровані на голому канвасі.</p>
+  <div class="docs-meta"><code>.profile-hero</code><code>.profile-name</code><code>.profile-bio</code></div>
+
+  <section class="docs-sec" id="anatomy">
+    <h2>Анатомія</h2>
+    <p class="docs-sec-hint">Це збірка, не окрема мова — кожна частина документована на власній сторінці.</p>
+    <div class="docs-anatomy">
+      <div class="docs-stage">
+        <section class="profile-hero" style="width:100%; max-width:320px; border-bottom:none;">
+          <a class="avatar-link" href="#">
+            <img class="avatar" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=320&h=320&fit=crop&auto=format&q=70" alt="Фото профілю — Аня, 23" loading="lazy">
+          </a>
+          <h2 class="profile-name">Аня, 23</h2>
+          <p class="profile-bio">Переїхала до Києва місяць тому, працюю в кафе на Подолі. Шукаю спокійну кімнату й адекватних сусідів.</p>
+          <span class="badge"><span class="badge-check"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>телефон, фото</span>
+          <a class="btn btn--ghost btn--pill btn--sm" href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L18.5 9.5a2.1 2.1 0 0 0-3-3L5 17v3z"/><path d="M13.5 7.5l3 3"/></svg>Редагувати профіль</a>
+          <div class="meter-block">
+            <p class="meter-label">Повнота профілю <b>90%</b></p>
+            <div class="meter"><div class="meter-fill" style="width:90%"></div></div>
+            <p class="meter-hint">Додайте документ, щоб підвищити довіру профілю.</p>
+          </div>
+        </section>
+      </div>
+      <ol class="docs-legend">
+        <li><b>Аватар</b><span>(<code>.avatar-link</code> / <code>.avatar</code>) — велике коло фото, посилання на <a href="avatar.html">аватар</a>.</span></li>
+        <li><b>Ім'я</b><span>(<code>.profile-name</code>) — Unbounded 700, 28px, єдиний видавничий заголовок екрана.</span></li>
+        <li><b>Біо</b><span>(<code>.profile-bio</code>) — Inter, приглушений колір, центровано, <code>max-width: 32ch</code>.</span></li>
+        <li><b>Бейдж</b><span>(<code>.badge</code>) — див. <a href="badge.html">бейдж верифікації</a>.</span></li>
+        <li><b>Кнопка редагування й метр</b><span>тиха ghost-піл-кнопка (<a href="button.html">кнопка</a>) і <a href="meter.html">метр повноти профілю</a> — останній елемент героя.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="variants">
+    <h2>Варіанти й розміри</h2>
+    <p class="docs-sec-hint">Композиція без незалежних станів — один повний інстанс, як стоїть на екрані.</p>
+    <div class="docs-variants">
+      <div class="docs-example docs-example--wide">
+        <p class="docs-example-label">Повний профіль-герой</p>
+        <div class="docs-example-body" style="display:block; width:100%;">
+          <section class="profile-hero" style="border-bottom:none;">
+            <a class="avatar-link" href="#">
+              <img class="avatar" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=320&h=320&fit=crop&auto=format&q=70" alt="Фото профілю — Аня, 23" loading="lazy">
+            </a>
+            <h2 class="profile-name">Аня, 23</h2>
+            <p class="profile-bio">Переїхала до Києва місяць тому, працюю в кафе на Подолі. Шукаю спокійну кімнату й адекватних сусідів.</p>
+            <span class="badge"><span class="badge-check"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>телефон, фото</span>
+            <a class="btn btn--ghost btn--pill btn--sm" href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L18.5 9.5a2.1 2.1 0 0 0-3-3L5 17v3z"/><path d="M13.5 7.5l3 3"/></svg>Редагувати профіль</a>
+            <div class="meter-block">
+              <p class="meter-label">Повнота профілю <b>90%</b></p>
+              <div class="meter"><div class="meter-fill" style="width:90%"></div></div>
+              <p class="meter-hint">Додайте документ, щоб підвищити довіру профілю.</p>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="usage">
+    <h2>Коли вживати</h2>
+    <p class="docs-copy">Профіль-герой стоїть рівно двічі в продукті — у <code>my-profile-seeker</code> і <code>my-profile-host</code>, завжди першою секцією власного профілю, одразу під хедером. concept.md пояснює композицію так: «герой центрований на канвасі (не flush-картка) — бо в системі без коробок-контейнерів секція розділяється лінією <code>--line</code>, а не «висувним листом»; контейнер тут був би зайвим шаром». Ім'я лишається єдиним заголовком Unbounded на екрані — правило двох сімей резервує видавничий шрифт лише для заголовків. Біо навмисно приглушене й обмежене 32 символами в рядку — це підпис під іменем, а не другий заголовок.</p>
+    <div class="docs-where">
+      <span>my-profile-seeker — перша секція</span>
+      <span>my-profile-host — перша секція</span>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="dodont">
+    <h2>Правило і антиправило</h2>
+    <div class="docs-dodont">
+      <div class="docs-do">
+        <span class="docs-do-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 7"/></svg>Так</span>
+        <div class="docs-do-stage">
+          <span style="font-size:var(--font-size-13); color:var(--text-muted); text-align:center;">Голий канвас, розділений знизу лінією <code>--line</code></span>
+        </div>
+        <p>Секція стоїть просто на тлі сторінки — межу з наступним блоком проводить одна лінія, той самий прийом, що й скрізь у системі.</p>
+      </div>
+      <div class="docs-dont">
+        <span class="docs-dont-tag">✕ Ні</span>
+        <div class="docs-dont-stage">
+          <span style="font-size:var(--font-size-13); color:var(--text-muted); text-align:center;">Профіль-герой у власній картці з рамкою й тінню</span>
+        </div>
+        <p>У системи без конвенції «картка = контейнер» власна рамка для героя була б винятком без причини — concept.md прямо називає такий контейнер «зайвим шаром».</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-sec" id="responsive">
+    <h2>Адаптив у макетах</h2>
+    <p class="docs-sec-hint">На телефоні профіль-герой іде одним вертикальним блоком із бейджем та метром. На планшеті він лишається головною колонкою профілю, а на десктопі стає лівим сайдбаром поруч із меню й контентом.</p>
+    <div class="docs-responsive" data-mobile="../../wireframes/my-profile-seeker.html" data-tablet="../../wireframes/my-profile-host.html" data-desktop="../../wireframes/profile.html"></div>
+  </section>
+
+  <div class="docs-foot">
+    <a href="meter.html">← Метр повноти профілю</a>
+    <a href="index.html">Усі компоненти</a>
+    <a href="field.html">Поле форми →</a>
+  </div>
+
+</main>
+</div>
+<script src="docs-responsive.js"></script>
+</body>
+</html>

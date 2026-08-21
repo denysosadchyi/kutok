@@ -116,7 +116,6 @@
     font: inherit; font-size: 12px;
     border: 1px solid var(--line); border-radius: 8px;
     background: var(--paper); color: var(--ink);
-    transition: border-color .15s ease, box-shadow .15s ease;
   }
   .filter::-webkit-search-cancel-button { display: none; }
   .filter:hover { border-color: oklch(84% 0.01 70); }
@@ -172,7 +171,6 @@
   [aria-expanded="false"] .chev { transform: rotate(-90deg); }
   @media (prefers-reduced-motion: no-preference) {
     .chev { transition: transform .2s cubic-bezier(.22, 1, .36, 1); }
-    .pg, .secs a, .sec-btn, .grp-btn, .all-btn { transition: color .15s ease, background .15s ease; }
   }
 
   /* Ритм не рівномірний навмисне: між деревами — пауза, всередині групи —
@@ -317,18 +315,39 @@
     display: flex;
     justify-content: center;
     justify-content: safe center; /* при переповненні не зрізає лівий край */
+    /* Єдиний вертикальний скролер viewer. Iframe отримує висоту свого
+       документа від shell, тому scrollbar завжди стоїть на правому краї
+       повної сцени, а не поруч із макетом 390/768. */
     overflow: auto;
+    overscroll-behavior: contain;
     background: var(--paper);
+  }
+  .stage-track {
+    position: relative;
+    flex: none;
+    width: var(--stage-w, 100%);
+    min-height: var(--frame-doc-h, 1px);
   }
   /* Ширину беремо як є, без min(…, 100%): інакше «1280» у вузькому вікні тихо
      давав би 1150 і перемикач брехав би — показував не ту ширину, яку обіцяє
      кнопка. Не влазить — з'являється горизонтальний скрол сцени, і це чесно. */
   iframe {
-    flex: none; width: var(--stage-w, 100%); height: 100%;
+    position: sticky; top: 0;
+    display: block;
+    width: 100%; height: var(--frame-viewport-h, 1px);
     border: 0; background: transparent;
     opacity: 0;
   }
   iframe.ready { opacity: 1; transition: opacity .12s ease; }
+  /* The sticky iframe remains in normal flow. Pull the document spacer back
+     by exactly the viewport it occupies, so track height is document height,
+     not document height plus one extra viewport. */
+  .stage-spacer {
+    width: 1px;
+    height: var(--frame-doc-h, 1px);
+    margin-top: calc(-1 * var(--frame-viewport-h, 1px));
+    pointer-events: none;
+  }
 
   /* На вузькому екрані дерево стає drawer, а макет займає весь viewport.
      Ширина, збережена десктопним перемикачем, тут свідомо не застосовується:
@@ -346,11 +365,10 @@
       padding: 0 var(--drawer-right) max(64px, env(safe-area-inset-bottom)) var(--drawer-left);
       border-right: 1px solid var(--line); border-bottom: 0;
       transform: translateX(-101%); visibility: hidden;
-      transition: transform .22s cubic-bezier(.22, 1, .36, 1), visibility 0s linear .22s;
+      transition: transform .22s cubic-bezier(.22, 1, .36, 1);
     }
     body.nav-open nav {
       transform: translateX(0); visibility: visible;
-      transition-delay: 0s;
     }
     nav .brand { padding-top: max(22px, calc(env(safe-area-inset-top) + 14px)); padding-right: 48px; }
     nav .fwrap {
@@ -380,12 +398,12 @@
       width: 100%; height: 100%; border-radius: 0;
       background: oklch(18% 0.008 60 / .48);
       opacity: 0; visibility: hidden; cursor: default;
-      transition: opacity .18s ease, visibility 0s linear .18s;
+      transition: opacity .18s ease;
     }
-    body.nav-open .nav-scrim { opacity: 1; visibility: visible; transition-delay: 0s; }
+    body.nav-open .nav-scrim { opacity: 1; visibility: visible; }
 
     .bar {
-      display: grid; grid-template-columns: 44px minmax(0, 1fr) auto;
+      display: flex; align-items: center;
       gap: 8px; min-height: calc(56px + env(safe-area-inset-top));
       padding: max(6px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) 6px max(10px, env(safe-area-inset-left));
     }
@@ -394,22 +412,114 @@
       border-radius: 8px; color: var(--ink);
     }
     .nav-toggle:hover, .nav-toggle:active { color: var(--clay); background: var(--clay-soft); }
-    .bar-side { gap: 0; }
-    .bar-side:first-of-type { min-width: 0; }
+    .bar-side { gap: 0; min-width: 0; }
+    .bar-side:first-of-type { flex: 1 1 auto; }
     .bar-side--end { flex: none; }
     .bar .where, .wsw, .stage-px { display: none; }
-    .bar a.open { min-height: 44px; display: inline-flex; align-items: center; padding: 0 8px; }
+    .bar a.open {
+      width: 44px; max-width: 44px; min-height: 44px;
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 0; font-size: 0; overflow: hidden;
+    }
+    .bar a.open::after { content: '↗'; font-size: 16px; line-height: 1; }
     .stage { width: 100%; overscroll-behavior: contain; }
     iframe { width: 100%; max-width: 100%; }
   }
 
+  /* Документація дизайн-системи сама має власну Atomic-навігацію. Зовнішнє
+     дерево проєкту тут не утворює третю колонку: на будь-якій ширині воно
+     відкривається поверх повноширинного iframe тим самим drawer-патерном, що
+     й на мобільному. */
+  body.design-system-mode::before { display: none; }
+  body.design-system-mode { display: block; overflow: hidden; }
+  body.design-system-mode main { width: 100%; height: 100dvh; }
+  body.design-system-mode nav {
+    --drawer-left: max(18px, env(safe-area-inset-left));
+    --drawer-right: max(18px, env(safe-area-inset-right));
+    position: fixed; inset: 0 auto 0 0; z-index: 20;
+    width: min(340px, calc(100vw - 40px)); height: 100dvh;
+    padding: 0 var(--drawer-right) max(64px, env(safe-area-inset-bottom)) var(--drawer-left);
+    border-right: 1px solid var(--line); border-bottom: 0;
+    box-shadow: 18px 0 48px oklch(18% 0.008 60 / .18);
+    transform: translateX(-101%); visibility: hidden;
+    transition: transform .22s cubic-bezier(.22, 1, .36, 1);
+  }
+  body.design-system-mode.nav-open nav {
+    transform: translateX(0); visibility: visible;
+  }
+  body.design-system-mode nav .brand {
+    padding-top: max(22px, calc(env(safe-area-inset-top) + 14px));
+    padding-right: 48px;
+  }
+  body.design-system-mode nav .fwrap {
+    margin-right: calc(-1 * var(--drawer-right)); margin-left: calc(-1 * var(--drawer-left));
+    padding-right: var(--drawer-right); padding-left: var(--drawer-left);
+  }
+  body.design-system-mode nav .filter,
+  body.design-system-mode nav .pg,
+  body.design-system-mode nav .ph,
+  body.design-system-mode nav .secs a { min-height: 44px; }
+  body.design-system-mode nav .pg,
+  body.design-system-mode nav .ph,
+  body.design-system-mode nav .secs a { padding-top: 10px; padding-bottom: 10px; }
+  body.design-system-mode nav .sec-btn,
+  body.design-system-mode nav .grp-btn { min-height: 44px; }
+  body.design-system-mode nav .mode { height: 50px; min-height: 50px; }
+  body.design-system-mode nav .ghost,
+  body.design-system-mode nav .nomatch button { height: 44px; min-height: 44px; }
+  body.design-system-mode nav .mode button { min-width: 44px; min-height: 44px; }
+  body.design-system-mode nav .theme-btn { width: 44px; }
+  body.design-system-mode .nav-close {
+    position: absolute; top: max(10px, env(safe-area-inset-top)); right: 10px; z-index: 3;
+    display: grid; place-items: center; width: 44px; height: 44px;
+    border-radius: 8px; color: var(--muted);
+  }
+  body.design-system-mode .nav-close:hover,
+  body.design-system-mode .nav-close:active { color: var(--clay); background: var(--clay-soft); }
+  body.design-system-mode .nav-close svg,
+  body.design-system-mode .nav-toggle svg {
+    width: 18px; height: 18px; fill: none; stroke: currentColor;
+    stroke-width: 1.8; stroke-linecap: round;
+  }
+  body.design-system-mode .nav-scrim {
+    position: fixed; inset: 0; z-index: 15; display: block;
+    width: 100%; height: 100%; border-radius: 0;
+    background: oklch(18% 0.008 60 / .48);
+    opacity: 0; visibility: hidden; cursor: default;
+    transition: opacity .18s ease;
+  }
+  body.design-system-mode.nav-open .nav-scrim {
+    opacity: 1; visibility: visible;
+  }
+  body.design-system-mode .bar {
+    display: flex; align-items: center;
+    gap: 8px; min-height: calc(56px + env(safe-area-inset-top));
+    padding: max(6px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) 6px max(10px, env(safe-area-inset-left));
+  }
+  body.design-system-mode .nav-toggle {
+    display: grid; place-items: center; flex: none; width: 44px; height: 44px;
+    border-radius: 8px; color: var(--ink);
+  }
+  body.design-system-mode .nav-toggle:hover,
+  body.design-system-mode .nav-toggle:active { color: var(--clay); background: var(--clay-soft); }
+  body.design-system-mode .bar-side { min-width: 0; }
+  body.design-system-mode .bar-side:first-of-type { flex: 1 1 auto; }
+  body.design-system-mode .bar-side--end { flex: none; }
+  body.design-system-mode .bar .where,
+  body.design-system-mode .wsw,
+  body.design-system-mode .stage-px { display: none; }
+  body.design-system-mode .stage { width: 100%; overscroll-behavior: contain; }
+  body.design-system-mode iframe { width: 100%; max-width: 100%; }
+
   @media (max-width: 420px) {
-    .bar a.open { font-size: 0; }
-    .bar a.open::after { content: 'окремо ↗'; font-size: 10px; }
+    .bar a.open { width: 44px; max-width: 44px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    nav, .nav-scrim { transition: none !important; }
+    *, *::before, *::after {
+      animation: none !important;
+      transition: none !important;
+    }
   }
 </style>
 <script>
@@ -448,7 +558,10 @@
     </span>
   </div>
   <div class="stage">
-    <iframe id="frame" title="Сторінка проєкту"></iframe>
+    <div class="stage-track" id="stageTrack">
+      <iframe id="frame" title="Сторінка проєкту"></iframe>
+      <div class="stage-spacer" id="stageSpacer" aria-hidden="true"></div>
+    </div>
   </div>
 </main>
 
@@ -587,7 +700,8 @@ const GROUPS = [
     { t: 'Ще не робили' },
   ]},
   { id: 'dsys', sec: 'design', lesson: '09', t: 'Дизайн-система', items: [
-    { t: 'Ще не робили' },
+    { t: 'Документація компонентів', f: 'design-system/docs/index.html' },
+    { t: 'Про систему',              f: md('design-system/README.md') },
   ]},
   { id: 'handoff', sec: 'design', lesson: '12', t: 'Хендофф', items: [
     { t: 'Артефакти дизайну', f: md('DESIGN-artifacts.md') },
@@ -609,6 +723,9 @@ const HOME = md('README.md');
 
 const nav    = document.getElementById('nav');
 const frame  = document.getElementById('frame');
+const stage  = document.querySelector('.stage');
+const stageTrack = document.getElementById('stageTrack');
+const stageSpacer = document.getElementById('stageSpacer');
 const pathEl = document.getElementById('path');
 const whereEl = document.getElementById('where');
 const openEl = document.getElementById('open');
@@ -616,13 +733,29 @@ const navToggle = document.getElementById('navToggle');
 const navScrim = document.getElementById('navScrim');
 const mobileShell = matchMedia('(max-width: 760px)');
 let navOpen = false;
+let frameHeightCleanup = () => {};
+let frameHeightRefresh = () => {};
+stage.addEventListener('scroll', () => {
+  try { frame.contentWindow.scrollTo({ top: stage.scrollTop, behavior: 'auto' }); } catch (_) {}
+}, { passive: true });
+
+function isDesignSystemSurface(file) {
+  return file.startsWith('design-system/docs/') ||
+    file.startsWith('viewer.html?f=design-system/') ||
+    file === 'viewer.html?f=DESIGN.md';
+}
+
+function usesNavDrawer() {
+  return mobileShell.matches || document.body.classList.contains('design-system-mode');
+}
 
 function setNavOpen(open, restoreFocus = false) {
-  navOpen = mobileShell.matches && open;
+  const drawer = usesNavDrawer();
+  navOpen = drawer && open;
   document.body.classList.toggle('nav-open', navOpen);
   navToggle.setAttribute('aria-expanded', String(navOpen));
   navToggle.setAttribute('aria-label', navOpen ? 'Закрити навігацію' : 'Відкрити навігацію');
-  if (mobileShell.matches) {
+  if (drawer) {
     nav.toggleAttribute('inert', !navOpen);
     nav.setAttribute('aria-hidden', String(!navOpen));
     mainEl.toggleAttribute('inert', navOpen);
@@ -635,7 +768,19 @@ function setNavOpen(open, restoreFocus = false) {
   else if (restoreFocus) requestAnimationFrame(() => navToggle.focus());
 }
 
-function syncShellMode() { setNavOpen(false); showStageW(); }
+function syncSurfaceMode(file) {
+  const next = isDesignSystemSurface(file);
+  const changed = document.body.classList.contains('design-system-mode') !== next;
+  document.body.classList.toggle('design-system-mode', next);
+  if (changed) setNavOpen(false);
+  requestAnimationFrame(showStageW);
+}
+
+function syncShellMode() {
+  setNavOpen(false);
+  try { applyEmbedBg(frame.contentDocument); } catch (_) {}
+  showStageW();
+}
 navToggle.addEventListener('click', () => setNavOpen(!navOpen, navOpen));
 navScrim.addEventListener('click', () => setNavOpen(false, true));
 mobileShell.addEventListener('change', syncShellMode);
@@ -677,6 +822,11 @@ function paintFrame(doc) {
 function applyEmbedBg(doc) {
   if (!doc || !doc.documentElement) return;
   const isScreen = !!doc.querySelector('link[href*="design-system"]');
+  // Це лише viewer-embed: «повна» має розтягнути і .app, а не сам iframe.
+  doc.documentElement.dataset.shellStage = stageW;
+  // На desktop документ рухається тільки програмно від .stage. Це залишає
+  // один видимий scrollbar у viewer і зберігає native sticky-стек екрана.
+  doc.documentElement.toggleAttribute('data-shell-stage-scroll', !mobileShell.matches);
   let st = doc.getElementById('shell-embed');
   if (isScreen && stageW !== 'full') {
     if (!st) {
@@ -722,13 +872,29 @@ try {
   if (WIDTHS.some(x => x.key === w)) stageW = w;
 } catch (_) {}
 
-function setStageW(next) {
+function hashFor(file, width = stageW) {
+  const sep = file.includes('?') ? '&' : '?';
+  return '#' + file + sep + 'width=' + encodeURIComponent(width);
+}
+
+function syncWidthLinks() {
+  for (const a of nav.querySelectorAll('a[data-f]')) a.href = hashFor(a.dataset.f);
+}
+
+function setStageW(next, write = false) {
+  if (!WIDTHS.some(x => x.key === next)) return;
   stageW = next;
   mainEl.dataset.w = next;
   mainEl.style.setProperty('--stage-w', next === 'full' ? '100%' : next + 'px');
   try { localStorage.setItem(WIDTH_KEY, next); } catch (_) {}
   for (const b of wsw.children) b.setAttribute('aria-pressed', String(b.dataset.w === next));
   try { applyEmbedBg(frame.contentDocument); } catch (_) {}
+  frameHeightRefresh();
+  syncWidthLinks();
+  if (write) {
+    const hash = hashFor(openEl.dataset.f || HOME);
+    if (location.hash !== hash) history.pushState(null, '', hash);
+  }
   showStageW();
 }
 
@@ -751,7 +917,7 @@ for (const w of WIDTHS) {
   b.type = 'button';
   b.dataset.w = w.key;
   b.title = w.title;
-  b.addEventListener('click', () => setStageW(w.key));
+  b.addEventListener('click', () => setStageW(w.key, true));
   wsw.appendChild(b);
 }
 setStageW(stageW);
@@ -820,7 +986,7 @@ function el(tag, cls, html) {
 
 function addLink(container, t, f, ancestors, cls = 'pg') {
   const a = el('a', cls);
-  a.href = '#' + f;
+  a.href = hashFor(f);
   a.dataset.f = f;
   a.dataset.l = t;
   a.textContent = t;
@@ -912,7 +1078,7 @@ function buildNav() {
   frag.appendChild(closeBtn);
 
   brand = el('a', 'brand', 'Куток<span>ПРОЄКТ · ВСІ МАТЕРІАЛИ</span>');
-  brand.href = '#' + HOME;
+  brand.href = hashFor(HOME);
   brand.dataset.f = HOME;
   frag.appendChild(brand);
 
@@ -1122,7 +1288,7 @@ document.addEventListener('keydown', e => {
   }
   if (e.key === '/' && !isTyping(document.activeElement)) {
     e.preventDefault();
-    if (mobileShell.matches && !navOpen) {
+    if (usesNavDrawer() && !navOpen) {
       setNavOpen(true);
       requestAnimationFrame(() => filterEl.focus());
     } else filterEl.focus();
@@ -1137,6 +1303,94 @@ document.addEventListener('keydown', e => {
 let pendingHash = '';
 let targetFile = null;   // куди оболонка веде iframe (під час завантаження ≠ поточному документу)
 let lastDoc = null, lastFile = null;
+
+function frameDocumentHeight(doc) {
+  const root = doc?.documentElement;
+  const body = doc?.body;
+  return Math.ceil(Math.max(
+    root?.scrollHeight || 0, root?.offsetHeight || 0,
+    body?.scrollHeight || 0, body?.offsetHeight || 0,
+  ));
+}
+
+function frameWheelDelta(e, viewport) {
+  const unit = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? Math.max(1, viewport) : 1;
+  return { left: e.deltaX * unit, top: e.deltaY * unit };
+}
+
+function redirectFrameWheel(e) {
+  // Телефон лишається у власній моделі прокрутки; на desktop wheel над iframe
+  // має рухати саме .stage, чий scrollbar є єдиним видимим індикатором позиції.
+  if (mobileShell.matches || e.ctrlKey || e.metaKey) return;
+  const { left, top } = frameWheelDelta(e, stage.clientHeight);
+  if (!left && !top) return;
+  e.preventDefault();
+  stage.scrollBy({ left, top, behavior: 'auto' });
+}
+
+/* Same-origin сторінки прокручуються разом із зовнішньою сценою: iframe має
+   висоту viewport, а невидимий spacer відтворює висоту документа. Sticky iframe
+   лишається на місці, поки stage.scrollTop дзеркалиться у child window — тому
+   fixed Agentation toolbar фіксується біля viewport, а не внизу всього документа. */
+function syncFrameAutoHeight(doc) {
+  frameHeightCleanup();
+  let raf = 0;
+  let lastHeight = 0;
+  let lastViewport = 0;
+  const schedule = () => {
+    if (raf) return;
+    raf = requestAnimationFrame(() => {
+      raf = 0;
+      const height = frameDocumentHeight(doc);
+      const viewport = Math.max(1, stage.clientHeight);
+      if (height && (Math.abs(height - lastHeight) > 1 || viewport !== lastViewport)) {
+        lastHeight = height;
+        lastViewport = viewport;
+        mainEl.style.setProperty('--frame-doc-h', height + 'px');
+        mainEl.style.setProperty('--frame-viewport-h', viewport + 'px');
+        stageSpacer.style.height = height + 'px';
+      }
+    });
+  };
+  const resize = new ResizeObserver(schedule);
+  if (doc.documentElement) resize.observe(doc.documentElement);
+  if (doc.body) resize.observe(doc.body);
+  const frameBox = new ResizeObserver(schedule);
+  frameBox.observe(stage);
+  const mutations = new MutationObserver(schedule);
+  mutations.observe(doc.documentElement, { childList: true, subtree: true, characterData: true });
+  doc.addEventListener('load', schedule, true);
+  doc.addEventListener('wheel', redirectFrameWheel, { capture: true, passive: false });
+  const onHashChange = () => requestAnimationFrame(scrollFrameAnchor);
+  doc.defaultView?.addEventListener('hashchange', onHashChange);
+  addEventListener('resize', schedule);
+  doc.fonts?.ready.then(schedule).catch(() => {});
+  schedule();
+  frameHeightRefresh = schedule;
+  frameHeightCleanup = () => {
+    if (raf) cancelAnimationFrame(raf);
+    resize.disconnect();
+    frameBox.disconnect();
+    mutations.disconnect();
+    doc.removeEventListener('load', schedule, true);
+    doc.removeEventListener('wheel', redirectFrameWheel, true);
+    doc.defaultView?.removeEventListener('hashchange', onHashChange);
+    removeEventListener('resize', schedule);
+    if (frameHeightRefresh === schedule) frameHeightRefresh = () => {};
+  };
+}
+
+function scrollFrameAnchor() {
+  try {
+    const hash = frame.contentWindow.location.hash;
+    if (!hash) return;
+    const target = frame.contentDocument.querySelector(hash);
+    if (!target) return;
+    const stageBox = stage.getBoundingClientRect();
+    const targetBox = target.getBoundingClientRect();
+    stage.scrollTo({ top: stage.scrollTop + targetBox.top - stageBox.top, behavior: 'auto' });
+  } catch (_) {}
+}
 
 // оболонка може жити не в корені сервера — шляхи рахуємо від її теки
 const BASE = location.pathname.replace(/[^/]*$/, '');
@@ -1197,11 +1451,17 @@ function whereOf(file) {
 }
 
 function show(file, push = true) {
+  syncSurfaceMode(file);
   const cur = currentFile();
   const inFlight = targetFile !== null && targetFile !== cur;
   if (targetFile !== file) pendingHash = '';   // новий перехід скасовує чужий якір
   targetFile = file;
   if (cur !== file) {
+    frameHeightCleanup();
+    mainEl.style.setProperty('--frame-doc-h', '1px');
+    mainEl.style.setProperty('--frame-viewport-h', '1px');
+    stageSpacer.style.height = '1px';
+    stage.scrollTo({ top: 0, behavior: 'auto' });
     frame.src = file;
   } else if (inFlight) {
     try { frame.contentWindow.stop(); } catch (_) {}
@@ -1212,8 +1472,9 @@ function show(file, push = true) {
   openEl.dataset.f = file;
   markActive(file);
   // кнопка «назад» веде по історії перегляду; перший показ історію не засмічує
-  if (push && location.hash !== '#' + file)
-    history[location.hash ? 'pushState' : 'replaceState'](null, '', '#' + file);
+  const hash = hashFor(file);
+  if (push && location.hash !== hash)
+    history[location.hash ? 'pushState' : 'replaceState'](null, '', hash);
   revealActive();
   syncAllBtn();
 }
@@ -1243,7 +1504,7 @@ nav.addEventListener('click', e => {
   if (!a) return;
   e.preventDefault();
   show(a.dataset.f);
-  if (mobileShell.matches) setNavOpen(false);
+  if (usesNavDrawer()) setNavOpen(false);
 });
 
 // ── секції активної сторінки: дзеркалимо її прихований сайдбар у ліву панель ──
@@ -1286,8 +1547,7 @@ function buildSecs(doc, file) {
     try {
       const win = frame.contentWindow;
       if (win.location.hash === href) {
-        const t = win.document.querySelector(href);
-        if (t) t.scrollIntoView({ block: 'start' });
+        scrollFrameAnchor();
       } else {
         win.location.hash = href;
       }
@@ -1316,17 +1576,24 @@ frame.addEventListener('load', () => {
   paintFrame(doc);
 
   // ховаємо власний сайдбар сторінки — панель у проєкті одна
-  if (doc && doc.querySelector('.sidenav, .wf-nav') && !doc.getElementById('shell-css')) {
+  if (doc && (doc.querySelector('.sidenav, .wf-nav') || doc.querySelector('link[href*="design-system"]')) && !doc.getElementById('shell-css')) {
     const st = doc.createElement('style');
     st.id = 'shell-css';
     st.textContent =
       '.sidenav{display:none!important}' +
+      'html[data-shell-stage-scroll]{overflow-y:auto!important;scrollbar-width:none!important}' +
+      'html[data-shell-stage-scroll] body{overflow-y:visible!important;scrollbar-width:none!important}' +
+      'html[data-shell-stage-scroll]::-webkit-scrollbar,html[data-shell-stage-scroll] body::-webkit-scrollbar{display:none!important}' +
       '.shell{grid-template-columns:minmax(0,1fr)!important;gap:0!important}' +
-      '.wf-nav,.wf-nav-toggle{display:none!important}';
+      '.wf-nav,.wf-nav-toggle{display:none!important}' +
+      '.wf-shell{display:block!important;width:100%!important;min-width:0!important;min-height:100dvh!important}' +
+      '.wf-stage{display:block!important;width:100%!important;min-width:0!important;min-height:100dvh!important}' +
+      'html[data-shell-stage="full"] .wf-stage>.app,html[data-shell-stage="full"] body>.app{width:100%!important;max-width:none!important;margin-inline:0!important}';
     doc.head.appendChild(st);
   }
 
   applyEmbedBg(doc);
+  syncFrameAutoHeight(doc);
 
   // внутрішні переходи між сторінками ведемо через оболонку
   if (doc && !doc.__shellHooked) {
@@ -1361,6 +1628,7 @@ frame.addEventListener('load', () => {
   if (pendingHash) {
     try { frame.contentWindow.location.hash = pendingHash; } catch (_) {}
     pendingHash = '';
+    requestAnimationFrame(scrollFrameAnchor);
   }
   frame.classList.add('ready');
 });
@@ -1381,16 +1649,40 @@ const ALL_FILES = new Set([...nav.querySelectorAll('[data-f]')].map(e => e.datas
 // далі доступні: у них ходять із самих екранів, і перезавантаження такої адреси
 // не повинно викидати на головну. Тому крім файлів дерева пускаємо будь-який
 // .html усередині відомих тек — без `..`, схем і абсолютних шляхів.
-const SAFE_PATH = /^(wireframes|research|concept|ui|handoff)\/[A-Za-z0-9_\-/]+\.html$/;
+const SAFE_PATH = /^(wireframes|research|concept|ui|handoff|design-system\/docs)\/[A-Za-z0-9_\-/]+\.html$/;
+const SAFE_VIEWER = /^viewer\.html\?f=(?:DESIGN\.md|design-system\/[A-Za-z0-9_\-/]+\.(?:css|md|txt))$/;
+
+function hashState() {
+  const raw = decodeURIComponent(location.hash.slice(1));
+  const q = raw.indexOf('?');
+  if (q < 0) return { file: raw, width: null };
+  let width = null;
+  const kept = raw.slice(q + 1).split('&').filter(pair => {
+    const i = pair.indexOf('=');
+    const key = decodeURIComponent(i < 0 ? pair : pair.slice(0, i));
+    if (key !== 'width') return true;
+    width = decodeURIComponent(i < 0 ? '' : pair.slice(i + 1));
+    return false;
+  });
+  return {
+    file: raw.slice(0, q) + (kept.length ? '?' + kept.join('&') : ''),
+    width: WIDTHS.some(x => x.key === width) ? width : null,
+  };
+}
 
 function fromHash() {
-  const f = decodeURIComponent(location.hash.slice(1));
+  const f = hashState().file;
   if (ALL_FILES.has(f)) return f;
-  return !f.includes('..') && SAFE_PATH.test(f) ? f : HOME;
+  return !f.includes('..') && (SAFE_PATH.test(f) || SAFE_VIEWER.test(f)) ? f : HOME;
 }
-show(fromHash(), false);
-window.addEventListener('hashchange', () => show(fromHash(), false));
-window.addEventListener('popstate', () => show(fromHash(), false));
+function showFromHash() {
+  const { width } = hashState();
+  if (width) setStageW(width);
+  show(fromHash(), false);
+}
+showFromHash();
+window.addEventListener('hashchange', showFromHash);
+window.addEventListener('popstate', showFromHash);
 </script>
 </body>
 </html>
